@@ -1,3 +1,4 @@
+---
 homeassistant:
   # Name of the location where Home Assistant is running
   name: Student Home
