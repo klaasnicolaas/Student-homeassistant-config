@@ -15,6 +15,7 @@
 tts
 deps
 glances
+www
 
 # Ignore extensions
 *.db
