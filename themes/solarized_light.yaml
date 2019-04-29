@@ -1,0 +1,71 @@
+---
+# A solarized light theme by snwtoy
+#
+# https://community.home-assistant.io/t/solarized-light-theme/42713?
+#
+solarized-light:
+  # Main colors
+  primary-color: '#586e75'                                                        # Header
+  accent-color: '#fdf6e3'                                                         # Accent color
+  dark-primary-color: '#586e75'                                                   # Hyperlinks
+  light-primary-color: 'var(--accent-color)'                                      # Horizontal line in about
+
+  # Text colors
+  primary-text-color: '#657b83'                                                   # Primary text colour, here is referencing dark-primary-color
+  text-primary-color: 'var(--primary-text-color)'                                 # Primary text colour
+  secondary-text-color: '#93a1a1'                                                 # For secondary titles in more info boxes etc.
+  disabled-text-color: '#7F848E'                                                  # Disabled text colour
+  label-badge-border-color: 'green'                                               # Label badge border, just a reference value
+
+  # Background colors
+  primary-background-color: '#fdf6e3'                                             # Settings background
+  secondary-background-color: '#eee8d5'                                           # Main card UI background
+  divider-color: 'rgba(0, 0, 0, .12)'                                             # Divider
+
+  # Table rows
+  table-row-background-color: '#fdf6e3'                                           # Table row
+  table-row-alternative-background-color: '#eee8d5'                               # Table row alternative
+
+  # Nav Menu
+  paper-listbox-color: 'var(--primary-color)'                                     # Navigation menu selection hoover
+  paper-listbox-background-color: 'var(--accent-color)'                           # Navigation menu background
+  paper-grey-50: 'var(--primary-text-color)'
+  paper-grey-200: 'var(--accent-color)'                                           # Navigation menu selection
+
+  # Paper card
+  paper-card-header-color: 'var(--dark-primary-color)'                            # Card header text colour
+  paper-card-background-color: 'var(--accent-color)'                              # Card background colour
+  paper-dialog-background-color: '#fdf6e3'                                        # Card dialog background colour
+  paper-item-icon-color: 'var(--primary-text-color)'                              # Icon color
+  paper-item-icon-active-color: '#b58900'                                         # Icon color active
+  paper-item-icon_-_color: 'green'
+  paper-item-selected_-_color: 'var(--accent-color)'
+  paper-item-selected_-_background-color: '#cb4b16'                               # Popup item select
+  paper-tabs-selection-bar-color: 'green'
+
+  # Labels
+  label-badge-red: '#586e75'                                                      # References the brand colour label badge border
+  label-badge-text-color: 'var(--primary-text-color)'                             # Now same as label badge border but that's a matter of taste
+  label-badge-background-color: 'var(--accent-color)'                             # Same, but can also be set to transparent here
+
+  # Switches
+  paper-toggle-button-checked-button-color: '#268bd2'
+  paper-toggle-button-checked-bar-color: 'var(--primary-color)'
+  paper-toggle-button-checked-ink-color: '#268bd2'
+  paper-toggle-button-unchecked-button-color: 'var(--secondary-background-color)'
+  paper-toggle-button-unchecked-bar-color: 'var(--secondary-text-color)'
+  paper-toggle-button-unchecked-ink-color: 'var(--secondary-background-color)'
+
+  # Sliders
+  paper-slider-knob-color: 'var(--secondary-text-color)'
+  paper-slider-knob-start-color: 'var(--secondary-text-color)'
+  paper-slider-pin-color: 'var(--secondary-text-color)'
+  paper-slider-active-color: 'var(--secondary-text-color)'
+  paper-slider-container-color: 'linear-gradient(var(--primary-background-color), var(--secondary-background-color)) no-repeat'
+  paper-slider-secondary-color: 'var(--secondary-background-color)'
+  paper-slider-disabled-active-color: 'var(--disabled-text-color)'
+  paper-slider-disabled-secondary-color: 'var(--disabled-text-color)'
+
+  # Google colors
+  google-red-500: '#dc322f'
+  google-green-500: '#859900'

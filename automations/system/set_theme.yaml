@@ -1,0 +1,22 @@
+---
+- alias: System - Set HA theme
+  initial_state: true
+  trigger:
+    - platform: homeassistant
+      event: start
+    - platform: state
+      entity_id: sun.sun
+      to: above_horizon
+    - platform: state
+      entity_id: sun.sun
+      to: below_horizon
+    # - platform: state
+    #  entity_id:
+    #    - input_boolean.maintenance_mode
+  action:
+    - service_template: frontend.set_theme
+      data_template:
+        name: >
+          {% if is_state ('sun.sun' , 'below_horizon') %} midnight
+          # {% elif is_state ('input_boolean.maintenance_mode' , 'on') %} darkorange
+          {% else %} default {% endif %}
