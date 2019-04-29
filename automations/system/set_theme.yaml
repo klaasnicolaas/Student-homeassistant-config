@@ -10,9 +10,9 @@
     - platform: state
       entity_id: sun.sun
       to: below_horizon
-    # - platform: state
-    #  entity_id:
-    #    - input_boolean.maintenance_mode
+      # - platform: state
+      # entity_id:
+      # - input_boolean.maintenance_mode
   action:
     - service_template: frontend.set_theme
       data_template:
