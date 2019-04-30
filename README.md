@@ -8,7 +8,7 @@ During student life there is often that one step that you will live on your own,
 
 <br>
 
-![header](/extras/img/student-techlife-big.jpg "header")
+[![header](/extras/img/student-techlife-big.jpg "header")](https://student-techlife.com)
 
 You can follow my entire adventure via **[student-techlife.com][techlife]**
 
