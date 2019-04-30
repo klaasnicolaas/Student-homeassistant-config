@@ -6,6 +6,8 @@ You will probably think, what is Home Assistant!? Well Home Assistant is a home 
 
 During student life there is often that one step that you will live on your own, I recently took that step but with an important goal. You could almost say *"I am a man with a mission"*, because I want to make the 25m2 that I have a **super smart house**.
 
+![header](/extras/img/student-techlife-big.jpg "header")
+
 You can follow my entire adventure via **[student-techlife.com][techlife]**
 
 This is by the way not my first [Home Assistant][home-assistant] configuration that you find on Github, also take a look at [this repository][smarthome] with a much larger configuration.
