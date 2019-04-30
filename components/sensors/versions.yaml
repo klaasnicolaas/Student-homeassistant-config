@@ -1,0 +1,19 @@
+---
+# Enables a custom component called "versions".
+# It is a sensor that fetches the version number of current Home Assistant releases.
+#
+# https://www.home-assistant.io/components/version/
+#
+# Fetch beta version of HA
+- platform: version
+  name: Hassio Beta versie
+  beta: true
+  image: raspberrypi3
+  source: hassio
+
+# Fetch stable version of HA
+- platform: version
+  name: Hassio Stable versie
+  beta: false
+  image: raspberrypi3
+  source: hassio
