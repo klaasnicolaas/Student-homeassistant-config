@@ -1,0 +1,9 @@
+---
+# https://www.home-assistant.io/components/nmap_tracker/
+#
+platform: nmap_tracker
+track_new_devices: true
+interval_seconds: 30
+consider_home: 180
+hosts:
+  - !secret nmap_device_1
