@@ -1,0 +1,23 @@
+---
+# The http component serves all files and data required for the
+# Home Assistant frontend.
+#
+# https://www.home-assistant.io/components/http/
+#
+
+http:
+  # Contains the URL that Home Assistant is available on the internet.
+  base_url: !secret http_base_url
+
+  # Sets a port number to use for Home Assistant to use (default 8123).
+  # server_port: !secret http_server_port
+
+  ssl_certificate: !secret ssl_certificate
+  ssl_key: !secret ssl_key
+
+  # Enables additional IP filtering.
+  ip_ban_enabled: false
+
+  # Number of failed login attempts from a single IP after which it will
+  # be automatically banned.
+  login_attempts_threshold: 5

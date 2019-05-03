@@ -6,4 +6,4 @@
 # https://www.home-assistant.io/components/sensor/
 #
 
-sensor: !include_dir_merge_list ../sensors
+sensor: !include_dir_merge_list ../entities/sensors

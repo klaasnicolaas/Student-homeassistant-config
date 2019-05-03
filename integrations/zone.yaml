@@ -1,0 +1,8 @@
+---
+# Zones allow you to specify certain regions on earth (for now).
+# When a device tracker sees a device to be within a zone, the state will take the name from the zone.
+#
+# https://www.home-assistant.io/components/zone/
+#
+
+zone: !include_dir_merge_list ../entities/zones

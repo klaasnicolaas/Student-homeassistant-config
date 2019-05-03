@@ -1,0 +1,9 @@
+---
+# This is de cast component.
+#
+# https://www.home-assistant.io/components/cast/
+#
+
+cast:
+  media_player:
+    - host: !secret google_mini_woonkamer

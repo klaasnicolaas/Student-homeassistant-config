@@ -4,4 +4,4 @@
 # https://www.home-assistant.io/components/binary_sensor/
 #
 
-binary_sensor: !include_dir_merge_list ../binary_sensors
+binary_sensor: !include_dir_merge_list ../entities/binary_sensors
