@@ -7,6 +7,10 @@
 !.gitignore
 !*.md
 !LICENSE
+#
+www/*
+!www/lovelace
+#
 
 # Ignore folders.
 .storage
@@ -15,7 +19,7 @@
 tts
 deps
 glances
-www
+zones
 
 # Ignore extensions
 *.db
