@@ -18,5 +18,4 @@
       data_template:
         name: >
           {% if is_state ('sun.sun' , 'below_horizon') %} midnight
-          # {% elif is_state ('input_boolean.maintenance_mode' , 'on') %} darkorange
           {% else %} default {% endif %}
