@@ -1,0 +1,11 @@
+---
+# The telegram platform uses Telegram to deliver notifications from Home Assistant
+# to your Android device, your Windows phone, or your iOS device.
+#
+# https://www.home-assistant.io/components/telegram/#configuration
+#
+
+# Telegram Klaas
+- name: telegram_klaas
+  platform: telegram
+  chat_id: !secret telegram_chat_id_klaas
