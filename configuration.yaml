@@ -16,14 +16,10 @@ homeassistant:
   # Lets me custimize all entities in a domain
   customize_domain: !include_dir_merge_named customizations/domains
   # Packages #
-  packages: !include_dir_named components/packages
+  packages: !include_dir_named integrations
 
 # Configure a default setup of Home Assistant (frontend, api, etc)
 default_config:
-
-# Uncomment this if you are using SSL/TLS, running in Docker container, etc.
-# http:
-#   base_url: example.duckdns.org:8123
 
 # Discover some devices automatically
 discovery:
@@ -32,3 +28,5 @@ discovery:
 tts:
   - platform: google_translate
     service_name: google_say
+
+python_script:
