@@ -1,0 +1,8 @@
+---
+#
+# Costumize my ping binary sensors.
+#
+binary_sensor.tp_link_router:
+  icon: mdi:router-wireless
+binary_sensor.google_mini_woonkamer:
+  icon: mdi:google-home

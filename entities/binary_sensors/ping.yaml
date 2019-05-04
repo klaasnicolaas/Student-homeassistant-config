@@ -1,0 +1,14 @@
+---
+#
+# Binary sensors that pings devices in our network.
+#
+
+# Router
+- platform: ping
+  host: !secret ping_switch
+  name: TP-Link Router
+
+# Google Home Mini Living room
+- platform: ping
+  host: !secret google_mini_woonkamer
+  name: Google Mini Woonkamer
