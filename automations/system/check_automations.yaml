@@ -1,0 +1,11 @@
+---
+- alias: System - Check automations status
+  initial_state: true
+  trigger:
+    - platform: homeassistant
+      event: start
+    - platform: time_pattern
+      hours: '/1'
+  action:
+    - service: python_script.all_automations_counter
+    - service: python_script.on_automations_counter
