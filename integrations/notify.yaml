@@ -1,0 +1,8 @@
+---
+# The notify component makes it possible to send notifications to a wide variety of platforms.
+# Please check the sidebar for a full list of platforms that are supported.
+#
+# https://www.home-assistant.io/components/notify/
+#
+
+notify: !include_dir_merge_list ../entities/notifications
