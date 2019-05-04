@@ -20,6 +20,7 @@ tts
 deps
 glances
 zones
+__pycache__
 
 # Ignore extensions
 *.db
