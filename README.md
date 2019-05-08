@@ -80,7 +80,7 @@ SOFTWARE.
 [last-commit-shield]: https://img.shields.io/github/last-commit/klaasnicolaas/Student-homeassistant-config.svg?color=blue&style=plasticr
 [stars-shield]: https://img.shields.io/github/stars/klaasnicolaas/Student-homeassistant-config.svg
 [ha-version-shield]: https://img.shields.io/badge/Home%20Assistant-0.92.2-blue.svg
-[uptime-shield]: https
+[uptime-shield]: https://img.shields.io/uptimerobot/status/m782530846-8e789b9650b16e61fb717d28.svg
 [gitlabci-shield]: https://gitlab.com/klaasnicolaas/Student-homeassistant-config/badges/master/pipeline.svg
 [paypal-shield]: https://img.shields.io/badge/BuyMeAFanta-Paypal-orange.svg
 [issues-shield]: https://img.shields.io/github/issues/klaasnicolaas/Student-homeassistant-config.svg
