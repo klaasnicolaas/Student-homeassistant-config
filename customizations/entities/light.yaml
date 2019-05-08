@@ -1,0 +1,8 @@
+---
+#
+#
+light.keuken:
+  icon: mdi:ceiling-light
+
+light.hal:
+  icon: mdi:ceiling-light
