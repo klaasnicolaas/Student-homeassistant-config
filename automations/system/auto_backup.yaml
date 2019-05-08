@@ -1,0 +1,21 @@
+---
+# Makes a backup of hassio every Sunday at 3:00 am so that I can store it on my NAS.
+#
+- alias: System - Make weekly Hassio backup
+  initial_state: true
+  trigger:
+    - platform: time
+      at: '03:00:00'
+  condition:
+    - condition: time
+      weekday:
+        - sun
+  action:
+    - service: hassio.snapshot_full
+      data_template:
+        name: Backup {{ now().strftime('%Y-%m-%d') }} running HA version {{ states('sensor.ha_installed_version') }}
+    - service: notify.telegram_klaas
+      data_template:
+        title: '*Hass.io Backup!*'
+        message: >-
+          'Backup is gemaakt met de naam: Backup {{ now().strftime('%Y-%m-%d') }} running HA version {{ states('sensor.ha_installed_version') }}'
