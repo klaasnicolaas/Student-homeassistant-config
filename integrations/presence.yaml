@@ -1,0 +1,253 @@
+---
+################################################
+## Packages Presence
+################################################
+
+homeassistant:
+  customize:
+    ################################################
+    ## Node Anchors
+    ################################################
+
+    package.node_anchors:
+      customize: &customize
+        package: 'presence'
+
+    ################################################
+    ## Sensor
+    ################################################
+
+    sensor.klaas_status:
+      <<: *customize
+      entity_picture: /local/klaas.jpg
+
+    sensor.marlene_status:
+      <<: *customize
+      entity_picture: /local/marlene.jpg
+
+    ################################################
+    ## Input Select
+    ################################################
+
+    input_select.klaas_status_dropdown:
+      <<: *customize
+      hidden: true
+
+    input_select.marlene_status_dropdown:
+      <<: *customize
+      hidden: true
+
+    ################################################
+    ## Automation
+    ################################################
+
+    automation.markeer_persoon_als_lang_weg:
+      <<: *customize
+      hidden: true
+
+    automation.markeer_persoon_als_net_aangekomen:
+      <<: *customize
+      hidden: true
+
+    automation.markeer_persoon_als_net_vertrokken:
+      <<: *customize
+      hidden: true
+
+    automation.markeer_persoon_als_thuis:
+      <<: *customize
+      hidden: true
+
+    automation.markeer_persoon_als_weg:
+      <<: *customize
+      hidden: true
+
+################################################
+## Input Select
+################################################
+input_select:
+  # Aanwezigheids optie Klaas
+  klaas_status_dropdown:
+    name: Klaas
+    options:
+      - Thuis
+      - Net Aangekomen
+      - Net Vertrokken
+      - Weg
+      - Lang Weg
+
+  # Aanwezigheids optie Marlene
+  marlene_status_dropdown:
+    name: Marlene
+    options:
+      - Thuis
+      - Net Aangekomen
+      - Net Vertrokken
+      - Weg
+      - Lang Weg
+
+################################################
+## Sensor
+################################################
+sensor:
+  - platform: template
+    sensors:
+      klaas_status:
+        value_template: '{{ states.input_select.klaas_status_dropdown.state }}'
+        friendly_name: 'Klaas'
+      marlene_status:
+        value_template: '{{ states.input_select.marlene_status_dropdown.state }}'
+        friendly_name: 'Marlene'
+
+################################################
+## Group
+################################################
+group:
+  personen_status:
+    name: Personen Status
+    entities:
+      - sensor.klaas_status
+      - sensor.marlene_status
+
+################################################
+## Automation
+################################################
+automation:
+  # Net Aangekomen
+  - alias: Presence - Markeer persoon als net aangekomen
+    initial_state: true
+    trigger:
+      # Klaas
+      - platform: state
+        entity_id: binary_sensor.klaas_thuis
+        from: 'off'
+        to: 'on'
+      # Marlene
+      - platform: state
+        entity_id: binary_sensor.marlene_thuis
+        from: 'off'
+        to: 'on'
+    action:
+      - service: input_select.select_option
+        data_template:
+          entity_id: >
+            {% if trigger.entity_id == 'binary_sensor.klaas_thuis' %}
+              input_select.klaas_status_dropdown
+            {% else %}
+              input_select.marlene_status_dropdown
+            {% endif %}
+          option: >
+            {% if trigger.entity_id == 'binary_sensor.klaas_thuis' %}
+              {% if states.input_select.klaas_status_dropdown.state == 'Net Vertrokken' %}
+                Thuis
+              {% else %}
+                Net Aangekomen
+              {% endif %}
+            {% else %}
+              {% if states.input_select.marlene_status_dropdown.state == 'Net Vertrokken' %}
+                Thuis
+              {% else %}
+                Net Aangekomen
+              {% endif %}
+            {% endif %}
+
+  # Thuis
+  - alias: Presence - Markeer persoon als thuis
+    initial_state: true
+    trigger:
+      - platform: state
+        entity_id: input_select.klaas_status_dropdown
+        to: 'Net Aangekomen'
+        for: "00:05:00"
+      - platform: state
+        entity_id: input_select.marlene_status_dropdown
+        to: 'Net Aangekomen'
+        for: "00:05:00"
+      - platform: state
+        entity_id: input_select.klaas_status_dropdown
+        from: 'Net Vertrokken'
+        to: 'Net Aangekomen'
+      - platform: state
+        entity_id: input_select.marlene_status_dropdown
+        from: 'Net Vertrokken'
+        to: 'Net Aangekomen'
+    action:
+      - service: input_select.select_option
+        data_template:
+          entity_id: >
+            {% if trigger.entity_id == 'input_select.klaas_status_dropdown' %}
+              input_select.klaas_status_dropdown
+            {% else %}
+              input_select.marlene_status_dropdown
+            {% endif %}
+          option: Thuis
+
+  # Net Vertrokken
+  - alias: Presence - Markeer persoon als net vertrokken
+    initial_state: true
+    trigger:
+      # Klaas
+      - platform: state
+        entity_id: binary_sensor.klaas_thuis
+        from: 'on'
+        to: 'off'
+      # Marlene
+      - platform: state
+        entity_id: binary_sensor.marlene_thuis
+        from: 'on'
+        to: 'off'
+    action:
+      - service: input_select.select_option
+        data_template:
+          entity_id: >
+            {% if trigger.entity_id == 'binary_sensor.klaas_thuis' %}
+              input_select.klaas_status_dropdown
+            {% else %}
+              input_select.marlene_status_dropdown
+            {% endif %}
+          option: Net Vertrokken
+
+  # Weg
+  - alias: Presence - Markeer persoon als weg
+    initial_state: true
+    trigger:
+      - platform: state
+        entity_id: input_select.klaas_status_dropdown
+        to: 'Net Vertrokken'
+        for: "00:05:00"
+      - platform: state
+        entity_id: input_select.marlene_status_dropdown
+        to: 'Net Vertrokken'
+        for: "00:05:00"
+    action:
+      - service: input_select.select_option
+        data_template:
+          entity_id: >
+            {% if trigger.entity_id == 'input_select.klaas_status_dropdown' %}
+              input_select.klaas_status_dropdown
+            {% else %}
+              input_select.marlene_status_dropdown
+            {% endif %}
+          option: Weg
+
+  # Lang weg
+  - alias: Presence - Markeer persoon als lang weg
+    initial_state: true
+    trigger:
+      - platform: state
+        entity_id: input_select.klaas_status_dropdown
+        to: 'Weg'
+        for: "24:00:00"
+      - platform: state
+        entity_id: input_select.marlene_status_dropdown
+        to: 'Weg'
+        for: "24:00:00"
+    action:
+      - service: input_select.select_option
+        data_template:
+          entity_id: >
+            {% if trigger.entity_id == 'input_select.klaas_status_dropdown' %}
+              input_select.klaas_status_dropdown
+            {% else %}
+              input_select.marlene_status_dropdown
+            {% endif %}
+          option: Lang Weg
