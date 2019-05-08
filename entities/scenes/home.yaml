@@ -1,0 +1,10 @@
+---
+########## Home Scenes ##########
+- name: Avond
+  entities:
+    light.keuken:
+      state: true
+      brightness_pct: 30
+    light.hal:
+      state: true
+      brightness_pct: 30

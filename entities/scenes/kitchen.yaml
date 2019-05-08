@@ -1,0 +1,13 @@
+---
+########## Kitchen Scenes ##########
+- name: Koken
+  entities:
+    light.keuken_lamp_1:
+      state: true
+      brightness_pct: 100
+    light.keuken_lamp_2:
+      state: true
+      brightness_pct: 70
+    light.keuken_lamp_3:
+      state: true
+      brightness_pct: 70
