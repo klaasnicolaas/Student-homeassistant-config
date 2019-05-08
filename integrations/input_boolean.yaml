@@ -1,0 +1,9 @@
+---
+#
+# https://www.home-assistant.io/components/input_boolean/
+
+# Input boolean for if I go to bed
+input_boolean:
+  go_to_sleep:
+    name: Ik ga naar bed/slapen
+    icon: mdi:sleep
