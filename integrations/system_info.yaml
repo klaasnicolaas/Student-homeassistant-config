@@ -1,0 +1,156 @@
+---
+################################################
+## Packages - System Info
+################################################
+
+homeassistant:
+  customize_glob:
+    weblink.*:
+      icon: mdi:web
+
+  customize:
+    ################################################
+    ## Node Anchors
+    ################################################
+
+    package.node_anchors:
+      customize: &customize
+        package: 'system'
+
+      expose: &expose
+        <<: *customize
+        haaska_hidden: false
+        homebridge_hidden: false
+
+    ################################################
+    ## Sensor
+    ################################################
+
+    sensor.processor_use:
+      <<: *customize
+      friendly_name: Processorgebruik
+
+    sensor.memory_use_percent:
+      <<: *customize
+      friendly_name: Geheugengebruik
+
+    sensor.disk_free:
+      <<: *customize
+      friendly_name: Beschikbare opslag
+
+    sensor.disk_use_percent:
+      <<: *customize
+      friendly_name: Gebruikte opslag
+
+    sensor.ha_installed_version:
+      <<: *customize
+      friendly_name: Hassio geinstalleerde versie
+
+    sensor.python_version:
+      <<: *customize
+      friendly_name: Python geinstalleerde versie
+
+    sensor.last_boot:
+      <<: *customize
+      friendly_name: Laatste (re)boot Raspberry Pi
+
+    sensor.myip:
+      <<: *customize
+      friendly_name: Publiek IP-adres
+      icon: mdi:network
+
+    ################################################
+    ## Script
+    ################################################
+
+    script.quick_reboot:
+      <<: *customize
+      icon: mdi:server-network
+      can_cancel: false
+      friendly_name: Reboot Raspberry Pi
+
+    script.quick_restart:
+      <<: *customize
+      icon: mdi:home-assistant
+      can_cancel: false
+      friendly_name: Restart Home Assistant
+
+################################################
+## Binary Sensor
+################################################
+
+binary_sensor:
+  - platform: template
+    sensors:
+      cpu_high:
+        value_template: '{{ states.sensor.processor_use.state | float > 80 }}'
+        friendly_name: 'CPU hoog'
+  - platform: template
+    sensors:
+      cpu_hot:
+        value_template: '{{ states.sensor.cpu_temperature.state | float > 65 }}'
+        friendly_name: 'CPU heet'
+
+################################################
+## Sensor
+################################################
+
+sensor:
+  - platform: systemmonitor
+    resources:
+      - type: memory_use_percent
+      - type: processor_use
+      - type: disk_use_percent
+        arg: /
+      - type: disk_free
+        arg: /
+      - type: last_boot
+  - platform: command_line
+    name: CPU Temperature
+    command: "/bin/cat /sys/class/thermal/thermal_zone0/temp"
+    unit_of_measurement: "°C"
+    value_template: '{{ value | multiply(0.001) | round(1) }}'
+  ##### Latest HA installed version
+  - platform: version
+    name: HA Installed Version
+    scan_interval: 86400
+  ##### Latest python3 version
+  - platform: command_line
+    name: Python Version
+    command: python3 --version
+    scan_interval: 86400
+  ##### External IP
+  - platform: dnsip
+  ##### When will the SSL expiry
+  - platform: cert_expiry
+    host: !secret cert_expiry_host
+
+################################################
+## Input boolean
+################################################
+
+input_boolean:
+  maintenance_mode:
+    name: Onderhouds Mode
+    icon: mdi:auto-fix
+
+################################################
+## Script
+################################################
+
+script:
+  quick_restart:
+    alias: ' '
+    sequence:
+      - service: homeassistant.turn_on
+        entity_id: input_boolean.maintenance_mode
+      - delay: 00:00:02
+      - service: homeassistant.restart
+
+  quick_reboot:
+    alias: ' '
+    sequence:
+      - service: homeassistant.turn_on
+        entity_id: input_boolean.maintenance_mode
+      - delay: 00:00:02
+      - service: hassio.host_reboot
