@@ -1,0 +1,6 @@
+---
+# Custom icons for the light automations
+automation.light_toggle_lamp_on_from_dimmer:
+  icon: mdi:lightbulb-outline
+automation.light_toggle_lamp_off_from_dimmer:
+  icon: mdi:lightbulb-outline

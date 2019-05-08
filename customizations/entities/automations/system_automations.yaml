@@ -1,0 +1,10 @@
+---
+# Custom icons for the system automations
+automation.system_set_ha_theme:
+  icon: mdi:theme-light-dark
+automation.system_check_automations_status:
+  icon: mdi:eye-check-outline
+automation.system_message_when_there_is_a_custom_card_update:
+  icon: mdi:message-outline
+automation.system_message_when_there_is_a_custom_component_update:
+  icon: mdi:message-outline
