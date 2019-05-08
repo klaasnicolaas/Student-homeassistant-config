@@ -12,7 +12,7 @@ cards:
     entities:
       - automation.system_set_ha_theme
       - automation.system_check_automations_status
-      - automation.system_notify_when_cert_will_expire
+      - automation.system_notify_when_ssl_certificate_will_expire
       - automation.system_notify_on_a_custom_card_update
       - automation.system_notify_on_a_custom_component_update
       - automation.system_make_manual_hassio_backup_via_telegram
