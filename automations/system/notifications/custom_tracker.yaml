@@ -2,7 +2,7 @@
 # Send notification when there is an update for custom card / components
 #
 
-- alias: System - Message when there is a custom card update
+- alias: System - Notify on a custom card update
   initial_state: true
   trigger:
     - platform: numeric_state
@@ -14,7 +14,7 @@
         title: '*Custom card update*'
         message: "Er zijn updates voor de custom cards"
 
-- alias: System - Message when there is a custom component update
+- alias: System - Notify on a custom component update
   initial_state: true
   trigger:
     - platform: numeric_state
