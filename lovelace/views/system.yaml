@@ -1,0 +1,107 @@
+---
+########## System ###########
+id: system_info
+title: Systeeminformatie
+icon: mdi:server
+path: system
+cards:
+
+  # Show gauge charts
+  - type: horizontal-stack
+    cards:
+      - type: gauge
+        entity: sensor.processor_use
+      - type: gauge
+        entity: sensor.memory_use_percent
+      - type: gauge
+        entity: sensor.cpu_temperature
+
+  # Show information about Home Assistant
+  - type: entities
+    title: Home Assistant Info
+    show_header_toggle: false
+    entities:
+      - sensor.last_boot
+      - binary_sensor.student_home_assistant
+      - type: divider
+      - sensor.ha_installed_version
+      - sensor.python_version
+      - sensor.hassio_stable_versie
+      - sensor.hassio_beta_versie
+      - type: divider
+      - sensor.automation_on
+      - sensor.automation_all
+
+  # Show maintenance dashboard
+  - type: entities
+    title: Onderhoud
+    show_header_toggle: false
+    entities:
+      - input_boolean.maintenance_mode
+      - script.quick_restart
+      - script.quick_reboot
+      - type: divider
+      # Gitlab CI
+      - sensor.gitlab_ci_status
+      - type: divider
+      - type: weblink
+        name: Github - Home Assistant config
+        url: https://github.com/klaasnicolaas/Student-homeassistant-config
+
+  # Show alerts that can appear
+  - type: entities
+    title: Alerts
+    show_header_toggle: false
+    entities:
+      - binary_sensor.cpu_high
+      - binary_sensor.cpu_hot
+      - binary_sensor.snapshots_stale
+
+  # Show network stats
+  - type: glance
+    entities:
+      - name: Router
+        entity: binary_sensor.tp_link_router
+      - name: Ping
+        entity: sensor.speedtest_ping
+      - name: Download
+        entity: sensor.speedtest_download
+      - name: Upload
+        entity: sensor.speedtest_upload
+
+  - type: glance
+    entities:
+      - name: Google Mini
+        entity: binary_sensor.google_mini_woonkamer
+      - name: Google Cast
+        entity: binary_sensor.google_cast_tv
+      - name: Tablet
+        entity: binary_sensor.tablet
+    columns: 4
+
+  # Show information about memory on the Raspberry Pi
+  - type: entities
+    title: Opslag
+    show_header_toggle: false
+    entities:
+      - sensor.disk_use_percent
+      - sensor.disk_free
+
+  # Show information about the internet connection
+  - type: entities
+    title: Netwerk
+    show_header_toggle: false
+    entities:
+      - sensor.myip
+      - sensor.ssl_certificate_expiry
+
+  # Toont informatie over de Google Homes
+  - type: entities
+    title: Google Home
+    show_header_toggle: false
+    entities:
+      - sensor.google_home_mini_alarm
+      - sensor.google_home_mini_timer
+
+  # Tracker card
+  - type: custom:tracker-card

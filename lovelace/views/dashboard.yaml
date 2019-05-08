@@ -1,0 +1,90 @@
+---
+########## Dashboard ###########
+id: dashboard
+title: Thuis
+icon: mdi:home-assistant
+path: home
+cards:
+  - type: horizontal-stack
+    cards:
+      - image: /local/klaas-overlay.jpg
+        elements:
+          - style:
+              color: white
+              top: 93%
+              left: 20%
+            type: state-label
+            entity: sensor.klaas_status
+          - style:
+              color: white
+              top: 93%
+              left: 55%
+            type: state-label
+            entity: binary_sensor.klaas_thuis
+        type: picture-elements
+      - image: /local/marlene-overlay.jpg
+        elements:
+          - style:
+              color: white
+              top: 93%
+              left: 20%
+            type: state-label
+            entity: sensor.marlene_status
+          - style:
+              color: white
+              top: 93%
+              left: 55%
+            type: state-label
+            entity: binary_sensor.marlene_thuis
+        type: picture-elements
+  # Lamp groups
+  - type: horizontal-stack
+    cards:
+      - type: light
+        entity: light.keuken
+      - type: light
+        entity: light.hal
+
+  # Shows door and window state
+  # - type: glance
+  # entities:
+
+  # Start scenes
+
+  #- type: custom:mini-media-player
+  #  entity: media_player.spotify
+  #  artwork: cover
+  # Google home media players
+  - type: custom:mini-media-player
+    entity: media_player.woonkamer
+    artwork: cover
+  - type: custom:mini-media-player
+    entity: media_player.tv_woonkamer
+    artwork: cover
+
+  - type: horizontal-stack
+    cards:
+      - type: picture-entity
+        entity: scene.koken
+        image: /local/images/cooking.png
+        tap_action:
+          action: call-service
+          service: scene.turn_on
+          service_data:
+            entity_id: scene.koken
+      - type: picture-entity
+        entity: scene.avond
+        image: /local/images/evening.png
+        tap_action:
+          action: call-service
+          service: scene.turn_on
+          service_data:
+            entity_id: scene.avond
+      - type: picture-entity
+        name: Slapen
+        entity: input_boolean.go_to_sleep
+        state_image:
+          "on": /local/images/sleeping_on.png
+          "off": /local/images/sleeping_off.png
+        tap_action:
+          action: toggle

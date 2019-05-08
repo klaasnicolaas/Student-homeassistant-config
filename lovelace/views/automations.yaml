@@ -1,0 +1,38 @@
+---
+########## Automations ###########
+id: automation
+icon: mdi:home-automation
+title: Automatisering
+path: automations
+cards:
+  # System
+  - type: entities
+    title: System Automations
+    show_header_toggle: false
+    entities:
+      - automation.system_set_ha_theme
+      - automation.system_check_automations_status
+      - automation.system_notify_when_cert_will_expire
+      - automation.system_notify_on_a_custom_card_update
+      - automation.system_notify_on_a_custom_component_update
+      - automation.system_make_manual_hassio_backup_via_telegram
+      - automation.system_make_weekly_hassio_backup
+
+  # Lights
+  - type: entities
+    title: Light Automations
+    show_header_toggle: false
+    entities:
+      - automation.light_toggle_lamp_on_from_dimmer
+      - automation.light_toggle_lamp_off_from_dimmer
+
+  # Presence
+  - type: entities
+    title: Presence Automations
+    show_header_toggle: false
+    entities:
+      - automation.presence_markeer_persoon_als_lang_weg
+      - automation.presence_markeer_persoon_als_net_aangekomen
+      - automation.presence_markeer_persoon_als_net_vertrokken
+      - automation.presence_markeer_persoon_als_thuis
+      - automation.presence_markeer_persoon_als_weg
