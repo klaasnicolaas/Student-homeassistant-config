@@ -4,7 +4,13 @@ automation.system_set_ha_theme:
   icon: mdi:theme-light-dark
 automation.system_check_automations_status:
   icon: mdi:eye-check-outline
-automation.system_message_when_there_is_a_custom_card_update:
+automation.system_notify_when_cert_will_expire:
+  icon: mdi:certificate
+automation.system_notify_on_a_custom_card_update:
   icon: mdi:message-outline
-automation.system_message_when_there_is_a_custom_component_update:
+automation.system_notify_on_a_custom_component_update:
   icon: mdi:message-outline
+automation.system_make_manual_hassio_backup_via_telegram:
+  icon: mdi:cloud-upload-outline
+automation.system_make_weekly_hassio_backup:
+  icon: mdi:cloud-upload-outline
