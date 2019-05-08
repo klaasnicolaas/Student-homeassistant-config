@@ -51,7 +51,7 @@ cards:
 
   # Start scenes
 
-  #- type: custom:mini-media-player
+  # - type: custom:mini-media-player
   #  entity: media_player.spotify
   #  artwork: cover
   # Google home media players
