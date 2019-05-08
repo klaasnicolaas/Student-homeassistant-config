@@ -7,3 +7,4 @@
 cast:
   media_player:
     - host: !secret google_mini_woonkamer
+    - host: !secret google_chromecast_tv
