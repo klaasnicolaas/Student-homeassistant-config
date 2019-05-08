@@ -1,0 +1,15 @@
+---
+# Notify me when the SSL certificate will expire soon
+#
+
+- alias: System - Notify when cert will expire
+  initial_state: true
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.ssl_certificate_expiry
+      below: 30
+  action:
+    - service: notify.telegram_klaas
+      data:
+        title: '*Certificaat verloop bijna*'
+        message: "Vernieuw je SSL certificaat want deze verloop over minder dan 30 dagen"
