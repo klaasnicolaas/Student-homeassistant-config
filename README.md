@@ -39,7 +39,11 @@ Below you can see briefly which hardware I use:
 
 ---
 
-## Needing Help?
+## Needing Help or Questions?
+
+If you have a specific question about my configuration send me a Private Message on the HA forum, my username over there is **[Klaasnicolaas](https://community.home-assistant.io/u/klaasnicolaas)**. Or send me a message via Discord, my username is there **Mister Nicolaz**. If you have found something incorrect, please submit an issue here on Github and I will get it fixed.
+
+## Links
 
 - [Home Assistant Homepage](<https://home-assistant.io/>)
 - [Home Assistant Forums](<https://community.home-assistant.io/>)
