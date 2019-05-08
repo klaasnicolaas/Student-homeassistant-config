@@ -1,0 +1,10 @@
+---
+#
+# With the Google Home component you can track timers, alarm and devices.
+# https://www.home-assistant.io/components/googlehome/
+#
+googlehome:
+  devices:
+    - host: !secret google_mini_woonkamer
+      track_alarms: true
+      track_devices: false
