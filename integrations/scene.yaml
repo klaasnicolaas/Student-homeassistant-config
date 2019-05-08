@@ -1,0 +1,9 @@
+---
+# You can create scenes that capture the states you want certain entities to be.
+#
+# This loads up my scenes configurations
+#
+# https://www.home-assistant.io/components/scene/
+#
+
+scene: !include_dir_merge_list ../entities/scenes
