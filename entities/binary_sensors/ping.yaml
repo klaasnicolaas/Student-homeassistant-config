@@ -12,3 +12,13 @@
 - platform: ping
   host: !secret google_mini_woonkamer
   name: Google Mini Woonkamer
+
+# Google Cast - TV
+- platform: ping
+  host: !secret google_chromecast_tv
+  name: Google Cast - TV
+
+# Tablet
+- platform: ping
+  host: !secret ping_tablet
+  name: Tablet
