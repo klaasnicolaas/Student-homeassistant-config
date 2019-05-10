@@ -4,10 +4,10 @@
   entities:
     light.keuken:
       state: true
-      brightness_pct: 20 # procent
+      brightness_pct: 20  # procent
     light.hal:
       state: true
-      brightness_pct: 20 # procent
+      brightness_pct: 20  # procent
     light.woonkamer:
       state: true
-      brightness_pct: 20 # procent
+      brightness_pct: 20  # procent
