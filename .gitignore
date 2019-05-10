@@ -21,6 +21,7 @@ deps
 glances
 zones
 __pycache__
+icloud
 
 # Ignore extensions
 *.db
