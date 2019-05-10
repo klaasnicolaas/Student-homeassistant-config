@@ -36,3 +36,10 @@ cards:
       - automation.presence_markeer_persoon_als_net_vertrokken
       - automation.presence_markeer_persoon_als_thuis
       - automation.presence_markeer_persoon_als_weg
+
+  # House
+  - type: entities
+    title: House Automations
+    show_header_toggle: false
+    entities:
+      - automation.house_start_opstaan_ritueel

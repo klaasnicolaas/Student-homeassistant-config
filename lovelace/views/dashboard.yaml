@@ -37,19 +37,28 @@ cards:
             type: state-label
             entity: binary_sensor.marlene_thuis
         type: picture-elements
-  # Lamp groups
-  - type: horizontal-stack
-    cards:
-      - type: light
-        entity: light.keuken
-      - type: light
+
+  # Light slider groups
+  - type: entities
+    title: Lampen
+    show_header_toggle: false
+    entities:
+      - type: custom:slider-entity-row
         entity: light.hal
+        toggle: true
+        hide_when_off: true
+      - type: custom:slider-entity-row
+        entity: light.keuken
+        toggle: true
+        hide_when_off: true
+      - type: custom:slider-entity-row
+        entity: light.woonkamer
+        toggle: true
+        hide_when_off: true
 
   # Shows door and window state
   # - type: glance
   # entities:
-
-  # Start scenes
 
   # - type: custom:mini-media-player
   #  entity: media_player.spotify
@@ -62,6 +71,7 @@ cards:
     entity: media_player.tv_woonkamer
     artwork: cover
 
+  # Start scenes
   - type: horizontal-stack
     cards:
       - type: picture-entity

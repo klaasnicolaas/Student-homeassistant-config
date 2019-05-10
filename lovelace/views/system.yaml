@@ -9,12 +9,25 @@ cards:
   # Show gauge charts
   - type: horizontal-stack
     cards:
-      - type: gauge
+      - type: custom:circle-sensor-card
         entity: sensor.processor_use
-      - type: gauge
+        name: Processorgebruik
+        stroke_width: 10
+        max: 100
+      - type: custom:circle-sensor-card
         entity: sensor.memory_use_percent
-      - type: gauge
+        name: Geheugengebruik
+        stroke_width: 10
+        max: 100
+      - type: custom:circle-sensor-card
         entity: sensor.cpu_temperature
+        name: CPU Temperatuur
+        max: 80
+        stroke_width: 10
+        color_stops:
+          50: '#e45e65'
+          60: '#e29b52'
+          65: '#5294e2'
 
   # Show information about Home Assistant
   - type: entities
@@ -44,6 +57,9 @@ cards:
       # Gitlab CI
       - sensor.gitlab_ci_status
       - type: divider
+      # Github
+      - sensor.github_config_stars
+      - sensor.github_commit_message
       - type: weblink
         name: Github - Home Assistant config
         url: https://github.com/klaasnicolaas/Student-homeassistant-config
