@@ -24,5 +24,6 @@ cloud:
         - media_player.woonkamer
         - light.hal
         - light.keuken
+        - light.woonkamer
       exclude_domains:
         - scene

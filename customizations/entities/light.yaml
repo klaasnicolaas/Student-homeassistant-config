@@ -6,3 +6,6 @@ light.keuken:
 
 light.hal:
   icon: mdi:ceiling-light
+
+light.woonkamer:
+  icon: mdi:ceiling-light
