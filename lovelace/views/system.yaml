@@ -87,8 +87,8 @@ cards:
 
   - type: glance
     entities:
-      - name: Google Mini
-        entity: binary_sensor.google_mini_woonkamer
+      - name: Google Home
+        entity: binary_sensor.google_home
       - name: Google Cast
         entity: binary_sensor.google_cast_tv
       - name: Tablet
@@ -116,8 +116,8 @@ cards:
     title: Google Home
     show_header_toggle: false
     entities:
-      - sensor.google_home_mini_alarm
-      - sensor.google_home_mini_timer
+      - sensor.google_home_alarm
+      - sensor.google_home_timer
 
   # Tracker card
   - type: custom:tracker-card

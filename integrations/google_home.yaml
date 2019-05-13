@@ -5,6 +5,6 @@
 #
 googlehome:
   devices:
-    - host: !secret google_mini_woonkamer
+    - host: !secret google_home
       track_alarms: true
       track_devices: false

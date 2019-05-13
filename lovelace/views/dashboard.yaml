@@ -65,7 +65,7 @@ cards:
   #  artwork: cover
   # Google home media players
   - type: custom:mini-media-player
-    entity: media_player.woonkamer
+    entity: media_player.google_home
     artwork: cover
   - type: custom:mini-media-player
     entity: media_player.tv_woonkamer

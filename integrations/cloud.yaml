@@ -21,9 +21,11 @@ cloud:
         - group.all_lights
         - group.all_scripts
         - group.personen_status
-        - media_player.woonkamer
+        - media_player.tv_woonkamer
+        - media_player.google_home
         - light.hal
         - light.keuken
         - light.woonkamer
+        - group.all_switches
       exclude_domains:
         - scene

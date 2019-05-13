@@ -8,10 +8,10 @@
   host: !secret ping_switch
   name: TP-Link Router
 
-# Google Home Mini Living room
+# Google Home Living room
 - platform: ping
-  host: !secret google_mini_woonkamer
-  name: Google Mini Woonkamer
+  host: !secret google_home
+  name: Google Home
 
 # Google Cast - TV
 - platform: ping

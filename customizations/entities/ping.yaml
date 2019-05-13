@@ -4,7 +4,7 @@
 #
 binary_sensor.tp_link_router:
   icon: mdi:router-wireless
-binary_sensor.google_mini_woonkamer:
+binary_sensor.google_home:
   icon: mdi:google-home
 binary_sensor.google_cast_tv:
   icon: mdi:cast
