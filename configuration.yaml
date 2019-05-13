@@ -22,7 +22,7 @@ homeassistant:
     - type: homeassistant
     - type: trusted_networks
       trusted_networks:
-        !secret intern_ip_1
+        - !secret intern_ip_1
 
 # Configure a default setup of Home Assistant (frontend, api, etc)
 default_config:
@@ -34,5 +34,6 @@ discovery:
 tts:
   - platform: google_translate
     service_name: google_say
+    language: 'nl'
 
 python_script:
