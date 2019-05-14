@@ -30,10 +30,4 @@ default_config:
 # Discover some devices automatically
 discovery:
 
-# Text to speech
-tts:
-  - platform: google_translate
-    service_name: google_say
-    language: 'nl'
-
 python_script:
