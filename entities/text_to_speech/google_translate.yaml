@@ -7,12 +7,12 @@
 
 platform: google_translate
 
-  # Set the default voice language.
-  language: 'nl'
+# Set the default voice language.
+language: 'nl'
 
-  # Cache voice files to a local storage.
-  cache: true
+# Cache voice files to a local storage.
+cache: true
 
-  # Time to hold (in seconds) the voice data inside memory for fast play
-  # on a media player. (min 60, max 57600)
-  time_memory: 300
+# Time to hold (in seconds) the voice data inside memory for fast play
+# on a media player. (min 60, max 57600)
+time_memory: 300
