@@ -7,3 +7,4 @@ interval_seconds: 30
 consider_home: 180
 hosts:
   - !secret nmap_device_1
+  - !secret nmap_device_2
