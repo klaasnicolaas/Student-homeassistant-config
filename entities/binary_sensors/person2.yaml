@@ -2,17 +2,17 @@
 ## Experimental sensor for home/away detection
 - platform: 'bayesian'
   prior: 0.65
-  name: 'Klaas Thuis'
-  probability_threshold: 0.9
+  name: 'Marlene Thuis'
+  probability_threshold: 0.8
   observations:
     # Wifi
-    - entity_id: device_tracker.6c_c7_ec_32_7c_75
-      prob_given_true: 0.9
+    - entity_id: device_tracker.88_1f_a1_4b_fc_03
+      prob_given_true: 0.8
       prob_given_false: 0.3
       platform: 'state'
       to_state: 'home'
-    # Owntracks
-    - entity_id: device_tracker.klaas_s9
+    # Icloud
+    - entity_id: device_tracker.iphonevanmarlene
       prob_given_true: 0.9
       prob_given_false: 0.1
       platform: 'state'
