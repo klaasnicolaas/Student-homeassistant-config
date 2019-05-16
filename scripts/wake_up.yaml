@@ -1,0 +1,53 @@
+---
+# What could be better than getting up in a pleasant way
+#
+wake_up:
+  alias: 'Opstaan ritueel'
+  sequence:
+    # De wekker gaat af van Google Home
+    # Log het opstaan
+    - service: logbook.log
+      data:
+        name: Opstaan -
+        message: Klaas moet opstaan
+
+    # Switch boolean
+    - alias: switch go sleeping boolean
+      service: input_boolean.turn_off
+      data:
+        entity_id: input_boolean.go_to_sleep
+
+    # Gebruik de lampen als wakeup light gedurende 10 minuten naar 70%
+    # Hal
+    - alias: wakeup light hal
+      service: light.turn_on
+      data:
+        entity_id: light.hal
+        brightness_pct: 70
+        transition: 600
+    - delay:
+        seconds: 15
+    # Keuken
+    - alias: wakeup light keuken
+      service: light.turn_on
+      data:
+        entity_id: light.keuken
+        brightness_pct: 70
+        transition: 585
+    - delay:
+        seconds: 15
+    # Woonkamer
+    - alias: wakeup light woonkamer
+      service: light.turn_on
+      data:
+        entity_id: light.woonkamer
+        brightness_pct: 70
+        transition: 570
+    - delay:
+        seconds: 870
+
+    # Laat de google home speaker wat zeggen
+    - service: tts.google_translate_say
+      entity_id: media_player.google_home
+      data:
+        message: 'Opstaan. Je moet nu echt je bed uit.'

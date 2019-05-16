@@ -1,0 +1,36 @@
+---
+# This script ensures step by step that my house and I are ready to sleep
+#
+start_sleep:
+  alias: 'Slapen gaan ritueel'
+  sequence:
+    # Log het slapen gaan
+    - service: logbook.log
+      data:
+        name: Slapen -
+        message: Klaas gaat slapen
+
+    # Switch boolean
+    - alias: switch go sleeping boolean
+      service: input_boolean.turn_on
+      data:
+        entity_id: input_boolean.go_to_sleep
+
+    # Woonkamer
+    - alias: dim lights woonkamer
+      service: light.turn_off
+      data:
+        entity_id: light.woonkamer
+        transition: 60
+    # Keuken
+    - alias: dim lights keuken
+      service: light.turn_off
+      data:
+        entity_id: light.keuken
+        transition: 50
+    # Hal
+    - alias: dim lights hal
+      service: light.turn_off
+      data:
+        entity_id: light.hal
+        transition: 40

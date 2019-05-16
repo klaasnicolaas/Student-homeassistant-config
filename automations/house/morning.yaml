@@ -1,0 +1,17 @@
+---
+# Start wakeup sequence
+#
+- alias: House - Start opstaan ritueel
+  initial_state: true
+  trigger:
+    # Trigger is moment dat huidige tijd matched met tijd van google home alarm
+    - platform: template
+      value_template: '{{ states("sensor.time") == (as_timestamp(states("sensor.google_home_alarm"))-10*60)|timestamp_custom ("%H:%M") }}'
+  condition:
+    # Voorwaarde is dat ik naar bed ging
+    - condition: state
+      entity_id: input_boolean.go_to_sleep
+      state: 'on'
+  action:
+    # Start opstaan script ritueel
+    - service: script.wake_up
