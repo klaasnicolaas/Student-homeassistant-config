@@ -1,0 +1,22 @@
+---
+#
+# https://github.com/Paul-dH/Home-Assisant-Sensor-OvApi#sensor-configuration-examples
+# Bus 57 / 237 richting centraal station
+- platform: ovapi
+  name: Bushalte_blauwe_vogelweg_1
+  timing_point_code: 54442060
+  show_future_departures: 4
+
+# Bus 57 richting Huis
+- platform: ovapi
+  name: Bushalte_centraal_station_57
+  timing_point_code: 54447800
+  show_future_departures: 4
+
+# Bus 237 richting huis
+- platform: ovapi
+  name: Bushalte_centraal_station_237
+  timing_point_code: 54447750
+  show_future_departures: 4
+
+# Bus 37 richting huis

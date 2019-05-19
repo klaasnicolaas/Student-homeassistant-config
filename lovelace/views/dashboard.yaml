@@ -60,17 +60,6 @@ cards:
   # - type: glance
   # entities:
 
-  # - type: custom:mini-media-player
-  #  entity: media_player.spotify
-  #  artwork: cover
-  # Google home media players
-  - type: custom:mini-media-player
-    entity: media_player.google_home
-    artwork: cover
-  - type: custom:mini-media-player
-    entity: media_player.tv_woonkamer
-    artwork: cover
-
   # Start scenes
   - type: horizontal-stack
     cards:
@@ -98,3 +87,76 @@ cards:
           "off": /local/images/sleeping_off.png
         tap_action:
           action: toggle
+
+  # Extra explanation
+  - type: markdown
+    title: Google Assistant
+    content: >
+      "**Start cooking mode**" voor als je gaat koken.
+      "**Start relax mode**" of "Start evening mode" voor gedimde lampen in de avond.
+      "**Start sleep mode**" voor wanneer je gaat slapen.
+      "**Channel X please**" om TV van kanaal te veranderen
+      "**Zet TV aan/uit**" om de tv aan of uit te doen.
+
+  # Bus times
+  - type: vertical-stack
+    cards:
+      - card:
+          columns: 5
+          entities:
+            - entity: sensor.bushalte_blauwe_vogelweg_1
+              icon: mdi:bus
+            - entity: sensor.bushalte_blauwe_vogelweg_1_future_1
+              icon: mdi:x
+            - entity: sensor.bushalte_blauwe_vogelweg_1_future_2
+              icon: mdi:x
+            - entity: sensor.bushalte_blauwe_vogelweg_1_future_3
+              icon: mdi:x
+            - entity: sensor.bushalte_blauwe_vogelweg_1_future_4
+              icon: mdi:x
+          show_header_toggle: false
+          show_name: false
+          title: Bushalte Blauwe Vogelweg -> Leiden Centraal
+          type: glance
+        cards: null
+        type: custom:card-modder
+
+      - card:
+          columns: 5
+          entities:
+            - entity: sensor.bushalte_centraal_station_237
+              icon: mdi:bus
+            - entity: sensor.bushalte_centraal_station_237_future_1
+              icon: mdi:x
+            - entity: sensor.bushalte_centraal_station_237_future_2
+              icon: mdi:x
+            - entity: sensor.bushalte_centraal_station_237_future_3
+              icon: mdi:x
+            - entity: sensor.bushalte_centraal_station_237_future_4
+              icon: mdi:x
+          show_header_toggle: false
+          show_name: false
+          title: Bus 237 Leiden Centraal -> Huis
+          type: glance
+        cards: null
+        type: custom:card-modder
+
+      - card:
+          columns: 5
+          entities:
+            - entity: sensor.bushalte_centraal_station_57
+              icon: mdi:bus
+            - entity: sensor.bushalte_centraal_station_57_future_1
+              icon: mdi:x
+            - entity: sensor.bushalte_centraal_station_57_future_2
+              icon: mdi:x
+            - entity: sensor.bushalte_centraal_station_57_future_3
+              icon: mdi:x
+            - entity: sensor.bushalte_centraal_station_57_future_4
+              icon: mdi:x
+          show_header_toggle: false
+          show_name: false
+          title: Bus 57 Leiden Centraal -> Huis
+          type: glance
+        cards: null
+        type: custom:card-modder
