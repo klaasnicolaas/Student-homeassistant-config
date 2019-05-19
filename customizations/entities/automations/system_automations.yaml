@@ -2,7 +2,7 @@
 # Custom icons for the system automations
 automation.system_set_ha_theme:
   icon: mdi:theme-light-dark
-automation.system_check_automations_status:
+automation.system_perform_system_checks:
   icon: mdi:eye-check-outline
 automation.system_notify_when_ssl_certificate_will_expire:
   icon: mdi:certificate
