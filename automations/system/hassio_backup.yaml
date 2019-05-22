@@ -10,6 +10,7 @@
     - condition: time
       weekday:
         - sun
+        - thu
   action:
     - service: hassio.snapshot_full
       data_template:
