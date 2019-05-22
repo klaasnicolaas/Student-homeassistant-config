@@ -5,4 +5,4 @@ platform: icloud
 username: !secret icloud_username
 password: !secret icloud_password
 account_name: iPhone_Marlene
-max_interval: 20
+max_interval: 10
