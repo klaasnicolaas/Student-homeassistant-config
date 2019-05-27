@@ -1,5 +1,5 @@
 """Constants for HACS"""
-VERSION = "0.1.0"
+VERSION = "0.2.1"
 NAME_LONG = "HACS (Home Assistant Community Store)"
 NAME_SHORT = "HACS"
 STORENAME = "hacs"
@@ -16,6 +16,7 @@ SKIP = [
     "custom-cards/config-template-card",
     "custom-components/hacs",
     "custom-components/blueprint",
+    "custom-components/information",
 ]
 ELEMENT_TYPES = ["integration", "plugin"]
 IFRAME = {

@@ -16,7 +16,6 @@ class Generate:
 
     async def authors(self):
         """Generate authors."""
-        _LOGGER.debug("Generating authors for %s", self.element.element_id)
 
         if not self.element.authors:
             return ""
@@ -42,20 +41,20 @@ class Generate:
 
     async def avaiable_version(self):
         """Generate avaiable version."""
-        _LOGGER.debug("Generating avaiable version for %s", self.element.element_id)
+
+        if self.element.avaiable_version is None:
+            return ""
 
         return """
           <p>
             <b>Available version:</b> {}
           </p>
-          </br>
         """.format(
             self.element.avaiable_version
         )
 
     async def card_icon(self):
         """Generate avaiable version."""
-        _LOGGER.debug("Generating card icon for %s", self.element.element_id)
 
         card_icon = ""
 
@@ -76,7 +75,6 @@ class Generate:
 
     async def changelog(self):
         """Generate changelog link."""
-        _LOGGER.debug("Generating changelog link for %s", self.element.element_id)
 
         if not self.element.isinstalled:
             return ""
@@ -86,7 +84,7 @@ class Generate:
 
         return """
           <a href="https://github.com/{}/releases" target="_blank">
-            REPO
+            CHANGELOG
           </a>
         """.format(
             self.element.repo
@@ -94,7 +92,6 @@ class Generate:
 
     async def description(self):
         """Generate description version."""
-        _LOGGER.debug("Generating description for %s", self.element.element_id)
 
         return """
           <p>
@@ -107,7 +104,6 @@ class Generate:
 
     async def element_note(self):
         """Generate element note."""
-        _LOGGER.debug("Generating element note for %s", self.element.element_id)
 
         if self.element.element_type == "integration":
             return """
@@ -160,8 +156,6 @@ class Generate:
         """Generate info."""
         import markdown
 
-        _LOGGER.debug("Generating info for %s", self.element.element_id)
-
         if self.element.info is None:
             return ""
 
@@ -184,11 +178,12 @@ class Generate:
         markdown_render = markdown_render.replace(
             "<table>", "<table class='responsive-table white-text'>"
         )
+        markdown_render = markdown_render.replace("<ul>", "")
+        markdown_render = markdown_render.replace("</ul>", "")
         return "<span>{}</span>".format(markdown_render)
 
     async def installed_version(self):
         """Generate installed version."""
-        _LOGGER.debug("Generating installed version for %s", self.element.element_id)
 
         if self.element.installed_version is None:
             return ""
@@ -201,9 +196,22 @@ class Generate:
             self.element.installed_version
         )
 
+    async def last_update(self):
+        """Generate last updated."""
+
+        if self.element.last_update is None:
+            return ""
+        return """
+          <p>
+            <b>Last updated:</b> {}
+          </p>
+          </br>
+        """.format(
+            self.element.last_update
+        )
+
     async def main_action(self):
         """Generate main action."""
-        _LOGGER.debug("Generating main action for %s", self.element.element_id)
 
         if not self.element.isinstalled:
             action = "install"
@@ -226,9 +234,42 @@ class Generate:
             self.element.element_id, action, title
         )
 
+    async def open_plugin(self):
+        """Generate open card link."""
+
+        if self.element.element_type != "plugin":
+            return ""
+
+        if not self.element.isinstalled:
+            return ""
+
+        if "lovelace-" in self.element.element_id:
+            file_name = self.element.element_id.split("lovelace-")[-1]
+        else:
+            file_name = self.element.element_id
+
+        return """
+          <a href="/community_plugin/{}/{}.js" target="_blank">
+            OPEN CARD
+          </a>
+        """.format(
+            self.element.element_id, file_name
+        )
+
+    async def reload_icon(self):
+        """Generate reload icon."""
+
+        return """
+            <a href="/community_api/{}_url_reload/{}" style="float: right; color: #ffab40;"
+              onclick="document.getElementById('progressbar').style.display = 'block'">
+                <i name="reload" class="fa fa-sync"></i>
+            </a>
+        """.format(
+            self.element.element_type, self.element.element_id
+        )
+
     async def repo(self):
         """Generate repo link."""
-        _LOGGER.debug("Generating repo link for %s", self.element.element_id)
 
         return """
           <a href="https://github.com/{}" target="_blank">
@@ -239,8 +280,7 @@ class Generate:
         )
 
     async def restart_pending(self):
-        """Generate main action."""
-        _LOGGER.debug("Generating main action for %s", self.element.element_id)
+        """Generate restart_pending."""
 
         if not self.element.restart_pending or self.element.element_type == "plugin":
             return ""
@@ -253,8 +293,7 @@ class Generate:
         return await warning_card(message, title)
 
     async def uninstall(self):
-        """Generate main action."""
-        _LOGGER.debug("Generating main action for %s", self.element.element_id)
+        """Generate uninstall."""
 
         if not self.element.isinstalled:
             return ""

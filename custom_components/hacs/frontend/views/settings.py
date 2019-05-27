@@ -4,7 +4,7 @@ from aiohttp import web
 from homeassistant.components.http import HomeAssistantView
 from homeassistant.const import __version__ as HAVERSION
 
-from custom_components.hacs.const import DOMAIN_DATA, NAME_LONG, VERSION
+from custom_components.hacs.const import DOMAIN_DATA, NAME_LONG
 from custom_components.hacs.frontend.views import error_view
 from custom_components.hacs.frontend.elements import (
     info_card,
@@ -29,9 +29,12 @@ class CommunitySettings(HomeAssistantView):
     def __init__(self, hass):
         """Initialize overview."""
         self.hass = hass
+        self.message = None
 
     async def get(self, request):  # pylint: disable=unused-argument
         """View to serve the overview."""
+        _LOGGER.debug("Trying to serve settings")
+        self.message = request.rel_url.query.get("message")
         try:
             html = await self.settings_view()
         except Exception as error:  # pylint: disable=broad-except
@@ -47,7 +50,7 @@ class CommunitySettings(HomeAssistantView):
 
         content += "<div class='container'>"
 
-        if self.hass.data[DOMAIN_DATA]["hacs"].get("pending_restart"):
+        if self.hass.data[DOMAIN_DATA]["hacs"].get("restart_pending"):
             content += await warning_card(
                 "You need to restart Home Assisant to start using the latest version of HACS."
             )
@@ -64,21 +67,27 @@ class CommunitySettings(HomeAssistantView):
                         <span class="card-title">UPDATE PENDING</span>
                         <p>There is an update pending for HACS!.</p>
                         </br>
-                        <p>Current version: {}</p>
-                        <p>Available version: {}</p>
+                        <p><b>Current version:</b> {local}</p>
+                        <p><b>Available version:</b> {remote}</p>
                         </div>
                         <div class="card-action">
                         <a href="/community_api/hacs/upgrade"
                             onclick="document.getElementById('progressbar').style.display = 'block'">
                             UPGRADE</a>
+                        <a href="https://github.com/custom-components/hacs/releases/tag/{remote}" target="_blank">
+                            CHANGELOG</a>
                         </div>
                     </div>
                     </div>
                 </div>
             """.format(
-                self.hass.data[DOMAIN_DATA]["hacs"]["local"],
-                self.hass.data[DOMAIN_DATA]["hacs"]["remote"],
+                local=self.hass.data[DOMAIN_DATA]["hacs"]["local"],
+                remote=self.hass.data[DOMAIN_DATA]["hacs"]["remote"],
             )
+
+        # Show info message
+        if self.message is not None and self.message != "None":
+            content += await warning_card(self.message)
 
         # Integration URL's
         content += """
@@ -90,14 +99,14 @@ class CommunitySettings(HomeAssistantView):
             for entry in self.hass.data[DOMAIN_DATA]["repos"].get("integration"):
                 content += """
                     <li class="collection-item">
-                        <div>{}
-                            <a href="/community_api/integration_url_delete/{}" class="secondary-content">
+                        <div><a href="/community_api/integration_url_reload/{url}" onclick="document.getElementById('progressbar').style.display = 'block'"><i class="fa fa-sync" style="color: #26a69a; margin-right: 1%"></i></a>  {entry}
+                            <a href="/community_api/integration_url_delete/{url}" class="secondary-content">
                                 <i name="delete" class="fas fa-trash-alt"></i>
                             </a>
                         </div>
                     </li>
                 """.format(
-                    entry, entry.replace("/", "%2F")
+                    entry=entry, url=entry.replace("/", "%2F")
                 )
         content += """
                 </ul>
@@ -119,14 +128,14 @@ class CommunitySettings(HomeAssistantView):
             for entry in self.hass.data[DOMAIN_DATA]["repos"].get("plugin"):
                 content += """
                     <li class="collection-item">
-                        <div>{}
-                            <a href="/community_api/plugin_url_delete/{}" class="secondary-content">
+                        <div><a href="/community_api/plugin_url_reload/{url}" onclick="document.getElementById('progressbar').style.display = 'block'"><i class="fa fa-sync" style="color: #26a69a; margin-right: 1%"></i></a>  {entry}
+                            <a href="/community_api/plugin_url_delete/{url}" class="secondary-content">
                                 <i name="delete" class="fas fa-trash-alt"></i>
                             </a>
                         </div>
                     </li>
                 """.format(
-                    entry, entry.replace("/", "%2F")
+                    entry=entry, url=entry.replace("/", "%2F")
                 )
         content += """
                 </ul>
@@ -153,25 +162,31 @@ class CommunitySettings(HomeAssistantView):
         content += await generic_button_external("/community_api/log/get", "OPEN LOG")
         content += "</br>"
         content += "</br>"
+        if self.hass.data[DOMAIN_DATA]["hacs"].get("restart_pending"):
+            local_version = "{} <b>(RESTART PENDING!)</b>".format(
+                self.hass.data[DOMAIN_DATA]["hacs"]["local"]
+            )
+        else:
+            local_version = "{}".format(self.hass.data[DOMAIN_DATA]["hacs"]["local"])
         info_message = """
         <h5>{}</h5>
         <b>HACS version:</b> {}</br>
         <b>Home Assistant version:</b> {}</br>
         </br>
         <i>
-            <a href="https://www.buymeacoffee.com/ludeeus" target="_blank" style="color: #ffab40;font-weight: 700;">
-                Built while consuming (a lot of) <i class="fas fa-beer" style="color: #ffab40;font-weight: 700;"></i>
+            <a href="https://www.buymeacoffee.com/ludeeus" target="_blank" style="font-weight: 700;">
+                Built while consuming (a lot of) <i class="fas fa-beer" style="font-weight: 700;"></i>
             </a>
         </i>
         </br>
         <hr>
         <h6>UI built with elements from:</h6>
-        <li><a href="https://materializecss.com" target="_blank" style="color: #ffab40;font-weight: 700;">Materialize</a></li>
-        <li><a href="https://fontawesome.com" target="_blank" style="color: #ffab40;font-weight: 700;">Font Awesome</a></li>
+        <li><a href="https://materializecss.com" target="_blank" style="font-weight: 700;">Materialize</a></li>
+        <li><a href="https://fontawesome.com" target="_blank" style=";font-weight: 700;">Font Awesome</a></li>
         <hr>
         <i>This site and the items here is not created, developed, affiliated, supported, maintained or endorsed by Home Assistant.</i>
         """.format(
-            NAME_LONG, VERSION, HAVERSION
+            NAME_LONG, local_version, HAVERSION
         )
         content += await info_card(info_message)
         content += "</div>"  # End the view container
