@@ -1,0 +1,10 @@
+---
+# Customize binary sensors
+binary_sensor.openclose_sensor_1:
+  device_class: door
+binary_sensor.openclose_sensor_2:
+  device_class: window
+binary_sensor.openclose_sensor_3:
+  device_class: window
+binary_sensor.openclose_sensor_4:
+  device_class: door

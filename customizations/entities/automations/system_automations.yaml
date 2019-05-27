@@ -6,10 +6,6 @@ automation.system_perform_system_checks:
   icon: mdi:eye-check-outline
 automation.system_notify_when_ssl_certificate_will_expire:
   icon: mdi:certificate
-automation.system_notify_on_a_custom_card_update:
-  icon: mdi:message-outline
-automation.system_notify_on_a_custom_component_update:
-  icon: mdi:message-outline
 automation.system_make_manual_hassio_backup_via_telegram:
   icon: mdi:cloud-upload-outline
 automation.system_make_weekly_hassio_backup:
