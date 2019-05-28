@@ -14,6 +14,23 @@ recorder:
   exclude:
     entities:
       - sensor.time
+      - sensor.time_online
+      - sensor.bushalte_blauwe_vogelweg_1
+      - sensor.bushalte_blauwe_vogelweg_1_future_1
+      - sensor.bushalte_blauwe_vogelweg_1_future_2
+      - sensor.bushalte_blauwe_vogelweg_1_future_3
+      - sensor.bushalte_blauwe_vogelweg_1_future_4
+      - sensor.bushalte_centraal_station_237
+      - sensor.bushalte_centraal_station_237_future_1
+      - sensor.bushalte_centraal_station_237_future_2
+      - sensor.bushalte_centraal_station_237_future_3
+      - sensor.bushalte_centraal_station_237_future_4
+      - sensor.bushalte_centraal_station_57
+      - sensor.bushalte_centraal_station_57_future_1
+      - sensor.bushalte_centraal_station_57_future_2
+      - sensor.bushalte_centraal_station_57_future_3
+      - sensor.bushalte_centraal_station_57_future_4
+
     domains:
       - updater
       - automation
