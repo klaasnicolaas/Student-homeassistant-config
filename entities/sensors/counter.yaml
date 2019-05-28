@@ -1,0 +1,109 @@
+---
+#
+# https://github.com/JamesMcCarthy79/Home-Assistant-Config/blob/2c91d5cf8f26fbba33d6af1fa3a04a90f0bd8c16/config/packages/things_status/things_status.yaml
+#
+- platform: template
+  sensors:
+    sensor_count:
+      entity_id: sensor.sensor_count
+      friendly_name: 'Number of Sensors'
+      value_template: >
+        {%- set domains = ['sensor'] -%}
+        {%- for domain in domains -%}
+          {%- for item in states[domain] -%}
+            {% if loop.first %}
+              {{loop.length}}
+            {% endif %}
+          {%- endfor -%}
+        {%- endfor -%}
+
+    automation_count:
+      entity_id: sensor.automation_count
+      friendly_name: 'Number of Automations'
+      value_template: >
+        {%- set domains = ['automation'] -%}
+        {%- for domain in domains -%}
+          {%- for item in states[domain] -%}
+            {% if loop.first %}
+              {{loop.length}}
+            {% endif %}
+          {%- endfor -%}
+        {%- endfor -%}
+
+    script_count:
+      entity_id: sensor.script_count
+      friendly_name: 'Number of Scripts'
+      value_template: >
+        {%- set domains = ['script'] -%}
+        {%- for domain in domains -%}
+          {%- for item in states[domain] -%}
+            {% if loop.first %}
+              {{loop.length}}
+            {% endif %}
+          {%- endfor -%}
+        {%- endfor -%}
+
+    switch_count:
+      entity_id: sensor.switch_count
+      friendly_name: 'Number of Switches'
+      value_template: >
+        {%- set domains = ['switch'] -%}
+        {%- for domain in domains -%}
+          {%- for item in states[domain] -%}
+            {% if loop.first %}
+              {{loop.length}}
+            {% endif %}
+          {%- endfor -%}
+        {%- endfor -%}
+
+    binary_sensor_count:
+      entity_id: sensor.binary_sensor_count
+      friendly_name: 'Number of Binary Sensors'
+      value_template: >
+        {%- set domains = ['binary_sensor'] -%}
+        {%- for domain in domains -%}
+          {%- for item in states[domain] -%}
+            {% if loop.first %}
+              {{loop.length}}
+            {% endif %}
+          {%- endfor -%}
+        {%- endfor -%}
+
+    lights_count:
+      entity_id: sensor.lights_count
+      friendly_name: 'Number of Lights'
+      value_template: >
+        {%- set domains = ['light'] -%}
+        {%- for domain in domains -%}
+          {%- for item in states[domain] -%}
+            {% if loop.first %}
+              {{loop.length}}
+            {% endif %}
+          {%- endfor -%}
+        {%- endfor -%}
+
+    tracker_count:
+      entity_id: sensor.tracker_count
+      friendly_name: 'Number of Devices'
+      value_template: >
+        {%- set domains = ['device_tracker'] -%}
+        {%- for domain in domains -%}
+          {%- for item in states[domain] -%}
+            {% if loop.first %}
+              {{loop.length}}
+            {% endif %}
+          {%- endfor -%}
+        {%- endfor -%}
+
+    media_player_count:
+      entity_id: sensor.media_player_count
+      friendly_name: 'Number of Devices'
+      value_template: >
+        {%- set domains = ['media_player'] -%}
+        {%- for domain in domains -%}
+          {%- for item in states[domain] -%}
+            {% if loop.first %}
+              {{loop.length}}
+            {% endif %}
+          {%- endfor -%}
+        {%- endfor -%}
