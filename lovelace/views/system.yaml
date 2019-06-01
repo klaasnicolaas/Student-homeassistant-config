@@ -5,29 +5,131 @@ title: Systeeminformatie
 icon: mdi:server
 path: system
 cards:
-
-  # Show gauge charts
-  - type: horizontal-stack
+  # Hassio host server info
+  - type: custom:vertical-stack-in-card
+    title: Hassio Server
     cards:
-      - type: custom:circle-sensor-card
-        entity: sensor.processor_use
-        name: Processorgebruik
-        stroke_width: 10
-        max: 100
-      - type: custom:circle-sensor-card
-        entity: sensor.memory_use_percent
-        name: Geheugengebruik
-        stroke_width: 10
-        max: 100
-      - type: custom:circle-sensor-card
-        entity: sensor.cpu_temperature
-        name: CPU Temperatuur
-        max: 80
-        stroke_width: 10
-        color_stops:
-          50: '#e45e65'
-          60: '#e29b52'
-          65: '#5294e2'
+      - type: horizontal-stack
+        cards:
+          - type: vertical-stack
+            cards:
+              - type: custom:card-modder
+                card:
+                  type: picture
+                  image: /local/images/hassio.jpg
+                style:
+                  border-radius: 5px
+
+          - type: vertical-stack
+            cards:
+              - type: custom:bar-card
+                title_position: inside
+                entity: sensor.ha_installed_version
+                title: Hassio Versie
+                align: center
+                padding: 5px
+                max: 60
+                card_style: 
+                  border-radius: 5px
+
+              - type: custom:bar-card
+                title_position: inside
+                entity: sensor.ha_restart_time
+                title: Restart Time
+                align: center
+                padding: 5px
+                max: 400
+                card_style:
+                  border-radius: 5px
+
+              - type: custom:bar-card
+                title_position: inside
+                entity: sensor.potential_breaking_changes
+                title: Breaking Changes
+                align: center
+                padding: 5px
+                max: 400
+                card_style:
+                  border-radius: 5px
+
+      - type: custom:bar-card
+        align: split
+        show_icon: true
+        padding: 4px
+        columns: 2
+        card_style: 
+          border-radius: 5px
+        entities:
+          - entity: sensor.disk_use_percent
+            title: Opslag
+          - entity: sensor.memory_use_percent
+            title: RAM
+
+      - type: custom:bar-card
+        align: split
+        show_icon: true
+        padding: 4px
+        columns: 2
+        card_style: 
+          border-radius: 5px
+        entities:
+          - entity: sensor.processor_use
+            title: CPU
+          - entity: sensor.cpu_temperature
+            title: Temp
+            icon: mdi:thermometer
+
+      - type: custom:bar-card
+        align: split
+        show_icon: true
+        padding: 4px
+        columns: 2
+        card_style: 
+          border-radius: 5px
+        entities:
+          - entity: sensor.swap_use_percent
+            title: SWAP
+          - entity: sensor.db_size
+            title: DB
+            max: 60000
+
+      - type: custom:bar-card
+        align: split
+        show_icon: true
+        padding: 4px
+        columns: 2
+        card_style:
+          border-radius: 5px
+        entities:
+          - entity: sensor.error
+            title: Error
+            max: 15000
+          - entity: sensor.warning
+            title: Warnings
+            max: 5000
+
+      - type: custom:bar-card
+        align: split
+        show_icon: true
+        padding: 4px
+        columns: 2
+        card_style: 
+          border-radius: 5px
+        entities:
+          - entity: sensor.home_assistant_log
+            title: Log size
+          - entity: sensor.time_online
+            title: Uptime
+
+      - type: custom:bar-card
+        title_position: inside
+        entity: sensor.disk_free
+        align: center
+        direction: right-reverse
+        padding: 5px
+        card_style: 
+          border-radius: 5px
+
 
   # Show information about Home Assistant
   - type: entities
@@ -37,13 +139,156 @@ cards:
       - sensor.last_boot
       - binary_sensor.student_home_assistant
       - type: divider
-      - sensor.ha_installed_version
-      - sensor.python_version
       - sensor.hassio_stable_versie
       - sensor.hassio_beta_versie
+      - sensor.python_version
       - type: divider
       - sensor.automation_on
-      - sensor.automation_all
+      - type: custom:vertical-stack-in-card
+        cards:
+          - type: horizontal-stack
+            cards:
+              - type: custom:bar-card
+                title: Lights
+                entity: sensor.lights_count
+                title_position: inside
+                align: center
+                padding: 4px
+                card_style:
+                  border-radius: 5px
+                max: 30
+                severity:
+                  - value: 1
+                    color: '#bf4040'
+                  - value: 30
+                    color: '#1db954'
+                  - value: 40
+                    color: '#bf9540'
+
+              - type: custom:bar-card
+                title: Tracked Devices
+                entity: sensor.tracker_count
+                title_position: inside
+                align: center
+                padding: 4px
+                card_style:
+                  border-radius: 5px
+                max: 88
+                severity:
+                  - value: 1
+                    color: '#bf4040'
+                  - value: 87
+                    color: '#1db954'
+                  - value: 100
+                    color: '#bf9540'
+
+          - type: horizontal-stack
+            cards:
+              - type: custom:bar-card
+                title: Automations
+                entity: sensor.automation_count
+                title_position: inside
+                align: center
+                padding: 4px
+                card_style:
+                  border-radius: 5px
+                max: 400
+                severity:
+                  - value: 1
+                    color: '#bf4040'
+                  - value: 300
+                    color: '#1db954'
+                  - value: 400
+                    color: '#bf9540'
+
+              - type: custom:bar-card
+                title: Binary Sensors
+                entity: sensor.binary_sensor_count
+                title_position: inside
+                align: center
+                padding: 4px
+                card_style:
+                  border-radius: 5px
+                max: 200
+                severity:
+                  - value: 1
+                    color: '#bf4040'
+                  - value: 150
+                    color: '#1db954'
+                  - value: 200
+                    color: '#bf9540'
+
+          - type: horizontal-stack
+            cards:
+              - type: custom:bar-card
+                title: Media Players
+                entity: sensor.media_player_count
+                title_position: inside
+                align: center
+                padding: 4px
+                card_style:
+                  border-radius: 5px
+                max: 20
+                severity:
+                  - value: 1
+                    color: '#bf4040'
+                  - value: 16
+                    color: '#1db954'
+                  - value: 30
+                    color: '#bf9540'
+
+              - type: custom:bar-card
+                title: Scripts
+                entity: sensor.script_count
+                title_position: inside
+                align: center
+                padding: 4px
+                card_style:
+                  border-radius: 5px
+                max: 35
+                severity:
+                  - value: 1
+                    color: '#bf4040'
+                  - value: 34
+                    color: '#1db954'
+                  - value: 40
+                    color: '#bf9540'
+
+          - type: horizontal-stack
+            cards:
+              - type: custom:bar-card
+                title: Sensors
+                entity: sensor.sensor_count
+                title_position: inside
+                align: center
+                padding: 4px
+                card_style:
+                  border-radius: 5px
+                max: 786
+                severity:
+                  - value: 1
+                    color: '#bf4040'
+                  - value: 785
+                    color: '#1db954'
+                  - value: 800
+                    color: '#bf9540'
+
+              - type: custom:bar-card
+                title: Switches
+                entity: sensor.switch_count
+                title_position: inside
+                align: center
+                padding: 4px
+                card_style:
+                  border-radius: 5px
+                max: 65
+                severity:
+                  - value: 1
+                    color: '#bf4040'
+                  - value: 64
+                    color: '#1db954'
+                  - value: 70
+                    color: '#bf9540'
 
   # Show maintenance dashboard
   - type: entities
@@ -71,19 +316,63 @@ cards:
     entities:
       - binary_sensor.cpu_high
       - binary_sensor.cpu_hot
-      - binary_sensor.snapshots_stale
+      - binary_sensor.potential_breaking_changes
 
-  # Show network stats
-  - type: glance
-    entities:
-      - name: Router
-        entity: binary_sensor.tp_link_router
-      - name: Ping
-        entity: sensor.speedtest_ping
-      - name: Download
-        entity: sensor.speedtest_download
-      - name: Upload
-        entity: sensor.speedtest_upload
+  # Show information about the internet connection
+  - type: vertical-stack
+    cards:
+      - type: horizontal-stack
+        cards:
+          - type: custom:mini-graph-card
+            entities:
+              - sensor.speedtest_ping
+            height: 20
+            line_width: 2
+            font_size: 70
+            hours_to_show: 168
+            points_per_hour: 0.3
+            show:
+              # extrema: true
+              fill: true
+              graph: bar
+
+      - type: horizontal-stack
+        cards:
+          - type: custom:mini-graph-card
+            entities:
+              - sensor.speedtest_download
+            height: 50
+            line_width: 2
+            font_size: 70
+            hours_to_show: 168
+            points_per_hour: 0.3
+            show:
+              extrema: true
+              fill: true
+            color_thresholds:
+              - value: 150
+                color: "#bf4040"
+
+          - type: custom:mini-graph-card
+            entities:
+              - sensor.speedtest_upload
+            height: 50
+            line_width: 2
+            font_size: 70
+            hours_to_show: 168
+            points_per_hour: 0.3
+            show:
+              extrema: true
+              fill: true
+            color_thresholds:
+              - value: 13
+                color: "#bf4040"
+
+      - type: entities
+        show_header_toggle: false
+        entities:
+          - sensor.myip
+          - sensor.ssl_certificate_expiry
 
   - type: glance
     entities:
@@ -93,23 +382,9 @@ cards:
         entity: binary_sensor.google_cast_tv
       - name: Tablet
         entity: binary_sensor.tablet
+      - name: Router
+        entity: binary_sensor.tp_link_router
     columns: 4
-
-  # Show information about memory on the Raspberry Pi
-  - type: entities
-    title: Opslag
-    show_header_toggle: false
-    entities:
-      - sensor.disk_use_percent
-      - sensor.disk_free
-
-  # Show information about the internet connection
-  - type: entities
-    title: Netwerk
-    show_header_toggle: false
-    entities:
-      - sensor.myip
-      - sensor.ssl_certificate_expiry
 
   # Toont informatie over de Google Homes
   - type: entities
@@ -118,6 +393,3 @@ cards:
     entities:
       - sensor.google_home_alarm
       - sensor.google_home_timer
-
-  # Tracker card
-  - type: custom:tracker-card
