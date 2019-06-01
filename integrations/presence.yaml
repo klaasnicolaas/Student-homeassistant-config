@@ -157,11 +157,11 @@ automation:
       - platform: state
         entity_id: input_select.klaas_status_dropdown
         to: 'Net Aangekomen'
-        for: "00:05:00"
+        for: "00:10:00"
       - platform: state
         entity_id: input_select.marlene_status_dropdown
         to: 'Net Aangekomen'
-        for: "00:05:00"
+        for: "00:10:00"
       - platform: state
         entity_id: input_select.klaas_status_dropdown
         from: 'Net Vertrokken'

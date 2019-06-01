@@ -2,4 +2,4 @@
 # https://www.home-assistant.io/components/owntracks/
 #
 owntracks:
-  max_gps_accuracy: 25
+  max_gps_accuracy: 100
