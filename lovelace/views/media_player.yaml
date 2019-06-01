@@ -20,8 +20,8 @@ cards:
   - type: custom:podcast-card
     entity: sensor.gpodder
     default_target: media_player.google_home
-    show_player: False
-    custom_player: True
+    show_player: false
+    custom_player: true
 
   # TV Remote
   - type: vertical-stack
@@ -157,7 +157,7 @@ cards:
             tap_action:
               action: toggle
 
-    # Radio
+  # Radio
   - type: entities
     title: Radio
     show_header_toggle: false
