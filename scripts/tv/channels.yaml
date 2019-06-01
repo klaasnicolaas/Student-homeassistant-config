@@ -1,0 +1,104 @@
+---
+# List of channel scripts for operating the TV in a smart way
+#
+
+# Channel 0
+channel_0:
+  alias: 'TV - Kanaal 0'
+  sequence:
+    - service: broadlink.send
+      data:
+        host: !secret blink_host
+        packet:
+          - JgBYAAABKZESExQREjcUEhMSFBESExITEjgSOBITEjcSOBI4EjgSNxITFBITEhMSEjcSExIUERQROBI4EjgSNBUUETgSOBI4EgAFHAABJUsSAAxSAAElSxIADQU=
+
+# NED 1
+channel_1:
+  alias: 'TV - Kanaal 1'
+  sequence:
+    - service: broadlink.send
+      data:
+        host: !secret blink_host
+        packet:
+          - "JgBUAAUAA88AASeTEhMSFBE4EhMSFBETEhQRFBE4EjgSExI4EzYSOBI4FDYSNxITEhQRFBM2FBESExQSExIROBQ2EzcSExM3ETgTNxMABRsAASZKEwANBQAAAAA="
+
+# NED 2
+channel_2:
+  alias: 'TV - Kanaal 2'
+  sequence:
+    - service: broadlink.send
+      data:
+        host: !secret blink_host
+        packet:
+          - "JgBQAAABKZIUERUQFDYTEhQREhMUERQRFDYTNxMSEzYUNhQ2EzYVNRUQFDYVEBQRFTUUERQREhMUNhMSFDYTNhQREjgUNRU1FAAFGgABKEgUAA0FAAAAAAAAAAA="
+
+# NED 3
+channel_3:
+  alias: 'TV - Kanaal 3'
+  sequence:
+    - service: broadlink.send
+      data:
+        host: !secret blink_host
+        packet:
+          - "JgBQAAABJpMSFBITETgSExIUEhMSExEUEzYTNxMSEjgTNxI3EjgSOBM2EzcSExITEjgSExITExIUERMREzgTNxQREjgROBQ2EQAFHQABJUsTAA0FAAAAAAAAAAA="
+
+# RTL 4
+channel_4:
+  alias: 'TV - Kanaal 4'
+  sequence:
+    - service: broadlink.send
+      data:
+        host: !secret blink_host
+        packet:
+          - "JgBQAAABJZQTEhITEjgRFBITEhMTEhMTEzYTNxITEjcSOBI4EjgROBEUERQTNxEUEzcSExQREhMTNxM3ExISNxMSEjgTNxI4EQAFGwABJkoSAA0FAAAAAAAAAAA="
+
+# RTL 5
+channel_5:
+  alias: 'TV - Kanaal 5'
+  sequence:
+    - service: broadlink.send
+      data:
+        host: !secret blink_host
+        packet:
+          - "JgBUAAABKZEUERQRFDYUERQRExIUERUQFDYUNBYRFDUVNRU1FDUVNRUyFxEUNhQREzYVEBQRFBIUEBQ2FRAUNhQRFTUVNRM2FAAFGQABKEcWAAczBwANBQAAAAA="
+
+
+# SBS 6
+channel_6:
+  alias: 'TV - Kanaal 6'
+  sequence:
+    - service: broadlink.send
+      data:
+        host: !secret blink_host
+        packet:
+          - "JgBQAAABJpMSExIUETgSExITEhMSFBEUETgSOBQPFjYTNxE4FDYTNxITEzYSOBITFDUTExQRFBESOBMSFBEUNhMSEzcTNhQ2EgAFGwABJ0kTAA0FAAAAAAAAAAA="
+
+# RTL 7
+channel_7:
+  alias: 'TV - Kanaal 7'
+  sequence:
+    - service: broadlink.send
+      data:
+        host: !secret blink_host
+        packet:
+          - "JgBYAAABKJEUEhQRFDYTEhMSExITEhMSFDYUNRUQFDIYNhQ1FDYVNRU1FDUUNhQRFDYUERQRFBEVEBQRFBEVNRQRFDYUNhM2FAAFGQABKEgUAAxOAAEoSBUADQU="
+
+# RTL 8
+channel_8:
+  alias: 'TV - Kanaal 8'
+  sequence:
+    - service: broadlink.send
+      data:
+        host: !secret blink_host
+        packet:
+          - "JgBQAAABKJEUERQRFTUVEBUQFRAVEBUQFTUVNRUMGDYUNRU0FjUUNRURExITEhM0FzMWERUQFBEVNRU1FDYTEhQREzYUNBY2FAAFGgABJ0kUAA0FAAAAAAAAAAA="
+
+# NET 5
+channel_9:
+  alias: 'TV - Kanaal 9'
+  sequence:
+    - service: broadlink.send
+      data:
+        host: !secret blink_host
+        packet:
+          - "JgBQAAABKZESExIUETgRFBMSFBITEhITETgTNxITEzcTNxE4EjgTNxM2ExIRFRE4ETkTEhITFBESExM3EjgTEhIUETgROBI4EgAFHAABJ0kUAA0FAAAAAAAAAAA="

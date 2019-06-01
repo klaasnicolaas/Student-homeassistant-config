@@ -11,5 +11,8 @@ title: Student Home
 resources: !include_dir_list lovelace/resources
 views:
   - !include lovelace/views/dashboard.yaml
+  - !include lovelace/views/media_player.yaml
+  - !include lovelace/views/public_transport.yaml
+  - !include lovelace/views/parcel_delivery.yaml
   - !include lovelace/views/automations.yaml
   - !include lovelace/views/system.yaml
