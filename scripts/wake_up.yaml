@@ -23,7 +23,7 @@ wake_up:
       service: light.turn_on
       data:
         entity_id: light.hal
-        brightness_pct: 70
+        brightness: 179
         transition: 600
     - delay:
         seconds: 15
@@ -32,7 +32,7 @@ wake_up:
       service: light.turn_on
       data:
         entity_id: light.keuken
-        brightness_pct: 70
+        brightness: 179
         transition: 585
     - delay:
         seconds: 15
@@ -41,7 +41,7 @@ wake_up:
       service: light.turn_on
       data:
         entity_id: light.woonkamer
-        brightness_pct: 70
+        brightness: 179
         transition: 570
     - delay:
         seconds: 870
