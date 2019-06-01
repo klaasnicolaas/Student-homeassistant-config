@@ -16,16 +16,27 @@ cloud:
     # Filters for entities to include/exclude from Google Assistant.
     filter:
       exclude_entities:
+        # Groups
+        - group.all_switches
         - group.all_automations
         - group.all_devices
         - group.all_lights
         - group.all_scripts
         - group.personen_status
+        # Media Players
         - media_player.tv_woonkamer
         - media_player.google_home
+        # Lights
         - light.hal
         - light.keuken
         - light.woonkamer
-        - group.all_switches
+        # Xiaomi sensors
+        - binary_sensor.openclose_sensor_1
+        - binary_sensor.openclose_sensor_2
+        - binary_sensor.openclose_sensor_3
+        - binary_sensor.openclose_sensor_4
+        # System reboot scripts
+        - script.quick_reboot
+        - script.quick_restart
       exclude_domains:
         - scene
