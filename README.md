@@ -30,12 +30,22 @@ Be free to use the code from this repo for your own Home Assistant environment, 
 
 ## Current House Configuration
 
-Below you can see briefly which hardware I use:
+Below is a list of all hardware in-house
 
-- [Raspberry Pi 3B+][rpi] -> with 32GB SD card.
-- Using the [Hass.io installation][hassio].
+**My host system:**
+
+- [Intel Arches Canyon NUC6CAYH][intelnuc] -> Inside 8GB Ram, 120GB SSD and running [Ubuntu Server LTS][ubuntu-server]
+- Using the [Hass.io installation][hassio]
+
+**And I use the following hardware in my house:**
+
 - [Conbee II][conbee] stick
-- Using the [Lovelace UI](<https://www.home-assistant.io/lovelace/>)
+- [Ikea tradfri][tradfri] lights - GU10
+- [Google Home][google_home]
+- [Broadlink RM Pro][broadlink]
+- Xiaomi [Temperature & Humidity Sensors][xiaomi_temp]
+- Xiaomi [Window Door Sensors][xiaomi_door]
+- There is more soon :)
 
 ---
 
@@ -96,5 +106,11 @@ SOFTWARE.
 [smarthome]: https://github.com/klaasnicolaas/Smarthome-homeassistant-config
 [techlife]: https://student-techlife.com/
 [hassio]: https://www.home-assistant.io/hassio/
-[rpi]: https://www.raspberrypi.org/
+[intelnuc]: https://www.intel.com/content/www/us/en/products/boards-kits/nuc/kits/nuc6cayh.html
 [conbee]: https://www.phoscon.de/en/conbee2
+[ubuntu-server]: https://www.ubuntu.com/download/server
+[tradfri]: https://www.ikea.com/nl/nl/catalog/products/80365270/
+[xiaomi_temp]: https://www.banggood.com/Original-Xiaomi-Aqara-Atmos-Version-Temperature-Humidity-Sensor-Smart-Home-Thermometer-Hygrometer-p-1148666.html?rmmds=myorder&cur_warehouse=GWTR
+[xiaomi_door]: https://www.banggood.com/Original-Xiaomi-Aqara-Zig_Bee-Version-Window-Door-Sensor-Smart-Home-Kit-Remote-Alarm-p-1149705.html?rmmds=myorder&cur_warehouse=GWTR
+[broadlink]: https://www.banggood.com/Broadlink-RM-Pro-Smart-Home-Automation-Phone-Wireless-Remote-Universal-Controller-p-942667.html?rmmds=myorder&cur_warehouse=CN
+[google_home]: https://store.google.com/nl/product/google_home
