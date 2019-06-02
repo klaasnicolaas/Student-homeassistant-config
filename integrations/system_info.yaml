@@ -144,7 +144,7 @@ sensor:
   ##### FileSize
   - platform: filesize
     file_paths:
-      - /config/home-assistant.log
+      - !secret filesize_homeassistant_log
   ##### Restart time
   - platform: command_line
     name: HA Restart Time
