@@ -29,7 +29,7 @@ cards:
                 align: center
                 padding: 5px
                 max: 60
-                card_style: 
+                card_style:
                   border-radius: 5px
 
               - type: custom:bar-card
@@ -57,7 +57,7 @@ cards:
         show_icon: true
         padding: 4px
         columns: 2
-        card_style: 
+        card_style:
           border-radius: 5px
         entities:
           - entity: sensor.disk_use_percent
@@ -70,7 +70,7 @@ cards:
         show_icon: true
         padding: 4px
         columns: 2
-        card_style: 
+        card_style:
           border-radius: 5px
         entities:
           - entity: sensor.processor_use
@@ -84,7 +84,7 @@ cards:
         show_icon: true
         padding: 4px
         columns: 2
-        card_style: 
+        card_style:
           border-radius: 5px
         entities:
           - entity: sensor.swap_use_percent
@@ -113,7 +113,7 @@ cards:
         show_icon: true
         padding: 4px
         columns: 2
-        card_style: 
+        card_style:
           border-radius: 5px
         entities:
           - entity: sensor.home_assistant_log
@@ -127,9 +127,8 @@ cards:
         align: center
         direction: right-reverse
         padding: 5px
-        card_style: 
+        card_style:
           border-radius: 5px
-
 
   # Show information about Home Assistant
   - type: entities
