@@ -1,0 +1,11 @@
+---
+#
+# How for am I from home
+# https://www.home-assistant.io/components/proximity/
+#
+proximity:
+  home:
+    devices:
+      # Owntracks
+      - device_tracker.klaas_s9
+    tolerance: 50
