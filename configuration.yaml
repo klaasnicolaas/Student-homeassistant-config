@@ -17,12 +17,15 @@ homeassistant:
   customize_domain: !include_dir_merge_named customizations/domains
   # Packages #
   packages: !include_dir_named integrations
+  # Whitelist #
+  whitelist_external_dirs: !secret whitelist_dir_config
   # Authentication #
   auth_providers:
     - type: homeassistant
     - type: trusted_networks
       trusted_networks:
         - !secret intern_ip_1
+        - !secret ping_tablet
 
 # Configure a default setup of Home Assistant (frontend, api, etc)
 default_config:
