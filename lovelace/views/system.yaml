@@ -5,6 +5,7 @@ title: Systeeminformatie
 icon: mdi:server
 path: system
 cards:
+  - !include ../cards/compact_custom_header_main.yaml
   # Hassio host server info
   - type: custom:vertical-stack-in-card
     title: Hassio Server
