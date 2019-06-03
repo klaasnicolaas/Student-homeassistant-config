@@ -1,0 +1,17 @@
+---
+# https://www.home-assistant.io/components/logbook/
+#
+logbook:
+  include:
+    entities:
+      - light.hal
+      - light.woonkamer
+      - light.keuken
+      - binary_sensor.openclose_sensor_1
+      - binary_sensor.openclose_sensor_2
+      - binary_sensor.openclose_sensor_3
+      - binary_sensor.openclose_sensor_4
+  exclude:
+    entities:
+      - sensor.error
+      - sensor.warning
