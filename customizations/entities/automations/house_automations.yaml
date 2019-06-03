@@ -2,3 +2,5 @@
 # Custom icons for the house automations
 automation.house_start_opstaan_ritueel:
   icon: mdi:home-account
+automation.house_welcome_home_message:
+  icon: mdi:home-account
