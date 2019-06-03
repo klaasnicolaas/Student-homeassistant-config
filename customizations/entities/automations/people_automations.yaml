@@ -1,0 +1,4 @@
+---
+# Custom icons for the people automations
+automation.people_home_counseling_start_wakeup:
+  icon: mdi:account-outline

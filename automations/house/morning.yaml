@@ -1,7 +1,7 @@
 ---
 # Start wakeup sequence
 #
-- alias: House - Start opstaan ritueel
+- alias: '[House] - Wake up ritual'
   initial_state: true
   trigger:
     # Trigger is moment dat huidige tijd matched met tijd van google home alarm

@@ -1,45 +1,54 @@
 ---
 ########## Automations ###########
 id: automation
-icon: mdi:home-automation
+icon: mdi:creation
 title: Automatisering
 path: automations
 cards:
+  - !include ../cards/compact_custom_header_main.yaml
   # System
-  - type: entities
-    title: System Automations
-    show_header_toggle: false
-    entities:
-      - automation.system_set_ha_theme
-      - automation.system_perform_system_checks
-      - automation.system_notify_when_ssl_certificate_will_expire
-      - automation.system_notify_on_a_custom_card_update
-      - automation.system_notify_on_a_custom_component_update
-      - automation.system_make_manual_hassio_backup_via_telegram
-      - automation.system_make_weekly_hassio_backup
+  - type: custom:monster-card
+    card:
+      type: entities
+      title: System Automations
+      show_header_toggle: false
+    filter:
+      include:
+        - entity_id: automation.system*
+      exclude:
+        - entity_id: automation.system_ifttt_handling
+        - entity_id: automation.system_perform_system_checks
+        - entity_id: automation.system_perform_log_checks
 
-  # Lights
-  - type: entities
-    title: Light Automations
-    show_header_toggle: false
-    entities:
-      - automation.light_toggle_lamp_on_from_dimmer
-      - automation.light_toggle_lamp_off_from_dimmer
-
-  # Presence
-  - type: entities
-    title: Presence Automations
-    show_header_toggle: false
-    entities:
-      - automation.presence_markeer_persoon_als_lang_weg
-      - automation.presence_markeer_persoon_als_net_aangekomen
-      - automation.presence_markeer_persoon_als_net_vertrokken
-      - automation.presence_markeer_persoon_als_thuis
-      - automation.presence_markeer_persoon_als_weg
+  # People
+  - type: custom:monster-card
+    card:
+      type: entities
+      title: People Automations
+      show_header_toggle: false
+    filter:
+      include:
+        - entity_id: automation.people*
 
   # House
-  - type: entities
-    title: House Automations
-    show_header_toggle: false
-    entities:
-      - automation.house_start_opstaan_ritueel
+  - type: custom:vertical-stack-in-card
+    cards:
+      # House
+      - type: custom:monster-card
+        card:
+          type: entities
+          title: House Automations
+          show_header_toggle: false
+        filter:
+          include:
+            - entity_id: automation.house*
+      - type: divider
+      # Lights
+      - type: custom:monster-card
+        card:
+          type: entities
+          title: Light
+          show_header_toggle: false
+        filter:
+          include:
+            - entity_id: automation.light*

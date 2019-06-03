@@ -1,7 +1,7 @@
 ---
 # Automation that handle IFTTT requests
 #
-- alias: System - IFTTT Handling
+- alias: '[System] - IFTTT Handling'
   initial_state: true
   trigger:
     - platform: event

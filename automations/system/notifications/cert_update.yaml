@@ -2,7 +2,7 @@
 # Notify me when the SSL certificate will expire soon
 #
 
-- alias: System - Notify when SSL certificate will expire
+- alias: '[System] - Notify when SSL certificate will expire'
   initial_state: true
   trigger:
     - platform: numeric_state
