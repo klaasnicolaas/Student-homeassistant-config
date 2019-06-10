@@ -1,5 +1,5 @@
 """Constants for HACS"""
-VERSION = "0.4.4"
+VERSION = "0.6.0"
 NAME_LONG = "HACS (Home Assistant Community Store)"
 NAME_SHORT = "HACS"
 STORAGE_VERSION = "1"
@@ -73,6 +73,12 @@ ERROR = [
 ################################
 
 DEFAULT_REPOSITORIES = {
-    "integration": [],
-    "plugin": []
+    "integration": [
+        "StyraHem/ShellyForHASS"
+    ],
+    "plugin": [
+        "maykar/compact-custom-header",
+        "maykar/lovelace-swipe-navigation",
+        "peternijssen/lovelace-postnl-card"
+    ]
 }

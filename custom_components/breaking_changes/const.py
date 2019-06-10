@@ -3,8 +3,8 @@
 DOMAIN = "breaking_changes"
 DOMAIN_DATA = "{}_data".format(DOMAIN)
 VERSION = "0.1.0"
-PLATFORMS = ["binary_sensor", "sensor"]
-REQUIRED_FILES = ["binary_sensor.py", "const.py", "sensor.py"]
+PLATFORMS = ["sensor"]
+REQUIRED_FILES = ["const.py", "sensor.py"]
 ISSUE_URL = "https://github.com/custom-components/breaking_changes/issues"
 
 STARTUP = """

@@ -106,6 +106,8 @@ class HacsBase:
                     repository = self.repositories[repository]
                     if not repository.track or repository.repository_name in self.blacklist:
                         continue
+                    if repository.hide and repository.repository_id != "172733314":
+                        continue
                     if now is not None:
                         _LOGGER.info("Running update for %s", repository.repository_name)
                         await repository.update()
@@ -166,3 +168,19 @@ class HacsBase:
             except AIOGitHubException as exception:
                 _LOGGER.debug("%s - %s", repository.repository_name, exception)
         self.data["task_running"] = False
+
+    @property
+    def repositories_list_name(self):
+        """Return a sorted(by name) list of repository objects."""
+        repositories = []
+        for repository in self.repositories:
+            repositories.append(self.repositories[repository])
+        return sorted(repositories, key=lambda x: x.name.lower())
+
+    @property
+    def repositories_list_repo(self):
+        """Return a sorted(by repository_name) list of repository objects."""
+        repositories = []
+        for repository in self.repositories:
+            repositories.append(self.repositories[repository])
+        return sorted(repositories, key=lambda x: x.repository_name)

@@ -10,7 +10,10 @@ LOVELACE_EXAMLE_URL = """
 <pre id="LovelaceExample" class="yaml">
   - url: /community_plugin/{}/{}.js
 </pre>
-<i>HACS could not determine the type of this element, look at the documentation in the repository.</i>
+"""
+
+MISSING_JS_TYPE = """
+<i>HACS could not determine the type of this element, look at the documentation in the repository.</i></br>
 """
 
 LOVELACE_EXAMLE_URL_TYPE = """
@@ -86,11 +89,12 @@ class HacsRepositoryView(HacsViewBase):
                     info = info.replace("<h1>", "<h4>").replace(
                         "</h1>", "</h4>"
                     )
-                    info = info.replace("<code>", "<pre>").replace(
-                        "</code>", "</pre>"
-                    )
+                    info = info.replace("<code>", "<code class='codeinfo'>")
                     info = info.replace(
                         "<table>", "<table class='white-text'>"
+                    )
+                    info = info.replace(
+                        '<a href="http', '<a target="_blank" href="http'
                     )
                     info = info.replace("<ul>", "")
                     info = info.replace("</ul>", "")
@@ -106,7 +110,7 @@ class HacsRepositoryView(HacsViewBase):
                 for author in repository.authors:
                     if "@" in author:
                         author = author.split("@")[-1]
-                    authors += "<a href='https://github.com/{author}' target='_blank' style='margin: 2'> @{author}</a>".format(author=author)
+                    authors += "<a href='https://github.com/{author}' target='_blank' style='color: var(--primary-color) !important; margin: 2'> @{author}</a>".format(author=author)
                 authors += "</p>"
             else:
                 authors = ""
@@ -126,8 +130,10 @@ class HacsRepositoryView(HacsViewBase):
             else:
                 if repository.javascript_type is None:
                     llnote = LOVELACE_EXAMLE_URL.format(repository.name, repository.name.replace("lovelace-", ""))
+                    jsnote = MISSING_JS_TYPE
                 else:
                     llnote = LOVELACE_EXAMLE_URL_TYPE.format(repository.name, repository.name.replace("lovelace-", ""), repository.javascript_type)
+                    jsnote = ""
                 note = """
                     </br><i>
                         When installed, this will be located in '{}',
@@ -139,11 +145,12 @@ class HacsRepositoryView(HacsViewBase):
                     </i></br>
                         {}
                     <a title="Copy content to clipboard" id ="lovelacecopy" onclick="CopyToLovelaceExampleToClipboard()"><i class="fa fa-copy"></i></a>
+                    {}
                     </br></br><i>
                         To learn more about how to configure this,
                         click the "REPO" button to get to the repoistory for this plugin.
                     </i>
-                """.format(repository.local_path, llnote)
+                """.format(repository.local_path, llnote, jsnote)
 
             if not repository.installed:
                 main_action = "INSTALL"
@@ -160,11 +167,24 @@ class HacsRepositoryView(HacsViewBase):
                         name = repository.name.split("lovelace-")[-1]
                     else:
                         name = repository.name
-                    open_plugin = "<a href='/community_plugin/{}/{}.js' target='_blank'>OPEN PLUGIN</a>".format(repository.name, name)
+                    open_plugin = "<a href='/community_plugin/{}/{}.js' target='_blank' style='color: var(--primary-color) !important'>OPEN PLUGIN</a>".format(repository.name, name)
             else:
                 open_plugin = ""
 
-            # Generate content
+            # Hide/unhide
+            if repository.installed or repository.custom:
+                hide_option = ""
+            else:
+                if repository.hide:
+                    hide_option = """
+                        <li><a class="dropdown-list-item" href="{}/repository_unhide/{}" onclick="ShowProgressBar()">Unhide</a></li>
+                    """.format(self.url_path["api"], repository.repository_id)
+                else:
+                    hide_option = """
+                        <li><a class="dropdown-list-item" href="{}/repository_hide/{}" onclick="ShowProgressBar()">Hide</a></li>
+                    """.format(self.url_path["api"], repository.repository_id)
+
+
             content = self.base_content
 
             if repository.version_installed is not None:
@@ -183,29 +203,36 @@ class HacsRepositoryView(HacsViewBase):
                 last_up = ""
 
             if repository.pending_update:
-                changelog = "<a href='https://github.com/{}/releases' target='_blank'>CHANGELOG</a>".format(repository.repository_name)
+                changelog = "<a href='https://github.com/{}/releases' target='_blank' style='color: var(--primary-color) !important'>CHANGELOG</a>".format(repository.repository_name)
             else:
                 changelog = ""
 
             if repository.installed:
-                uninstall = "<a href='{}/repository_uninstall/{}' style='float: right; color: #a70000; font-weight: bold;' onclick='ShowProgressBar()'>UNINSTALL</a>".format(self.url_path['api'], repository.repository_id)
+                uninstall = "<a href='{}/repository_uninstall/{}' style='float: right; color: var(--google-red-500) !important; font-weight: bold;' onclick='ShowProgressBar()'>UNINSTALL</a>".format(self.url_path['api'], repository.repository_id)
             else:
                 uninstall = ""
 
             content += """
                 {}
                 {}
-                <div class='container''>
+                <div class='hacs-overview-container'>
                     <div class="row">
                         <div class="col s12">
-                            <div class="card blue-grey darken-1">
-                                <div class="card-content white-text">
+                            <div class="card hacscolor">
+                                <div class="card-content">
                                     <span class="card-title">
-                                        {}
-                                        <a href="{}/repository_update_repository/{}"
-                                                style="float: right; color: #ffab40;" onclick="ShowProgressBar()">
-                                            <i name="reload" class="fa fa-sync"></i>
+                                        <b>{}</b>
+
+                                        <a class='dropdown-trigger btn right' href='#' data-target='dropdown1' style="background-color: var(--primary-color); padding-top: 8px; height: 48">
+                                            <i class="fas fa-bars"></i>
                                         </a>
+
+                                        <ul id='dropdown1' class='dropdown-content'>
+                                            <li><a class="dropdown-list-item" href="{}/repository_update_repository/{}" onclick="ShowProgressBar()">Reload</a></li>
+                                            {}
+                                            <li><a class="dropdown-list-item" href="https://github.com/{}/issues/" target="_blank">Open a issue</a></li>
+                                            <li><a class="dropdown-list-item" href="https://github.com/custom-components/hacs/issues/new?title={}&labels=flag&assignee=ludeeus&template=flag.md" target="_blank">Flag this</a></li>
+                                        </ul>
                                     </span>
                                     <p>{}</p></br>
                                     {}
@@ -218,11 +245,11 @@ class HacsRepositoryView(HacsViewBase):
                                 </div>
                                 <div class="card-action">
                                     <a href="{}/repository_install/{}"
-                                        onclick="ShowProgressBar()">
+                                        onclick="ShowProgressBar()" style='color: var(--primary-color) !important'>
                                         {}
                                     </a>
                                     {}
-                                    <a href='https://github.com/{}' target='_blank'>repository</a>
+                                    <a href='https://github.com/{}' target='_blank' style='color: var(--primary-color) !important'>repository</a>
                                     {}
                                     {}
                                 </div>
@@ -231,8 +258,8 @@ class HacsRepositoryView(HacsViewBase):
                         </div>
                     </div>
                 </div>
-            """.format(custom_message, pending_restart, repository.name, self.url_path["api"], repository.repository_id,
-                       repository.description, inst_ver, last_ver, last_up, info, authors, note, self.url_path["api"],
+            """.format(custom_message, pending_restart, repository.name, self.url_path["api"], repository.repository_id, hide_option, repository.repository_name,
+                       repository.name, repository.description, inst_ver, last_ver, last_up, info, authors, note, self.url_path["api"],
                        repository.repository_id, main_action, changelog, repository.repository_name, open_plugin, uninstall)
 
         except Exception as exception:
