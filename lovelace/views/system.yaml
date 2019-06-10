@@ -92,7 +92,7 @@ cards:
             title: SWAP
           - entity: sensor.db_size
             title: DB
-            max: 60000
+            max: 1000
 
       - type: custom:bar-card
         align: split
@@ -316,7 +316,6 @@ cards:
     entities:
       - binary_sensor.cpu_high
       - binary_sensor.cpu_hot
-      - binary_sensor.potential_breaking_changes
 
   # Show information about the internet connection
   - type: vertical-stack

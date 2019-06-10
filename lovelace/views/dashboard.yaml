@@ -5,6 +5,7 @@ title: Thuis
 icon: mdi:home-assistant
 path: home
 cards:
+  - !include ../cards/compact_custom_header_main.yaml
   - type: horizontal-stack
     cards:
       - image: /local/klaas-overlay.jpg
@@ -20,7 +21,7 @@ cards:
               top: 93%
               left: 55%
             type: state-label
-            entity: binary_sensor.klaas_thuis
+            entity: proximity.home
         type: picture-elements
       - image: /local/marlene-overlay.jpg
         elements:
@@ -38,125 +39,150 @@ cards:
             entity: binary_sensor.marlene_thuis
         type: picture-elements
 
-  # Light slider groups
-  - type: entities
-    title: Lampen
-    show_header_toggle: false
-    entities:
-      - type: custom:slider-entity-row
-        entity: light.hal
-        toggle: true
-        hide_when_off: true
-      - type: custom:slider-entity-row
-        entity: light.keuken
-        toggle: true
-        hide_when_off: true
-      - type: custom:slider-entity-row
-        entity: light.woonkamer
-        toggle: true
-        hide_when_off: true
-
   # Shows door and window state
   # - type: glance
   # entities:
 
-  # Start scenes
-  - type: horizontal-stack
-    cards:
-      - type: picture-entity
-        entity: scene.koken
-        image: /local/images/cooking.png
-        tap_action:
-          action: call-service
-          service: scene.turn_on
-          service_data:
-            entity_id: scene.koken
-      - type: picture-entity
-        entity: scene.avond
-        image: /local/images/evening.png
-        tap_action:
-          action: call-service
-          service: scene.turn_on
-          service_data:
-            entity_id: scene.avond
-      - type: picture-entity
-        name: Slapen
-        entity: input_boolean.go_to_sleep
-        state_image:
-          "on": /local/images/sleeping_on.png
-          "off": /local/images/sleeping_off.png
-        tap_action:
-          action: toggle
-
-  # Extra explanation
-  - type: markdown
-    title: Google Assistant
-    content: >
-      "**Start cooking mode**" voor als je gaat koken.
-      "**Start relax mode**" of "Start evening mode" voor gedimde lampen in de avond.
-      "**Start sleep mode**" voor wanneer je gaat slapen.
-      "**Channel X please**" om TV van kanaal te veranderen
-      "**Zet TV aan/uit**" om de tv aan of uit te doen.
-
-  # Bus times
   - type: vertical-stack
     cards:
-      - card:
-          columns: 5
-          entities:
-            - entity: sensor.bushalte_blauwe_vogelweg_1
-              icon: mdi:bus
-            - entity: sensor.bushalte_blauwe_vogelweg_1_future_1
-              icon: mdi:x
-            - entity: sensor.bushalte_blauwe_vogelweg_1_future_2
-              icon: mdi:x
-            - entity: sensor.bushalte_blauwe_vogelweg_1_future_3
-              icon: mdi:x
-            - entity: sensor.bushalte_blauwe_vogelweg_1_future_4
-              icon: mdi:x
-          show_header_toggle: false
-          show_name: false
-          title: Bushalte Blauwe Vogelweg -> Leiden Centraal
-          type: glance
-        cards: null
-        type: custom:card-modder
+      # Start scenes
+      - type: horizontal-stack
+        cards:
+          - type: picture-entity
+            entity: scene.koken
+            image: /local/images/cooking.png
+            tap_action:
+              action: call-service
+              service: scene.turn_on
+              service_data:
+                entity_id: scene.koken
+          - type: picture-entity
+            entity: scene.avond
+            image: /local/images/evening.png
+            tap_action:
+              action: call-service
+              service: scene.turn_on
+              service_data:
+                entity_id: scene.avond
+          - type: picture-entity
+            name: Slapen
+            entity: input_boolean.go_to_sleep
+            state_image:
+              "on": /local/images/sleeping_on.png
+              "off": /local/images/sleeping_off.png
+            tap_action:
+              action: toggle
 
-      - card:
-          columns: 5
-          entities:
-            - entity: sensor.bushalte_centraal_station_237
-              icon: mdi:bus
-            - entity: sensor.bushalte_centraal_station_237_future_1
-              icon: mdi:x
-            - entity: sensor.bushalte_centraal_station_237_future_2
-              icon: mdi:x
-            - entity: sensor.bushalte_centraal_station_237_future_3
-              icon: mdi:x
-            - entity: sensor.bushalte_centraal_station_237_future_4
-              icon: mdi:x
-          show_header_toggle: false
-          show_name: false
-          title: Bus 237 Leiden Centraal -> Huis
-          type: glance
-        cards: null
-        type: custom:card-modder
+      # Extra explanation
+      - type: markdown
+        title: Google Assistant
+        content: >
+          "**Ik wil koken**" voor als je gaat koken.
+          "**Het is avond**" of "Start evening mode" voor gedimde lampen in de avond.
+          "**Start slaap ritueel**" voor wanneer je gaat slapen.
+          "**Kanaal X graag**" om TV van kanaal te veranderen
+          "**Zet TV aan/uit**" om de tv aan of uit te doen.
 
-      - card:
-          columns: 5
-          entities:
-            - entity: sensor.bushalte_centraal_station_57
-              icon: mdi:bus
-            - entity: sensor.bushalte_centraal_station_57_future_1
-              icon: mdi:x
-            - entity: sensor.bushalte_centraal_station_57_future_2
-              icon: mdi:x
-            - entity: sensor.bushalte_centraal_station_57_future_3
-              icon: mdi:x
-            - entity: sensor.bushalte_centraal_station_57_future_4
-              icon: mdi:x
-          show_header_toggle: false
-          show_name: false
-          title: Bus 57 Leiden Centraal -> Huis
-          type: glance
-        cards: null
-        type: custom:card-modder
+  # Light slider groups (TESTING)
+  - type: entities
+    title: Lampen
+    show_header_toggle: false
+    entities:
+      - type: custom:fold-entity-row
+        head:
+          type: section
+          label: Hal
+        group_config:
+          secondary_info: last-changed
+        items:
+          - light.hal_lamp_1
+          - light.hal_lamp_2
+          - light.hal_lamp_3
+      - type: custom:slider-entity-row
+        entity: light.hal
+        toggle: true
+        hide_when_off: true
+      - type: custom:fold-entity-row
+        head:
+          type: section
+          label: Keuken
+        group_config:
+          secondary_info: last-changed
+        items:
+          - light.keuken_lamp_1
+          - light.keuken_lamp_2
+          - light.keuken_lamp_3
+      - type: custom:slider-entity-row
+        entity: light.keuken
+        toggle: true
+        hide_when_off: true
+      - type: custom:fold-entity-row
+        head:
+          type: section
+          label: Woonkamer
+        group_config:
+          secondary_info: last-changed
+        items:
+          - light.woonkamer_lamp_1
+          - light.woonkamer_lamp_2
+          - light.woonkamer_lamp_3
+      - type: custom:slider-entity-row
+        entity: light.woonkamer
+        toggle: true
+        hide_when_off: true
+      - type: custom:fold-entity-row
+        head:
+          type: section
+          label: Badkamer
+      - type: custom:slider-entity-row
+        entity: light.badkamer
+        toggle: true
+        hide_when_off: true
+      - type: custom:fold-entity-row
+        head:
+          type: section
+          label: Werkhoek
+      - type: custom:slider-entity-row
+        entity: light.werkhoek
+        toggle: true
+        hide_when_off: true
+
+  - type: glance
+    title: Ramen & Deuren
+    entities:
+      - entity: binary_sensor.openclose_sensor_1
+      - entity: binary_sensor.openclose_sensor_2
+      - entity: binary_sensor.openclose_sensor_3
+      - entity: binary_sensor.openclose_sensor_4
+
+  - type: vertical-stack
+    cards:
+      - type: custom:mini-graph-card
+        name: Temperatuur
+        entities:
+          - entity: sensor.home_temperature
+            name: Temperatuur
+        hours_to_show: 72
+        points_per_hour: 0.3
+        show:
+          fill: true
+          extrema: true
+        height: 75
+        animate: true
+        hour24: true
+        line_color: var(--primary-color)
+
+      - type: custom:mini-graph-card
+        name: Vochtigheid
+        entities:
+          - entity: sensor.home_humidity
+            name: Vochtigheid
+        hours_to_show: 72
+        points_per_hour: 0.3
+        show:
+          fill: true
+          extrema: true
+        height: 75
+        animate: true
+        hour24: true
+        line_color: var(--primary-color)

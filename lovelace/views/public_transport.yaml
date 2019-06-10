@@ -1,0 +1,56 @@
+---
+########## Public Transport ###########
+id: ov
+title: Openbaar Vervoer
+icon: mdi:train-car
+path: ov
+cards:
+  - !include ../cards/compact_custom_header_main.yaml
+  # Bus times
+  - type: vertical-stack
+    cards:
+      - type: custom:monster-card
+        card:
+          type: glance
+          title: Blauwe Vogelweg -> Leiden Centraal
+          columns: 5
+          show_header_toggle: false
+          show_name: false
+        filter:
+          include:
+            - entity_id: sensor.bushalte_blauwe*
+          exclude:
+            - state: 'unknown'
+      # 237
+      - type: custom:monster-card
+        card:
+          type: glance
+          title: Bus 237 Leiden Centraal -> Huis
+          columns: 5
+          show_header_toggle: false
+          show_name: false
+        filter:
+          include:
+            - entity_id: sensor.bushalte_centraal_station_237*
+          exclude:
+            - state: 'unknown'
+      # 57
+      - type: custom:monster-card
+        card:
+          type: glance
+          title: Bus 57 Leiden Centraal -> Huis
+          columns: 5
+          show_header_toggle: false
+          show_name: false
+        filter:
+          include:
+            - entity_id: sensor.bushalte_centraal_station_57*
+          exclude:
+            - state: 'unknown'
+
+  - type: entities
+    title: Treintijden
+    show_header_toggle: false
+    entities:
+      - sensor.alkmaar_leiden
+      - sensor.leiden_alkmaar
