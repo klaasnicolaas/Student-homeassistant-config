@@ -144,6 +144,7 @@ cards:
       - sensor.python_version
       - type: divider
       - sensor.automation_on
+      - sensor.hacs
       - type: custom:vertical-stack-in-card
         cards:
           - type: horizontal-stack
