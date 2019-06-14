@@ -3,15 +3,15 @@ import logging
 
 import aiofiles
 import async_timeout
-from aiohttp import ClientError
 
 import backoff
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
+from ..exceptions import HacsNotSoBasicException
 
 _LOGGER = logging.getLogger('custom_components.hacs.download')
 
 
-@backoff.on_exception(backoff.expo, ClientError, max_tries=3)
+@backoff.on_exception(backoff.expo, Exception, max_tries=3)
 async def async_download_file(hass, url):
     """
     Download files, and return the content.
@@ -27,20 +27,17 @@ async def async_download_file(hass, url):
 
     result = None
 
-    try:
-        with async_timeout.timeout(5, loop=hass.loop):
-            request = await async_get_clientsession(hass).get(url)
+    with async_timeout.timeout(5, loop=hass.loop):
+        request = await async_get_clientsession(hass).get(url)
 
-            # Make sure that we got a valid result
-            if request.status == 200:
-                result = await request.text()
+        # Make sure that we got a valid result
+        if request.status == 200:
+            if url.endswith(".gz"):
+                result = await request.read()
             else:
-                _LOGGER.debug(
-                    "Got status code %s when trying to download %s", request.status, url
-                )
-
-    except Exception as error:  # pylint: disable=broad-except
-        _LOGGER.debug("Downloading %s failed with %s", url, error)
+                result = await request.text()
+        else:
+            raise HacsNotSoBasicException("Got status code {} when trying to download {}".format(request.status, url))
 
     return result
 
@@ -51,9 +48,17 @@ async def async_save_file(location, content):
         location = location.replace("-bundle", "")
 
     _LOGGER.debug("Saving %s", location)
+    mode = 'w'
+    encoding = "utf-8"
+    errors="ignore"
+
+    if not isinstance(content, str):
+        mode = 'wb'
+        encoding = None
+        errors = None
 
     try:
-        async with aiofiles.open(location, mode='w', encoding="utf-8", errors="ignore") as outfile:
+        async with aiofiles.open(location, mode=mode, encoding=encoding, errors=errors) as outfile:
             await outfile.write(content)
             outfile.close()
 
