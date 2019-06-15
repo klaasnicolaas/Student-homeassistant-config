@@ -40,11 +40,12 @@ Below is a list of all hardware in-house
 **And I use the following hardware in my house:**
 
 - [Conbee II][conbee] stick
-- [Ikea tradfri][tradfri] lights - GU10
+- [Ikea tradfri][tradfri] lights - All types of fittings
 - [Google Home][google_home]
 - [Broadlink RM Pro][broadlink]
 - Xiaomi [Temperature & Humidity Sensors][xiaomi_temp]
 - Xiaomi [Window Door Sensors][xiaomi_door]
+- Xiaomi Curtains with [track][xiaomi_curtains_track] and [motor][xiaomi_curtains_motor]
 - There is more soon :)
 
 ---
@@ -114,3 +115,5 @@ SOFTWARE.
 [xiaomi_door]: https://www.banggood.com/Original-Xiaomi-Aqara-Zig_Bee-Version-Window-Door-Sensor-Smart-Home-Kit-Remote-Alarm-p-1149705.html?rmmds=myorder&cur_warehouse=GWTR
 [broadlink]: https://www.banggood.com/Broadlink-RM-Pro-Smart-Home-Automation-Phone-Wireless-Remote-Universal-Controller-p-942667.html?rmmds=myorder&cur_warehouse=CN
 [google_home]: https://store.google.com/nl/product/google_home
+[xiaomi_curtains_track]: https://nl.aliexpress.com/item/3-5-M-Xiaomi-Super-Stille-Elektrische-Gordijn-Track-voor-Mijia-Aqara-Motor-Automatische-Gordijn-Rails/32922713008.html?spm=a2g0s.9042311.0.0.1cf94c4d06j07R
+[xiaomi_curtains_motor]: https://nl.aliexpress.com/item/Xiaomi-Aqara-Smart-Gordijn-Motor-Intelligente-Zigbee-Wifi-Voor-xiaomi-Smart-Home-Apparaat-Draadloze-Afstandsbediening-Via/32872671734.html?spm=a2g0s.9042311.0.0.1cf94c4d06j07R
