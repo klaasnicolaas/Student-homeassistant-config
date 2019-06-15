@@ -9,3 +9,9 @@ light.hal:
 
 light.woonkamer:
   icon: mdi:ceiling-light
+
+light.werkhoek:
+  icon: mdi:spotlight-beam
+
+light.badkamer:
+  icon: mdi:ceiling-light
