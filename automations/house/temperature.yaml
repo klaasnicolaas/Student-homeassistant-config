@@ -1,0 +1,15 @@
+---
+# When it's to hot in house
+#
+- alias: "[House] - Notify when it's to warm in house"
+  initial_state: true
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.home_temperature
+      above: 27
+  action:
+    - service: notify.telegram_klaas
+      data_template:
+        title: '*Warmte alarm!*'
+        message: >-
+          'Het is nu {{ states('sensor.home_temperature') }}°C in huis, doe een raam open!'
