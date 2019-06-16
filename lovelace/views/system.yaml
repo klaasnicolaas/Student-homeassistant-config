@@ -102,21 +102,6 @@ cards:
         card_style:
           border-radius: 5px
         entities:
-          - entity: sensor.error
-            title: Error
-            max: 15000
-          - entity: sensor.warning
-            title: Warnings
-            max: 5000
-
-      - type: custom:bar-card
-        align: split
-        show_icon: true
-        padding: 4px
-        columns: 2
-        card_style:
-          border-radius: 5px
-        entities:
           - entity: sensor.home_assistant_log
             title: Log size
           - entity: sensor.time_online

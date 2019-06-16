@@ -135,7 +135,7 @@ sensor:
     db_url: !secret mariadb_addon
     queries:
       - name: DB size
-        query: 'SELECT table_schema "database", Round(Sum(data_length + index_length) / 1024, 1) "value" FROM information_schema.tables WHERE table_schema="Recorder" GROUP BY table_schema;'
+        query: 'SELECT table_schema "database", Round(Sum(data_length + index_length) / 1024 / 1024) "value" FROM information_schema.tables WHERE table_schema="Recorder" GROUP BY table_schema;'
         column: 'value'
         unit_of_measurement: MB
   ##### UpTime
@@ -151,19 +151,6 @@ sensor:
     command: "/bin/cat /config/home-assistant.log | /bin/grep 'Home Assistant initialized in' | /usr/bin/awk '{print $10}' | /bin/sed 's/[^0-9.]//g'"
     scan_interval: 60
     unit_of_measurement: "sec"
-  ##### Count log items
-  # Error
-  - platform: command_line
-    name: Error
-    command: 'cat /config/extras/bash/grep_output/error.txt'
-  # Warning
-  - platform: command_line
-    name: Warning
-    command: 'cat /config/extras/bash/grep_output/warning.txt'
-  # Failed Logins
-  - platform: command_line
-    name: Failed Logins
-    command: 'cat /config/extras/bash/grep_output/login.txt'
 
 ################################################
 ## Input boolean
@@ -173,15 +160,6 @@ input_boolean:
   maintenance_mode:
     name: Onderhouds Mode
     icon: mdi:auto-fix
-
-################################################
-## Shell Command
-################################################
-
-shell_command:
-  failed_login: "/bin/grep -c 'Login attempt' /config/home-assistant.log > /config/extras/grep_output/login.txt"
-  warning: "/bin/grep -c 'WARNING' /config/home-assistant.log > /config/extras/grep_output/warning.txt"
-  error: "/bin/grep -c 'ERROR' /config/home-assistant.log > /config/extras/bash/grep_output/error.txt"
 
 ################################################
 ## Script
