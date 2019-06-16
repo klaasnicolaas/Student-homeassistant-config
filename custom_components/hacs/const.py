@@ -1,5 +1,5 @@
 """Constants for HACS"""
-VERSION = "0.7.0"
+VERSION = "0.8.0"
 NAME_LONG = "HACS (Home Assistant Community Store)"
 NAME_SHORT = "HACS"
 STORAGE_VERSION = "1"
@@ -19,7 +19,7 @@ BLACKLIST = [
     "custom-cards/tracker-card",
     "custom-components/blueprint",
     "custom-components/information",
-    "custom-components/custom-updater",
+    "custom-components/custom_updater",
 ]
 ELEMENT_TYPES = ["integration", "plugin"]
 IFRAME = {
@@ -73,9 +73,7 @@ ERROR = [
 ################################
 
 DEFAULT_REPOSITORIES = {
-    "integration": [
-        "StyraHem/ShellyForHASS"
-    ],
+    "integration": ["StyraHem/ShellyForHASS", "isabellaalstrom/sensor.krisinformation"],
     "plugin": [
         "maykar/compact-custom-header",
         "maykar/lovelace-swipe-navigation",
@@ -87,5 +85,7 @@ DEFAULT_REPOSITORIES = {
         "finity69x2/fan-control-entity-row",
         "thomasloven/lovelace-card-mod",
         "thomasloven/lovelace-markdown-mod",
-    ]
+        "thomasloven/lovelace-slider-entity-row",
+        "isabellaalstrom/krisinfo-card",
+    ],
 }

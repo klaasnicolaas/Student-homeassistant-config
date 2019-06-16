@@ -9,11 +9,16 @@ from aiohttp import ClientError
 
 import backoff
 
-_LOGGER = logging.getLogger('custom_components.hacs.aiogithub')
+_LOGGER = logging.getLogger("custom_components.hacs.aiogithub")
 
 
 class AIOGitHubException(BaseException):
     """Raise this when something is off."""
+
+
+class AIOGitHubRatelimit(AIOGitHubException):
+    """Raise this when we hit the ratelimit."""
+
 
 class AIOGitHub(object):
     """Base Github API implementation."""
@@ -29,11 +34,15 @@ class AIOGitHub(object):
         self.token = token
         self.loop = loop
         self.session = session
+        self._ratelimit_remaining = None
         self.headers["Authorization"] = "token {}".format(token)
 
     @backoff.on_exception(backoff.expo, ClientError, max_tries=3)
     async def get_repo(self, repo: str):
         """Retrun AIOGithubRepository object."""
+        if self._ratelimit_remaining == 0:
+            raise AIOGitHubRatelimit("GitHub Ratelimit error")
+
         endpoint = "/repos/" + repo
         url = self.baseapi + endpoint
 
@@ -42,7 +51,11 @@ class AIOGitHub(object):
 
         async with async_timeout.timeout(20, loop=self.loop):
             response = await self.session.get(url, headers=headers)
+            self._ratelimit_remaining = response.headers["x-ratelimit-remaining"]
             response = await response.json()
+
+            if self._ratelimit_remaining == 0:
+                raise AIOGitHubRatelimit("GitHub Ratelimit error")
 
             if response.get("message"):
                 raise AIOGitHubException(response["message"])
@@ -52,6 +65,8 @@ class AIOGitHub(object):
     @backoff.on_exception(backoff.expo, ClientError, max_tries=3)
     async def get_org_repos(self, org: str, page=1):
         """Retrun a list of AIOGithubRepository objects."""
+        if self._ratelimit_remaining == 0:
+            raise AIOGitHubRatelimit("GitHub Ratelimit error")
         endpoint = "/orgs/" + org + "/repos?page=" + str(page)
         url = self.baseapi + endpoint
 
@@ -62,7 +77,11 @@ class AIOGitHub(object):
 
         async with async_timeout.timeout(20, loop=self.loop):
             response = await self.session.get(url, headers=headers, params=params)
+            self._ratelimit_remaining = response.headers["x-ratelimit-remaining"]
             response = await response.json()
+
+            if self._ratelimit_remaining == 0:
+                raise AIOGitHubRatelimit("GitHub Ratelimit error")
 
             if not isinstance(response, list):
                 raise AIOGitHubException(response["message"])
@@ -70,13 +89,17 @@ class AIOGitHub(object):
             repositories = []
 
             for repository in response:
-                repositories.append(AIOGithubRepository(repository, self.token, self.loop, self.session))
+                repositories.append(
+                    AIOGithubRepository(repository, self.token, self.loop, self.session)
+                )
 
         return repositories
 
     @backoff.on_exception(backoff.expo, ClientError, max_tries=3)
     async def render_markdown(self, content: str):
         """Retrun AIOGithubRepository object."""
+        if self._ratelimit_remaining == 0:
+            raise AIOGitHubRatelimit("GitHub Ratelimit error")
         endpoint = "/markdown/raw"
         url = self.baseapi + endpoint
 
@@ -85,13 +108,22 @@ class AIOGitHub(object):
 
         async with async_timeout.timeout(20, loop=self.loop):
             response = await self.session.post(url, headers=headers, data=content)
+            self._ratelimit_remaining = response.headers["x-ratelimit-remaining"]
             response = await response.text()
+
+            if self._ratelimit_remaining == 0:
+                raise AIOGitHubRatelimit("GitHub Ratelimit error")
 
             if isinstance(response, dict):
                 if response.get("message"):
                     raise AIOGitHubException(response["message"])
 
         return response
+
+    @property
+    def ratelimit_remaining(self):
+        """Return the remaining calls for ratelimit."""
+        return self._ratelimit_remaining
 
 
 class AIOGithubRepository(AIOGitHub):
@@ -101,7 +133,7 @@ class AIOGithubRepository(AIOGitHub):
         """Initialize."""
         super().__init__(token, loop, session)
         self.attributes = attributes
-
+        self._last_commit = None
 
     @property
     def id(self):
@@ -131,9 +163,15 @@ class AIOGithubRepository(AIOGitHub):
     def default_branch(self):
         return self.attributes.get("default_branch")
 
+    @property
+    def last_commit(self):
+        return self._last_commit
+
     @backoff.on_exception(backoff.expo, ClientError, max_tries=3)
     async def get_contents(self, path, ref=None):
         """Retrun a list of repository content objects."""
+        if self._ratelimit_remaining == 0:
+            raise AIOGitHubRatelimit("GitHub Ratelimit error")
         endpoint = "/repos/" + self.full_name + "/contents/" + path
         url = self.baseapi + endpoint
 
@@ -143,11 +181,20 @@ class AIOGithubRepository(AIOGitHub):
 
         async with async_timeout.timeout(20, loop=self.loop):
             response = await self.session.get(url, headers=self.headers, params=params)
+            self._ratelimit_remaining = response.headers["x-ratelimit-remaining"]
             response = await response.json()
+
+            if self._ratelimit_remaining == 0:
+                raise AIOGitHubRatelimit("GitHub Ratelimit error")
 
             if not isinstance(response, list):
                 if response.get("message"):
-                    raise AIOGitHubException(response["message"])
+                    if response.get("message") == "Not Found":
+                        raise AIOGitHubException(
+                            "{} does not exist in the repository.".format(path)
+                        )
+                    else:
+                        raise AIOGitHubException(response["message"])
                 return AIOGithubRepositoryContent(response)
 
             contents = []
@@ -160,12 +207,20 @@ class AIOGithubRepository(AIOGitHub):
     @backoff.on_exception(backoff.expo, ClientError, max_tries=3)
     async def get_releases(self, latest=False):
         """Retrun a list of repository release objects."""
-        endpoint = "/repos/" + self.full_name + "/releases/" + "latest" if latest else ""
+        if self._ratelimit_remaining == 0:
+            raise AIOGitHubRatelimit("GitHub Ratelimit error")
+        endpoint = (
+            "/repos/" + self.full_name + "/releases/" + "latest" if latest else ""
+        )
         url = self.baseapi + endpoint
 
         async with async_timeout.timeout(20, loop=self.loop):
             response = await self.session.get(url, headers=self.headers)
+            self._ratelimit_remaining = response.headers["x-ratelimit-remaining"]
             response = await response.json()
+
+            if self._ratelimit_remaining == 0:
+                raise AIOGitHubRatelimit("GitHub Ratelimit error")
 
             if response.get("message"):
                 return False
@@ -179,6 +234,27 @@ class AIOGithubRepository(AIOGitHub):
                 contents.append(AIOGithubRepositoryRelease(content))
 
         return contents
+
+    @backoff.on_exception(backoff.expo, ClientError, max_tries=3)
+    async def set_last_commit(self):
+        """Retrun a list of repository release objects."""
+        if self._ratelimit_remaining == 0:
+            raise AIOGitHubRatelimit("GitHub Ratelimit error")
+        endpoint = "/repos/" + self.full_name + "/commits/" + self.default_branch
+        url = self.baseapi + endpoint
+
+        async with async_timeout.timeout(20, loop=self.loop):
+            response = await self.session.get(url, headers=self.headers)
+            self._ratelimit_remaining = response.headers["x-ratelimit-remaining"]
+            response = await response.json()
+
+            if self._ratelimit_remaining == 0:
+                raise AIOGitHubRatelimit("GitHub Ratelimit error")
+
+            if response.get("message"):
+                raise AIOGitHubException("No commits")
+
+        self._last_commit = response["sha"][0:7]
 
 
 class AIOGithubRepositoryContent(AIOGitHub):
@@ -206,15 +282,20 @@ class AIOGithubRepositoryContent(AIOGitHub):
 
     @property
     def content(self):
-        return base64.b64decode(bytearray(self.attributes.get("content"), "utf-8")).decode()
+        return base64.b64decode(
+            bytearray(self.attributes.get("content"), "utf-8")
+        ).decode()
 
     @property
     def download_url(self):
-        return self.attributes.get("download_url") or self.attributes.get("browser_download_url")
+        return self.attributes.get("download_url") or self.attributes.get(
+            "browser_download_url"
+        )
 
 
 class AIOGithubRepositoryRelease(AIOGitHub):
     """Repository Release Github API implementation."""
+
     def __init__(self, attributes):
         """Initialize."""
         self.attributes = attributes
@@ -229,7 +310,9 @@ class AIOGithubRepositoryRelease(AIOGitHub):
 
     @property
     def published_at(self):
-        return datetime.strptime(self.attributes.get("published_at"), "%Y-%m-%dT%H:%M:%SZ")
+        return datetime.strptime(
+            self.attributes.get("published_at"), "%Y-%m-%dT%H:%M:%SZ"
+        )
 
     @property
     def draft(self):
