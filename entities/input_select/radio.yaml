@@ -1,0 +1,13 @@
+---
+# Select a radio station
+radio_station:
+  name: 'Select Radio Station:'
+  options:
+    - Radio 538
+    - Q-Music
+    - 3FM
+    - 100% NL
+    - Veronica
+    - Sky Radio
+    - BNR Nieuwsradio
+    - Radio 2
