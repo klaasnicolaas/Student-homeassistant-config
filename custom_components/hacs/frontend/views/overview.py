@@ -3,7 +3,7 @@
 import logging
 from aiohttp import web
 from ...blueprints import HacsViewBase
-from ...const import NO_ELEMENTS
+from ...const import NO_ELEMENTS, ELEMENT_TYPES
 
 _LOGGER = logging.getLogger("custom_components.hacs.frontend")
 
@@ -22,8 +22,9 @@ class HacsOverviewView(HacsViewBase):
         try:
             content = self.base_content
 
-            integrations = []
-            plugins = []
+            types = {}
+            for element_type in ELEMENT_TYPES:
+                types[element_type] = []
 
             if not self.repositories:
                 if not self.data["task_running"]:
@@ -55,53 +56,104 @@ class HacsOverviewView(HacsViewBase):
                     else:
                         card_icon = "<i class='fas fa-cube card-status default'></i>"
 
-                    card = """
-                    <a href="{}/{}" class="hacs-card"">
-                        <div class="hacs-card overview">
-                            <meta topics="{}">
-                            <meta repository_authors="{}">
-                            <span class="hacs-card-title">{} {}</span>
-                            <span class="hacs-card-content">
-                                <p>{}</p>
-                            </span>
-                        </div>
-                    </a>
-                    """.format(
-                        self.url_path["repository"],
-                        repository.repository_id,
-                        repository.topics,
-                        repository.authors,
-                        card_icon,
-                        repository.name,
-                        repository.description,
-                    )
-
-                    if repository.repository_type == "integration":
-                        integrations.append(card)
-
-                    elif repository.repository_type == "plugin":
-                        plugins.append(card)
+                    if self.data.get("hacs", {}).get("view") == "Table":
+                        card = """
+                            <tr class="hacs-table-row" onclick="window.location='{}/{}';">
+                                <td>{}</td>
+                                <td>{}</td>
+                                <td class="hacs-card-content smal-hide">{}</td>
+                                <td class="smal-hide">{}</td>
+                                <td class="smal-hide">{}</td>
+                            </tr>
+                        """.format(
+                            self.url_path["repository"],
+                            repository.repository_id,
+                            card_icon.replace("<i", "<i style='margin-left: 25%'"),
+                            repository.name
+                            if repository.repository_type == "integration"
+                            else repository.name.replace("-", " ")
+                            .replace("_", " ")
+                            .title(),
+                            repository.description,
+                            repository.version_installed
+                            if repository.version_installed
+                            else repository.installed_commit
+                            if repository.installed_commit
+                            else "",
+                            repository.last_release_tag
+                            if repository.last_release_tag
+                            else repository.last_commit,
+                        )
+                        card += "</div></li>"
 
                     else:
-                        continue
 
-                if integrations:
-                    content += "<div class='hacs-overview-container'>"
-                    content += "<h5>CUSTOM INTEGRATIONS</h5>"
-                    content += "<div class='hacs-card-container'>"
-                    for card in integrations:
-                        content += card
-                    content += "</div></div>"
+                        card = """
+                        <a href="{}/{}" class="hacs-card"">
+                            <div class="hacs-card overview">
+                                <span class="hacs-card-title">{} {}</span>
+                                <span class="hacs-card-content">
+                                    <p>{}</p>
+                                </span>
+                            </div>
+                        </a>
+                        """.format(
+                            self.url_path["repository"],
+                            repository.repository_id,
+                            card_icon,
+                            repository.name
+                            if repository.repository_type == "integration"
+                            else repository.name.replace("-", " ")
+                            .replace("_", " ")
+                            .title(),
+                            repository.description,
+                        )
 
-                if plugins:
-                    content += "<div class='hacs-overview-container'>"
-                    content += "<h5>CUSTOM PLUGINS (LOVELACE)</h5>"
-                    content += "<div class='hacs-card-container'>"
-                    for card in plugins:
-                        content += card
-                    content += "</div></div>"
+                    types[repository.repository_type].append(card)
 
-                if not plugins and not integrations:
+                for element_type in sorted(ELEMENT_TYPES):
+                    if types[element_type]:
+                        typedisplay = "{}S".format(element_type.upper())
+                        if element_type == "appdaemon":
+                            typedisplay = "APPDAEMON APPS"
+                        elif element_type == "python_script":
+                            typedisplay = "PYTHON SCRIPTS"
+                        if self.data.get("hacs", {}).get("view") == "Table":
+                            content += """
+                            <div class='hacs-overview-container'>
+                                <div class="row">
+                                    <h5>{}</h5>
+                                    <table class="hacs-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Status</th>
+                                                <th>Name</th>
+                                                <th class="smal-hide">Description</th>
+                                                <th class="smal-hide">Installed</th>
+                                                <th class="smal-hide">Available</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                            """.format(
+                                typedisplay
+                            )
+                            for card in types[element_type]:
+                                content += card
+                            content += """
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            """
+                        else:
+                            content += "<div class='hacs-overview-container'>"
+                            content += "<h5>{}</h5>".format(typedisplay)
+                            content += "<div class='hacs-card-container'>"
+                            for card in types[element_type]:
+                                content += card
+                            content += "</div></div></br></br>"
+
+                if not types:
                     if not self.data["task_running"]:
                         content += NO_ELEMENTS
 

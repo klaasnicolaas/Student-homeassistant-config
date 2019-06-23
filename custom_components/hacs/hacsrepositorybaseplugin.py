@@ -1,6 +1,7 @@
 """Blueprint for HacsRepositoryPlugin."""
 # pylint: disable=too-many-instance-attributes,invalid-name,broad-except
 import logging
+import json
 
 from .aiogithub import AIOGitHubException
 from .blueprints import HacsRepositoryBase
@@ -58,24 +59,31 @@ class HacsRepositoryPlugin(HacsRepositoryBase):
         except AIOGitHubException:
             # This can fail, no big deal.
             pass
+
         await self.set_repository_content()
+
+        try:
+            await self.get_package_content()
+        except AIOGitHubException:
+            # This can fail, no big deal.
+            pass
 
     async def set_repository_content(self):
         """Set repository content attributes."""
-        if self.content_path is None or self.content_path == "":
-            # Try fetching data from REPOROOT
+        if self.content_path is None or self.content_path == "dist":
+            # Try fetching data from REPOROOT/dist
             try:
                 files = []
-                objects = await self.repository.get_contents("", self.ref)
+                objects = await self.repository.get_contents("dist", self.ref)
                 for item in objects:
                     if item.name.endswith(".js"):
                         files.append(item.name)
 
-                # Handler for plugin requirement 3
+                # Handler for plug requirement 3
                 find_file_name = "{}.js".format(self.name.replace("lovelace-", ""))
                 if find_file_name in files or "{}.js".format(self.name) in files:
                     # YES! We got it!
-                    self.content_path = ""
+                    self.content_path = "dist"
                     self.content_objects = objects
                     self.content_files = files
 
@@ -104,20 +112,20 @@ class HacsRepositoryPlugin(HacsRepositoryBase):
             except AIOGitHubException:
                 pass
 
-        if self.content_path is None or self.content_path == "dist":
-            # Try fetching data from REPOROOT/dist
+        if self.content_path is None or self.content_path == "":
+            # Try fetching data from REPOROOT
             try:
                 files = []
-                objects = await self.repository.get_contents("dist", self.ref)
+                objects = await self.repository.get_contents("", self.ref)
                 for item in objects:
                     if item.name.endswith(".js"):
                         files.append(item.name)
 
-                # Handler for plug requirement 3
+                # Handler for plugin requirement 3
                 find_file_name = "{}.js".format(self.name.replace("lovelace-", ""))
                 if find_file_name in files or "{}.js".format(self.name) in files:
                     # YES! We got it!
-                    self.content_path = "dist"
+                    self.content_path = ""
                     self.content_objects = objects
                     self.content_files = files
 
@@ -126,3 +134,13 @@ class HacsRepositoryPlugin(HacsRepositoryBase):
 
         if not self.content_files or not self.content_objects:
             raise HacsRequirement("No acceptable js files found")
+
+    async def get_package_content(self):
+        """Get package content."""
+        package = None
+
+        package = await self.repository.get_contents("package.json")
+        package = json.loads(package.content)
+
+        if package:
+            self.authors = package["author"]

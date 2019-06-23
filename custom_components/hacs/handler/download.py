@@ -13,7 +13,7 @@ from ..exceptions import HacsNotSoBasicException
 _LOGGER = logging.getLogger("custom_components.hacs.download")
 
 
-@backoff.on_exception(backoff.expo, Exception, max_tries=3)
+@backoff.on_exception(backoff.expo, Exception, max_tries=5)
 async def async_download_file(hass, url):
     """
     Download files, and return the content.
@@ -34,10 +34,7 @@ async def async_download_file(hass, url):
 
         # Make sure that we got a valid result
         if request.status == 200:
-            if url.endswith(".gz"):
-                result = await request.read()
-            else:
-                result = await request.text()
+            result = await request.read()
         else:
             raise HacsNotSoBasicException(
                 "Got status code {} when trying to download {}".format(

@@ -5,7 +5,7 @@ from aiohttp import web
 from homeassistant.const import __version__ as HAVERSION
 
 from ...blueprints import HacsViewBase
-from ...const import ISSUE_URL, NAME_LONG
+from ...const import ISSUE_URL, NAME_LONG, ELEMENT_TYPES, VERSION
 
 _LOGGER = logging.getLogger("custom_components.hacs.frontend")
 
@@ -27,61 +27,16 @@ class HacsSettingsView(HacsViewBase):
             hidden = []
             hacs = self.repositories.get("172733314")
 
+            if hacs is None:
+                return web.Response(
+                    body=self.base_content, content_type="text/html", charset="utf-8"
+                )
+
             # Get the message sendt to us:
             message = request.rel_url.query.get("message")
-
-            # HACS restart pending
-            if hacs.pending_restart:
-                hacs_restart = """
-                    <div class='container'>
-                        <div class="row">
-                            <div class="col s12">
-                                <div class="card-panel orange darken-4">
-                                    <div class="card-content white-text">
-                                        <span>
-                                            You need to restart Home Assisant to start using the latest version of HACS.
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                """
-            else:
-                hacs_restart = ""
-
-            # HACS update pending
-            if hacs.pending_update:
-                hacs_update = """
-                    <div class='container'>
-                        <div class="row">
-                            <div class="col s12">
-                                <div class="card  red darken-4">
-                                    <div class="card-content white-text">
-                                        <span class="card-title">UPDATE PENDING</span>
-
-                                        <p>There is an update pending for HACS!.</p>
-                                        </br>
-                                        <p><b>Current version:</b> {}</p>
-                                        <p><b>Available version:</b> {}</p>
-                                    </div>
-
-                                    <div class="card-action">
-                                        <a href="{}/repository_install/172733314" onclick="ShowProgressBar()">UPGRADE</a>
-                                        <a href="https://github.com/custom-components/hacs/releases/tag/{}" target="_blank">CHANGELOG</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                """.format(
-                    hacs.version_installed,
-                    hacs.last_release_tag,
-                    self.url_path["api"],
-                    hacs.last_release_tag,
-                )
-            else:
-                hacs_update = ""
+            if message is None:
+                if VERSION == "DEV":
+                    message = "You are running a DEV version of HACS, this is not intended for regular use."
 
             if message != None:
                 custom_message = """
@@ -104,8 +59,20 @@ class HacsSettingsView(HacsViewBase):
             else:
                 custom_message = ""
 
+            pending = ""
             # Repos:
             for repository in self.repositories_list_repo:
+                if repository.pending_update:
+                    pending += "<p>- {} ({} -> {})</p></br>".format(
+                        repository.name,
+                        repository.version_installed
+                        if repository.version_installed is not None
+                        else repository.installed_commit,
+                        repository.last_release_tag
+                        if repository.last_release_tag is not None
+                        else repository.last_commit,
+                    )
+
                 if repository.hide and repository.repository_id != "172733314":
                     line = '<li class="collection-item hacscolor hacslist"><div>'
                     line += """
@@ -159,21 +126,39 @@ class HacsSettingsView(HacsViewBase):
             content += """
                 <div class='hacs-overview-container'>
                     {}
-                    {}
-                    {}
                 </div>
             """.format(
-                hacs_restart, hacs_update, custom_message
+                custom_message
             )
 
             # HACS card
+            types = ["Grid", "Table"]
+            selected = self.data.get("hacs", {}).get("view", "Grid")
+            if selected is None:
+                selected = "Grid"
+            if selected in types:
+                types.remove(selected)
+            overview_display = """
+                <form action="{}/frontend/view" name="overview_display"
+                        method="post" accept-charset="utf-8"
+                        enctype="application/x-www-form-urlencoded"
+                        class="hacs-form">
+                    <select name="view_type" class="hacs-select" onchange="document.getElementsByName('overview_display')[0].submit()">
+                        <option class="hacscolor" value="{selected}">{selected}</option>
+                        <option class="hacscolor" value="{option}">{option}</option>
+                    </select>
+                </form>
+            """.format(
+                self.url_path["api"], selected=selected, option=types[0]
+            )
             content += """
                 <div class='hacs-overview-container'>
                     <div class="hacs-card-standalone">
                         <h5>{}</h5>
-                        <b>HACS version:</b> {}
-                        {}</br>
+                        <b>HACS version:</b> {}{}</br>
                         <b>Home Assistant version:</b> {}</br>
+                        </br>
+                        <b>Display:</b> {}
                     </div>
                 </div>
             """.format(
@@ -181,18 +166,52 @@ class HacsSettingsView(HacsViewBase):
                 hacs.version_installed,
                 " <b>(RESTART PENDING!)</b>" if hacs.pending_restart else "",
                 HAVERSION,
+                overview_display,
             )
 
             # The buttons, must have buttons
+            modal1 = """
+                <div id="modal1" class="modal hacscolor">
+                    <div class="modal-content">
+                    <h5>Pending Upgrades</h5>
+                    {}
+                    <p>Be carefull using this feature, elements may contain breaking changes,
+                    make sure you read the release notes for all the elements in the list above.</p>
+                    </div>
+                    <div class="modal-footer hacscolor">
+                        {}
+                        <a {} href="{}/repositories_upgrade_all/notinuse" class='waves-effect waves-light btn hacsbutton' onclick="ShowProgressBar()" style="background-color: var(--google-red-500) !important; font-weight: bold;">
+                            UPGRADE ALL
+                        </a>
+                    </div>
+                </div>
+            """.format(
+                pending,
+                "<p>Background task is running, upgrade is disabled.</p>"
+                if self.data["task_running"]
+                else "",
+                "style='display: none'" if self.data["task_running"] else "",
+                self.url_path["api"],
+            )
+
+            upgrade_all_btn = """
+                <a class="waves-effect waves-light btn modal-trigger hacsbutton" href="#modal1" onclick="ShowProgressBar()" style="background-color: var(--google-red-500) !important; font-weight: bold;">UPGRADE ALL</a>
+            """
+
+            if pending == "":
+                upgrade_all_btn = ""
+
             content += """
+                {}
                 <div class='hacs-overview-container'>
                     <a href="{}/repositories_reload/notinuse" class='waves-effect waves-light btn hacsbutton' onclick="ShowProgressBar()">
                         RELOAD DATA
                     </a>
+                    {}
                     <a href='{}/new/choose' class='waves-effect waves-light btn right hacsbutton' target="_blank">
                         OPEN ISSUE
                     </a>
-                    <a href='https://github.com/custom-components/hacs' class='waves-effect waves-light btn right hacsbutton' target="_blank">
+                    <a rel='noreferrer' href='https://github.com/custom-components/hacs' class='waves-effect waves-light btn right hacsbutton' target="_blank">
                         HACS REPO
                     </a>
                     <a href="{}/log/get" class='waves-effect waves-light btn right hacsbutton' onclick="ShowProgressBar()">
@@ -200,7 +219,11 @@ class HacsSettingsView(HacsViewBase):
                     </a>
                 </div>
             """.format(
-                self.url_path["api"], ISSUE_URL, self.url_path["api"]
+                modal1,
+                self.url_path["api"],
+                upgrade_all_btn,
+                ISSUE_URL,
+                self.url_path["api"],
             )
 
             ## Integration URL's
@@ -212,6 +235,13 @@ class HacsSettingsView(HacsViewBase):
             """
             for line in repository_lines:
                 content += line
+
+            element_types = ""
+            for element_type in sorted(ELEMENT_TYPES):
+                element_types += "<option class='hacscolor' value='{}'>{}</option>".format(
+                    element_type, element_type.title()
+                )
+
             content += """
                         </ul>
                         <form action="{}/repository_register/new" 
@@ -220,10 +250,9 @@ class HacsSettingsView(HacsViewBase):
                             <input id="custom_url" type="text" name="custom_url" 
                                     placeholder="ADD CUSTOM REPOSITORY" style="width: 70%; color: var(--primary-text-color)">
 
-                            <select name="repository_type" class="repository-select">
+                            <select name="repository_type" class="hacs-select">
                                 <option disabled selected value>type</option>
-                                <option value="integration">Integration</option>
-                                <option value="plugin">Plugin</option>
+                                {}
                             </select>
 
                             <button class="btn waves-effect waves-light right" 
@@ -234,7 +263,7 @@ class HacsSettingsView(HacsViewBase):
                     </div>
                 </div>
             """.format(
-                self.url_path["api"]
+                self.url_path["api"], element_types
             )
 
             ## Hidden repositories
@@ -245,7 +274,7 @@ class HacsSettingsView(HacsViewBase):
                             <ul class="collection with-header hacslist">
                                 <li class="collection-header hacscolor hacslist"><h5>HIDDEN REPOSITORIES</h5></li>
                 """
-                for line in hidden:
+                for line in sorted(hidden):
                     content += line
                 content += """
                             </ul>

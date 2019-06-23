@@ -78,9 +78,38 @@ class HacsAPIView(HacsViewBase):
             await self.storage.set()
             raise web.HTTPFound(self.url_path["settings"])
 
+        # Beta
+        ## Show beta
+        elif element == "repository_show_beta":
+            repository = self.repositories[action]
+            repository.show_beta = True
+            await repository.update()
+            await self.storage.set()
+            raise web.HTTPFound(
+                "{}/{}".format(self.url_path["repository"], repository.repository_id)
+            )
+
+        ## Hide beta
+        elif element == "repository_hide_beta":
+            repository = self.repositories[action]
+            repository.show_beta = False
+            await repository.update()
+            await self.storage.set()
+            raise web.HTTPFound(
+                "{}/{}".format(self.url_path["repository"], repository.repository_id)
+            )
+
         # Remove a custom repository from the settings view
         elif element == "repositories_reload":
             self.hass.async_create_task(self.update_repositories("Run it!"))
+            raise web.HTTPFound(self.url_path["settings"])
+
+        elif element == "repositories_upgrade_all":
+            for repository in self.repositories:
+                repository = self.repositories[repository]
+                if repository.pending_update:
+                    await repository.install()
+
             raise web.HTTPFound(self.url_path["settings"])
 
         # Show content of hacs
@@ -114,7 +143,13 @@ class HacsAPIView(HacsViewBase):
 
         postdata = await request.post()
 
-        if element == "repository_register":
+        if element == "frontend":
+            if action == "view":
+                self.data["hacs"]["view"] = postdata["view_type"]
+                await self.storage.set()
+                raise web.HTTPFound(self.url_path["settings"])
+
+        elif element == "repository_register":
             repository_name = postdata["custom_url"]
             if "repository_type" in postdata:
                 repository_type = postdata["repository_type"]
@@ -136,6 +171,24 @@ class HacsAPIView(HacsViewBase):
 
                 # If it still have content, continue.
                 if repository_name != "":
+                    if len(repository_name.split("/")) != 2:
+                        message = "{} is not a valid format correct format is 'https://github.com/DEVELOPER/REPOSITORY' or 'DEVELOPER/REPOSITORY'.".format(
+                            repository_name
+                        )
+
+                        raise web.HTTPFound(
+                            "{}?message={}".format(self.url_path["settings"], message)
+                        )
+                    is_known_repository = await self.is_known_repository(
+                        repository_name
+                    )
+                    if is_known_repository:
+                        message = "{} is allready registered, look for it in the store.".format(
+                            repository_name
+                        )
+                        raise web.HTTPFound(
+                            "{}?message={}".format(self.url_path["settings"], message)
+                        )
                     if repository_name in self.blacklist:
                         self.blacklist.remove(repository_name)
                     repository, result = await self.register_new_repository(

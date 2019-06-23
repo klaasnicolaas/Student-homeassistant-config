@@ -16,7 +16,13 @@ class HacsStorage(HacsBase):
 
     async def get(self):
         """Read HACS data to storage."""
-        from .blueprints import HacsRepositoryIntegration, HacsRepositoryPlugin
+        from .blueprints import (
+            HacsRepositoryAppDaemon,
+            HacsRepositoryIntegration,
+            HacsRepositoryPlugin,
+            HacsRepositoryPythonScripts,
+            HacsRepositoryThemes,
+        )
 
         datastore = "{}/.storage/{}".format(self.config_dir, STORENAME)
         _LOGGER.debug("Reading from datastore %s.", datastore)
@@ -35,6 +41,7 @@ class HacsStorage(HacsBase):
 
         # Restore data about HACS
         self.data["hacs"]["schema"] = store_data["hacs"].get("schema")
+        self.data["hacs"]["view"] = store_data["hacs"].get("view")
 
         # Nothing to see here.
         if "repositories" not in store_data:
@@ -49,12 +56,22 @@ class HacsStorage(HacsBase):
                 repository["repository_type"], repository["repository_name"]
             )
             if status:
-                await self.restore(store_data, repository)
+                repository = await self.restore(store_data, repository)
+                if repository.show_beta:
+                    await repository.set_repository_releases()
 
         # Get new repository objects
-        integrations, plugins = await self.get_repositories()
+        appdaemon, integrations, plugins, python_scripts, themes = (
+            await self.get_repositories()
+        )
 
-        repository_types = {"integration": integrations, "plugin": plugins}
+        repository_types = {
+            "appdaemon": appdaemon,
+            "integration": integrations,
+            "plugin": plugins,
+            "python_script": python_scripts,
+            "theme": themes,
+        }
 
         for repository_type in repository_types:
             for repository in repository_types[repository_type]:
@@ -66,12 +83,24 @@ class HacsStorage(HacsBase):
                     continue
                 else:
                     _LOGGER.info("Loading %s", repository.full_name)
-                    if repository_type == "integration":
+                    if repository_type == "appdaemon":
+                        repository = HacsRepositoryAppDaemon(
+                            repository.full_name, repository
+                        )
+                    elif repository_type == "integration":
                         repository = HacsRepositoryIntegration(
                             repository.full_name, repository
                         )
                     elif repository_type == "plugin":
                         repository = HacsRepositoryPlugin(
+                            repository.full_name, repository
+                        )
+                    elif repository_type == "python_script":
+                        repository = HacsRepositoryPythonScripts(
+                            repository.full_name, repository
+                        )
+                    elif repository_type == "theme":
+                        repository = HacsRepositoryThemes(
                             repository.full_name, repository
                         )
                     else:
@@ -89,13 +118,17 @@ class HacsStorage(HacsBase):
                         continue
 
                     # Restore attributes
-                    await self.restore(store_data, repository)
+                    repository = await self.restore(store_data, repository)
+
+                    # If BETA get the proper release
+                    if repository.show_beta:
+                        await repository.set_repository_releases()
 
                     # Restore complete
                     self.repositories[repository.repository_id] = repository
 
-        await self.set()
         self.data["task_running"] = False
+        await self.set()
         return store_data
 
     async def set(self):
@@ -142,7 +175,7 @@ class HacsStorage(HacsBase):
     async def restore(self, store_data, repository):
         """Restore saved data to a repository object."""
         if str(repository.repository_id) not in store_data["repositories"]:
-            return
+            return repository
 
         storeddata = store_data["repositories"][str(repository.repository_id)]
 
@@ -153,3 +186,5 @@ class HacsStorage(HacsBase):
             if attribute in ["custom"]:
                 continue
             repository.__setattr__(attribute, storeddata[attribute])
+
+        return repository

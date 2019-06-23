@@ -68,7 +68,7 @@ class HacsRepositoryView(HacsViewBase):
                                 <div class="card-panel orange darken-4">
                                     <div class="card-content white-text">
                                         <span>
-                                            You need to restart (and potentially reconfigure) Home Assisant, for your last operation to be loaded.
+                                            You need to restart (and potentially reconfigure) Home Assistant, for your last operation to be loaded.
                                         </span>
                                     </div>
                                 </div>
@@ -88,9 +88,9 @@ class HacsRepositoryView(HacsViewBase):
                     info = info.replace("<h2>", "<h5>").replace("</h2>", "</h5>")
                     info = info.replace("<h1>", "<h4>").replace("</h1>", "</h4>")
                     info = info.replace("<code>", "<code class='codeinfo'>")
-                    info = info.replace("<table>", "<table class='white-text'>")
                     info = info.replace(
-                        '<a href="http', '<a target="_blank" href="http'
+                        '<a href="http',
+                        '<a rel="noreferrer" target="_blank" href="http',
                     )
                     info = info.replace("<ul>", "")
                     info = info.replace("</ul>", "")
@@ -101,32 +101,34 @@ class HacsRepositoryView(HacsViewBase):
                 info = ""
 
             if repository.authors:
-                authors = "<p>Author(s): "
-                for author in repository.authors:
-                    if "@" in author:
-                        author = author.split("@")[-1]
-                    authors += "<a href='https://github.com/{author}' target='_blank' style='color: var(--primary-color) !important; margin: 2'> @{author}</a>".format(
-                        author=author
-                    )
-                authors += "</p>"
+                if repository.repository_type == "integration":
+                    authors = "<p>Author(s): "
+                    for author in repository.authors:
+                        if "@" in author:
+                            author = author.split("@")[-1]
+                        authors += "<a rel='noreferrer' href='https://github.com/{author}' target='_blank' style='color: var(--primary-color) !important; margin: 2'> @{author}</a>".format(
+                            author=author
+                        )
+                    authors += "</p>"
+                else:
+                    authors = "<p>Author: {}</p>".format(repository.authors)
             else:
                 authors = ""
 
-            if repository.repository_type == "integration":
+            if (
+                repository.repository_type == "integration"
+                and repository.repository_id != "172733314"
+            ):
                 note = """
                     </br>
                     <i>
                         When installed, this will be located in '{}',
                         you still need to add it to your 'configuration.yaml' file.
-                    </i></br></br>
-                    <i>
-                        To learn more about how to configure this,
-                        click the "REPOSITORY" link below to get to the repository for this integration.
                     </i>
                 """.format(
                     repository.local_path
                 )
-            else:
+            elif repository.repository_type == "plugin":
                 if repository.javascript_type is None:
                     llnote = LOVELACE_EXAMLE_URL.format(
                         repository.name, repository.name.replace("lovelace-", "")
@@ -151,13 +153,32 @@ class HacsRepositoryView(HacsViewBase):
                         {}
                     <a title="Copy content to clipboard" id ="lovelacecopy" onclick="CopyToLovelaceExampleToClipboard()"><i class="fa fa-copy"></i></a>
                     {}
-                    </br></br><i>
-                        To learn more about how to configure this,
-                        click the "REPOSITORY" link below button to get to the repository for this plugin.
-                    </i>
                 """.format(
                     repository.local_path, llnote, jsnote
                 )
+            elif repository.repository_type == "appdaemon":
+                note = """
+                    </br>
+                    <i>
+                        When installed, this will be located in '{}',
+                        you still need to add it to your 'apps.yaml' file.
+                    </i>
+                """.format(
+                    repository.local_path
+                )
+            else:
+                note = ""
+
+            note += """
+                    </br></br><i>
+                        To learn more about how to configure this,
+                        click the "REPOSITORY" link below button to get to the repository for this {}.
+                    </i>
+            """.format(
+                "AppDaemon app"
+                if repository.repository_type == "appdaemon"
+                else repository.repository_type
+            )
 
             if not repository.installed:
                 main_action = "INSTALL"
@@ -197,6 +218,26 @@ class HacsRepositoryView(HacsViewBase):
                         self.url_path["api"], repository.repository_id
                     )
 
+            # Beta
+            if repository.last_release_tag is not None:
+                show_beta = '<li><a class="dropdown-list-item" href="{}/repository_{}_beta/{}" onclick="ShowProgressBar()">{}</a></li>'
+                if repository.show_beta:
+                    show_beta = show_beta.format(
+                        self.url_path["api"],
+                        "hide",
+                        repository.repository_id,
+                        "Hide Beta",
+                    )
+                else:
+                    show_beta = show_beta.format(
+                        self.url_path["api"],
+                        "show",
+                        repository.repository_id,
+                        "Show Beta",
+                    )
+            else:
+                show_beta = ""
+
             content = self.base_content
 
             if repository.version_installed is not None:
@@ -223,13 +264,13 @@ class HacsRepositoryView(HacsViewBase):
             last_up = ""
 
             if repository.pending_update and repository.version_installed is not None:
-                changelog = "<a href='https://github.com/{}/releases' target='_blank' style='color: var(--primary-color) !important'>CHANGELOG</a>".format(
-                    repository.repository_name
+                changelog = "<a rel='noreferrer' href='https://github.com/{}/releases/{}' target='_blank' style='color: var(--primary-color) !important'>CHANGELOG</a>".format(
+                    repository.repository_name, repository.ref.replace("/tags", "")
                 )
             else:
                 changelog = ""
 
-            if repository.installed:
+            if repository.installed and repository.repository_id != "172733314":
                 uninstall = "<a href='{}/repository_uninstall/{}' style='float: right; color: var(--google-red-500) !important; font-weight: bold;' onclick='ShowProgressBar()'>UNINSTALL</a>".format(
                     self.url_path["api"], repository.repository_id
                 )
@@ -254,8 +295,9 @@ class HacsRepositoryView(HacsViewBase):
                                         <ul id='dropdown1' class='dropdown-content'>
                                             <li><a class="dropdown-list-item" href="{}/repository_update_repository/{}" onclick="ShowProgressBar()">Reload</a></li>
                                             {}
-                                            <li><a class="dropdown-list-item" href="https://github.com/{}/issues/" target="_blank">Open a issue</a></li>
-                                            <li><a class="dropdown-list-item" href="https://github.com/custom-components/hacs/issues/new?title={}&labels=flag&assignee=ludeeus&template=flag.md" target="_blank">Flag this</a></li>
+                                            {}
+                                            <li><a class="dropdown-list-item" rel='noreferrer' href="https://github.com/{}/issues/" target="_blank">Open a issue</a></li>
+                                            <li><a class="dropdown-list-item" rel='noreferrer' href="https://github.com/custom-components/hacs/issues/new?title={}&labels=flag&assignee=ludeeus&template=flag.md" target="_blank">Flag this</a></li>
                                         </ul>
                                     </span>
                                     <p>{}</p></br>
@@ -273,7 +315,7 @@ class HacsRepositoryView(HacsViewBase):
                                         {}
                                     </a>
                                     {}
-                                    <a href='https://github.com/{}' target='_blank' style='color: var(--primary-color) !important'>repository</a>
+                                    <a rel='noreferrer' href='https://github.com/{}' target='_blank' style='color: var(--primary-color) !important'>repository</a>
                                     {}
                                     {}
                                 </div>
@@ -285,9 +327,12 @@ class HacsRepositoryView(HacsViewBase):
             """.format(
                 custom_message,
                 pending_restart,
-                repository.name,
+                repository.name
+                if repository.repository_type == "integration"
+                else repository.name.replace("-", " ").replace("_", " ").title(),
                 self.url_path["api"],
                 repository.repository_id,
+                show_beta,
                 hide_option,
                 repository.repository_name,
                 repository.name,

@@ -1,8 +1,8 @@
 """Constants for HACS"""
-VERSION = "0.8.0"
+VERSION = "0.9.0"
 NAME_LONG = "HACS (Home Assistant Community Store)"
 NAME_SHORT = "HACS"
-STORAGE_VERSION = "1"
+STORAGE_VERSION = "2"
 STORENAME = "hacs"
 PROJECT_URL = "https://github.com/custom-components/hacs/"
 CUSTOM_UPDATER_LOCATIONS = [
@@ -73,7 +73,21 @@ ERROR = [
 ################################
 
 DEFAULT_REPOSITORIES = {
-    "integration": ["StyraHem/ShellyForHASS", "isabellaalstrom/sensor.krisinformation"],
+    "appdaemon": [
+        "apop880/SmartThings-Button",
+        "apop880/White-Noise",
+        "apop880/Night-Mode",
+    ],
+    "integration": [
+        "StyraHem/ShellyForHASS",
+        "isabellaalstrom/sensor.krisinformation",
+        "JurajNyiri/HomeAssistant-Tavos",
+        "JurajNyiri/HomeAssistant-Atrea",
+        "TimSoethout/goodwe-sems-home-assistant",
+        "bramkragten/lyric",
+        "bramkragten/mind",
+        "bouwew/sems2mqtt",
+    ],
     "plugin": [
         "maykar/compact-custom-header",
         "maykar/lovelace-swipe-navigation",
@@ -86,6 +100,14 @@ DEFAULT_REPOSITORIES = {
         "thomasloven/lovelace-card-mod",
         "thomasloven/lovelace-markdown-mod",
         "thomasloven/lovelace-slider-entity-row",
+        "thomasloven/lovelace-fold-entity-row",
         "isabellaalstrom/krisinfo-card",
+        "tcarlsen/lovelace-light-with-profiles",
+        "atomic7777/atomic_calendar",
+        "bramkragten/weather-card",
+        "bramkragten/swipe-card",
+        "CyrisXD/love-lock-card",
     ],
+    "python_script": [],
+    "theme": [],
 }

@@ -45,7 +45,7 @@ class HacsRepositoryBase(HacsBase):
         self.repository = None
         self.repository_name = None
         self.repository_type = None
-        self.show_beta = True
+        self.show_beta = False
         self.track = True
         self.version_installed = None
 
@@ -64,9 +64,15 @@ class HacsRepositoryBase(HacsBase):
         """Return flag if the repository is custom."""
         if self.repository_name.split("/")[0] in ["custom-components", "custom-cards"]:
             return False
+        elif self.repository_name in DEFAULT_REPOSITORIES["appdaemon"]:
+            return False
         elif self.repository_name in DEFAULT_REPOSITORIES["integration"]:
             return False
         elif self.repository_name in DEFAULT_REPOSITORIES["plugin"]:
+            return False
+        elif self.repository_name in DEFAULT_REPOSITORIES["python_script"]:
+            return False
+        elif self.repository_name in DEFAULT_REPOSITORIES["theme"]:
             return False
         return True
 
@@ -74,7 +80,10 @@ class HacsRepositoryBase(HacsBase):
     def local_path(self):
         """Return local path."""
         local_path = None
-        if self.repository_type == "integration":
+        if self.repository_type == "appdaemon":
+            local_path = "{}/appdaemon/apps/{}".format(self.config_dir, self.name)
+
+        elif self.repository_type == "integration":
             if self.domain is None:
                 local_path = None
             else:
@@ -84,6 +93,13 @@ class HacsRepositoryBase(HacsBase):
 
         elif self.repository_type == "plugin":
             local_path = "{}/www/community/{}".format(self.config_dir, self.name)
+
+        elif self.repository_type == "python_script":
+            local_path = "{}/python_scripts".format(self.config_dir)
+
+        elif self.repository_type == "theme":
+            local_path = "{}/themes".format(self.config_dir)
+
         return local_path
 
     @property
@@ -127,7 +143,7 @@ class HacsRepositoryBase(HacsBase):
 
         # Hide HACS
         if self.repository_name == "custom-components/hacs":
-            self.hide = True
+            self.hide = False
             self.installed = True
             self.version_installed = VERSION
 
@@ -171,7 +187,10 @@ class HacsRepositoryBase(HacsBase):
         """Download the content of a directory."""
         try:
             # Get content
-            if self.content_path == "release":
+            if self.content_path == "release" or self.repository_type in [
+                "python_script",
+                "theme",
+            ]:
                 contents = self.content_objects
             else:
                 contents = await self.repository.get_contents(
@@ -187,6 +206,7 @@ class HacsRepositoryBase(HacsBase):
                 if (
                     self.repository_type == "plugin"
                     and not content_object.name.endswith(".js")
+                    and self.content_path != "dist"
                 ):
                     # For plugins we currently only need .js files
                     continue
@@ -205,18 +225,24 @@ class HacsRepositoryBase(HacsBase):
                     continue
 
                 # Save the content of the file.
-                if self.repository_name == "custom-components/hacs":
-                    local_directory = "{}/{}".format(
-                        self.config_dir, content_object.path
+                if (
+                    self.repository_type in ["python_script", "theme"]
+                    or self.content_path == "release"
+                ):
+                    local_directory = self.local_path
+                else:
+                    _content_path = content_object.path
+                    _content_path = _content_path.replace(
+                        "{}/".format(self.content_path), ""
                     )
+
+                    local_directory = "{}/{}".format(self.local_path, _content_path)
                     local_directory = local_directory.split(
                         "/{}".format(content_object.name)
                     )[0]
-                    _LOGGER.debug(content_object.path)
-                    _LOGGER.debug(local_directory)
 
-                    # Check local directory
-                    pathlib.Path(local_directory).mkdir(parents=True, exist_ok=True)
+                # Check local directory
+                pathlib.Path(local_directory).mkdir(parents=True, exist_ok=True)
 
                 local_file_path = "{}/{}".format(local_directory, content_object.name)
                 await async_save_file(local_file_path, filecontent)
@@ -255,6 +281,17 @@ class HacsRepositoryBase(HacsBase):
                 self.repository_name,
                 (datetime.now() - start_time).seconds,
             )
+
+        # Dynamic version bump
+        if self.repository_name == "custom-components/hacs":
+            _LOGGER.info("Setting version for HACS.")
+            const = "{}/const.py".format(self.local_path)
+            with open(const) as f:
+                newText = f.read().replace(
+                    'VERSION = "DEV"', 'VERSION = "{}"'.format(self.version_installed)
+                )
+            with open(const, "w") as f:
+                f.write(newText)
 
     async def remove(self):
         """Run remove tasks."""
@@ -303,20 +340,29 @@ class HacsRepositoryBase(HacsBase):
     async def remove_local_directory(self):
         """Check the local directory."""
         try:
-            if os.path.exists(self.local_path):
-                _LOGGER.debug(
-                    "(%s) - Removing %s", self.repository_name, self.local_path
-                )
-                shutil.rmtree(self.local_path)
+            if self.repository_type == "python_script":
+                local_path = "{}/{}.py".format(self.local_path, self.name)
+            elif self.repository_type == "theme":
+                local_path = "{}/{}.yaml".format(self.local_path, self.name)
+            else:
+                local_path = self.local_path
 
-                while os.path.exists(self.local_path):
+            if os.path.exists(local_path):
+                _LOGGER.debug("(%s) - Removing %s", self.repository_name, local_path)
+
+                if self.repository_type in ["python_script", "theme"]:
+                    os.remove(local_path)
+                else:
+                    shutil.rmtree(local_path)
+
+                while os.path.exists(local_path):
                     await sleep(1)
 
         except Exception as exception:
             _LOGGER.debug(
-                "(%s) - Removing directory %s failed with %s",
+                "(%s) - Removing %s failed with %s",
                 self.repository_name,
-                self.local_path,
+                local_path,
                 exception,
             )
             return
@@ -328,14 +374,18 @@ class HacsRepositoryBase(HacsBase):
         elif self.ref is None:
             raise HacsRepositoryInfo("GitHub repository ref is missing")
 
-        try:
-            # Assign to a temp var so we can check it before using it.
-            temp = await self.repository.get_contents("info.md", self.ref)
-            self.additional_info = temp.content
-
-        except Exception:
-            # We kinda expect this one to fail
+        # Looking for info file
+        info = None
+        info_files = ["info", "info.md"]
+        root = await self.repository.get_contents("", self.ref)
+        for file in root:
+            if file.name.lower() in info_files:
+                info = await self.repository.get_contents(file.name, self.ref)
+                break
+        if info is None:
             self.additional_info = ""
+        else:
+            self.additional_info = info.content
 
     async def set_repository(self):
         """Set the AIOGitHub repository object."""
@@ -347,7 +397,12 @@ class HacsRepositoryBase(HacsBase):
             raise HacsRepositoryInfo("GitHub repository object is missing")
 
         # Assign to a temp vars so we can check it before using it.
-        temp = await self.repository.get_releases(True)
+        if self.show_beta:
+            temp = await self.repository.get_releases()
+            if temp:
+                temp = temp[0]
+        else:
+            temp = await self.repository.get_releases(True)
 
         if not temp:
             return
