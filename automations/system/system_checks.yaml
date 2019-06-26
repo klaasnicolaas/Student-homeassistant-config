@@ -3,7 +3,6 @@
 # Perform checks for sensor and custom updater
 #
 - alias: '[System] - Perform system checks'
-  initial_state: true
   trigger:
     - platform: homeassistant
       event: start

@@ -3,7 +3,6 @@
 #
 
 - alias: '[System] - Notify when SSL certificate will expire'
-  initial_state: true
   trigger:
     - platform: numeric_state
       entity_id: sensor.ssl_certificate_expiry

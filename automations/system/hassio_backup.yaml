@@ -2,7 +2,6 @@
 #
 # Makes a backup of hassio every Sunday at 3:00 am so that I can store it on my NAS.
 - alias: '[System] - Make weekly Hassio backup'
-  initial_state: true
   trigger:
     - platform: time
       at: '03:00:00'
@@ -23,7 +22,6 @@
 
 # Manually make a backup via a telegram command
 - alias: '[System] - Make manual Hassio backup via Telegram'
-  initial_state: true
   trigger:
     - platform: event
       event_type: telegram_command

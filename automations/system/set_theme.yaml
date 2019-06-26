@@ -1,6 +1,5 @@
 ---
 - alias: '[System] - Set HA theme'
-  initial_state: true
   trigger:
     - platform: homeassistant
       event: start
