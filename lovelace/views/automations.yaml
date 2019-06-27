@@ -5,7 +5,6 @@ icon: mdi:creation
 title: Automatisering
 path: automations
 cards:
-  - !include ../cards/compact_custom_header_main.yaml
   # System
   - type: custom:monster-card
     card:

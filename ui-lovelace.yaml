@@ -9,6 +9,22 @@
 #
 title: Student Home
 resources: !include_dir_list lovelace/resources
+cch:
+  menu: show
+  notifications: clock
+  voice: hide
+  options: show
+  clock_format: 24
+  clock_am_pm: false
+  clock_date: false
+  exceptions:
+    - conditions:
+        user_agent: Mobile
+      config:
+        menu: overflow
+        notifications: overflow
+        swipe: true
+        swipe_animate: swipe
 views:
   - !include lovelace/views/dashboard.yaml
   - !include lovelace/views/media_player.yaml

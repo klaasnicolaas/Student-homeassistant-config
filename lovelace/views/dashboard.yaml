@@ -5,7 +5,6 @@ title: Thuis
 icon: mdi:home-assistant
 path: home
 cards:
-  - !include ../cards/compact_custom_header_main.yaml
   - type: horizontal-stack
     cards:
       - image: /local/klaas-overlay.jpg
@@ -38,10 +37,6 @@ cards:
             type: state-label
             entity: binary_sensor.marlene_thuis
         type: picture-elements
-
-  # Shows door and window state
-  # - type: glance
-  # entities:
 
   - type: vertical-stack
     cards:
@@ -147,6 +142,7 @@ cards:
         toggle: true
         hide_when_off: true
 
+  # Show door and window sensors
   - type: glance
     title: Ramen & Deuren
     entities:
@@ -155,6 +151,21 @@ cards:
       - entity: binary_sensor.openclose_sensor_3
       - entity: binary_sensor.openclose_sensor_4
 
+  # Curtains
+  - type: 'custom:love-lock-card'
+    tite: Gordijnen
+    popup: confirm
+    cards:
+      - type: entities
+        title: Gordijnen
+        show_header_toggle: false
+        entities:
+          - entity: cover.curtain_window
+            name: Gordijn
+          - entity: binary_sensor.gordijn
+            name: Status van de gordijn
+
+  # Temperature and humidity in house
   - type: vertical-stack
     cards:
       - type: custom:mini-graph-card

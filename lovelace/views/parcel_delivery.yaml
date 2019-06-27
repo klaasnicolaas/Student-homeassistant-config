@@ -5,7 +5,6 @@ title: Pakketjes
 icon: mdi:email
 path: post
 cards:
-  - !include ../cards/compact_custom_header_main.yaml
   - type: "custom:postnl-card"
     delivery: sensor.postnl_delivery
     distribution: sensor.postnl_distribution

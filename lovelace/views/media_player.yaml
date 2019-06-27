@@ -5,7 +5,6 @@ title: Media Player
 icon: mdi:play-pause
 path: media
 cards:
-  - !include ../cards/compact_custom_header_main.yaml
   # - type: custom:mini-media-player
   #  entity: media_player.spotify
   #  artwork: cover

@@ -5,7 +5,6 @@ title: Systeeminformatie
 icon: mdi:server
 path: system
 cards:
-  - !include ../cards/compact_custom_header_main.yaml
   # Hassio host server info
   - type: custom:vertical-stack-in-card
     title: Hassio Server
@@ -277,23 +276,25 @@ cards:
                     color: '#bf9540'
 
   # Show maintenance dashboard
-  - type: entities
+  - type: custom:love-lock-card
     title: Onderhoud
-    show_header_toggle: false
-    entities:
-      - input_boolean.maintenance_mode
-      - script.quick_restart
-      - script.quick_reboot
-      - type: divider
-      # Gitlab CI
-      - sensor.gitlab_ci_status
-      - type: divider
-      # Github
-      - sensor.github_config_stars
-      - sensor.github_commit_message
-      - type: weblink
-        name: Github - Home Assistant config
-        url: https://github.com/klaasnicolaas/Student-homeassistant-config
+    popup: confirm
+    cards:
+      - type: entities
+        entities:
+          - input_boolean.maintenance_mode
+          - script.quick_restart
+          - script.quick_reboot
+          - type: divider
+          # Gitlab CI
+          - sensor.gitlab_ci_status
+          - type: divider
+          # Github
+          - sensor.github_config_stars
+          - sensor.github_commit_message
+          - type: weblink
+            name: Github - Home Assistant config
+            url: https://github.com/klaasnicolaas/Student-homeassistant-config
 
   # Show alerts that can appear
   - type: entities
