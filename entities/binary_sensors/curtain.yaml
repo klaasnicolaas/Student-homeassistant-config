@@ -1,0 +1,9 @@
+---
+#
+#
+- platform: template
+  sensors:
+    gordijn:
+      device_class: opening
+      value_template: >-
+        {{ is_state('cover.curtain_window', 'open') }}

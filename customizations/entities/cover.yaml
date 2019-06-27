@@ -1,0 +1,5 @@
+---
+# Customize covers
+#
+cover.curtain_window:
+  friendly_name: Gordijnen
