@@ -22,6 +22,7 @@ cloud:
         - group.all_devices
         - group.all_lights
         - group.all_scripts
+        - group.all_covers
         - group.personen_status
         # Media Players
         - media_player.tv_woonkamer
@@ -30,11 +31,15 @@ cloud:
         - light.hal
         - light.keuken
         - light.woonkamer
+        - light.badkamer_groep
+        - light.werkhoek_groep
+        - light.gateway_light_xiaomi
         # Xiaomi sensors
         - binary_sensor.openclose_sensor_1
         - binary_sensor.openclose_sensor_2
         - binary_sensor.openclose_sensor_3
         - binary_sensor.openclose_sensor_4
+        - binary_sensor.gordijn
         # System reboot scripts
         - script.quick_reboot
         - script.quick_restart
