@@ -1,0 +1,32 @@
+---
+# Automate the bathroom light
+# The lights go on by opening the door and goes off every 15 minutes when the door is closed
+# Also the lights will be dimmed in the night
+#
+- alias: '[Light] - Turn ON bathroom light'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.openclose_sensor_4
+      to: 'on'
+      from: 'off'
+  action:
+    - service: light.turn_on
+      entity_id: light.badkamer
+      data_template:
+        brightness: >
+          {% if is_state ('binary_sensor.nacht' , 'on') %} 13
+          {% else %} 115
+          {% endif %}
+
+- alias: '[Light] - Turn OFF bathroom light'
+  trigger:
+    - platform: time_pattern
+      minutes: '/15'
+  condition:
+    - condition: state
+      entity_id: binary_sensor.openclose_sensor_4
+      state: 'off'
+  action:
+    - service: light.turn_off
+      data:
+        entity_id: light.badkamer
