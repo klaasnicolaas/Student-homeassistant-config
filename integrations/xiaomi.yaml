@@ -1,0 +1,10 @@
+---
+#
+# https://www.home-assistant.io/components/xiaomi_aqara/
+#
+xiaomi_aqara:
+  discovery_retry: 5
+  gateways:
+    - mac: !secret xiaomi_gateway_1_mac
+      key: !secret xiaomi_gateway_1_key
+      host: !secret xiaomi_gateway_1_host
