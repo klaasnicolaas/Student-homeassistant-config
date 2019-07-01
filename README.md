@@ -90,14 +90,13 @@ SOFTWARE.
 [commits-shield]: https://img.shields.io/github/commit-activity/y/klaasnicolaas/student-homeassistant-config.svg
 [last-commit-shield]: https://img.shields.io/github/last-commit/klaasnicolaas/Student-homeassistant-config.svg?color=blue&style=plasticr
 [stars-shield]: https://img.shields.io/github/stars/klaasnicolaas/Student-homeassistant-config.svg
-[ha-version-shield]: https://img.shields.io/badge/Home%20Assistant-0.94.3-blue.svg
+[ha-version-shield]: https://img.shields.io/badge/Home%20Assistant-0.95.4-blue.svg
 [uptime-shield]: https://img.shields.io/uptimerobot/status/m782530846-8e789b9650b16e61fb717d28.svg
 [gitlabci-shield]: https://gitlab.com/klaasnicolaas/Student-homeassistant-config/badges/master/pipeline.svg
 [paypal-shield]: https://img.shields.io/badge/BuyMeAFanta-Paypal-orange.svg
 [issues-shield]: https://img.shields.io/github/issues/klaasnicolaas/Student-homeassistant-config.svg
 
 [commits]: https://github.com/klaasnicolaas/Student-homeassistant-config/commits/master
-[travis]: https://travis-ci.org/klaasnicolaas/Student-homeassistant-config
 [stars]: https://github.com/klaasnicolaas/Student-homeassistant-config/stargazers
 [home-assistant]: https://home-assistant.io
 [uptime-robot]: https://uptimerobot.com
