@@ -6,6 +6,6 @@
 proximity:
   home:
     devices:
-      # Owntracks
-      - device_tracker.klaas_s9
+      # Life360
+      - device_tracker.life360_klaas_schoute
     tolerance: 50

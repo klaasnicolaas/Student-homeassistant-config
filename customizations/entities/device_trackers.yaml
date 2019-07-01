@@ -1,6 +1,10 @@
 ---
 # Customize device tracker entities
 #
-device_tracker.klaas_s9:
-  friendly_name: Klaas - Owntracks
+#device_tracker.klaas_s9:
+#  friendly_name: Klaas - Owntracks
+# entity_picture: /local/klaas.jpg
+
+device_tracker.life360_klaas_schoute:
+  friendly_name: Klaas - Life360
   entity_picture: /local/klaas.jpg
