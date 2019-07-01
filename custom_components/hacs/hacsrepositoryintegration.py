@@ -25,6 +25,7 @@ class HacsRepositoryIntegration(HacsRepositoryBase):
         self.repository_type = "integration"
         self.manifest_content = None
         self.domain = None
+        self.name = repository_name.split("/")[-1]
 
     async def update(self):
         """Run update tasks."""
@@ -71,6 +72,7 @@ class HacsRepositoryIntegration(HacsRepositoryBase):
             self.authors = manifest["codeowners"]
             self.name = manifest["name"]
             self.domain = manifest["domain"]
+            self.homeassistant_version = manifest.get("homeassistant")
             return
 
         raise HacsRequirement("manifest.json does not contain expected values.")
