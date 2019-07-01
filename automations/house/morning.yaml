@@ -4,14 +4,23 @@
 - alias: '[House] - Wake up ritual'
   trigger:
     # Trigger is moment dat huidige tijd matched met tijd van google home alarm
+    #- platform: state
+    #  entity_id: sensor.google_home_alarm_sensor
+    #  to: 'True'
     - platform: state
-      entity_id: sensor.google_home_alarm_sensor
-      to: 'True'
+      entity_id: binary_sensor.time_match_wakeup
+      to: 'on'
   condition:
-    # Voorwaarde is dat ik naar bed ging
-    - condition: state
-      entity_id: input_boolean.go_to_sleep
-      state: 'on'
+    condition: and
+    conditions:
+      # Voorwaarde is dat ik naar bed ging
+      - condition: state
+        entity_id: input_boolean.go_to_sleep
+        state: 'on'
+      # En ik moet ook wel thuis zijn :)
+      - condition: state
+        entity_id: sensor.klaas_status
+        state: 'Thuis'
   action:
     # Start opstaan script ritueel
     - service: script.wake_up

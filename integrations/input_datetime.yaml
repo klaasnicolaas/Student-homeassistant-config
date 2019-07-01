@@ -1,0 +1,9 @@
+---
+# https://www.home-assistant.io/components/input_datetime/
+#
+input_datetime:
+  alarm_wakeup:
+    name: Tijd opstaan
+    has_date: false
+    has_time: true
+    initial: '08:00'
