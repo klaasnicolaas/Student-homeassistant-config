@@ -1,0 +1,9 @@
+---
+# https://www.home-assistant.io/components/life360/
+#
+life360:
+  accounts:
+    - username: !secret life360_username
+      password: !secret life360_password
+  show_as_state:
+    - moving
