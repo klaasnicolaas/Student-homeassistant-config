@@ -4,7 +4,7 @@
 - alias: '[House] - Wake up ritual'
   trigger:
     # Trigger is moment dat huidige tijd matched met tijd van google home alarm
-    #- platform: state
+    # - platform: state
     #  entity_id: sensor.google_home_alarm_sensor
     #  to: 'True'
     - platform: state

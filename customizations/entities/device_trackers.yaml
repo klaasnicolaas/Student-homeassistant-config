@@ -1,7 +1,7 @@
 ---
 # Customize device tracker entities
 #
-#device_tracker.klaas_s9:
+# device_tracker.klaas_s9:
 #  friendly_name: Klaas - Owntracks
 # entity_picture: /local/klaas.jpg
 
