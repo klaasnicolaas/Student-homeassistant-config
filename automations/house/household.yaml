@@ -1,0 +1,36 @@
+---
+# Let the house notify me when a task must be done
+#
+- alias: '[House] - Notify about tasks to do'
+  trigger:
+    - platform: numeric_state
+      entity_id:
+        - sensor.days_after_clean_up_studio
+        - sensor.days_after_change_bedding
+        - sensor.days_after_clean_the_toilet
+        - sensor.days_after_cleaning_the_bathroom
+      above: 13
+    - platform: numeric_state
+      entity_id:
+        - sensor.days_after_dust_off
+        - sensor.days_after_vacuuming
+        - sensor.days_after_mopping
+      above: 6
+  condition:
+    # This prevents triggering after every HA restart
+    - condition: state
+      entity_id: input_boolean.maintenance_mode
+      state: 'off'
+  action:
+    - service: notify.telegram_klaas
+      data_template:
+        title: '*Huishoudelijke reminder!*'
+        message: |-
+          Je moet nog de volgende taken doen:
+          {% if (states('sensor.days_after_dust_off') | int) > 6 %} - Afstoffen ({{ states('sensor.days_after_dust_off') }} dagen geleden) {% endif %}
+          {% if (states('sensor.days_after_vacuuming') | int) > 6 %} - Stofzuigen ({{ states('sensor.days_after_vacuuming') }} dagen geleden) {% endif %}
+          {% if (states('sensor.days_after_mopping') | int) > 6 %} - Dweilen ({{ states('sensor.days_after_mopping') }} dagen geleden) {% endif %}
+          {% if (states('sensor.days_after_clean_up_studio') | int) > 13 %} - Studio opruimen ({{ states('sensor.days_after_clean_up_studio') }} dagen geleden) {% endif %}
+          {% if (states('sensor.days_after_change_bedding') | int) > 13 %} - Beddengoed verschonen ({{ states('sensor.days_after_change_bedding') }} dagen geleden) {% endif %}
+          {% if (states('sensor.days_after_clean_the_toilet') | int) > 13 %} - Toilet schoonmaken ({{ states('sensor.days_after_clean_the_toilet') }} dagen geleden) {% endif %}
+          {% if (states('sensor.days_after_cleaning_the_bathroom') | int) > 13 %} - Badkamer schoonmaken ({{ states('sensor.days_after_cleaning_the_bathroom') }} dagen geleden) {% endif %}

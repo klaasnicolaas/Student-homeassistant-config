@@ -1,0 +1,58 @@
+---
+########## Household ###########
+id: household
+title: Huishouden
+icon: mdi:calendar-check
+path: household
+cards:
+  - type: custom:vertical-stack-in-card
+    cards:
+      - type: 'custom:love-lock-card'
+        popup: confirm
+        cards:
+          - type: entities
+            title: Huishoudelijke Taken
+            show_header_toggle: false
+            entities:
+              - entity: input_datetime.vacuuming
+                type: custom:secondaryinfo-entity-row
+                secondary_info: "[[ sensor.days_after_vacuuming.state ]] Dagen geleden"
+              
+              - entity: input_datetime.mopping
+                type: custom:secondaryinfo-entity-row
+                secondary_info: "[[ sensor.days_after_mopping.state ]] Dagen geleden"
+              
+              - entity: input_datetime.cleaning_the_bathroom
+                type: custom:secondaryinfo-entity-row
+                secondary_info: "[[ sensor.days_after_cleaning_the_bathroom.state ]] Dagen geleden"
+              
+              - entity: input_datetime.clean_the_toilet
+                type: custom:secondaryinfo-entity-row
+                secondary_info: "[[ sensor.days_after_clean_the_toilet.state ]] Dagen geleden"
+              
+              - entity: input_datetime.dust_off
+                type: custom:secondaryinfo-entity-row
+                secondary_info: "[[ sensor.days_after_dust_off.state ]] Dagen geleden"
+              
+              - entity: input_datetime.change_bedding
+                type: custom:secondaryinfo-entity-row
+                secondary_info: "[[ sensor.days_after_change_bedding.state ]] Dagen geleden"
+              
+              - entity: input_datetime.clean_up_studio
+                type: custom:secondaryinfo-entity-row
+                secondary_info: "[[ sensor.days_after_clean_up_studio.state ]] Dagen geleden"
+
+      - type: entities
+        title: Werk Taak Bij
+        show_header_toggle: false
+        entities:
+          - input_select.household_task
+          - script.set_date_household_task
+
+  - type: entities
+    title: Vakantie
+    show_header_toggle: false
+    entities:
+      - input_datetime.vacation_departure
+      - input_datetime.vacation_arrival
+      - sensor.vacation_sensor

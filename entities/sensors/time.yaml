@@ -2,6 +2,17 @@
 # Sensor that shows the time
 # https://www.home-assistant.io/components/time_date/
 
+# Time
 - platform: time_date
   display_options:
     - 'time'
+
+# Time & Date
+- platform: time_date
+  display_options:
+    - 'time_date'
+
+# Date
+- platform: time_date
+  display_options:
+    - 'date'

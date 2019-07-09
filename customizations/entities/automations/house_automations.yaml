@@ -8,3 +8,5 @@ automation.house_postnl_letter_notification:
   icon: mdi:mailbox-open-up-outline
 automation.house_notify_when_it_s_to_warm_in_house:
   icon: mdi:temperature-celsius
+automation.house_notify_about_tasks_to_do:
+  icon: mdi:checkbox-multiple-marked-outline

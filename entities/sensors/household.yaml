@@ -1,0 +1,66 @@
+---
+# These sensors keep track of how long ago (in days) I did a certain task in the household
+#
+
+# Vacuuming
+- platform: template
+  sensors:
+    days_after_vacuuming:
+      friendly_name: Dagen na Stofzuigen
+      entity_id: sensor.time
+      unit_of_measurement: 'dagen'
+      value_template: "{{ ((as_timestamp(now()) - state_attr('input_datetime.vacuuming','timestamp')) | int / 86400) | round(0) -1 }}"
+
+# Mopping
+- platform: template
+  sensors:
+    days_after_mopping:
+      friendly_name: Dagen na Dweilen
+      entity_id: sensor.time
+      unit_of_measurement: 'dagen'
+      value_template: "{{ ((as_timestamp(now()) - state_attr('input_datetime.mopping','timestamp')) | int / 86400) | round(0) -1 }}"
+
+# Cleaning the bathroom
+- platform: template
+  sensors:
+    days_after_cleaning_the_bathroom:
+      friendly_name: Dagen na Badkamer schoonmaken
+      entity_id: sensor.time
+      unit_of_measurement: 'dagen'
+      value_template: "{{ ((as_timestamp(now()) - state_attr('input_datetime.cleaning_the_bathroom','timestamp')) | int / 86400) | round(0) -1 }}"
+
+# Clean the toilet
+- platform: template
+  sensors:
+    days_after_clean_the_toilet:
+      friendly_name: Dagen na Toilet schoonmaken
+      entity_id: sensor.time
+      unit_of_measurement: 'dagen'
+      value_template: "{{ ((as_timestamp(now()) - state_attr('input_datetime.clean_the_toilet','timestamp')) | int / 86400) | round(0) -1 }}"
+
+# Dust off
+- platform: template
+  sensors:
+    days_after_dust_off:
+      friendly_name: Dagen na Afstoffen
+      entity_id: sensor.time
+      unit_of_measurement: 'dagen'
+      value_template: "{{ ((as_timestamp(now()) - state_attr('input_datetime.dust_off','timestamp')) | int / 86400) | round(0) -1 }}"
+
+# Beddengoed verschonen
+- platform: template
+  sensors:
+    days_after_change_bedding:
+      friendly_name: Dagen na beddengoed verschonen
+      entity_id: sensor.time
+      unit_of_measurement: 'dagen'
+      value_template: "{{ ((as_timestamp(now()) - state_attr('input_datetime.change_bedding','timestamp')) | int / 86400) | round(0) -1 }}"
+
+# Studio opruimen
+- platform: template
+  sensors:
+    days_after_clean_up_studio:
+      friendly_name: Dagen na Opruimen studio
+      entity_id: sensor.time
+      unit_of_measurement: 'dagen'
+      value_template: "{{ ((as_timestamp(now()) - state_attr('input_datetime.clean_up_studio','timestamp')) | int / 86400) | round(0) -1 }}"
