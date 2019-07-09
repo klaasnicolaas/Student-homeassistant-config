@@ -50,6 +50,16 @@ Below is a list of all hardware in-house
 
 ---
 
+## Blogs about my config
+
+On my website I have already written a number of blogs that address specific parts of my config:
+
+| Article | Is going about |
+| -- | -- |
+| [- Hey Google! Time to sleep 💤][sleep] | Using google assistant to activate certain scripts |
+| [- My TV 📺 is out of (own) control][tv] | Operating your TV via Google Assistant or Home Assistant |
+| [- What task do we do today? ✅][household] | Tracking household tasks with sensors and notifications |
+
 ## Needing Help or Questions?
 
 If you have a specific question about my configuration send me a Private Message on the HA forum, my username over there is **[Klaasnicolaas](https://community.home-assistant.io/u/klaasnicolaas)**. Or send me a message via Discord, my username is there **Mister Nicolaz**. If you have found something incorrect, please submit an issue here on Github and I will get it fixed.
@@ -116,3 +126,6 @@ SOFTWARE.
 [google_home]: https://store.google.com/nl/product/google_home
 [xiaomi_curtains_track]: https://nl.aliexpress.com/item/3-5-M-Xiaomi-Super-Stille-Elektrische-Gordijn-Track-voor-Mijia-Aqara-Motor-Automatische-Gordijn-Rails/32922713008.html?spm=a2g0s.9042311.0.0.1cf94c4d06j07R
 [xiaomi_curtains_motor]: https://nl.aliexpress.com/item/Xiaomi-Aqara-Smart-Gordijn-Motor-Intelligente-Zigbee-Wifi-Voor-xiaomi-Smart-Home-Apparaat-Draadloze-Afstandsbediening-Via/32872671734.html?spm=a2g0s.9042311.0.0.1cf94c4d06j07R
+[sleep]: https://student-techlife.com/2019/05/16/hey-google-time-to-sleep/
+[tv]: https://student-techlife.com/2019/06/02/my-tv-is-out-of-own-control/
+[household]: https://student-techlife.com/2019/07/09/what-task-do-we-do-today/
