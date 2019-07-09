@@ -17,27 +17,27 @@ cards:
               - entity: input_datetime.vacuuming
                 type: custom:secondaryinfo-entity-row
                 secondary_info: "[[ sensor.days_after_vacuuming.state ]] Dagen geleden"
-              
+
               - entity: input_datetime.mopping
                 type: custom:secondaryinfo-entity-row
                 secondary_info: "[[ sensor.days_after_mopping.state ]] Dagen geleden"
-              
+
               - entity: input_datetime.cleaning_the_bathroom
                 type: custom:secondaryinfo-entity-row
                 secondary_info: "[[ sensor.days_after_cleaning_the_bathroom.state ]] Dagen geleden"
-              
+
               - entity: input_datetime.clean_the_toilet
                 type: custom:secondaryinfo-entity-row
                 secondary_info: "[[ sensor.days_after_clean_the_toilet.state ]] Dagen geleden"
-              
+
               - entity: input_datetime.dust_off
                 type: custom:secondaryinfo-entity-row
                 secondary_info: "[[ sensor.days_after_dust_off.state ]] Dagen geleden"
-              
+
               - entity: input_datetime.change_bedding
                 type: custom:secondaryinfo-entity-row
                 secondary_info: "[[ sensor.days_after_change_bedding.state ]] Dagen geleden"
-              
+
               - entity: input_datetime.clean_up_studio
                 type: custom:secondaryinfo-entity-row
                 secondary_info: "[[ sensor.days_after_clean_up_studio.state ]] Dagen geleden"
