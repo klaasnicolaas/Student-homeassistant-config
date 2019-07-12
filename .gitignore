@@ -37,3 +37,4 @@ bash
 ip_bans.yaml
 secrets.yaml
 known_devices.yaml
+alarm_control_panel.yaml
