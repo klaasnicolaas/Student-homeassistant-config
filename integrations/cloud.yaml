@@ -15,33 +15,37 @@ cloud:
 
     # Filters for entities to include/exclude from Google Assistant.
     filter:
-      exclude_entities:
-        # Groups
-        - group.all_switches
-        - group.all_automations
-        - group.all_devices
-        - group.all_lights
-        - group.all_scripts
-        - group.all_covers
-        - group.personen_status
-        # Media Players
-        - media_player.tv_woonkamer
-        - media_player.google_home
+      include_entities:
+        # Cover
+        - cover.curtain_window
         # Lights
-        - light.hal
-        - light.keuken
-        - light.woonkamer
-        - light.badkamer_groep
-        - light.werkhoek_groep
-        - light.gateway_light_xiaomi
-        # Xiaomi sensors
-        - binary_sensor.openclose_sensor_1
-        - binary_sensor.openclose_sensor_2
-        - binary_sensor.openclose_sensor_3
-        - binary_sensor.openclose_sensor_4
-        - binary_sensor.gordijn
-        # System reboot scripts
-        - script.quick_reboot
-        - script.quick_restart
-      exclude_domains:
-        - scene
+        - light.hal_lamp_1
+        - light.hal_lamp_2
+        - light.hal_lamp_3
+        - light.keuken_lamp_1
+        - light.keuken_lamp_2
+        - light.keuken_lamp_3
+        - light.woonkamer_lamp_1
+        - light.woonkamer_lamp_2
+        - light.woonkamer_lamp_3
+        - light.badkamer
+        - light.werkhoek
+        # Scripts
+        - script.channel_1
+        - script.channel_2
+        - script.channel_3
+        - script.channel_4
+        - script.channel_5
+        - script.channel_6
+        - script.channel_7
+        - script.channel_8
+        - script.channel_9
+        - script.play_radio
+        - script.select_hdmi
+        - script.select_kabel
+        - script.start_cooking
+        - script.start_relax
+        - script.start_sleep
+        # Switch
+        - switch.tv_lg
+        - switch.tv_mute
