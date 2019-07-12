@@ -1,0 +1,7 @@
+---
+# Customize media_player entities
+#
+media_player.google_home:
+  icon: mdi:google-home
+media_player.tv_woonkamer:
+  icon: mdi:television
