@@ -1,0 +1,12 @@
+---
+# Google Home Alarm
+# Only this does not have to do anything, Google itself makes an alarm sound #duh!
+#
+alarm_google:
+  alias: 'Google Alarm'
+  sequence:
+    - delay:
+        seconds: 30
+    - service: input_boolean.turn_on
+      data:
+        entity_id: input_boolean.wakeup_wait

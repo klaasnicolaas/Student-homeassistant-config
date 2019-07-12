@@ -21,16 +21,16 @@ start_sleep:
       service: light.turn_off
       data:
         entity_id: light.woonkamer
-        transition: 60
+        transition: 40
     # Keuken
     - alias: dim lights keuken
       service: light.turn_off
       data:
         entity_id: light.keuken
-        transition: 50
+        transition: 35
     # Hal
     - alias: dim lights hal
       service: light.turn_off
       data:
         entity_id: light.hal
-        transition: 40
+        transition: 30

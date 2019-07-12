@@ -1,53 +1,77 @@
 ---
+##################### WAKE UP TIME #####################
 # What could be better than getting up in a pleasant way
 #
 wake_up:
   alias: 'Opstaan ritueel'
   sequence:
-    # De wekker gaat af van Google Home
-    # Log het opstaan
+    # Log the wake up
     - service: logbook.log
       data:
         name: Opstaan -
         message: Klaas moet opstaan
 
     # Switch boolean
-    - alias: switch go sleeping boolean
+    - alias: switch booleans
       service: input_boolean.turn_off
       data:
         entity_id: input_boolean.go_to_sleep
+    - service: input_boolean.turn_off
+      data:
+        entity_id: input_boolean.wakeup_wait
 
-    # Gebruik de lampen als wakeup light gedurende 10 minuten naar 70%
-    # Hal
+    # Turn open cover to 30%
+    - alias: turn cover open to 30%
+      service: cover.set_cover_position
+      data:
+        entity_id: cover.curtain_window
+        position: 30
+
+    # Use the lamps as a wakeup light for 10 minutes to 70%
+    # Hall
     - alias: wakeup light hal
       service: light.turn_on
       data:
         entity_id: light.hal
         brightness: 179
         transition: 600
-    - delay:
-        seconds: 15
-    # Keuken
+    # Kitchen
     - alias: wakeup light keuken
       service: light.turn_on
       data:
         entity_id: light.keuken
         brightness: 179
-        transition: 585
+        transition: 600
+
+    # FROM HERE IT'S STILL 10 MINUTSE BEFORE ALARM
+    - delay:
+        seconds: 600
+
+    # ALARM TURNS ON
+    # Below it makes a distinction between the manual alarm and the google home alarm
+    - service_template: >
+        {% if (entity_id == 'sensor.google_home_alarm') %}
+          script.alarm_google
+        {% else %}
+          script.alarm_manual
+        {% endif %}
+
+    - wait_template: "{{ is_state('input_boolean.wakeup_wait', 'on') }}"
+
+    # Start morning briefing
+    - service: script.turn_on
+      entity_id: script.home_status_message
+
     - delay:
         seconds: 15
-    # Woonkamer
-    - alias: wakeup light woonkamer
-      service: light.turn_on
-      data:
-        entity_id: light.woonkamer
-        brightness: 179
-        transition: 570
-    - delay:
-        seconds: 870
 
-    # Laat de google home speaker wat zeggen
-    - service: tts.google_translate_say
-      entity_id: media_player.google_home
+    # Put the radio ON
+    - service: script.turn_on
+      entity_id: script.play_radio
+
+    # Turn open cover to 100%
+    - alias: turn cover open to 100%
+      service: cover.set_cover_position
       data:
-        message: 'Opstaan. Je moet nu echt je bed uit.'
+        entity_id: cover.curtain_window
+        position: 100

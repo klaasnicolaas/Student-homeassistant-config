@@ -1,7 +1,0 @@
----
-# This checks if my input_datetime is equal to the current time
-#
-- platform: template
-  sensors:
-    time_match_wakeup:
-      value_template: "{{ states('sensor.time') == (state_attr('input_datetime.alarm_wakeup', 'timestamp') | int | timestamp_custom('%H:%M', False)) }}"

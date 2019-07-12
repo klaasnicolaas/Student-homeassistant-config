@@ -1,0 +1,7 @@
+---
+# This checks if my input_datetime is equal to the current time minus 10 minutes
+#
+- platform: template
+  sensors:
+    manual_time_match_wakeup:
+      value_template: "{{ states('sensor.time') == ((state_attr('input_datetime.alarm_wakeup', 'timestamp') | int - 10*60) | timestamp_custom('%H:%M', False)) }}"

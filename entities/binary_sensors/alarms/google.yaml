@@ -1,0 +1,10 @@
+---
+#
+# Google home alarm template sensor
+#
+- platform: template
+  sensors:
+    google_home_alarm:
+      value_template: >
+        {% set ts = as_timestamp(states("sensor.google_home_alarm")) %}
+        {{ ts is not none and states("sensor.time") == (ts - 10*60)|timestamp_custom ("%H:%M") }}
