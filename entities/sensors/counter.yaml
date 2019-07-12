@@ -97,9 +97,22 @@
 
     media_player_count:
       entity_id: sensor.media_player_count
-      friendly_name: 'Number of Devices'
+      friendly_name: 'Number of Media Players'
       value_template: >
         {%- set domains = ['media_player'] -%}
+        {%- for domain in domains -%}
+          {%- for item in states[domain] -%}
+            {% if loop.first %}
+              {{loop.length}}
+            {% endif %}
+          {%- endfor -%}
+        {%- endfor -%}
+
+    input_datetime_count:
+      entity_id: sensor.input_datetime_count
+      friendly_name: 'Number of Input DateTime'
+      value_template: >
+        {%- set domains = ['input_datetime'] -%}
         {%- for domain in domains -%}
           {%- for item in states[domain] -%}
             {% if loop.first %}
