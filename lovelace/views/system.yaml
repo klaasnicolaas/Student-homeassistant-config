@@ -13,12 +13,12 @@ cards:
         cards:
           - type: vertical-stack
             cards:
-              - type: custom:card-modder
-                card:
-                  type: picture
-                  image: /local/images/hassio.jpg
-                style:
-                  border-radius: 5px
+              - type: picture
+                image: /local/images/hassio.jpg
+                style: |
+                  ha-card {
+                    margin: 10px
+                  }
 
           - type: vertical-stack
             cards:
@@ -165,6 +165,23 @@ cards:
                   - value: 87
                     color: '#1db954'
                   - value: 100
+                    color: '#bf9540'
+
+              - type: custom:bar-card
+                title: Input DateTime
+                entity: sensor.input_datetime_count
+                title_position: inside
+                align: center
+                padding: 4px
+                card_style:
+                  border-radius: 5px
+                max: 100
+                severity:
+                  - value: 1
+                    color: '#bf4040'
+                  - value: 20
+                    color: '#1db954'
+                  - value: 40
                     color: '#bf9540'
 
           - type: horizontal-stack

@@ -43,6 +43,7 @@ cards:
       # Start scenes
       - type: horizontal-stack
         cards:
+          # Cooking
           - type: picture-entity
             entity: scene.koken
             image: /local/images/cooking.png
@@ -51,6 +52,7 @@ cards:
               service: scene.turn_on
               service_data:
                 entity_id: scene.koken
+          # Evening
           - type: picture-entity
             entity: scene.avond
             image: /local/images/evening.png
@@ -59,6 +61,7 @@ cards:
               service: scene.turn_on
               service_data:
                 entity_id: scene.avond
+          # Go to sleep
           - type: picture-entity
             name: Slapen
             entity: input_boolean.go_to_sleep
@@ -145,7 +148,7 @@ cards:
             hide_when_off: true
 
       - type: entities
-        title: Naar bed gaan wekker
+        title: Wekkers
         show_header_toggle: false
         entities:
           - input_datetime.alarm_wakeup
