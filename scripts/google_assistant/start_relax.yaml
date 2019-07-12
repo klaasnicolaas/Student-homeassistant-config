@@ -1,0 +1,8 @@
+---
+#
+#
+start_relax:
+  alias: 'Start avond modus'
+  sequence:
+    - service: scene.turn_on
+      entity_id: scene.avond
