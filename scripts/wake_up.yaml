@@ -50,7 +50,7 @@ wake_up:
     # ALARM TURNS ON
     # Below it makes a distinction between the manual alarm and the google home alarm
     - service_template: >
-        {% if (entity_id == 'sensor.google_home_alarm') %}
+        {% if (entity_id == 'binary_sensor.google_home_alarm') %}
           script.alarm_google
         {% else %}
           script.alarm_manual
