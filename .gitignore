@@ -23,6 +23,7 @@ zones
 __pycache__
 icloud
 bash
+security
 
 # Ignore extensions
 *.db
@@ -36,5 +37,6 @@ bash
 # Ensure these YAML files are ignored, otherwise your secret data/credentials will leak.
 ip_bans.yaml
 secrets.yaml
+security.yaml
 known_devices.yaml
 alarm_control_panel.yaml
