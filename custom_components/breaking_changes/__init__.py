@@ -25,18 +25,28 @@ from .const import (
     VERSION,
     CONF_NAME,
     DEFAULT_NAME,
+    INTERVAL,
 )
-
-REQUIREMENTS = ["pyhaversion"]
-
-MIN_TIME_BETWEEN_UPDATES = timedelta(minutes=1)
 
 _LOGGER = logging.getLogger(__name__)
 
 CONFIG_SCHEMA = vol.Schema(
-    {DOMAIN: vol.Schema({vol.Optional(CONF_NAME, default=DEFAULT_NAME): cv.string})},
+    {
+        DOMAIN: vol.Schema(
+            {
+                vol.Optional(CONF_NAME, default=DEFAULT_NAME): cv.string,
+                vol.Optional("scan_interval"): cv.positive_int,
+            }
+        )
+    },
     extra=vol.ALLOW_EXTRA,
 )
+
+
+class Update:
+    """Why not."""
+
+    seconds = timedelta(seconds=INTERVAL)
 
 
 async def async_setup(hass, config):
@@ -56,6 +66,9 @@ async def async_setup(hass, config):
     hass.data[DOMAIN_DATA]["components"] = ["homeassistant"]
     hass.data[DOMAIN_DATA]["potential"] = {}
 
+    if config[DOMAIN].get("scan_interval") is not None:
+        Update.seconds = timedelta(seconds=config[DOMAIN].get("scan_interval"))
+
     # Load platforms
     for platform in PLATFORMS:
         # Get platform specific configuration
@@ -73,30 +86,31 @@ async def async_setup(hass, config):
             hass.data[DOMAIN_DATA]["components"].append(component)
 
         _LOGGER.debug("Loaded components %s", hass.data[DOMAIN_DATA]["components"])
-        await update_data(
+        await update_data(  # pylint: disable=unexpected-keyword-arg
             hass, no_throttle=True
-        )  # pylint: disable=unexpected-keyword-arg
+        )
 
     hass.bus.async_listen_once(EVENT_HOMEASSISTANT_START, loaded_platforms(hass))
 
     return True
 
 
-@Throttle(MIN_TIME_BETWEEN_UPDATES)
+@Throttle(Update.seconds)
 async def update_data(hass):
     """Update data."""
     if len(hass.data[DOMAIN_DATA]["components"]) == 1:
         return
-    from pyhaversion import Version
+    from pyhaversion import LocalVersion, PyPiVersion
 
     session = async_get_clientsession(hass)
-    haversion = Version(hass.loop, session)
+    localversion = LocalVersion(hass.loop, session)
+    pypiversion = PyPiVersion(hass.loop, session)
 
-    await haversion.get_local_version()
-    currentversion = haversion.version.split(".")[1]
+    await localversion.get_version()
+    currentversion = localversion.version.split(".")[1]
 
-    await haversion.get_pypi_version()
-    remoteversion = haversion.version.split(".")[1]
+    await pypiversion.get_version()
+    remoteversion = pypiversion.version.split(".")[1]
 
     if currentversion == remoteversion:
         _LOGGER.debug(

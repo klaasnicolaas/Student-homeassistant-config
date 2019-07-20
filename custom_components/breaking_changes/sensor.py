@@ -39,6 +39,11 @@ class BreakingChangesSensor(Entity):
         self.attr = updated.get("potential", [])
 
     @property
+    def should_poll(self):
+        """Return the name of the sensor."""
+        return True
+
+    @property
     def name(self):
         """Return the name of the sensor."""
         return self._name
