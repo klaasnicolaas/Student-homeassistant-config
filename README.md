@@ -45,6 +45,7 @@ Below is a list of all hardware in-house
 - [Broadlink RM Pro][broadlink]
 - Xiaomi [Temperature & Humidity Sensors][xiaomi_temp]
 - Xiaomi [Window Door Sensors][xiaomi_door]
+- Xiaomi [Motion Sensors][xiaomi_motion]
 - Xiaomi Curtains with [track][xiaomi_curtains_track] and [motor][xiaomi_curtains_motor]
 - There is more soon :)
 
@@ -100,7 +101,7 @@ SOFTWARE.
 [commits-shield]: https://img.shields.io/github/commit-activity/y/klaasnicolaas/student-homeassistant-config.svg
 [last-commit-shield]: https://img.shields.io/github/last-commit/klaasnicolaas/Student-homeassistant-config.svg?color=blue&style=plasticr
 [stars-shield]: https://img.shields.io/github/stars/klaasnicolaas/Student-homeassistant-config.svg
-[ha-version-shield]: https://img.shields.io/badge/Home%20Assistant-0.95.4-blue.svg
+[ha-version-shield]: https://img.shields.io/badge/Home%20Assistant-0.96.2-blue.svg
 [uptime-shield]: https://img.shields.io/uptimerobot/status/m782530846-8e789b9650b16e61fb717d28.svg
 [gitlabci-shield]: https://gitlab.com/klaasnicolaas/Student-homeassistant-config/badges/master/pipeline.svg
 [paypal-shield]: https://img.shields.io/badge/BuyMeAFanta-Paypal-orange.svg
@@ -126,6 +127,7 @@ SOFTWARE.
 [google_home]: https://store.google.com/nl/product/google_home
 [xiaomi_curtains_track]: https://nl.aliexpress.com/item/3-5-M-Xiaomi-Super-Stille-Elektrische-Gordijn-Track-voor-Mijia-Aqara-Motor-Automatische-Gordijn-Rails/32922713008.html?spm=a2g0s.9042311.0.0.1cf94c4d06j07R
 [xiaomi_curtains_motor]: https://nl.aliexpress.com/item/Xiaomi-Aqara-Smart-Gordijn-Motor-Intelligente-Zigbee-Wifi-Voor-xiaomi-Smart-Home-Apparaat-Draadloze-Afstandsbediening-Via/32872671734.html?spm=a2g0s.9042311.0.0.1cf94c4d06j07R
+[xiaomi_motion]: https://www.banggood.com/Original-Aqara-Zig_Bee-Wireless-Human-Body-PIR-Sensor-Smart-Home-Kit-From-Xiaomi-Eco-System-p-1177007.html?rmmds=myorder&cur_warehouse=CN
 [sleep]: https://student-techlife.com/2019/05/16/hey-google-time-to-sleep/
 [tv]: https://student-techlife.com/2019/06/02/my-tv-is-out-of-own-control/
 [household]: https://student-techlife.com/2019/07/09/what-task-do-we-do-today/
