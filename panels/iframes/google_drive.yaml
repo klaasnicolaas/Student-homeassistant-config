@@ -1,8 +1,0 @@
----
-# Start using the Google Drive Backup add-on
-# https://github.com/sabeechen/hassio-google-drive-backup
-#
-backup:
-  title: Snapshots
-  icon: mdi:cloud-upload
-  url: !secret panel_iframe_googledrive_url
