@@ -122,6 +122,7 @@ cards:
     entities:
       - sensor.last_boot
       - binary_sensor.student_home_assistant
+      - sensor.snapshot_backup
       - type: divider
       - sensor.hassio_stable_versie
       - sensor.hassio_beta_versie
