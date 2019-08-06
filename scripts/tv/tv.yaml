@@ -11,7 +11,6 @@ select_hdmi:
           - InputHdmi1
         device: 64401392
 
-
 select_kabel:
   alias: 'Tv op Kabel'
   sequence:
