@@ -24,6 +24,7 @@ __pycache__
 icloud
 bash
 security
+emergency
 
 # Ignore extensions
 *.db
@@ -40,3 +41,5 @@ secrets.yaml
 security.yaml
 known_devices.yaml
 alarm_control_panel.yaml
+emulated_hue_ids.json
+emergency.yaml
