@@ -8,3 +8,9 @@ binary_sensor.openclose_sensor_3:
   device_class: window
 binary_sensor.openclose_sensor_4:
   device_class: door
+binary_sensor.wardrobe_left:
+  device_class: door
+binary_sensor.wardrobe_middle:
+  device_class: door
+binary_sensor.wardrobe_right:
+  device_class: door

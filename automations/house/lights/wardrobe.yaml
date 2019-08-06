@@ -1,0 +1,37 @@
+---
+# These automations ensure that the lamp above my wardrobe
+# will go on / off when you open / close the doors.
+#
+- alias: '[Light] - Turn wardrobe light ON'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.wardrobe_left, binary_sensor.wardrobe_middle, binary_sensor.wardrobe_right
+      from: 'off'
+      to: 'on'
+  condition:
+    condition: state
+    entity_id: light.hal
+    state: 'off'
+  action:
+    - service: light.turn_on
+      data:
+        entity_id: light.hal
+        brightness: 128
+
+- alias: '[Light] - Turn wardrobe light OFF'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.wardrobe_left, binary_sensor.wardrobe_middle, binary_sensor.wardrobe_right
+      from: 'on'
+      to: 'off'
+  condition:
+    condition: and
+    conditions:
+      - condition: sun
+        before: sunset
+      - condition: sun
+        after: sunrise
+  action:
+    - service: light.turn_off
+      data:
+        entity_id: light.hal
