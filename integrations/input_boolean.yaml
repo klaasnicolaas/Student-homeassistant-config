@@ -18,3 +18,11 @@ input_boolean:
 
   wakeup_wait:
     name: Wacht op alarm signaal
+
+  tv_power:
+    name: TV Power
+    icon: mdi:power
+
+  tv_mute:
+    name: TV Mute
+    icon: mdi:volume-mute

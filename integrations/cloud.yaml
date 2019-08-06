@@ -46,6 +46,6 @@ cloud:
         - script.start_cooking
         - script.start_relax
         - script.start_sleep
-        # Switch
-        - switch.tv_lg
-        - switch.tv_mute
+        # Input boolean
+        - input_boolean.tv_power
+        - input_boolean.tv_mute

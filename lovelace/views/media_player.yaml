@@ -145,13 +145,13 @@ cards:
       - type: horizontal-stack
         cards:
           - type: entity-button
-            entity: switch.tv_lg
+            entity: input_boolean.tv_power
             icon: mdi:power-standby
             name: TV Aan/Uit
             tap_action:
               action: toggle
           - type: entity-button
-            entity: switch.tv_mute
+            entity: input_boolean.tv_mute
             icon: mdi:volume-high
             name: Geluid Aan/Uit
             tap_action:
