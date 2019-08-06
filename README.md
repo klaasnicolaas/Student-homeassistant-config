@@ -42,11 +42,12 @@ Below is a list of all hardware in-house
 - [Conbee II][conbee] stick
 - [Ikea tradfri][tradfri] lights - All types of fittings
 - [Google Home][google_home]
-- [Broadlink RM Pro][broadlink]
+- [Logitech Harmony Hub companion][harmony]
 - Xiaomi [Temperature & Humidity Sensors][xiaomi_temp]
 - Xiaomi [Window Door Sensors][xiaomi_door]
 - Xiaomi [Motion Sensors][xiaomi_motion]
 - Xiaomi Curtains with [track][xiaomi_curtains_track] and [motor][xiaomi_curtains_motor]
+- Xiaomi [Smart switch][xiaomi_switch]
 - There is more soon :)
 
 ---
@@ -123,11 +124,12 @@ SOFTWARE.
 [tradfri]: https://www.ikea.com/nl/nl/catalog/products/80365270/
 [xiaomi_temp]: https://www.banggood.com/Original-Xiaomi-Aqara-Atmos-Version-Temperature-Humidity-Sensor-Smart-Home-Thermometer-Hygrometer-p-1148666.html?rmmds=myorder&cur_warehouse=GWTR
 [xiaomi_door]: https://www.banggood.com/Original-Xiaomi-Aqara-Zig_Bee-Version-Window-Door-Sensor-Smart-Home-Kit-Remote-Alarm-p-1149705.html?rmmds=myorder&cur_warehouse=GWTR
-[broadlink]: https://www.banggood.com/Broadlink-RM-Pro-Smart-Home-Automation-Phone-Wireless-Remote-Universal-Controller-p-942667.html?rmmds=myorder&cur_warehouse=CN
+[harmony]: https://www.logitech.com/nl-nl/product/harmony-companion
 [google_home]: https://store.google.com/nl/product/google_home
 [xiaomi_curtains_track]: https://nl.aliexpress.com/item/3-5-M-Xiaomi-Super-Stille-Elektrische-Gordijn-Track-voor-Mijia-Aqara-Motor-Automatische-Gordijn-Rails/32922713008.html?spm=a2g0s.9042311.0.0.1cf94c4d06j07R
 [xiaomi_curtains_motor]: https://nl.aliexpress.com/item/Xiaomi-Aqara-Smart-Gordijn-Motor-Intelligente-Zigbee-Wifi-Voor-xiaomi-Smart-Home-Apparaat-Draadloze-Afstandsbediening-Via/32872671734.html?spm=a2g0s.9042311.0.0.1cf94c4d06j07R
 [xiaomi_motion]: https://www.banggood.com/Original-Aqara-Zig_Bee-Wireless-Human-Body-PIR-Sensor-Smart-Home-Kit-From-Xiaomi-Eco-System-p-1177007.html?rmmds=myorder&cur_warehouse=CN
+[xiaomi_switch]: https://www.banggood.com/Original-Xiaomi-Aqara-Smart-Wireless-Switch-Smart-Home-Kit-Remote-Control-Touch-Switch-p-1224921.html?rmmds=myorder&cur_warehouse=CN
 [sleep]: https://student-techlife.com/2019/05/16/hey-google-time-to-sleep/
 [tv]: https://student-techlife.com/2019/06/02/my-tv-is-out-of-own-control/
 [household]: https://student-techlife.com/2019/07/09/what-task-do-we-do-today/
