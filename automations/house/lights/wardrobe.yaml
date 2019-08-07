@@ -21,7 +21,7 @@
 - alias: '[Light] - Turn wardrobe light OFF'
   trigger:
     - platform: state
-      entity_id: binary_sensor.wardrobe_left, binary_sensor.wardrobe_middle, binary_sensor.wardrobe_right
+      entity_id: group.wardrobe_sensors
       from: 'on'
       to: 'off'
   condition:

@@ -1,0 +1,9 @@
+---
+# https://www.home-assistant.io/components/group/
+#
+wardrobe_sensors:
+  name: Kledingkast sensoren
+  entities:
+    - binary_sensor.wardrobe_left
+    - binary_sensor.wardrobe_middle
+    - binary_sensor.wardrobe_right
