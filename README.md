@@ -12,7 +12,7 @@ During student life there is often that one step that you will live on your own,
 
 You can follow my entire adventure via **[student-techlife.com][techlife]**
 
-This is by the way not my first [Home Assistant][home-assistant] configuration that you can find on Github. 
+This is by the way not my first [Home Assistant][home-assistant] configuration that you can find on Github.
 Take also a look at this [configuration/repository][smarthome].
 
 Be free to use the code from this repo for your own Home Assistant environment, keep in mind that you can not always copy everything line by line. If you can not get out, you can always contact me.
