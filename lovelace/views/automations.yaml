@@ -53,3 +53,13 @@ cards:
         filter:
           include:
             - entity_id: automation.light*
+      - type: divider
+      # Media
+      - type: custom:monster-card
+        card:
+          type: entities
+          title: Media
+          show_header_toggle: false
+        filter:
+          include:
+            - entity_id: automation.media*

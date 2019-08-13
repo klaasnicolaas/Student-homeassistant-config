@@ -81,6 +81,7 @@ cards:
           "**Kanaal X graag**" om TV van kanaal te veranderen
           "**Zet TV aan/uit**" om de tv aan of uit te doen.
 
+  # Show the lights in house
   - type: vertical-stack
     cards:
       # Light slider groups
@@ -154,21 +155,34 @@ cards:
           - input_datetime.alarm_wakeup
 
   # Show door and window sensors
-  - type: glance
-    title: Sensoren
-    columns: 4
-    entities:
-      - entity: binary_sensor.openclose_sensor_1
-      - entity: binary_sensor.openclose_sensor_2
-      - entity: binary_sensor.openclose_sensor_3
-      - entity: binary_sensor.openclose_sensor_4
-      - entity: binary_sensor.wardrobe_left
-      - entity: binary_sensor.wardrobe_middle
-      - entity: binary_sensor.wardrobe_right
-      - entity: binary_sensor.motion_huis
-        name: Huis
-      - entity: binary_sensor.motion_badkamer
-        name: Badkamer
+  - type: custom:vertical-stack-in-card
+    #title: Sensoren
+    cards:
+      - type: glance
+        title: Huis
+        entities:
+          - entity: binary_sensor.openclose_sensor_1
+          - entity: binary_sensor.openclose_sensor_2
+          - entity: binary_sensor.openclose_sensor_3
+          - entity: binary_sensor.motion_huis
+            name: Huis
+      - type: glance
+        title: Kledingkast
+        entities:
+          - entity: binary_sensor.wardrobe_left
+            name: Links
+          - entity: binary_sensor.wardrobe_middle
+            name: Midden
+          - entity: binary_sensor.wardrobe_right
+            name: Rechts
+      - type: glance
+        title: Badkamer
+        entities:
+          - entity: binary_sensor.openclose_sensor_4
+            name: Deur
+          - entity: binary_sensor.motion_badkamer
+            name: Badkamer
+          - entity: binary_sensor.bathroom_water_leak
 
   # Curtains
   - type: 'custom:love-lock-card'
@@ -191,7 +205,7 @@ cards:
         name: Temperatuur
         entities:
           - entity: sensor.home_temperature
-            name: Temperatuur
+            name: Huis
         hours_to_show: 72
         points_per_hour: 0.3
         show:
@@ -206,7 +220,7 @@ cards:
         name: Vochtigheid
         entities:
           - entity: sensor.home_humidity
-            name: Vochtigheid
+            name: Huis
         hours_to_show: 72
         points_per_hour: 0.3
         show:
