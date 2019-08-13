@@ -8,4 +8,8 @@
 # Telegram Klaas
 - name: telegram_klaas
   platform: telegram
-  chat_id: !secret telegram_chat_id_klaas
+  chat_id: !secret telegram_user_id_klaas
+
+- name: telegram_emergency
+  platform: telegram
+  chat_id: !secret telegram_chat_id_emergency

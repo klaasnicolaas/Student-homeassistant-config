@@ -5,4 +5,5 @@ telegram_bot:
   - platform: polling
     api_key: !secret telegram_key
     allowed_chat_ids:
-      - !secret telegram_chat_id_klaas
+      - !secret telegram_user_id_klaas
+      - !secret telegram_chat_id_emergency
