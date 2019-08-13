@@ -415,7 +415,7 @@ cards:
               exclude:
                 - entity_id: "*_humidity"
                 - entity_id: "*_pressure"
-                #- entity_id: "*_battery"
+                # - entity_id: "*_battery"
 
   - type: glance
     entities:
