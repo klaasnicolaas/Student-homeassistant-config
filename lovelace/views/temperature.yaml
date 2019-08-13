@@ -1,0 +1,153 @@
+---
+########## Dashboard ###########
+id: temperature
+title: Temperatuur
+icon: mdi:temperature-celsius
+path: temperature
+cards:
+  - type: vertical-stack
+    cards:
+      - type: custom:mini-graph-card
+        name: Temperatuur in Huis
+        entities:
+          - entity: sensor.home_temperature
+        hours_to_show: 72
+        points_per_hour: 0.3
+        show:
+          fill: true
+          extrema: true
+        height: 100
+        animate: true
+        hour24: true
+        line_color: var(--primary-color)
+        color_thresholds:
+          - value: 25
+            color: "#1c6feb"
+          - value: 28
+            color: "#eb9f1c"
+          - value: 40
+            color: "#eb2a1c"
+      - type: custom:mini-graph-card
+        name: Vochtigheid in Huis
+        entities:
+          - entity: sensor.home_humidity
+        hours_to_show: 72
+        points_per_hour: 0.3
+        show:
+          fill: true
+          extrema: true
+        height: 100
+        animate: true
+        hour24: true
+        line_color: var(--primary-color)
+      - type: custom:mini-graph-card
+        name: Luchtdruk in Huis
+        entities:
+          - entity: sensor.home_pressure
+        hours_to_show: 72
+        points_per_hour: 0.3
+        show:
+          fill: true
+          extrema: true
+        height: 100
+        animate: true
+        hour24: true
+        line_color: var(--primary-color)
+
+  - type: vertical-stack
+    cards:
+      - type: custom:mini-graph-card
+        name: Temperatuur bij Raam
+        entities:
+          - entity: sensor.window_temperature
+        hours_to_show: 72
+        points_per_hour: 0.3
+        show:
+          fill: true
+          extrema: true
+        height: 100
+        animate: true
+        hour24: true
+        line_color: var(--primary-color)
+        color_thresholds:
+          - value: 25
+            color: "#1c6feb"
+          - value: 28
+            color: "#eb9f1c"
+          - value: 40
+            color: "#eb2a1c"
+      - type: custom:mini-graph-card
+        name: Vochtigheid bij Raam
+        entities:
+          - entity: sensor.window_humidity
+        hours_to_show: 72
+        points_per_hour: 0.3
+        show:
+          fill: true
+          extrema: true
+        height: 100
+        animate: true
+        hour24: true
+        line_color: var(--primary-color)
+      - type: custom:mini-graph-card
+        name: Luchtdruk bij Raam
+        entities:
+          - entity: sensor.window_pressure
+        hours_to_show: 72
+        points_per_hour: 0.3
+        show:
+          fill: true
+          extrema: true
+        height: 100
+        animate: true
+        hour24: true
+        line_color: var(--primary-color)
+
+  - type: vertical-stack
+    cards:
+      - type: custom:mini-graph-card
+        name: Temperatuur in Badkamer
+        entities:
+          - entity: sensor.bathroom_temperature
+        hours_to_show: 72
+        points_per_hour: 0.3
+        show:
+          fill: true
+          extrema: true
+        height: 100
+        animate: true
+        hour24: true
+        line_color: var(--primary-color)
+        color_thresholds:
+          - value: 25
+            color: "#1c6feb"
+          - value: 28
+            color: "#eb9f1c"
+          - value: 40
+            color: "#eb2a1c"
+      - type: custom:mini-graph-card
+        name: Vochtigheid in Badkamer
+        entities:
+          - entity: sensor.bathroom_humidity
+        hours_to_show: 72
+        points_per_hour: 0.3
+        show:
+          fill: true
+          extrema: true
+        height: 100
+        animate: true
+        hour24: true
+        line_color: var(--primary-color)
+      - type: custom:mini-graph-card
+        name: Luchtdruk in Badkamer
+        entities:
+          - entity: sensor.bathroom_pressure
+        hours_to_show: 72
+        points_per_hour: 0.3
+        show:
+          fill: true
+          extrema: true
+        height: 100
+        animate: true
+        hour24: true
+        line_color: var(--primary-color)

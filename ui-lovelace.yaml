@@ -12,10 +12,11 @@ resources: !include_dir_list lovelace/resources
 cch: !include lovelace/cards/custom_compact_header.yaml
 views:
   - !include lovelace/views/dashboard.yaml
+  - !include lovelace/views/security.yaml
+  - !include lovelace/views/temperature.yaml
   - !include lovelace/views/household.yaml
   - !include lovelace/views/media_player.yaml
   - !include lovelace/views/public_transport.yaml
   - !include lovelace/views/parcel_delivery.yaml
   - !include lovelace/views/automations.yaml
-  - !include lovelace/views/security.yaml
   - !include lovelace/views/system.yaml

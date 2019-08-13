@@ -5,10 +5,10 @@
   trigger:
     - platform: numeric_state
       entity_id: sensor.home_temperature
-      above: 27
+      above: 30
   action:
     - service: notify.telegram_klaas
       data_template:
         title: '*Warmte alarm!*'
         message: >-
-          'Het is nu {{ states('sensor.home_temperature') }}°C in huis, doe een raam open!'
+          Het is nu {{ states('sensor.home_temperature') }}°C in huis, doe een raam open!
