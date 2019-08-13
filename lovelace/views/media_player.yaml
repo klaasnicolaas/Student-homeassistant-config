@@ -145,7 +145,7 @@ cards:
       - type: horizontal-stack
         cards:
           - type: entity-button
-            entity: input_boolean.tv_power
+            entity: switch.watch_tv
             icon: mdi:power-standby
             name: TV Aan/Uit
             tap_action:
@@ -154,6 +154,12 @@ cards:
             entity: input_boolean.tv_mute
             icon: mdi:volume-high
             name: Geluid Aan/Uit
+            tap_action:
+              action: toggle
+          - type: entity-button
+            entity: input_boolean.beamer_power
+            icon: mdi:projector
+            name: Beamer Aan/Uit
             tap_action:
               action: toggle
 

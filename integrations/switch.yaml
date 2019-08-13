@@ -4,4 +4,4 @@
 # https://www.home-assistant.io/components/switch/
 #
 
-switch: !include_dir_list ../entities/switches
+switch: !include_dir_merge_list ../entities/switches

@@ -1,0 +1,17 @@
+---
+#
+# Switch TV
+- platform: template
+  switches:
+    watch_tv:
+      friendly_name: Tv
+      value_template: "{{ is_state_attr('remote.harmony_hub', 'current_activity', 'Tv kijken') }}"
+      turn_on:
+        service: script.turn_on
+        data:
+          entity_id: script.turn_tv_on
+      turn_off:
+        service: script.turn_on
+        data:
+          entity_id: script.turn_tv_off
+      icon_template: mdi:television-classic

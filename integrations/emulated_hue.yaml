@@ -1,0 +1,31 @@
+---
+# https://www.home-assistant.io/components/emulated_hue/
+#
+emulated_hue:
+  host_ip: !secret ha_host_ip
+  exposed_domains:
+    - light
+    - group
+  entities:
+    group.all_switches:
+      hidden: true
+    group.all_scripts:
+      hidden: true
+    group.all_automations:
+      hidden: true
+    group.all_covers:
+      hidden: true
+    group.all_devices:
+      hidden: true
+    group.personen_status:
+      hidden: true
+    light.all:
+      hidden: true
+    group.all_lights:
+      hidden: true
+    group.all_remotes:
+      hidden: true
+    light.badkamer_groep:
+      hidden: true
+    light.werkhoek_groep:
+      hidden: true

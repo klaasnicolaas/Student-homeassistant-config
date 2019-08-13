@@ -1,0 +1,14 @@
+---
+#
+# Turn the beamer on or off
+- alias: '[Media] - Toggle Beamer power'
+  trigger:
+    - platform: state
+      entity_id: input_boolean.beamer_power
+  action:
+    - service: remote.send_command
+      data:
+        entity_id: remote.harmony_hub
+        device: !secret beamer_id
+        command:
+          - PowerToggle

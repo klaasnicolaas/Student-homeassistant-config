@@ -1,7 +1,7 @@
 ---
 #
-#
-- alias: '[Tv] - Toggle TV mute'
+# Control mute for TV
+- alias: '[Media] - Toggle TV mute'
   trigger:
     - platform: state
       entity_id: input_boolean.tv_mute
@@ -9,7 +9,7 @@
     service: remote.send_command
     data_template:
       entity_id: remote.harmony_hub
-      device: 64401392
+      device: !secret tv_id
       command: >
         {% if is_state(trigger.entity_id, 'on') %}
           Mute

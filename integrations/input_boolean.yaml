@@ -19,10 +19,20 @@ input_boolean:
   wakeup_wait:
     name: Wacht op alarm signaal
 
+  tv_mute:
+    name: Tv Mute
+    icon: mdi:volume-mute
+
   tv_power:
-    name: TV Power
+    name: Tv
+    icon: mdi:television-classic
+
+  emergency:
+    name: Noodgeval
+
+  beamer_power:
+    name: Beamer Power
     icon: mdi:power
 
-  tv_mute:
-    name: TV Mute
-    icon: mdi:volume-mute
+  alarm_armed:
+    name: Alarm geactiveerd
