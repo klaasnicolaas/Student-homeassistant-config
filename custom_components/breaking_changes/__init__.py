@@ -7,13 +7,12 @@ https://github.com/custom-components/breaking_changes
 import os
 from datetime import timedelta, datetime
 import logging
-import requests
 import voluptuous as vol
 import homeassistant.helpers.config_validation as cv
 from homeassistant.const import EVENT_HOMEASSISTANT_START
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers import discovery
-from integrationhelper import Throttle
+from integrationhelper import Throttle, WebClient
 from .const import (
     DOMAIN_DATA,
     DOMAIN,
@@ -100,6 +99,7 @@ async def update_data(hass, throttle):
     from pyhaversion import LocalVersion, PyPiVersion
 
     session = async_get_clientsession(hass)
+    webclient = WebClient(session)
     localversion = LocalVersion(hass.loop, session)
     pypiversion = PyPiVersion(hass.loop, session)
 
@@ -133,8 +133,7 @@ async def update_data(hass, throttle):
 
         for version in range(int(currentversion) + 1, int(remoteversion) + 1):
             versions.append(version)
-            request = requests.get(URL.format(version))
-            jsondata = request.json()
+            jsondata = await webclient.async_get_json(URL.format(version))
             _LOGGER.debug(jsondata)
             for platform in jsondata:
                 _LOGGER.debug(platform["component"])
