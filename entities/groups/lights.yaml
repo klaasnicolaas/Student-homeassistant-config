@@ -1,0 +1,15 @@
+---
+# https://www.home-assistant.io/components/group/
+#
+home_lights:
+  name: Lampen in huis
+  entities:
+    - light.hal_lamp_1
+    - light.hal_lamp_2
+    - light.hal_lamp_3
+    - light.keuken_lamp_1
+    - light.keuken_lamp_2
+    - light.keuken_lamp_3
+    - light.woonkamer_lamp_1
+    - light.woonkamer_lamp_2
+    - light.woonkamer_lamp_3

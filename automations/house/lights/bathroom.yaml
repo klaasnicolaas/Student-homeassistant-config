@@ -6,7 +6,7 @@
 - alias: '[Light] - Turn ON bathroom light'
   trigger:
     - platform: state
-      entity_id: binary_sensor.openclose_sensor_4
+      entity_id: binary_sensor.openclose_sensor_4, binary_sensor.motion_badkamer
       to: 'on'
       from: 'off'
   action:
@@ -20,8 +20,13 @@
 
 - alias: '[Light] - Turn OFF bathroom light'
   trigger:
-    - platform: time_pattern
-      minutes: '/15'
+    # - platform: time_pattern
+    #  minutes: '/15'
+    - platform: state
+      entity_id: binary_sensor.motion_badkamer
+      to: 'off'
+      for:
+        minutes: 10
   condition:
     - condition: state
       entity_id: binary_sensor.openclose_sensor_4
