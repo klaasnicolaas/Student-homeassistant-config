@@ -11,6 +11,7 @@ logbook:
       - binary_sensor.openclose_sensor_2
       - binary_sensor.openclose_sensor_3
       - binary_sensor.openclose_sensor_4
+      - alarm_control_panel.alarmsysteem
   exclude:
     entities:
       - sensor.error

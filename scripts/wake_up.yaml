@@ -64,6 +64,10 @@ wake_up:
 
     - delay:
         seconds: 15
+    - service: media_player.volume_set
+      data:
+        entity_id: media_player.google_home
+        volume_level: '0.30'
 
     # Put the radio ON
     - service: script.turn_on

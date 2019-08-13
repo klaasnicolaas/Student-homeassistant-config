@@ -3,4 +3,7 @@
 # https://www.home-assistant.io/components/logger/
 #
 logger:
-  default: warn
+  default: info
+  logs:
+    homeassistant.bootstrap: info
+    homeassistant.components.shell_command: fatal

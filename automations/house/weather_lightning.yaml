@@ -1,7 +1,7 @@
 ---
 #
 # A notification when there is a lightning strike in the area
-- alias: '[House] - Notify if there is a thunder storm'
+- alias: '[House] - Notify if there is a thunderstorm'
   trigger:
     - platform: geo_location
       source: wwlln
