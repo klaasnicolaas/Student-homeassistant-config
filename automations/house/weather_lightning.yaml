@@ -1,0 +1,15 @@
+---
+#
+# A notification when there is a lightning strike in the area
+- alias: '[House] - Notify if there is a thunder storm'
+  trigger:
+    - platform: geo_location
+      source: wwlln
+      zone: zone.thunder
+      event: enter
+  action:
+    - service: notify.telegram_klaas
+      data:
+        title: '*Onweer opkomst*'
+        message: >
+          Camera in de aanslag er is onweer in de buurt
