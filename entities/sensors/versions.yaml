@@ -8,12 +8,12 @@
 - platform: version
   name: Hassio Beta versie
   beta: true
-  image: raspberrypi3
+  image: intel-nuc
   source: hassio
 
 # Fetch stable version of HA
 - platform: version
   name: Hassio Stable versie
   beta: false
-  image: raspberrypi3
+  image: intel-nuc
   source: hassio
