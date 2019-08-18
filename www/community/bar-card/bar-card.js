@@ -40,7 +40,6 @@ class BarCard extends HTMLElement {
     if (!config.minmax_style) config.minmax_style = false
     if (!config.background_style) config.background_style = false
     if (!config.visibility) config.visibility = false
-    if (!config.decimal) config.decimal = false
 
     // Check entity types
     let updateArray
@@ -1010,10 +1009,6 @@ class BarCard extends HTMLElement {
       if (config.limit_value && !isNaN(entityState)) {
         entityState = Math.min(entityState, configMax)
         entityState = Math.max(entityState, configMin)
-      }
-      entityState = Number(entityState)
-      if (config.decimal !== false) {
-        entityState.toFixed(config.decimal)
       }
     }
 
