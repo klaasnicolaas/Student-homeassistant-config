@@ -486,10 +486,10 @@ cards:
         entity: binary_sensor.tp_link_router
     columns: 4
 
-  # Toont informatie over de Google Homes
-  # - type: entities
-  #  title: Google Home
-  #  show_header_toggle: false
-  #  entities:
-  #    - sensor.google_home_alarm
-  #    - sensor.google_home_timer
+# Toont informatie over de Google Homes
+# - type: entities
+#  title: Google Home
+#  show_header_toggle: false
+#  entities:
+#    - sensor.google_home_alarm
+#    - sensor.google_home_timer
