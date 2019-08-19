@@ -74,12 +74,12 @@ cards:
       # Extra explanation
       - type: markdown
         title: Google Assistant
-        content: >
-          "**Ik wil koken**" voor als je gaat koken.
-          "**Het is avond**" of "Start evening mode" voor gedimde lampen in de avond.
-          "**Start slaap ritueel**" voor wanneer je gaat slapen.
-          "**Kanaal X graag**" om TV van kanaal te veranderen
-          "**Zet TV aan/uit**" om de tv aan of uit te doen.
+        content: |
+          **Ik wil koken** voor als je gaat koken.
+          **Het is avond** of **Start evening mode** voor gedimde lampen in de avond.
+          **Start slaap ritueel** voor wanneer je gaat slapen.
+          **Kanaal X graag** om TV van kanaal te veranderen
+          **Zet TV aan/uit** om de tv aan of uit te doen.
 
   # Show the lights in house
   - type: vertical-stack
@@ -198,6 +198,25 @@ cards:
           - entity: binary_sensor.gordijn
             name: Status van de gordijn
 
+  # - type: custom:love-lock-card
+  #  popup: confirm
+  #  cards:
+  #    - type: custom:vertical-stack-in-card
+  #      cards:
+  #        - type: horizontal-stack
+  #          cards:
+  #            - type: custom:cover-element
+  #              entity: cover.curtain_window
+  #              label: Gordijnen
+  #            - type: custom:button-card
+  #              entity: binary_sensor.gordijn
+  #              show_icon: true
+  #              show_state: false
+  #              show_name: false
+  #        - type: custom:slider-entity-row
+  #          entity: cover.curtain_window
+  #          hide_state: true
+
   # Temperature and humidity in house
   - type: vertical-stack
     cards:
@@ -230,3 +249,12 @@ cards:
         animate: true
         hour24: true
         line_color: var(--primary-color)
+
+  - type: custom:google-keep-card
+    entity: sensor.google_keep_19c55cfd0d
+    alpha: 0.01
+    theme: dark
+    hide_if_empty: false
+    show:
+      - checked
+      - unchecked

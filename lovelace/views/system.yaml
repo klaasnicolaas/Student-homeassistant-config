@@ -122,10 +122,44 @@ cards:
     entities:
       - sensor.last_boot
       - binary_sensor.student_home_assistant
-      - sensor.snapshot_backup
+      # - sensor.snapshot_backup
       - type: divider
-      - sensor.hassio_stable_versie
-      - sensor.hassio_beta_versie
+      # Hassio
+      - entity: sensor.hassio_stable_versie
+        name: Hassio version
+        icon: mdi:home-assistant
+        type: custom:multiple-entity-row
+        hide_state: true
+        primary:
+          entity: sensor.hassio_beta_versie
+          name: Beta
+        secondary:
+          entity: sensor.hassio_stable_versie
+          name: Stable
+      # HassOS
+      - entity: sensor.hassos_version_stable
+        name: HassOS version
+        icon: mdi:server-security
+        type: custom:multiple-entity-row
+        hide_state: true
+        primary:
+          entity: sensor.hassos_version_beta
+          name: Beta
+        secondary:
+          entity: sensor.hassos_version_stable
+          name: Stable
+      # Supervisor
+      - entity: sensor.supervisor_version_stable
+        name: Supervisor version
+        icon: mdi:account-supervisor-circle
+        type: custom:multiple-entity-row
+        hide_state: true
+        primary:
+          entity: sensor.supervisor_version_beta
+          name: Beta
+        secondary:
+          entity: sensor.supervisor_version_stable
+          name: Stable
       - sensor.python_version
       - type: divider
       - sensor.automation_on
@@ -296,15 +330,38 @@ cards:
   # Show maintenance dashboard
   - type: vertical-stack
     cards:
-      - type: custom:love-lock-card
-        title: Onderhoud
-        popup: confirm
+      - type: custom:vertical-stack-in-card
         cards:
           - type: entities
+            title: Onderhoud
+            show_header_toggle: false
             entities:
               - input_boolean.maintenance_mode
-              - script.quick_restart
-              - script.quick_reboot
+              - type: divider
+          # Buttons
+          - type: horizontal-stack
+            cards:
+              - type: custom:button-card
+                entity: script.hassio_reboot
+                color_type: icon
+                name: Hassio
+              - type: custom:button-card
+                entity: script.host_reboot
+                color_type: card
+                name: Host
+                lock: true
+              - type: custom:button-card
+                entity: script.host_shutdown
+                color_type: card
+                lock: true
+                name: Host Shutdown
+              - type: custom:button-card
+                entity: script.backup_now
+                color_type: icon
+                name: Snapshot
+          - type: entities
+            show_header_toggle: false
+            entities:
               - type: divider
               # Gitlab CI
               - sensor.gitlab_ci_status
@@ -415,7 +472,7 @@ cards:
               exclude:
                 - entity_id: "*_humidity"
                 - entity_id: "*_pressure"
-                # - entity_id: "*_battery"
+                - entity_id: "*sensor.lightlevel*"
 
   - type: glance
     entities:
@@ -430,9 +487,9 @@ cards:
     columns: 4
 
   # Toont informatie over de Google Homes
-  - type: entities
-    title: Google Home
-    show_header_toggle: false
-    entities:
-      - sensor.google_home_alarm
-      - sensor.google_home_timer
+  # - type: entities
+  #  title: Google Home
+  #  show_header_toggle: false
+  #  entities:
+  #    - sensor.google_home_alarm
+  #    - sensor.google_home_timer

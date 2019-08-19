@@ -36,6 +36,7 @@ cards:
         show:
           fill: true
           extrema: true
+          graph: bar
         height: 100
         animate: true
         hour24: true
@@ -85,6 +86,7 @@ cards:
         show:
           fill: true
           extrema: true
+          graph: bar
         height: 100
         animate: true
         hour24: true
@@ -134,6 +136,7 @@ cards:
         show:
           fill: true
           extrema: true
+          graph: bar
         height: 100
         animate: true
         hour24: true
