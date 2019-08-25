@@ -21,7 +21,7 @@ class BarCard extends HTMLElement {
     if (!config.max) config.max = 100
     if (!config.padding) config.padding = '4px'
     if (!config.align) config.align = 'center'
-    if (!config.color) config.color = 'var(--primary-color)'
+    if (!config.color) config.color = 'var(--custom-bar-card-color, var(--primary-color))'
     if (!config.tap_action) config.tap_action = 'info'
     if (!config.show_value) config.show_value = true
     if (!config.limit_value) config.limit_value = false
@@ -40,6 +40,7 @@ class BarCard extends HTMLElement {
     if (!config.minmax_style) config.minmax_style = false
     if (!config.background_style) config.background_style = false
     if (!config.visibility) config.visibility = false
+    if (!config.decimal) config.decimal = false
 
     // Check entity types
     let updateArray
@@ -699,6 +700,19 @@ class BarCard extends HTMLElement {
     return color
   }
 
+  // Returns icon based on severity array
+  _computeSeverityIcon (stateValue, sections, hass) {
+    let numberValue = Number(stateValue)
+    let icon
+    sections.forEach(section => {
+      let actualValue = this._valueEntityCheck(section.value, hass)
+      if (numberValue <= actualValue && !icon) {
+        icon = section.icon
+      }
+    })
+    return icon
+  }
+
   // Check if value is NaN, otherwise assume it's an entity
   _valueEntityCheck (value, hass) {
     if (isNaN(value)) {
@@ -761,8 +775,13 @@ class BarCard extends HTMLElement {
     const maxValue = this._valueEntityCheck(this._maxCheck(entity, hass, index), hass)
     const barElement = this.shadowRoot.getElementById('bar_'+id)
 
-    barElement.style.setProperty('--bar-percent', `${this._translatePercent(entityState, minValue, maxValue, index, entity)}%`)
-    barElement.style.setProperty('--bar-charge-percent', `${this._translatePercent(entityState, minValue, maxValue, index, entity)}%`)
+    if (!isNaN(entityState)) {
+      barElement.style.setProperty('--bar-percent', `${this._translatePercent(entityState, minValue, maxValue, index, entity)}%`)
+      barElement.style.setProperty('--bar-charge-percent', `${this._translatePercent(entityState, minValue, maxValue, index, entity)}%`)
+    } else {
+      barElement.style.setProperty('--bar-percent', `100%`)
+      barElement.style.setProperty('--bar-charge-percent', `100%`)
+    }
   }
 
   // Create animation
@@ -969,24 +988,26 @@ class BarCard extends HTMLElement {
     const entityObject = hass.states[entity]
     const root = this.shadowRoot
 
+    // Check if entity exists
     if (entityObject == undefined) {
       root.getElementById('value_'+id).textContent = `Entity doesn't exist.`
       root.getElementById('value_'+id).style.setProperty('color', '#FF0000')
-      root.getElementById('icon_'+id).style.setProperty('--icon-display', 'none')
-      root.getElementById('titleBar_'+id).style.setProperty('display', 'none')
+      if (root.getElementById('icon'+id) !== null) {
+        root.getElementById('icon_'+id).style.setProperty('--icon-display', 'none')
+      }
+      if (root.getElementById('titleBar_'+id) !== null) {
+        root.getElementById('titleBar_'+id).style.setProperty('display', 'none')
+      }
       return
-    } 
-
+    }
+    
+    // Define config
     const config = this._configAttributeCheck(entity, index)
 
+    // Define Title
     if (config.title == false) config.title = entityObject.attributes.friendly_name
 
-    if (config.icon_position != 'off') {
-      if (config.icon == false) root.getElementById('icon_'+id).icon = entityObject.attributes.icon
-      else root.getElementById('icon_'+id).icon = config.icon
-    } else {
-      root.getElementById('icon_'+id).style.setProperty('--icon-display', 'none')
-    }
+    // Check for title position config
     if (config.title_position != 'off') root.getElementById('title_'+id).textContent = config.title
     if (!this._entityState) this._entityState = []
 
@@ -996,7 +1017,7 @@ class BarCard extends HTMLElement {
     const configMin = this._valueEntityCheck(this._minCheck(entity, hass, index), hass)
     const configMax = this._valueEntityCheck(this._maxCheck(entity, hass, index), hass)
 
-    // Check for unknown state
+    // Define Entity State
     let entityState
     if (entityObject == undefined || entityObject.state == 'unknown' || entityObject.state == 'unavailable') {
       entityState = 'N/A'
@@ -1006,10 +1027,34 @@ class BarCard extends HTMLElement {
       } else {
         entityState = entityObject.state
       }
-      if (config.limit_value && !isNaN(entityState)) {
+      
+      if(!isNaN(entityState)){
+        entityState = Number(entityState)
+      }
+
+      if (config.limit_value) {
         entityState = Math.min(entityState, configMax)
         entityState = Math.max(entityState, configMin)
       }
+      
+      if (config.decimal !== false) {
+        entityState.toFixed(config.decimal)
+      }
+    }
+
+    // Define Icon
+    if (config.icon_position != 'off') {
+      if (config.icon == false) {
+        root.getElementById('icon_'+id).icon = entityObject.attributes.icon
+      } else { 
+        if (config.severity == false || this._computeSeverityIcon(entityState, config.severity, hass) == undefined) {
+          root.getElementById('icon_'+id).icon = config.icon
+        } else {
+          root.getElementById('icon_'+id).icon = this._computeSeverityIcon(entityState, config.severity, hass)
+        }
+      }
+    } else {
+      root.getElementById('icon_'+id).style.setProperty('--icon-display', 'none')
     }
 
     // Set measurement
@@ -1038,14 +1083,16 @@ class BarCard extends HTMLElement {
     if (entityState !== this._entityState[id]) {
       const barColor = this._calculateBarColor(config, entityState, hass)
 
-      if (config.visibility !== false) {
-        if (entityState == 'N/A' || config.visibility == true) {
-          root.getElementById('card_'+id).style.setProperty('--card-display', 'visible')
-        } else {
-          if (eval(entityState + " " + config.visibility)) {
+      if (!isNaN(entityState)) {
+        if (config.visibility !== false) {
+          if (entityState == 'N/A' || config.visibility == true) {
             root.getElementById('card_'+id).style.setProperty('--card-display', 'visible')
           } else {
-            root.getElementById('card_'+id).style.setProperty('--card-display', 'none')
+            if (eval(entityState + " " + config.visibility)) {
+              root.getElementById('card_'+id).style.setProperty('--card-display', 'visible')
+            } else {
+              root.getElementById('card_'+id).style.setProperty('--card-display', 'none')
+            }
           }
         }
       }
@@ -1174,3 +1221,9 @@ class BarCard extends HTMLElement {
 }
 
 customElements.define('bar-card', BarCard)
+
+console.info(
+  `%cBAR-CARD\n%cVersion: 1.6.0`,
+  "color: green; font-weight: bold;",
+  ""
+);
