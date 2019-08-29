@@ -1,0 +1,8 @@
+---
+# https://www.home-assistant.io/components/tuya/
+#
+tuya:
+  username: !secret tuya_username
+  password: !secret tuya_password
+  platform: smart_life
+  country_code: 31
