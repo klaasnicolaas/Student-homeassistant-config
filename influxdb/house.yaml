@@ -1,0 +1,13 @@
+---
+# These are the house wide entities that I want
+# to store into InfluxDB.
+#
+# I like to specify (whitelist) each entity to store,
+# since that keeps my InfluxDB clean and small.
+#
+- sensor.window_temperature
+- sensor.window_pressure
+- sensor.window_humidity
+- sensor.home_temperature
+- sensor.home_pressure
+- sensor.home_humidity
