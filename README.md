@@ -49,6 +49,7 @@ Below is a list of all hardware in-house
 - Xiaomi [Motion Sensors][xiaomi_motion]
 - Xiaomi Curtains with [track][xiaomi_curtains_track] and [motor][xiaomi_curtains_motor]
 - Xiaomi [Smart switch][xiaomi_switch]
+- Blitzwolf [BW-LT11] led strips
 - There is more soon :)
 
 ---
@@ -131,6 +132,7 @@ SOFTWARE.
 [xiaomi_curtains_motor]: https://nl.aliexpress.com/item/Xiaomi-Aqara-Smart-Gordijn-Motor-Intelligente-Zigbee-Wifi-Voor-xiaomi-Smart-Home-Apparaat-Draadloze-Afstandsbediening-Via/32872671734.html?spm=a2g0s.9042311.0.0.1cf94c4d06j07R
 [xiaomi_motion]: https://www.banggood.com/Original-Aqara-Zig_Bee-Wireless-Human-Body-PIR-Sensor-Smart-Home-Kit-From-Xiaomi-Eco-System-p-1177007.html?rmmds=myorder&cur_warehouse=CN
 [xiaomi_switch]: https://www.banggood.com/Original-Xiaomi-Aqara-Smart-Wireless-Switch-Smart-Home-Kit-Remote-Control-Touch-Switch-p-1224921.html?rmmds=myorder&cur_warehouse=CN
+[BW-LT11]: https://www.banggood.com/BlitzWolf-BW-LT11-2M5M-Smart-APP-Control-RGBW-LED-Light-Strip-Kit-Work-With-Amazon-Alexa-Google-Assistant-p-1390470.html?rmmds=search
 [sleep]: https://student-techlife.com/2019/05/16/hey-google-time-to-sleep/
 [tv]: https://student-techlife.com/2019/06/02/my-tv-is-out-of-own-control/
 [household]: https://student-techlife.com/2019/07/09/what-task-do-we-do-today/

@@ -15,3 +15,12 @@ light.werkhoek:
 
 light.badkamer:
   icon: mdi:ceiling-light
+
+light.blitzwolf_ledstrip_1:
+  icon: mdi:led-strip
+
+light.blitzwolf_ledstrip_2:
+  icon: mdi:led-strip
+
+light.stellingkast:
+  icon: mdi:led-strip

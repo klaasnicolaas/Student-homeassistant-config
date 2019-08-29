@@ -1,0 +1,8 @@
+---
+#
+#
+- platform: group
+  name: Stellingkast
+  entities:
+    - light.blitzwolf_ledstrip_1
+    - light.blitzwolf_ledstrip_2

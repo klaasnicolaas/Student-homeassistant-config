@@ -142,12 +142,20 @@ cards:
           - type: custom:fold-entity-row
             head:
               type: section
-              label: Werkhoek
+              label: Stellingkast
+            group_config:
+              secondary_info: last-changed
+            items:
+              - light.blitzwolf_ledstrip_1
+              - light.blitzwolf_ledstrip_2
+          - type: custom:slider-entity-row
+            entity: light.stellingkast
+            toggle: true
+            hide_when_off: true
           - type: custom:slider-entity-row
             entity: light.werkhoek
             toggle: true
             hide_when_off: true
-
       - type: entities
         title: Wekkers
         show_header_toggle: false
