@@ -58,15 +58,14 @@ const isCEPolyfill = window.customElements !== undefined &&
     window.customElements.polyfillWrapFlushCallback !==
         undefined;
 /**
- * Removes nodes, starting from `startNode` (inclusive) to `endNode`
- * (exclusive), from `container`.
+ * Removes nodes, starting from `start` (inclusive) to `end` (exclusive), from
+ * `container`.
  */
-const removeNodes = (container, startNode, endNode = null) => {
-    let node = startNode;
-    while (node !== endNode) {
-        const n = node.nextSibling;
-        container.removeChild(node);
-        node = n;
+const removeNodes = (container, start, end = null) => {
+    while (start !== end) {
+        const n = start.nextSibling;
+        container.removeChild(start);
+        start = n;
     }
 };
 
@@ -128,129 +127,152 @@ class Template {
     constructor(result, element) {
         this.parts = [];
         this.element = element;
+        const nodesToRemove = [];
+        const stack = [];
+        // Edge needs all 4 parameters present; IE11 needs 3rd parameter to be null
+        const walker = document.createTreeWalker(element.content, 133 /* NodeFilter.SHOW_{ELEMENT|COMMENT|TEXT} */, null, false);
+        // Keeps track of the last index associated with a part. We try to delete
+        // unnecessary nodes, but we never want to associate two different parts
+        // to the same index. They must have a constant node between.
+        let lastPartIndex = 0;
         let index = -1;
         let partIndex = 0;
-        const nodesToRemove = [];
-        const _prepareTemplate = (template) => {
-            const content = template.content;
-            // Edge needs all 4 parameters present; IE11 needs 3rd parameter to be
-            // null
-            const walker = document.createTreeWalker(content, 133 /* NodeFilter.SHOW_{ELEMENT|COMMENT|TEXT} */, null, false);
-            // Keeps track of the last index associated with a part. We try to delete
-            // unnecessary nodes, but we never want to associate two different parts
-            // to the same index. They must have a constant node between.
-            let lastPartIndex = 0;
-            while (walker.nextNode()) {
-                index++;
-                const node = walker.currentNode;
-                if (node.nodeType === 1 /* Node.ELEMENT_NODE */) {
-                    if (node.hasAttributes()) {
-                        const attributes = node.attributes;
-                        // Per
-                        // https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap,
-                        // attributes are not guaranteed to be returned in document order.
-                        // In particular, Edge/IE can return them out of order, so we cannot
-                        // assume a correspondance between part index and attribute index.
-                        let count = 0;
-                        for (let i = 0; i < attributes.length; i++) {
-                            if (attributes[i].value.indexOf(marker) >= 0) {
-                                count++;
+        const { strings, values: { length } } = result;
+        while (partIndex < length) {
+            const node = walker.nextNode();
+            if (node === null) {
+                // We've exhausted the content inside a nested template element.
+                // Because we still have parts (the outer for-loop), we know:
+                // - There is a template in the stack
+                // - The walker will find a nextNode outside the template
+                walker.currentNode = stack.pop();
+                continue;
+            }
+            index++;
+            if (node.nodeType === 1 /* Node.ELEMENT_NODE */) {
+                if (node.hasAttributes()) {
+                    const attributes = node.attributes;
+                    const { length } = attributes;
+                    // Per
+                    // https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap,
+                    // attributes are not guaranteed to be returned in document order.
+                    // In particular, Edge/IE can return them out of order, so we cannot
+                    // assume a correspondence between part index and attribute index.
+                    let count = 0;
+                    for (let i = 0; i < length; i++) {
+                        if (endsWith(attributes[i].name, boundAttributeSuffix)) {
+                            count++;
+                        }
+                    }
+                    while (count-- > 0) {
+                        // Get the template literal section leading up to the first
+                        // expression in this attribute
+                        const stringForPart = strings[partIndex];
+                        // Find the attribute name
+                        const name = lastAttributeNameRegex.exec(stringForPart)[2];
+                        // Find the corresponding attribute
+                        // All bound attributes have had a suffix added in
+                        // TemplateResult#getHTML to opt out of special attribute
+                        // handling. To look up the attribute value we also need to add
+                        // the suffix.
+                        const attributeLookupName = name.toLowerCase() + boundAttributeSuffix;
+                        const attributeValue = node.getAttribute(attributeLookupName);
+                        node.removeAttribute(attributeLookupName);
+                        const statics = attributeValue.split(markerRegex);
+                        this.parts.push({ type: 'attribute', index, name, strings: statics });
+                        partIndex += statics.length - 1;
+                    }
+                }
+                if (node.tagName === 'TEMPLATE') {
+                    stack.push(node);
+                    walker.currentNode = node.content;
+                }
+            }
+            else if (node.nodeType === 3 /* Node.TEXT_NODE */) {
+                const data = node.data;
+                if (data.indexOf(marker) >= 0) {
+                    const parent = node.parentNode;
+                    const strings = data.split(markerRegex);
+                    const lastIndex = strings.length - 1;
+                    // Generate a new text node for each literal section
+                    // These nodes are also used as the markers for node parts
+                    for (let i = 0; i < lastIndex; i++) {
+                        let insert;
+                        let s = strings[i];
+                        if (s === '') {
+                            insert = createMarker();
+                        }
+                        else {
+                            const match = lastAttributeNameRegex.exec(s);
+                            if (match !== null && endsWith(match[2], boundAttributeSuffix)) {
+                                s = s.slice(0, match.index) + match[1] +
+                                    match[2].slice(0, -boundAttributeSuffix.length) + match[3];
                             }
+                            insert = document.createTextNode(s);
                         }
-                        while (count-- > 0) {
-                            // Get the template literal section leading up to the first
-                            // expression in this attribute
-                            const stringForPart = result.strings[partIndex];
-                            // Find the attribute name
-                            const name = lastAttributeNameRegex.exec(stringForPart)[2];
-                            // Find the corresponding attribute
-                            // All bound attributes have had a suffix added in
-                            // TemplateResult#getHTML to opt out of special attribute
-                            // handling. To look up the attribute value we also need to add
-                            // the suffix.
-                            const attributeLookupName = name.toLowerCase() + boundAttributeSuffix;
-                            const attributeValue = node.getAttribute(attributeLookupName);
-                            const strings = attributeValue.split(markerRegex);
-                            this.parts.push({ type: 'attribute', index, name, strings });
-                            node.removeAttribute(attributeLookupName);
-                            partIndex += strings.length - 1;
-                        }
+                        parent.insertBefore(insert, node);
+                        this.parts.push({ type: 'node', index: ++index });
                     }
-                    if (node.tagName === 'TEMPLATE') {
-                        _prepareTemplate(node);
-                    }
-                }
-                else if (node.nodeType === 3 /* Node.TEXT_NODE */) {
-                    const data = node.data;
-                    if (data.indexOf(marker) >= 0) {
-                        const parent = node.parentNode;
-                        const strings = data.split(markerRegex);
-                        const lastIndex = strings.length - 1;
-                        // Generate a new text node for each literal section
-                        // These nodes are also used as the markers for node parts
-                        for (let i = 0; i < lastIndex; i++) {
-                            parent.insertBefore((strings[i] === '') ? createMarker() :
-                                document.createTextNode(strings[i]), node);
-                            this.parts.push({ type: 'node', index: ++index });
-                        }
-                        // If there's no text, we must insert a comment to mark our place.
-                        // Else, we can trust it will stick around after cloning.
-                        if (strings[lastIndex] === '') {
-                            parent.insertBefore(createMarker(), node);
-                            nodesToRemove.push(node);
-                        }
-                        else {
-                            node.data = strings[lastIndex];
-                        }
-                        // We have a part for each match found
-                        partIndex += lastIndex;
-                    }
-                }
-                else if (node.nodeType === 8 /* Node.COMMENT_NODE */) {
-                    if (node.data === marker) {
-                        const parent = node.parentNode;
-                        // Add a new marker node to be the startNode of the Part if any of
-                        // the following are true:
-                        //  * We don't have a previousSibling
-                        //  * The previousSibling is already the start of a previous part
-                        if (node.previousSibling === null || index === lastPartIndex) {
-                            index++;
-                            parent.insertBefore(createMarker(), node);
-                        }
-                        lastPartIndex = index;
-                        this.parts.push({ type: 'node', index });
-                        // If we don't have a nextSibling, keep this node so we have an end.
-                        // Else, we can remove it to save future costs.
-                        if (node.nextSibling === null) {
-                            node.data = '';
-                        }
-                        else {
-                            nodesToRemove.push(node);
-                            index--;
-                        }
-                        partIndex++;
+                    // If there's no text, we must insert a comment to mark our place.
+                    // Else, we can trust it will stick around after cloning.
+                    if (strings[lastIndex] === '') {
+                        parent.insertBefore(createMarker(), node);
+                        nodesToRemove.push(node);
                     }
                     else {
-                        let i = -1;
-                        while ((i = node.data.indexOf(marker, i + 1)) !==
-                            -1) {
-                            // Comment node has a binding marker inside, make an inactive part
-                            // The binding won't work, but subsequent bindings will
-                            // TODO (justinfagnani): consider whether it's even worth it to
-                            // make bindings in comments work
-                            this.parts.push({ type: 'node', index: -1 });
-                        }
+                        node.data = strings[lastIndex];
+                    }
+                    // We have a part for each match found
+                    partIndex += lastIndex;
+                }
+            }
+            else if (node.nodeType === 8 /* Node.COMMENT_NODE */) {
+                if (node.data === marker) {
+                    const parent = node.parentNode;
+                    // Add a new marker node to be the startNode of the Part if any of
+                    // the following are true:
+                    //  * We don't have a previousSibling
+                    //  * The previousSibling is already the start of a previous part
+                    if (node.previousSibling === null || index === lastPartIndex) {
+                        index++;
+                        parent.insertBefore(createMarker(), node);
+                    }
+                    lastPartIndex = index;
+                    this.parts.push({ type: 'node', index });
+                    // If we don't have a nextSibling, keep this node so we have an end.
+                    // Else, we can remove it to save future costs.
+                    if (node.nextSibling === null) {
+                        node.data = '';
+                    }
+                    else {
+                        nodesToRemove.push(node);
+                        index--;
+                    }
+                    partIndex++;
+                }
+                else {
+                    let i = -1;
+                    while ((i = node.data.indexOf(marker, i + 1)) !== -1) {
+                        // Comment node has a binding marker inside, make an inactive part
+                        // The binding won't work, but subsequent bindings will
+                        // TODO (justinfagnani): consider whether it's even worth it to
+                        // make bindings in comments work
+                        this.parts.push({ type: 'node', index: -1 });
+                        partIndex++;
                     }
                 }
             }
-        };
-        _prepareTemplate(element);
+        }
         // Remove text binding nodes after the walk to not disturb the TreeWalker
         for (const n of nodesToRemove) {
             n.parentNode.removeChild(n);
         }
     }
 }
+const endsWith = (str, suffix) => {
+    const index = str.length - suffix.length;
+    return index >= 0 && str.slice(index) === suffix;
+};
 const isTemplatePartActive = (part) => part.index !== -1;
 // Allows `document.createComment('')` to be renamed for a
 // small manual size-savings.
@@ -262,12 +284,13 @@ const createMarker = () => document.createComment('');
  * the expression is in an attribute-value position.
  *
  * See attributes in the HTML spec:
- * https://www.w3.org/TR/html5/syntax.html#attributes-0
- *
- * "\0-\x1F\x7F-\x9F" are Unicode control characters
+ * https://www.w3.org/TR/html5/syntax.html#elements-attributes
  *
  * " \x09\x0a\x0c\x0d" are HTML space characters:
- * https://www.w3.org/TR/html5/infrastructure.html#space-character
+ * https://www.w3.org/TR/html5/infrastructure.html#space-characters
+ *
+ * "\0-\x1F\x7F-\x9F" are Unicode control characters, which includes every
+ * space character except " ".
  *
  * So an attribute is:
  *  * The name: any character except a control character, space character, ('),
@@ -280,7 +303,7 @@ const createMarker = () => document.createComment('');
  *    * (") then any non-("), or
  *    * (') then any non-(')
  */
-const lastAttributeNameRegex = /([ \x09\x0a\x0c\x0d])([^\0-\x1F\x7F-\x9F \x09\x0a\x0c\x0d"'>=/]+)([ \x09\x0a\x0c\x0d]*=[ \x09\x0a\x0c\x0d]*(?:[^ \x09\x0a\x0c\x0d"'`<>=]*|"[^"]*|'[^']*))$/;
+const lastAttributeNameRegex = /([ \x09\x0a\x0c\x0d])([^\0-\x1F\x7F-\x9F "'>=/]+)([ \x09\x0a\x0c\x0d]*=[ \x09\x0a\x0c\x0d]*(?:[^ \x09\x0a\x0c\x0d"'`<>=]*|"[^"]*|'[^']*))$/;
 
 /**
  * @license
@@ -301,76 +324,111 @@ const lastAttributeNameRegex = /([ \x09\x0a\x0c\x0d])([^\0-\x1F\x7F-\x9F \x09\x0
  */
 class TemplateInstance {
     constructor(template, processor, options) {
-        this._parts = [];
+        this.__parts = [];
         this.template = template;
         this.processor = processor;
         this.options = options;
     }
     update(values) {
         let i = 0;
-        for (const part of this._parts) {
+        for (const part of this.__parts) {
             if (part !== undefined) {
                 part.setValue(values[i]);
             }
             i++;
         }
-        for (const part of this._parts) {
+        for (const part of this.__parts) {
             if (part !== undefined) {
                 part.commit();
             }
         }
     }
     _clone() {
-        // When using the Custom Elements polyfill, clone the node, rather than
-        // importing it, to keep the fragment in the template's document. This
-        // leaves the fragment inert so custom elements won't upgrade and
-        // potentially modify their contents by creating a polyfilled ShadowRoot
-        // while we traverse the tree.
+        // There are a number of steps in the lifecycle of a template instance's
+        // DOM fragment:
+        //  1. Clone - create the instance fragment
+        //  2. Adopt - adopt into the main document
+        //  3. Process - find part markers and create parts
+        //  4. Upgrade - upgrade custom elements
+        //  5. Update - set node, attribute, property, etc., values
+        //  6. Connect - connect to the document. Optional and outside of this
+        //     method.
+        //
+        // We have a few constraints on the ordering of these steps:
+        //  * We need to upgrade before updating, so that property values will pass
+        //    through any property setters.
+        //  * We would like to process before upgrading so that we're sure that the
+        //    cloned fragment is inert and not disturbed by self-modifying DOM.
+        //  * We want custom elements to upgrade even in disconnected fragments.
+        //
+        // Given these constraints, with full custom elements support we would
+        // prefer the order: Clone, Process, Adopt, Upgrade, Update, Connect
+        //
+        // But Safari dooes not implement CustomElementRegistry#upgrade, so we
+        // can not implement that order and still have upgrade-before-update and
+        // upgrade disconnected fragments. So we instead sacrifice the
+        // process-before-upgrade constraint, since in Custom Elements v1 elements
+        // must not modify their light DOM in the constructor. We still have issues
+        // when co-existing with CEv0 elements like Polymer 1, and with polyfills
+        // that don't strictly adhere to the no-modification rule because shadow
+        // DOM, which may be created in the constructor, is emulated by being placed
+        // in the light DOM.
+        //
+        // The resulting order is on native is: Clone, Adopt, Upgrade, Process,
+        // Update, Connect. document.importNode() performs Clone, Adopt, and Upgrade
+        // in one step.
+        //
+        // The Custom Elements v1 polyfill supports upgrade(), so the order when
+        // polyfilled is the more ideal: Clone, Process, Adopt, Upgrade, Update,
+        // Connect.
         const fragment = isCEPolyfill ?
             this.template.element.content.cloneNode(true) :
             document.importNode(this.template.element.content, true);
+        const stack = [];
         const parts = this.template.parts;
+        // Edge needs all 4 parameters present; IE11 needs 3rd parameter to be null
+        const walker = document.createTreeWalker(fragment, 133 /* NodeFilter.SHOW_{ELEMENT|COMMENT|TEXT} */, null, false);
         let partIndex = 0;
         let nodeIndex = 0;
-        const _prepareInstance = (fragment) => {
-            // Edge needs all 4 parameters present; IE11 needs 3rd parameter to be
-            // null
-            const walker = document.createTreeWalker(fragment, 133 /* NodeFilter.SHOW_{ELEMENT|COMMENT|TEXT} */, null, false);
-            let node = walker.nextNode();
-            // Loop through all the nodes and parts of a template
-            while (partIndex < parts.length && node !== null) {
-                const part = parts[partIndex];
-                // Consecutive Parts may have the same node index, in the case of
-                // multiple bound attributes on an element. So each iteration we either
-                // increment the nodeIndex, if we aren't on a node with a part, or the
-                // partIndex if we are. By not incrementing the nodeIndex when we find a
-                // part, we allow for the next part to be associated with the current
-                // node if neccessasry.
-                if (!isTemplatePartActive(part)) {
-                    this._parts.push(undefined);
-                    partIndex++;
+        let part;
+        let node = walker.nextNode();
+        // Loop through all the nodes and parts of a template
+        while (partIndex < parts.length) {
+            part = parts[partIndex];
+            if (!isTemplatePartActive(part)) {
+                this.__parts.push(undefined);
+                partIndex++;
+                continue;
+            }
+            // Progress the tree walker until we find our next part's node.
+            // Note that multiple parts may share the same node (attribute parts
+            // on a single element), so this loop may not run at all.
+            while (nodeIndex < part.index) {
+                nodeIndex++;
+                if (node.nodeName === 'TEMPLATE') {
+                    stack.push(node);
+                    walker.currentNode = node.content;
                 }
-                else if (nodeIndex === part.index) {
-                    if (part.type === 'node') {
-                        const part = this.processor.handleTextExpression(this.options);
-                        part.insertAfterNode(node.previousSibling);
-                        this._parts.push(part);
-                    }
-                    else {
-                        this._parts.push(...this.processor.handleAttributeExpressions(node, part.name, part.strings, this.options));
-                    }
-                    partIndex++;
-                }
-                else {
-                    nodeIndex++;
-                    if (node.nodeName === 'TEMPLATE') {
-                        _prepareInstance(node.content);
-                    }
+                if ((node = walker.nextNode()) === null) {
+                    // We've exhausted the content inside a nested template element.
+                    // Because we still have parts (the outer for-loop), we know:
+                    // - There is a template in the stack
+                    // - The walker will find a nextNode outside the template
+                    walker.currentNode = stack.pop();
                     node = walker.nextNode();
                 }
             }
-        };
-        _prepareInstance(fragment);
+            // We've arrived at our part's node.
+            if (part.type === 'node') {
+                const part = this.processor.handleTextExpression(this.options);
+                part.insertAfterNode(node.previousSibling);
+                this.__parts.push(part);
+            }
+            else {
+                this.__parts.push(...this.processor.handleAttributeExpressions(node, part.name, part.strings, this.options));
+            }
+            partIndex++;
+        }
         if (isCEPolyfill) {
             document.adoptNode(fragment);
             customElements.upgrade(fragment);
@@ -392,6 +450,7 @@ class TemplateInstance {
  * subject to an additional IP rights grant found at
  * http://polymer.github.io/PATENTS.txt
  */
+const commentMarker = ` ${marker} `;
 /**
  * The return type of `html`, which holds a Template and the values from
  * interpolated expressions.
@@ -407,34 +466,57 @@ class TemplateResult {
      * Returns a string of HTML used to create a `<template>` element.
      */
     getHTML() {
-        const endIndex = this.strings.length - 1;
+        const l = this.strings.length - 1;
         let html = '';
-        for (let i = 0; i < endIndex; i++) {
+        let isCommentBinding = false;
+        for (let i = 0; i < l; i++) {
             const s = this.strings[i];
-            // This exec() call does two things:
-            // 1) Appends a suffix to the bound attribute name to opt out of special
-            // attribute value parsing that IE11 and Edge do, like for style and
-            // many SVG attributes. The Template class also appends the same suffix
-            // when looking up attributes to create Parts.
-            // 2) Adds an unquoted-attribute-safe marker for the first expression in
-            // an attribute. Subsequent attribute expressions will use node markers,
-            // and this is safe since attributes with multiple expressions are
-            // guaranteed to be quoted.
-            const match = lastAttributeNameRegex.exec(s);
-            if (match) {
-                // We're starting a new bound attribute.
-                // Add the safe attribute suffix, and use unquoted-attribute-safe
-                // marker.
-                html += s.substr(0, match.index) + match[1] + match[2] +
-                    boundAttributeSuffix + match[3] + marker;
+            // For each binding we want to determine the kind of marker to insert
+            // into the template source before it's parsed by the browser's HTML
+            // parser. The marker type is based on whether the expression is in an
+            // attribute, text, or comment poisition.
+            //   * For node-position bindings we insert a comment with the marker
+            //     sentinel as its text content, like <!--{{lit-guid}}-->.
+            //   * For attribute bindings we insert just the marker sentinel for the
+            //     first binding, so that we support unquoted attribute bindings.
+            //     Subsequent bindings can use a comment marker because multi-binding
+            //     attributes must be quoted.
+            //   * For comment bindings we insert just the marker sentinel so we don't
+            //     close the comment.
+            //
+            // The following code scans the template source, but is *not* an HTML
+            // parser. We don't need to track the tree structure of the HTML, only
+            // whether a binding is inside a comment, and if not, if it appears to be
+            // the first binding in an attribute.
+            const commentOpen = s.lastIndexOf('<!--');
+            // We're in comment position if we have a comment open with no following
+            // comment close. Because <-- can appear in an attribute value there can
+            // be false positives.
+            isCommentBinding = (commentOpen > -1 || isCommentBinding) &&
+                s.indexOf('-->', commentOpen + 1) === -1;
+            // Check to see if we have an attribute-like sequence preceeding the
+            // expression. This can match "name=value" like structures in text,
+            // comments, and attribute values, so there can be false-positives.
+            const attributeMatch = lastAttributeNameRegex.exec(s);
+            if (attributeMatch === null) {
+                // We're only in this branch if we don't have a attribute-like
+                // preceeding sequence. For comments, this guards against unusual
+                // attribute values like <div foo="<!--${'bar'}">. Cases like
+                // <!-- foo=${'bar'}--> are handled correctly in the attribute branch
+                // below.
+                html += s + (isCommentBinding ? commentMarker : nodeMarker);
             }
             else {
-                // We're either in a bound node, or trailing bound attribute.
-                // Either way, nodeMarker is safe to use.
-                html += s + nodeMarker;
+                // For attributes we use just a marker sentinel, and also append a
+                // $lit$ suffix to the name to opt-out of attribute-specific parsing
+                // that IE and Edge do for style and certain SVG attributes.
+                html += s.substr(0, attributeMatch.index) + attributeMatch[1] +
+                    attributeMatch[2] + boundAttributeSuffix + attributeMatch[3] +
+                    marker;
             }
         }
-        return html + this.strings[endIndex];
+        html += this.strings[l];
+        return html;
     }
     getTemplateElement() {
         const template = document.createElement('template');
@@ -460,9 +542,15 @@ const isPrimitive = (value) => {
     return (value === null ||
         !(typeof value === 'object' || typeof value === 'function'));
 };
+const isIterable = (value) => {
+    return Array.isArray(value) ||
+        // tslint:disable-next-line:no-any
+        !!(value && value[Symbol.iterator]);
+};
 /**
- * Sets attribute values for AttributeParts, so that the value is only set once
- * even if there are multiple parts for an attribute.
+ * Writes attribute values to the DOM for a group of AttributeParts bound to a
+ * single attibute. The value is only set once even if there are multiple parts
+ * for an attribute.
  */
 class AttributeCommitter {
     constructor(element, name, strings) {
@@ -490,16 +578,13 @@ class AttributeCommitter {
             const part = this.parts[i];
             if (part !== undefined) {
                 const v = part.value;
-                if (v != null &&
-                    (Array.isArray(v) ||
-                        // tslint:disable-next-line:no-any
-                        typeof v !== 'string' && v[Symbol.iterator])) {
+                if (isPrimitive(v) || !isIterable(v)) {
+                    text += typeof v === 'string' ? v : String(v);
+                }
+                else {
                     for (const t of v) {
                         text += typeof t === 'string' ? t : String(t);
                     }
-                }
-                else {
-                    text += typeof v === 'string' ? v : String(v);
                 }
             }
         }
@@ -513,10 +598,13 @@ class AttributeCommitter {
         }
     }
 }
+/**
+ * A Part that controls all or part of an attribute value.
+ */
 class AttributePart {
-    constructor(comitter) {
+    constructor(committer) {
         this.value = undefined;
-        this.committer = comitter;
+        this.committer = committer;
     }
     setValue(value) {
         if (value !== noChange && (!isPrimitive(value) || value !== this.value)) {
@@ -541,14 +629,22 @@ class AttributePart {
         this.committer.commit();
     }
 }
+/**
+ * A Part that controls a location within a Node tree. Like a Range, NodePart
+ * has start and end locations and can set and update the Nodes between those
+ * locations.
+ *
+ * NodeParts support several value types: primitives, Nodes, TemplateResults,
+ * as well as arrays and iterables of those types.
+ */
 class NodePart {
     constructor(options) {
         this.value = undefined;
-        this._pendingValue = undefined;
+        this.__pendingValue = undefined;
         this.options = options;
     }
     /**
-     * Inserts this part into a container.
+     * Appends this part into a container.
      *
      * This part must be empty, as its contents are not automatically moved.
      */
@@ -557,9 +653,9 @@ class NodePart {
         this.endNode = container.appendChild(createMarker());
     }
     /**
-     * Inserts this part between `ref` and `ref`'s next sibling. Both `ref` and
-     * its next sibling must be static, unchanging nodes such as those that appear
-     * in a literal section of a template.
+     * Inserts this part after the `ref` node (between `ref` and `ref`'s next
+     * sibling). Both `ref` and its next sibling must be static, unchanging nodes
+     * such as those that appear in a literal section of a template.
      *
      * This part must be empty, as its contents are not automatically moved.
      */
@@ -573,47 +669,45 @@ class NodePart {
      * This part must be empty, as its contents are not automatically moved.
      */
     appendIntoPart(part) {
-        part._insert(this.startNode = createMarker());
-        part._insert(this.endNode = createMarker());
+        part.__insert(this.startNode = createMarker());
+        part.__insert(this.endNode = createMarker());
     }
     /**
-     * Appends this part after `ref`
+     * Inserts this part after the `ref` part.
      *
      * This part must be empty, as its contents are not automatically moved.
      */
     insertAfterPart(ref) {
-        ref._insert(this.startNode = createMarker());
+        ref.__insert(this.startNode = createMarker());
         this.endNode = ref.endNode;
         ref.endNode = this.startNode;
     }
     setValue(value) {
-        this._pendingValue = value;
+        this.__pendingValue = value;
     }
     commit() {
-        while (isDirective(this._pendingValue)) {
-            const directive = this._pendingValue;
-            this._pendingValue = noChange;
+        while (isDirective(this.__pendingValue)) {
+            const directive = this.__pendingValue;
+            this.__pendingValue = noChange;
             directive(this);
         }
-        const value = this._pendingValue;
+        const value = this.__pendingValue;
         if (value === noChange) {
             return;
         }
         if (isPrimitive(value)) {
             if (value !== this.value) {
-                this._commitText(value);
+                this.__commitText(value);
             }
         }
         else if (value instanceof TemplateResult) {
-            this._commitTemplateResult(value);
+            this.__commitTemplateResult(value);
         }
         else if (value instanceof Node) {
-            this._commitNode(value);
+            this.__commitNode(value);
         }
-        else if (Array.isArray(value) ||
-            // tslint:disable-next-line:no-any
-            value[Symbol.iterator]) {
-            this._commitIterable(value);
+        else if (isIterable(value)) {
+            this.__commitIterable(value);
         }
         else if (value === nothing) {
             this.value = nothing;
@@ -621,36 +715,39 @@ class NodePart {
         }
         else {
             // Fallback, will render the string representation
-            this._commitText(value);
+            this.__commitText(value);
         }
     }
-    _insert(node) {
+    __insert(node) {
         this.endNode.parentNode.insertBefore(node, this.endNode);
     }
-    _commitNode(value) {
+    __commitNode(value) {
         if (this.value === value) {
             return;
         }
         this.clear();
-        this._insert(value);
+        this.__insert(value);
         this.value = value;
     }
-    _commitText(value) {
+    __commitText(value) {
         const node = this.startNode.nextSibling;
         value = value == null ? '' : value;
+        // If `value` isn't already a string, we explicitly convert it here in case
+        // it can't be implicitly converted - i.e. it's a symbol.
+        const valueAsString = typeof value === 'string' ? value : String(value);
         if (node === this.endNode.previousSibling &&
             node.nodeType === 3 /* Node.TEXT_NODE */) {
             // If we only have a single text node between the markers, we can just
             // set its value, rather than replacing it.
             // TODO(justinfagnani): Can we just check if this.value is primitive?
-            node.data = value;
+            node.data = valueAsString;
         }
         else {
-            this._commitNode(document.createTextNode(typeof value === 'string' ? value : String(value)));
+            this.__commitNode(document.createTextNode(valueAsString));
         }
         this.value = value;
     }
-    _commitTemplateResult(value) {
+    __commitTemplateResult(value) {
         const template = this.options.templateFactory(value);
         if (this.value instanceof TemplateInstance &&
             this.value.template === template) {
@@ -664,11 +761,11 @@ class NodePart {
             const instance = new TemplateInstance(template, value.processor, this.options);
             const fragment = instance._clone();
             instance.update(value.values);
-            this._commitNode(fragment);
+            this.__commitNode(fragment);
             this.value = instance;
         }
     }
-    _commitIterable(value) {
+    __commitIterable(value) {
         // For an Iterable, we create a new InstancePart per item, then set its
         // value to the item. This is a little bit of overhead for every item in
         // an Iterable, but it lets us recurse easily and efficiently update Arrays
@@ -725,7 +822,7 @@ class NodePart {
 class BooleanAttributePart {
     constructor(element, name, strings) {
         this.value = undefined;
-        this._pendingValue = undefined;
+        this.__pendingValue = undefined;
         if (strings.length !== 2 || strings[0] !== '' || strings[1] !== '') {
             throw new Error('Boolean attributes can only contain a single expression');
         }
@@ -734,18 +831,18 @@ class BooleanAttributePart {
         this.strings = strings;
     }
     setValue(value) {
-        this._pendingValue = value;
+        this.__pendingValue = value;
     }
     commit() {
-        while (isDirective(this._pendingValue)) {
-            const directive = this._pendingValue;
-            this._pendingValue = noChange;
+        while (isDirective(this.__pendingValue)) {
+            const directive = this.__pendingValue;
+            this.__pendingValue = noChange;
             directive(this);
         }
-        if (this._pendingValue === noChange) {
+        if (this.__pendingValue === noChange) {
             return;
         }
-        const value = !!this._pendingValue;
+        const value = !!this.__pendingValue;
         if (this.value !== value) {
             if (value) {
                 this.element.setAttribute(this.name, '');
@@ -753,9 +850,9 @@ class BooleanAttributePart {
             else {
                 this.element.removeAttribute(this.name);
             }
+            this.value = value;
         }
-        this.value = value;
-        this._pendingValue = noChange;
+        this.__pendingValue = noChange;
     }
 }
 /**
@@ -814,25 +911,25 @@ catch (_e) {
 class EventPart {
     constructor(element, eventName, eventContext) {
         this.value = undefined;
-        this._pendingValue = undefined;
+        this.__pendingValue = undefined;
         this.element = element;
         this.eventName = eventName;
         this.eventContext = eventContext;
-        this._boundHandleEvent = (e) => this.handleEvent(e);
+        this.__boundHandleEvent = (e) => this.handleEvent(e);
     }
     setValue(value) {
-        this._pendingValue = value;
+        this.__pendingValue = value;
     }
     commit() {
-        while (isDirective(this._pendingValue)) {
-            const directive = this._pendingValue;
-            this._pendingValue = noChange;
+        while (isDirective(this.__pendingValue)) {
+            const directive = this.__pendingValue;
+            this.__pendingValue = noChange;
             directive(this);
         }
-        if (this._pendingValue === noChange) {
+        if (this.__pendingValue === noChange) {
             return;
         }
-        const newListener = this._pendingValue;
+        const newListener = this.__pendingValue;
         const oldListener = this.value;
         const shouldRemoveListener = newListener == null ||
             oldListener != null &&
@@ -841,14 +938,14 @@ class EventPart {
                     newListener.passive !== oldListener.passive);
         const shouldAddListener = newListener != null && (oldListener == null || shouldRemoveListener);
         if (shouldRemoveListener) {
-            this.element.removeEventListener(this.eventName, this._boundHandleEvent, this._options);
+            this.element.removeEventListener(this.eventName, this.__boundHandleEvent, this.__options);
         }
         if (shouldAddListener) {
-            this._options = getOptions(newListener);
-            this.element.addEventListener(this.eventName, this._boundHandleEvent, this._options);
+            this.__options = getOptions(newListener);
+            this.element.addEventListener(this.eventName, this.__boundHandleEvent, this.__options);
         }
         this.value = newListener;
-        this._pendingValue = noChange;
+        this.__pendingValue = noChange;
     }
     handleEvent(event) {
         if (typeof this.value === 'function') {
@@ -896,8 +993,8 @@ class DefaultTemplateProcessor {
     handleAttributeExpressions(element, name, strings, options) {
         const prefix = name[0];
         if (prefix === '.') {
-            const comitter = new PropertyCommitter(element, name.slice(1), strings);
-            return comitter.parts;
+            const committer = new PropertyCommitter(element, name.slice(1), strings);
+            return committer.parts;
         }
         if (prefix === '@') {
             return [new EventPart(element, name.slice(1), options.eventContext)];
@@ -905,8 +1002,8 @@ class DefaultTemplateProcessor {
         if (prefix === '?') {
             return [new BooleanAttributePart(element, name.slice(1), strings)];
         }
-        const comitter = new AttributeCommitter(element, name, strings);
-        return comitter.parts;
+        const committer = new AttributeCommitter(element, name, strings);
+        return committer.parts;
     }
     /**
      * Create parts for a text-position binding.
@@ -980,13 +1077,13 @@ const templateCaches = new Map();
  */
 const parts = new WeakMap();
 /**
- * Renders a template to a container.
+ * Renders a template result or other value to a container.
  *
  * To update a container with new values, reevaluate the template literal and
  * call `render` with the new result.
  *
- * @param result a TemplateResult created by evaluating a template tag like
- *     `html` or `svg`.
+ * @param result Any value renderable by NodePart - typically a TemplateResult
+ *     created by evaluating a template tag like `html` or `svg`.
  * @param container A DOM parent to render to. The entire contents are either
  *     replaced, or efficiently updated if the same result type was previous
  *     rendered there.
@@ -1021,7 +1118,7 @@ const render = (result, container, options) => {
 // IMPORTANT: do not change the property name or the assignment expression.
 // This line will be used in regexes to search for lit-html usage.
 // TODO(justinfagnani): inject version number at build time
-(window['litHtmlVersions'] || (window['litHtmlVersions'] = [])).push('1.0.0');
+(window['litHtmlVersions'] || (window['litHtmlVersions'] = [])).push('1.1.2');
 /**
  * Interprets a template literal as an HTML template that can efficiently
  * render to and update a container.
@@ -1172,8 +1269,8 @@ if (typeof window.ShadyCSS === 'undefined') {
     compatibleShadyCSSVersion = false;
 }
 else if (typeof window.ShadyCSS.prepareTemplateDom === 'undefined') {
-    console.warn(`Incompatible ShadyCSS version detected.` +
-        `Please update to at least @webcomponents/webcomponentsjs@2.0.2 and` +
+    console.warn(`Incompatible ShadyCSS version detected. ` +
+        `Please update to at least @webcomponents/webcomponentsjs@2.0.2 and ` +
         `@webcomponents/shadycss@1.3.1.`);
     compatibleShadyCSSVersion = false;
 }
@@ -1243,16 +1340,28 @@ const shadyRenderSet = new Set();
  * not be scoped and the <style> will be left in the template and rendered
  * output.
  */
-const prepareTemplateStyles = (renderedDOM, template, scopeName) => {
+const prepareTemplateStyles = (scopeName, renderedDOM, template) => {
     shadyRenderSet.add(scopeName);
+    // If `renderedDOM` is stamped from a Template, then we need to edit that
+    // Template's underlying template element. Otherwise, we create one here
+    // to give to ShadyCSS, which still requires one while scoping.
+    const templateElement = !!template ? template.element : document.createElement('template');
     // Move styles out of rendered DOM and store.
     const styles = renderedDOM.querySelectorAll('style');
+    const { length } = styles;
     // If there are no styles, skip unnecessary work
-    if (styles.length === 0) {
+    if (length === 0) {
         // Ensure prepareTemplateStyles is called to support adding
         // styles via `prepareAdoptedCssText` since that requires that
         // `prepareTemplateStyles` is called.
-        window.ShadyCSS.prepareTemplateStyles(template.element, scopeName);
+        //
+        // ShadyCSS will only update styles containing @apply in the template
+        // given to `prepareTemplateStyles`. If no lit Template was given,
+        // ShadyCSS will not be able to update uses of @apply in any relevant
+        // template. However, this is not a problem because we only create the
+        // template for the purpose of supporting `prepareAdoptedCssText`,
+        // which doesn't support @apply at all.
+        window.ShadyCSS.prepareTemplateStyles(templateElement, scopeName);
         return;
     }
     const condensedStyle = document.createElement('style');
@@ -1261,7 +1370,7 @@ const prepareTemplateStyles = (renderedDOM, template, scopeName) => {
     // part indices.
     // NOTE: collecting styles is inefficient for browsers but ShadyCSS
     // currently does this anyway. When it does not, this should be changed.
-    for (let i = 0; i < styles.length; i++) {
+    for (let i = 0; i < length; i++) {
         const style = styles[i];
         style.parentNode.removeChild(style);
         condensedStyle.textContent += style.textContent;
@@ -1270,25 +1379,33 @@ const prepareTemplateStyles = (renderedDOM, template, scopeName) => {
     removeStylesFromLitTemplates(scopeName);
     // And then put the condensed style into the "root" template passed in as
     // `template`.
-    insertNodeIntoTemplate(template, condensedStyle, template.element.content.firstChild);
+    const content = templateElement.content;
+    if (!!template) {
+        insertNodeIntoTemplate(template, condensedStyle, content.firstChild);
+    }
+    else {
+        content.insertBefore(condensedStyle, content.firstChild);
+    }
     // Note, it's important that ShadyCSS gets the template that `lit-html`
     // will actually render so that it can update the style inside when
     // needed (e.g. @apply native Shadow DOM case).
-    window.ShadyCSS.prepareTemplateStyles(template.element, scopeName);
-    if (window.ShadyCSS.nativeShadow) {
-        // When in native Shadow DOM, re-add styling to rendered content using
-        // the style ShadyCSS produced.
-        const style = template.element.content.querySelector('style');
+    window.ShadyCSS.prepareTemplateStyles(templateElement, scopeName);
+    const style = content.querySelector('style');
+    if (window.ShadyCSS.nativeShadow && style !== null) {
+        // When in native Shadow DOM, ensure the style created by ShadyCSS is
+        // included in initially rendered output (`renderedDOM`).
         renderedDOM.insertBefore(style.cloneNode(true), renderedDOM.firstChild);
     }
-    else {
-        // When not in native Shadow DOM, at this point ShadyCSS will have
-        // removed the style from the lit template and parts will be broken as a
+    else if (!!template) {
+        // When no style is left in the template, parts will be broken as a
         // result. To fix this, we put back the style node ShadyCSS removed
         // and then tell lit to remove that node from the template.
+        // There can be no style in the template in 2 cases (1) when Shady DOM
+        // is in use, ShadyCSS removes all styles, (2) when native Shadow DOM
+        // is in use ShadyCSS removes the style if it contains no content.
         // NOTE, ShadyCSS creates its own style so we can safely add/remove
         // `condensedStyle` here.
-        template.element.content.insertBefore(condensedStyle, template.element.content.firstChild);
+        content.insertBefore(condensedStyle, content.firstChild);
         const removes = new Set();
         removes.add(condensedStyle);
         removeNodesFromTemplate(template, removes);
@@ -1351,10 +1468,14 @@ const prepareTemplateStyles = (renderedDOM, template, scopeName) => {
  * supported.
  */
 const render$1 = (result, container, options) => {
+    if (!options || typeof options !== 'object' || !options.scopeName) {
+        throw new Error('The `scopeName` option is required.');
+    }
     const scopeName = options.scopeName;
     const hasRendered = parts.has(container);
-    const needsScoping = container instanceof ShadowRoot &&
-        compatibleShadyCSSVersion && result instanceof TemplateResult;
+    const needsScoping = compatibleShadyCSSVersion &&
+        container.nodeType === 11 /* Node.DOCUMENT_FRAGMENT_NODE */ &&
+        !!container.host;
     // Handle first render to a scope specially...
     const firstScopeRender = needsScoping && !shadyRenderSet.has(scopeName);
     // On first scope render, render into a fragment; this cannot be a single
@@ -1373,9 +1494,15 @@ const render$1 = (result, container, options) => {
     if (firstScopeRender) {
         const part = parts.get(renderContainer);
         parts.delete(renderContainer);
-        if (part.value instanceof TemplateInstance) {
-            prepareTemplateStyles(renderContainer, part.value.template, scopeName);
-        }
+        // ShadyCSS might have style sheets (e.g. from `prepareAdoptedCssText`)
+        // that should apply to `renderContainer` even if the rendered value is
+        // not a TemplateInstance. However, it will only insert scoped styles
+        // into the document if `prepareTemplateStyles` has already been called
+        // for the given scope name.
+        const template = part.value instanceof TemplateInstance ?
+            part.value.template :
+            undefined;
+        prepareTemplateStyles(scopeName, renderContainer, template);
         removeNodes(container, container.firstChild);
         container.appendChild(renderContainer);
         parts.set(container, part);
@@ -1384,7 +1511,7 @@ const render$1 = (result, container, options) => {
     // initial render to this container.
     // This is needed whenever dynamic changes are made so it would be
     // safest to do every render; however, this would regress performance
-    // so we leave it up to the user to call `ShadyCSSS.styleElement`
+    // so we leave it up to the user to call `ShadyCSS.styleElement`
     // for dynamic changes.
     if (!hasRendered && needsScoping) {
         window.ShadyCSS.styleElement(container.host);
@@ -1404,6 +1531,7 @@ const render$1 = (result, container, options) => {
  * subject to an additional IP rights grant found at
  * http://polymer.github.io/PATENTS.txt
  */
+var _a;
 /**
  * When using Closure Compiler, JSCompiler_renameProperty(property, object) is
  * replaced at compile time by the munged name for object[property]. We cannot
@@ -1459,6 +1587,13 @@ const STATE_UPDATE_REQUESTED = 1 << 2;
 const STATE_IS_REFLECTING_TO_ATTRIBUTE = 1 << 3;
 const STATE_IS_REFLECTING_TO_PROPERTY = 1 << 4;
 const STATE_HAS_CONNECTED = 1 << 5;
+/**
+ * The Closure JS Compiler doesn't currently have good support for static
+ * property semantics where "this" is dynamic (e.g.
+ * https://github.com/google/closure-compiler/issues/3177 and others) so we use
+ * this hack to bypass any rewriting by the compiler.
+ */
+const finalized = 'finalized';
 /**
  * Base element class which manages element properties and attributes. When
  * properties change, the `update` method is asynchronously called. This method
@@ -1546,9 +1681,7 @@ class UpdatingElement extends HTMLElement {
                 return this[key];
             },
             set(value) {
-                // tslint:disable-next-line:no-any no symbol in index
                 const oldValue = this[name];
-                // tslint:disable-next-line:no-any no symbol in index
                 this[key] = value;
                 this._requestUpdate(name, oldValue);
             },
@@ -1562,16 +1695,12 @@ class UpdatingElement extends HTMLElement {
      * @nocollapse
      */
     static finalize() {
-        if (this.hasOwnProperty(JSCompiler_renameProperty('finalized', this)) &&
-            this.finalized) {
-            return;
-        }
         // finalize any superclasses
         const superCtor = Object.getPrototypeOf(this);
-        if (typeof superCtor.finalize === 'function') {
+        if (!superCtor.hasOwnProperty(finalized)) {
             superCtor.finalize();
         }
-        this.finalized = true;
+        this[finalized] = true;
         this._ensureClassProperties();
         // initialize Map populated in observedAttributes
         this._attributeToPropertyMap = new Map();
@@ -1654,7 +1783,8 @@ class UpdatingElement extends HTMLElement {
      */
     initialize() {
         this._saveInstanceProperties();
-        // ensures first update will be caught by an early access of `updateComplete`
+        // ensures first update will be caught by an early access of
+        // `updateComplete`
         this._requestUpdate();
     }
     /**
@@ -1696,10 +1826,10 @@ class UpdatingElement extends HTMLElement {
     }
     connectedCallback() {
         this._updateState = this._updateState | STATE_HAS_CONNECTED;
-        // Ensure first connection completes an update. Updates cannot complete before
-        // connection and if one is pending connection the `_hasConnectionResolver`
-        // will exist. If so, resolve it to complete the update, otherwise
-        // requestUpdate.
+        // Ensure first connection completes an update. Updates cannot complete
+        // before connection and if one is pending connection the
+        // `_hasConnectionResolver` will exist. If so, resolve it to complete the
+        // update, otherwise requestUpdate.
         if (this._hasConnectedResolver) {
             this._hasConnectedResolver();
             this._hasConnectedResolver = undefined;
@@ -1925,15 +2055,36 @@ class UpdatingElement extends HTMLElement {
      * The Promise value is a boolean that is `true` if the element completed the
      * update without triggering another update. The Promise result is `false` if
      * a property was set inside `updated()`. If the Promise is rejected, an
-     * exception was thrown during the update. This getter can be implemented to
-     * await additional state. For example, it is sometimes useful to await a
-     * rendered element before fulfilling this Promise. To do this, first await
-     * `super.updateComplete` then any subsequent state.
+     * exception was thrown during the update.
+     *
+     * To await additional asynchronous work, override the `_getUpdateComplete`
+     * method. For example, it is sometimes useful to await a rendered element
+     * before fulfilling this Promise. To do this, first await
+     * `super._getUpdateComplete()`, then any subsequent state.
      *
      * @returns {Promise} The Promise returns a boolean that indicates if the
      * update resolved without triggering another update.
      */
     get updateComplete() {
+        return this._getUpdateComplete();
+    }
+    /**
+     * Override point for the `updateComplete` promise.
+     *
+     * It is not safe to override the `updateComplete` getter directly due to a
+     * limitation in TypeScript which means it is not possible to call a
+     * superclass getter (e.g. `super.updateComplete.then(...)`) when the target
+     * language is ES5 (https://github.com/microsoft/TypeScript/issues/338).
+     * This method should be overridden instead. For example:
+     *
+     *   class MyElement extends LitElement {
+     *     async _getUpdateComplete() {
+     *       await super._getUpdateComplete();
+     *       await this._myChild.updateComplete;
+     *     }
+     *   }
+     */
+    _getUpdateComplete() {
         return this._updatePromise;
     }
     /**
@@ -1986,10 +2137,11 @@ class UpdatingElement extends HTMLElement {
     firstUpdated(_changedProperties) {
     }
 }
+_a = finalized;
 /**
  * Marks class as having finished creating properties.
  */
-UpdatingElement.finalized = true;
+UpdatingElement[_a] = true;
 
 /**
  * @license
@@ -2061,7 +2213,6 @@ const standardProperty = (options, element) => {
             //     initializer: descriptor.initializer,
             //   }
             // ],
-            // tslint:disable-next-line:no-any decorator
             initializer() {
                 if (typeof element.initializer === 'function') {
                     this[element.key] = element.initializer.call(this);
@@ -2135,6 +2286,9 @@ const textFromCSSResult = (value) => {
     if (value instanceof CSSResult) {
         return value.cssText;
     }
+    else if (typeof value === 'number') {
+        return value;
+    }
     else {
         throw new Error(`Value passed to 'css' function must be a 'css' function result: ${value}. Use 'unsafeCSS' to pass non-literal values, but
             take care to ensure page security.`);
@@ -2168,7 +2322,7 @@ const css = (strings, ...values) => {
 // This line will be used in regexes to search for LitElement usage.
 // TODO(justinfagnani): inject version number at build time
 (window['litElementVersions'] || (window['litElementVersions'] = []))
-    .push('2.0.1');
+    .push('2.2.1');
 /**
  * Minimal implementation of Array.prototype.flat
  * @param arr the array to flatten
@@ -2191,7 +2345,9 @@ const flattenStyles = (styles) => styles.flat ? styles.flat(Infinity) : arrayFla
 class LitElement extends UpdatingElement {
     /** @nocollapse */
     static finalize() {
-        super.finalize();
+        // The Closure JS Compiler does not always preserve the correct "this"
+        // when calling static super methods (b/137460243), so explicitly bind.
+        super.finalize.call(this);
         // Prepare styling that is stamped at first render time. Styling
         // is built from user provided `styles` or is inherited from the superclass.
         this._styles =
@@ -2331,8 +2487,11 @@ class LitElement extends UpdatingElement {
 /**
  * Ensure this class is marked as `finalized` as an optimization ensuring
  * it will not needlessly try to `finalize`.
+ *
+ * Note this property name is a string to prevent breaking Closure JS Compiler
+ * optimizations. See updating-element.ts for more information.
  */
-LitElement.finalized = true;
+LitElement['finalized'] = true;
 /**
  * Render method used to render the lit-html TemplateResult to the element's
  * DOM.
@@ -2343,18 +2502,334 @@ LitElement.finalized = true;
  */
 LitElement.render = render$1;
 
-const fireEvent = (node, type, detail, options) => {
-    options = options || {};
-    detail = detail === null || detail === undefined ? {} : detail;
-    const event = new Event(type, {
-        bubbles: options.bubbles === undefined ? true : options.bubbles,
-        cancelable: Boolean(options.cancelable),
-        composed: options.composed === undefined ? true : options.composed
-    });
-    event.detail = detail;
-    node.dispatchEvent(event);
-    return event;
+/**
+ * Parse or format dates
+ * @class fecha
+ */
+var fecha = {};
+var token = /d{1,4}|M{1,4}|YY(?:YY)?|S{1,3}|Do|ZZ|([HhMsDm])\1?|[aA]|"[^"]*"|'[^']*'/g;
+var twoDigits = '\\d\\d?';
+var threeDigits = '\\d{3}';
+var fourDigits = '\\d{4}';
+var word = '[^\\s]+';
+var literal = /\[([^]*?)\]/gm;
+var noop = function () {
 };
+
+function regexEscape(str) {
+  return str.replace( /[|\\{()[^$+*?.-]/g, '\\$&');
+}
+
+function shorten(arr, sLen) {
+  var newArr = [];
+  for (var i = 0, len = arr.length; i < len; i++) {
+    newArr.push(arr[i].substr(0, sLen));
+  }
+  return newArr;
+}
+
+function monthUpdate(arrName) {
+  return function (d, v, i18n) {
+    var index = i18n[arrName].indexOf(v.charAt(0).toUpperCase() + v.substr(1).toLowerCase());
+    if (~index) {
+      d.month = index;
+    }
+  };
+}
+
+function pad(val, len) {
+  val = String(val);
+  len = len || 2;
+  while (val.length < len) {
+    val = '0' + val;
+  }
+  return val;
+}
+
+var dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+var monthNamesShort = shorten(monthNames, 3);
+var dayNamesShort = shorten(dayNames, 3);
+fecha.i18n = {
+  dayNamesShort: dayNamesShort,
+  dayNames: dayNames,
+  monthNamesShort: monthNamesShort,
+  monthNames: monthNames,
+  amPm: ['am', 'pm'],
+  DoFn: function DoFn(D) {
+    return D + ['th', 'st', 'nd', 'rd'][D % 10 > 3 ? 0 : (D - D % 10 !== 10) * D % 10];
+  }
+};
+
+var formatFlags = {
+  D: function(dateObj) {
+    return dateObj.getDate();
+  },
+  DD: function(dateObj) {
+    return pad(dateObj.getDate());
+  },
+  Do: function(dateObj, i18n) {
+    return i18n.DoFn(dateObj.getDate());
+  },
+  d: function(dateObj) {
+    return dateObj.getDay();
+  },
+  dd: function(dateObj) {
+    return pad(dateObj.getDay());
+  },
+  ddd: function(dateObj, i18n) {
+    return i18n.dayNamesShort[dateObj.getDay()];
+  },
+  dddd: function(dateObj, i18n) {
+    return i18n.dayNames[dateObj.getDay()];
+  },
+  M: function(dateObj) {
+    return dateObj.getMonth() + 1;
+  },
+  MM: function(dateObj) {
+    return pad(dateObj.getMonth() + 1);
+  },
+  MMM: function(dateObj, i18n) {
+    return i18n.monthNamesShort[dateObj.getMonth()];
+  },
+  MMMM: function(dateObj, i18n) {
+    return i18n.monthNames[dateObj.getMonth()];
+  },
+  YY: function(dateObj) {
+    return pad(String(dateObj.getFullYear()), 4).substr(2);
+  },
+  YYYY: function(dateObj) {
+    return pad(dateObj.getFullYear(), 4);
+  },
+  h: function(dateObj) {
+    return dateObj.getHours() % 12 || 12;
+  },
+  hh: function(dateObj) {
+    return pad(dateObj.getHours() % 12 || 12);
+  },
+  H: function(dateObj) {
+    return dateObj.getHours();
+  },
+  HH: function(dateObj) {
+    return pad(dateObj.getHours());
+  },
+  m: function(dateObj) {
+    return dateObj.getMinutes();
+  },
+  mm: function(dateObj) {
+    return pad(dateObj.getMinutes());
+  },
+  s: function(dateObj) {
+    return dateObj.getSeconds();
+  },
+  ss: function(dateObj) {
+    return pad(dateObj.getSeconds());
+  },
+  S: function(dateObj) {
+    return Math.round(dateObj.getMilliseconds() / 100);
+  },
+  SS: function(dateObj) {
+    return pad(Math.round(dateObj.getMilliseconds() / 10), 2);
+  },
+  SSS: function(dateObj) {
+    return pad(dateObj.getMilliseconds(), 3);
+  },
+  a: function(dateObj, i18n) {
+    return dateObj.getHours() < 12 ? i18n.amPm[0] : i18n.amPm[1];
+  },
+  A: function(dateObj, i18n) {
+    return dateObj.getHours() < 12 ? i18n.amPm[0].toUpperCase() : i18n.amPm[1].toUpperCase();
+  },
+  ZZ: function(dateObj) {
+    var o = dateObj.getTimezoneOffset();
+    return (o > 0 ? '-' : '+') + pad(Math.floor(Math.abs(o) / 60) * 100 + Math.abs(o) % 60, 4);
+  }
+};
+
+var parseFlags = {
+  D: [twoDigits, function (d, v) {
+    d.day = v;
+  }],
+  Do: [twoDigits + word, function (d, v) {
+    d.day = parseInt(v, 10);
+  }],
+  M: [twoDigits, function (d, v) {
+    d.month = v - 1;
+  }],
+  YY: [twoDigits, function (d, v) {
+    var da = new Date(), cent = +('' + da.getFullYear()).substr(0, 2);
+    d.year = '' + (v > 68 ? cent - 1 : cent) + v;
+  }],
+  h: [twoDigits, function (d, v) {
+    d.hour = v;
+  }],
+  m: [twoDigits, function (d, v) {
+    d.minute = v;
+  }],
+  s: [twoDigits, function (d, v) {
+    d.second = v;
+  }],
+  YYYY: [fourDigits, function (d, v) {
+    d.year = v;
+  }],
+  S: ['\\d', function (d, v) {
+    d.millisecond = v * 100;
+  }],
+  SS: ['\\d{2}', function (d, v) {
+    d.millisecond = v * 10;
+  }],
+  SSS: [threeDigits, function (d, v) {
+    d.millisecond = v;
+  }],
+  d: [twoDigits, noop],
+  ddd: [word, noop],
+  MMM: [word, monthUpdate('monthNamesShort')],
+  MMMM: [word, monthUpdate('monthNames')],
+  a: [word, function (d, v, i18n) {
+    var val = v.toLowerCase();
+    if (val === i18n.amPm[0]) {
+      d.isPm = false;
+    } else if (val === i18n.amPm[1]) {
+      d.isPm = true;
+    }
+  }],
+  ZZ: ['[^\\s]*?[\\+\\-]\\d\\d:?\\d\\d|[^\\s]*?Z', function (d, v) {
+    var parts = (v + '').match(/([+-]|\d\d)/gi), minutes;
+
+    if (parts) {
+      minutes = +(parts[1] * 60) + parseInt(parts[2], 10);
+      d.timezoneOffset = parts[0] === '+' ? minutes : -minutes;
+    }
+  }]
+};
+parseFlags.dd = parseFlags.d;
+parseFlags.dddd = parseFlags.ddd;
+parseFlags.DD = parseFlags.D;
+parseFlags.mm = parseFlags.m;
+parseFlags.hh = parseFlags.H = parseFlags.HH = parseFlags.h;
+parseFlags.MM = parseFlags.M;
+parseFlags.ss = parseFlags.s;
+parseFlags.A = parseFlags.a;
+
+
+// Some common format strings
+fecha.masks = {
+  default: 'ddd MMM DD YYYY HH:mm:ss',
+  shortDate: 'M/D/YY',
+  mediumDate: 'MMM D, YYYY',
+  longDate: 'MMMM D, YYYY',
+  fullDate: 'dddd, MMMM D, YYYY',
+  shortTime: 'HH:mm',
+  mediumTime: 'HH:mm:ss',
+  longTime: 'HH:mm:ss.SSS'
+};
+
+/***
+ * Format a date
+ * @method format
+ * @param {Date|number} dateObj
+ * @param {string} mask Format of the date, i.e. 'mm-dd-yy' or 'shortDate'
+ */
+fecha.format = function (dateObj, mask, i18nSettings) {
+  var i18n = i18nSettings || fecha.i18n;
+
+  if (typeof dateObj === 'number') {
+    dateObj = new Date(dateObj);
+  }
+
+  if (Object.prototype.toString.call(dateObj) !== '[object Date]' || isNaN(dateObj.getTime())) {
+    throw new Error('Invalid Date in fecha.format');
+  }
+
+  mask = fecha.masks[mask] || mask || fecha.masks['default'];
+
+  var literals = [];
+
+  // Make literals inactive by replacing them with ??
+  mask = mask.replace(literal, function($0, $1) {
+    literals.push($1);
+    return '@@@';
+  });
+  // Apply formatting rules
+  mask = mask.replace(token, function ($0) {
+    return $0 in formatFlags ? formatFlags[$0](dateObj, i18n) : $0.slice(1, $0.length - 1);
+  });
+  // Inline literal values back into the formatted value
+  return mask.replace(/@@@/g, function() {
+    return literals.shift();
+  });
+};
+
+/**
+ * Parse a date string into an object, changes - into /
+ * @method parse
+ * @param {string} dateStr Date string
+ * @param {string} format Date parse format
+ * @returns {Date|boolean}
+ */
+fecha.parse = function (dateStr, format, i18nSettings) {
+  var i18n = i18nSettings || fecha.i18n;
+
+  if (typeof format !== 'string') {
+    throw new Error('Invalid format in fecha.parse');
+  }
+
+  format = fecha.masks[format] || format;
+
+  // Avoid regular expression denial of service, fail early for really long strings
+  // https://www.owasp.org/index.php/Regular_expression_Denial_of_Service_-_ReDoS
+  if (dateStr.length > 1000) {
+    return null;
+  }
+
+  var dateInfo = {};
+  var parseInfo = [];
+  var literals = [];
+  format = format.replace(literal, function($0, $1) {
+    literals.push($1);
+    return '@@@';
+  });
+  var newFormat = regexEscape(format).replace(token, function ($0) {
+    if (parseFlags[$0]) {
+      var info = parseFlags[$0];
+      parseInfo.push(info[1]);
+      return '(' + info[0] + ')';
+    }
+
+    return $0;
+  });
+  newFormat = newFormat.replace(/@@@/g, function() {
+    return literals.shift();
+  });
+  var matches = dateStr.match(new RegExp(newFormat, 'i'));
+  if (!matches) {
+    return null;
+  }
+
+  for (var i = 1; i < matches.length; i++) {
+    parseInfo[i - 1](dateInfo, matches[i], i18n);
+  }
+
+  var today = new Date();
+  if (dateInfo.isPm === true && dateInfo.hour != null && +dateInfo.hour !== 12) {
+    dateInfo.hour = +dateInfo.hour + 12;
+  } else if (dateInfo.isPm === false && +dateInfo.hour === 12) {
+    dateInfo.hour = 0;
+  }
+
+  var date;
+  if (dateInfo.timezoneOffset != null) {
+    dateInfo.minute = +(dateInfo.minute || 0) - +dateInfo.timezoneOffset;
+    date = new Date(Date.UTC(dateInfo.year || today.getFullYear(), dateInfo.month || 0, dateInfo.day || 1,
+      dateInfo.hour || 0, dateInfo.minute || 0, dateInfo.second || 0, dateInfo.millisecond || 0));
+  } else {
+    date = new Date(dateInfo.year || today.getFullYear(), dateInfo.month || 0, dateInfo.day || 1,
+      dateInfo.hour || 0, dateInfo.minute || 0, dateInfo.second || 0, dateInfo.millisecond || 0);
+  }
+  return date;
+};
+
+var a=function(){try{(new Date).toLocaleDateString("i");}catch(e){return "RangeError"===e.name}return !1}()?function(e,t){return e.toLocaleDateString(t,{year:"numeric",month:"long",day:"numeric"})}:function(t){return fecha.format(t,"mediumDate")},n=function(){try{(new Date).toLocaleString("i");}catch(e){return "RangeError"===e.name}return !1}()?function(e,t){return e.toLocaleString(t,{year:"numeric",month:"long",day:"numeric",hour:"numeric",minute:"2-digit"})}:function(t){return fecha.format(t,"haDateTime")},r=function(){try{(new Date).toLocaleTimeString("i");}catch(e){return "RangeError"===e.name}return !1}()?function(e,t){return e.toLocaleTimeString(t,{hour:"numeric",minute:"2-digit"})}:function(t){return fecha.format(t,"shortTime")};var L=function(e,t,a,n){n=n||{},a=null==a?{}:a;var r=new Event(t,{bubbles:void 0===n.bubbles||n.bubbles,cancelable:Boolean(n.cancelable),composed:void 0===n.composed||n.composed});return r.detail=a,e.dispatchEvent(r),r};String(Math.random()).slice(2);try{const e={get capture(){return !1}};window.addEventListener("test",e,e),window.removeEventListener("test",e,e);}catch(e){}(window.litHtmlVersions||(window.litHtmlVersions=[])).push("1.0.0");var H="ontouchstart"in window||navigator.maxTouchPoints>0||navigator.msMaxTouchPoints>0,N=function(e){function t(){e.call(this),this.holdTime=500,this.ripple=document.createElement("paper-ripple"),this.timer=void 0,this.held=!1,this.cooldownStart=!1,this.cooldownEnd=!1,this.nbClicks=0;}return e&&(t.__proto__=e),(t.prototype=Object.create(e&&e.prototype)).constructor=t,t.prototype.connectedCallback=function(){var e=this;Object.assign(this.style,{borderRadius:"50%",position:"absolute",width:H?"100px":"50px",height:H?"100px":"50px",transform:"translate(-50%, -50%)",pointerEvents:"none"}),this.appendChild(this.ripple),this.ripple.style.color="#03a9f4",this.ripple.style.color="var(--primary-color)",["touchcancel","mouseout","mouseup","touchmove","mousewheel","wheel","scroll"].forEach(function(t){document.addEventListener(t,function(){clearTimeout(e.timer),e.stopAnimation(),e.timer=void 0;},{passive:!0});});},t.prototype.bind=function(e){var t=this;if(!e.longPress){e.longPress=!0,e.addEventListener("contextmenu",function(e){var t=e||window.event;return t.preventDefault&&t.preventDefault(),t.stopPropagation&&t.stopPropagation(),t.cancelBubble=!0,t.returnValue=!1,!1});var a=function(a){var n,r;t.cooldownStart||(t.held=!1,a.touches?(n=a.touches[0].pageX,r=a.touches[0].pageY):(n=a.pageX,r=a.pageY),t.timer=window.setTimeout(function(){t.startAnimation(n,r),t.held=!0,e.repeat&&!e.isRepeating&&(e.isRepeating=!0,t.repeatTimeout=setInterval(function(){e.dispatchEvent(new Event("ha-hold"));},e.repeat));},t.holdTime),t.cooldownStart=!0,window.setTimeout(function(){return t.cooldownStart=!1},100));},n=function(a){t.cooldownEnd||["touchend","touchcancel"].includes(a.type)&&void 0===t.timer?e.isRepeating&&t.repeatTimeout&&(clearInterval(t.repeatTimeout),e.isRepeating=!1):(clearTimeout(t.timer),e.isRepeating&&t.repeatTimeout&&clearInterval(t.repeatTimeout),e.isRepeating=!1,t.stopAnimation(),t.timer=void 0,t.held?e.repeat||e.dispatchEvent(new Event("ha-hold")):e.hasDblClick?0===t.nbClicks?(t.nbClicks+=1,t.dblClickTimeout=window.setTimeout(function(){1===t.nbClicks&&(t.nbClicks=0,e.dispatchEvent(new Event("ha-click")));},250)):(t.nbClicks=0,clearTimeout(t.dblClickTimeout),e.dispatchEvent(new Event("ha-dblclick"))):e.dispatchEvent(new Event("ha-click")),t.cooldownEnd=!0,window.setTimeout(function(){return t.cooldownEnd=!1},100));};e.addEventListener("touchstart",a,{passive:!0}),e.addEventListener("touchend",n),e.addEventListener("touchcancel",n),e.addEventListener("mousedown",a,{passive:!0}),e.addEventListener("click",n);}},t.prototype.startAnimation=function(e,t){Object.assign(this.style,{left:e+"px",top:t+"px",display:null}),this.ripple.holdDown=!0,this.ripple.simulatedRipple();},t.prototype.stopAnimation=function(){this.ripple.holdDown=!1,this.style.display="none";},t}(HTMLElement);customElements.get("long-press-custom-card-helpers")||customElements.define("long-press-custom-card-helpers",N);
 
 let PodcastCard = class PodcastCard extends LitElement {
     setConfig(config) {
@@ -2447,17 +2922,17 @@ let PodcastCard = class PodcastCard extends LitElement {
               `
             : ""}
         </div>
-        ${podcasts.map(podcast => html `
+        ${podcasts.map((podcast, index) => html `
               <div class="divider"></div>
               <paper-item
                 @click="${this._togglePodcastEpisodes}"
-                .podcast="${podcast.title.replace(/[ )(]/g, "-").replace(/[^\w\s]/gi, '')}"
+                .podcast="${index}"
               >
                 ${podcast.title}
               </paper-item>
               <div
                 class="episodes"
-                id="${podcast.title.replace(/[ )(]/g, "-").replace(/[^\w\s]/gi, '')}"
+                id="podcast${index}"
               >
                 ${podcast.episodes.map(episode => html `
                       <paper-item
@@ -2544,7 +3019,7 @@ let PodcastCard = class PodcastCard extends LitElement {
     `;
     }
     _moreInfo() {
-        fireEvent(this, "hass-more-info", {
+        L(this, "hass-more-info", {
             entityId: this._config.entity
         });
     }
@@ -2584,14 +3059,14 @@ let PodcastCard = class PodcastCard extends LitElement {
         // Remove error if element is defined later
         customElements.whenDefined(cardConfig.type).then(() => {
             clearTimeout(timer);
-            fireEvent(this, "ll-rebuild", {}, element);
+            L(this, "ll-rebuild", {}, element);
         });
         return element;
     }
     _togglePodcastEpisodes(ev) {
         const target = ev.target;
         target.classList.toggle("active");
-        const list = this.shadowRoot.querySelector(`#${target.podcast.replace(/[ )(]/g, "-").replace(/[^\w\s]/gi, '')}`);
+        const list = this.shadowRoot.querySelector(`#podcast${target.podcast}`);
         if (list) {
             if (list.style.display === "block") {
                 list.style.display = "none";
@@ -2606,7 +3081,7 @@ let PodcastCard = class PodcastCard extends LitElement {
         this.hass.callService("media_player", "play_media", {
             entity_id: this._selectedPlayer,
             media_content_id: target.url,
-            media_content_type: target.mime_type
+            media_content_type: this._config.mime_type ? this._config.mime_type : target.mime_type
         });
     }
     _valueChanged(ev) {
