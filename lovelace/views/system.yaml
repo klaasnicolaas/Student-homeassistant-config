@@ -239,6 +239,23 @@ cards:
                     color: '#bf9540'
 
               - type: custom:bar-card
+                title: Total Entities
+                entity: sensor.total_entities
+                title_position: inside
+                align: center
+                padding: 4px
+                card_style:
+                  border-radius: 5px
+                max: 600
+                severity:
+                  - value: 1
+                    color: '#bf4040'
+                  - value: 300
+                    color: '#1db954'
+                  - value: 450
+                    color: '#bf9540'
+
+              - type: custom:bar-card
                 title: Binary Sensors
                 entity: sensor.binary_sensor_count
                 title_position: inside
@@ -351,10 +368,8 @@ cards:
                 name: Host
                 lock: true
               - type: custom:button-card
-                entity: script.host_shutdown
-                color_type: card
-                lock: true
-                name: Host Shutdown
+                entity: script.config_check
+                color_type: icon
               - type: custom:button-card
                 entity: script.backup_now
                 color_type: icon
@@ -485,11 +500,3 @@ cards:
       - name: Router
         entity: binary_sensor.tp_link_router
     columns: 4
-
-# Toont informatie over de Google Homes
-# - type: entities
-#  title: Google Home
-#  show_header_toggle: false
-#  entities:
-#    - sensor.google_home_alarm
-#    - sensor.google_home_timer
