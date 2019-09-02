@@ -11,3 +11,4 @@
 - sensor.home_temperature
 - sensor.home_pressure
 - sensor.home_humidity
+- binary_sensor.airco_status
