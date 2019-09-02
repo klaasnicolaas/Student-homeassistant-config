@@ -121,7 +121,7 @@
           {%- endfor -%}
         {%- endfor -%}
 
-    #----- Count All Entities
+    # ----- Count All Entities
     total_entities:
       entity_id: []
       friendly_name: 'Entities'
