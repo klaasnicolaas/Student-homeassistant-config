@@ -1,0 +1,19 @@
+---
+# Get a briefing after coming home
+#
+- alias: '[House] - Welcome home message'
+  trigger:
+    # Front door
+    - platform: state
+      entity_id: binary_sensor.openclose_sensor_1
+      to: 'on'
+  condition:
+    # Just Arrived
+    - condition: state
+      entity_id: sensor.klaas_status
+      state: 'Net Aangekomen'
+  action:
+    - delay:
+        seconds: 3
+    - service: script.turn_on
+      entity_id: script.home_status_message
