@@ -63,17 +63,29 @@ homeassistant:
     ## Script
     ################################################
 
-    script.quick_reboot:
+    script.host_reboot:
       <<: *customize
-      icon: mdi:server-network
+      icon: mdi:rotate-3d-variant
       can_cancel: false
       friendly_name: Reboot Intel NUC
 
-    script.quick_restart:
+    script.hassio_reboot:
       <<: *customize
-      icon: mdi:home-assistant
+      icon: mdi:rotate-3d-variant
       can_cancel: false
       friendly_name: Restart Home Assistant
+
+    script.backup_now:
+      <<: *customize
+      icon: mdi:backup-restore
+      can_cancel: false
+      friendly_name: Make Snapshot
+
+    script.config_check:
+      <<: *customize
+      icon: mdi:file-check
+      can_cancel: false
+      friendly_name: Check Config
 
 ################################################
 ## Binary Sensor
@@ -115,11 +127,20 @@ sensor:
   - platform: version
     name: HA Installed Version
     scan_interval: 86400
-  ##### Latest python3 version
+  ##### Latest installed python3 version
   - platform: command_line
     name: Python Version
     command: python3 --version
     scan_interval: 86400
+  ##### Add-on status
+  - platform: rest
+    resource: !secret deconz_resource
+    headers:
+      Authorization: !secret bearer_token
+      Content-Type: application/json
+    name: Deconz status
+    value_template: '{{ value_json.data.state }}'
+    scan_interval: 3600
   ##### External IP
   - platform: dnsip
   ##### When will the SSL expiry
@@ -162,22 +183,69 @@ input_boolean:
     icon: mdi:auto-fix
 
 ################################################
+## Alert
+################################################
+
+alert:
+  cpu_high:
+    name: Gebruik CPU is hoog
+    entity_id: binary_sensor.cpu_high
+    state: 'on'
+    repeat: 5 # minutes
+    can_acknowledge: true
+    skip_first: false
+    notifiers:
+      - telegram_klaas
+
+  cpu_hot:
+    name: Temperatuur CPU is hoog
+    entity_id: binary_sensor.cpu_hot
+    state: 'on'
+    repeat: 120 # minutes
+    can_acknowledge: true
+    skip_first: false
+    notifiers:
+      - telegram_klaas
+
+  maintenance_mode_alert:
+    name: Onderhouds Mode staat al aan voor een lange tijd
+    done_message: Maintenance Mode de-activated
+    entity_id: input_boolean.maintenance_mode
+    repeat:
+      - 60
+    skip_first: true
+    notifiers:
+      - telegram_klaas
+
+################################################
 ## Script
 ################################################
 
 script:
-  quick_restart:
-    alias: ' '
+  hassio_reboot:
+    alias: Hassio Reboot
     sequence:
       - service: homeassistant.turn_on
         entity_id: input_boolean.maintenance_mode
       - delay: 00:00:02
       - service: homeassistant.restart
 
-  quick_reboot:
-    alias: ' '
+  host_reboot:
+    alias: Host Reboot
     sequence:
       - service: homeassistant.turn_on
         entity_id: input_boolean.maintenance_mode
       - delay: 00:00:02
       - service: hassio.host_reboot
+
+  backup_now:
+    alias: New Snapshot
+    sequence:
+      - delay: 00:00:02
+      - service: automation.trigger
+        entity_id: automation.system_make_weekly_hassio_backup
+
+  config_check:
+    alias: Check config
+    sequence:
+      - service: homeassistant.check_config
