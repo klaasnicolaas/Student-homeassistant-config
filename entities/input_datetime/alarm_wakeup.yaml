@@ -5,4 +5,3 @@ alarm_wakeup:
   name: Tijd opstaan
   has_date: false
   has_time: true
-  initial: '08:00'

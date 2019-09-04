@@ -1,5 +1,5 @@
 ---
-#
+# Are the curtains open or closed?
 #
 - platform: template
   sensors:

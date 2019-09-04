@@ -29,3 +29,5 @@ emulated_hue:
       hidden: true
     light.werkhoek_groep:
       hidden: true
+    group.battery_alert:
+      hidden: true

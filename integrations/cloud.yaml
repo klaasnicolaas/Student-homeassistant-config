@@ -30,6 +30,7 @@ cloud:
         - light.woonkamer_lamp_3
         - light.badkamer
         - light.werkhoek
+        - light.stellingkast
         # Scripts
         - script.channel_1
         - script.channel_2
@@ -46,6 +47,8 @@ cloud:
         - script.start_cooking
         - script.start_relax
         - script.start_sleep
+        - script.emergency
         # Input boolean
         - input_boolean.tv_power
         - input_boolean.tv_mute
+        - input_boolean.beamer_power

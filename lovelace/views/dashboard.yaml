@@ -168,12 +168,14 @@ cards:
     cards:
       - type: glance
         title: Huis
+        columns: 3
         entities:
           - entity: binary_sensor.openclose_sensor_1
           - entity: binary_sensor.openclose_sensor_2
           - entity: binary_sensor.openclose_sensor_3
           - entity: binary_sensor.motion_huis
             name: Huis
+          - entity: binary_sensor.airco_status
       - type: glance
         title: Kledingkast
         entities:

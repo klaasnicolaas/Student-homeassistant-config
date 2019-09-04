@@ -20,16 +20,15 @@
 
 - alias: '[Light] - Turn OFF bathroom light'
   trigger:
-    # - platform: time_pattern
-    #  minutes: '/15'
     - platform: state
       entity_id: binary_sensor.motion_badkamer
       to: 'off'
       for:
         minutes: 10
   condition:
+    # Keep the light on when you take a shower
     - condition: state
-      entity_id: binary_sensor.openclose_sensor_4
+      entity_id: binary_sensor.bathroom_water_leak
       state: 'off'
   action:
     - service: light.turn_off

@@ -5,7 +5,7 @@ play_radio:
     - service: media_player.volume_set
       data:
         entity_id: media_player.google_home
-        volume_level: '0.30'
+        volume_level: '0.20'
     - service: media_player.play_media
       data_template:
         entity_id: media_player.google_home
