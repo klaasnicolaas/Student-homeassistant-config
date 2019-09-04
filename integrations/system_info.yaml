@@ -191,7 +191,7 @@ alert:
     name: Gebruik CPU is hoog
     entity_id: binary_sensor.cpu_high
     state: 'on'
-    repeat: 5 # minutes
+    repeat: 5   # minutes
     can_acknowledge: true
     skip_first: false
     notifiers:
@@ -201,7 +201,7 @@ alert:
     name: Temperatuur CPU is hoog
     entity_id: binary_sensor.cpu_hot
     state: 'on'
-    repeat: 120 # minutes
+    repeat: 120   # minutes
     can_acknowledge: true
     skip_first: false
     notifiers:
