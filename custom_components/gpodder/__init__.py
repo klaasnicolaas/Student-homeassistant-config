@@ -27,7 +27,8 @@ from .const import (
     CONF_PASSWORD,
     CONF_DEVICE,
     DEFAULT_NAME,
-    REQUIREMENTS
+    REQUIREMENTS,
+    REQUEST_HEADERS
 )
 
 MIN_TIME_BETWEEN_UPDATES = timedelta(minutes=30)
@@ -104,10 +105,9 @@ async def update_data(hass, device):
     """Update data."""
     try:
         urls = hass.data[DOMAIN]["client"].get_subscriptions(device)
-        hass.data[DOMAIN_DATA] = update_using_feedservice(urls)
-
     except Exception as error:  # pylint: disable=broad-except
         _LOGGER.error("Could not update data - %s", error)
+    hass.data[DOMAIN_DATA] = update_using_feedservice(urls)
 
 
 def parse_entry(entry):
@@ -126,12 +126,17 @@ def parse_entry(entry):
 
 def update_using_feedservice(urls):
     import podcastparser
-    from urllib.request import urlopen
+    from urllib.request import urlopen, Request
 
     podcasts = []
 
     for url in urls:
-        feed = podcastparser.parse(url, urlopen(url), 5)
+        try:
+            feed = podcastparser.parse(url, urlopen(Request(url, headers=REQUEST_HEADERS)), 5)
+        except Exception as error:  # pylint: disable=broad-except
+            _LOGGER.error("Could not update %s - %s", url, error)
+            feed = None
+        
         if feed is None:
             _LOGGER.info("Feed not updated: %s", url)
             continue
