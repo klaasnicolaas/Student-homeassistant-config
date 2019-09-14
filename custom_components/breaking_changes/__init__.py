@@ -103,11 +103,15 @@ async def update_data(hass, throttle):
     localversion = LocalVersion(hass.loop, session)
     pypiversion = PyPiVersion(hass.loop, session)
 
-    await localversion.get_version()
-    currentversion = localversion.version.split(".")[1]
+    try:
+        await localversion.get_version()
+        currentversion = localversion.version.split(".")[1]
 
-    await pypiversion.get_version()
-    remoteversion = pypiversion.version.split(".")[1]
+        await pypiversion.get_version()
+        remoteversion = pypiversion.version.split(".")[1]
+    except Exception:  # pylint: disable=broad-except
+        _LOGGER.warning("Could not get version data.")
+        return
 
     if currentversion == remoteversion:
         _LOGGER.debug(
