@@ -99,7 +99,7 @@ class GoogleKeepCard extends LitElement {
 
     render() {
         const {notes} = this._hass.states[this._config.entity].attributes;
-        if (notes.length && this._config.hide_if_empty) {
+        if (!notes.length && this._config.hide_if_empty) {
             return html``;
         }
         const title = this._config.title ? html`<div class="card-header" style="padding: 8px 0 16px 0;"><div class="name">${this._config.title}</div></div>` : html``;
