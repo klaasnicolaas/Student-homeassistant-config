@@ -33,18 +33,11 @@
                     "theme": "Enable Themes discovery & tracking",
                     "token": "GitHub Personal Access Token"
                 },
-                "description": "If you need help with the configuration have a look here: https:\/\/hacs.xyz\/docs\/configuration\/start\/",
+                "description": "If you need help with the configuration have a look here: https:\/\/hacs.xyz\/docs\/configuration\/start",
                 "title": "HACS (Home Assistant Community Store)"
             }
         },
         "title": "HACS (Home Assistant Community Store)"
-    },
-    "confirm": {
-        "continue": "Are you sure you want to continue?",
-        "delete": "Are you sure you want to delete \"{item}\"?",
-        "exsist": "{item} already exists",
-        "overwrite": "Doing this will overwrite it.",
-        "uninstall": "Are you sure you want to uninstall \"{item}\"?"
     },
     "options": {
         "step": {
@@ -57,16 +50,16 @@
             }
         }
     },
-    "repository_banner": {
-        "integration_not_loaded": "This integration is not loaded in Home Assistant.",
-        "not_loaded": "Not loaded",
-        "plugin_not_loaded": "This plugin is not added to your Lovelace resources.",
-        "restart": "You need to restart Home Assistant.",
-        "restart_pending": "Restart pending"
+    "confirm": {
+        "delete": "Are you sure you want to delete '{item}'?",
+        "uninstall": "Are you sure you want to uninstall '{item}'?",
+        "exsist": "{item} already exists",
+        "overwrite": "Doing this will overwrite it.",
+        "continue": "Are you sure you want to continue?"
     },
     "repository": {
-        "authors": "Authors",
         "available": "Available",
+        "authors": "Authors",
         "back_to": "Back to",
         "changelog": "Change log",
         "flag_this": "Flag this",
@@ -91,6 +84,13 @@
         "update_information": "Update information",
         "upgrade": "Update"
     },
+    "repository_banner": {
+        "not_loaded": "Not loaded",
+        "restart_pending": "Restart pending",
+        "integration_not_loaded": "This integration is not loaded in Home Assistant.",
+        "plugin_not_loaded": "This plugin is not added to your Lovelace resources.",
+        "restart": "You need to restart Home Assistant."
+    },
     "settings": {
         "add_custom_repository": "ADD CUSTOM REPOSITORY",
         "category": "Category",
@@ -105,8 +105,8 @@
         "upgrade_all": "Upgrade all"
     },
     "store": {
+        "placeholder_search": "Please enter a search term...",
         "clear_new": "Clear all new repositories",
-        "new_repositories": "New Repositories",
-        "placeholder_search": "Please enter a search term..."
+        "new_repositories": "New Repositories"
     }
 }
