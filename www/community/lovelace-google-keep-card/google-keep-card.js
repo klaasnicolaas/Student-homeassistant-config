@@ -1,7 +1,5 @@
-const LitElement = Object.getPrototypeOf(
-    customElements.get("ha-panel-lovelace")
-);
-const html = LitElement.prototype.html;
+var LitElement = LitElement || Object.getPrototypeOf(customElements.get("home-assistant-main"));
+var html = LitElement.prototype.html;
 
 const themeLight = "light";
 const themeDark = "dark";
