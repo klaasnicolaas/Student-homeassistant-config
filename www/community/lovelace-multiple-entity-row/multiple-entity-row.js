@@ -50,7 +50,6 @@ class MultipleEntityRow extends Polymer.Element {
   }
   .state {
     min-width: 45px;
-    text-align: end;
   }
   .toggle {
     margin-left: 8px;
@@ -61,34 +60,60 @@ class MultipleEntityRow extends Polymer.Element {
   <div class="info">
     [[entityName(main)]]
     <div class="secondary">
-      <template is="dom-if" if="{{displayInfo}}">
+      <template is="dom-if" if="{{info}}">
         [[entityName(info)]] [[entityState(info)]]
       </template>
-      <template is="dom-if" if="{{displayLastChanged}}">
+      <template is="dom-if" if="{{showLastChanged}}">
         <ha-relative-time datetime="[[main.stateObj.last_changed]]" hass="[[_hass]]"></ha-relative-time>
       </template>
     </div>
   </div>
-  <template is="dom-if" if="{{displayPrimary}}">
-      <div class="entity" on-click="primaryMoreInfo">
-        <span>[[entityName(primary)]]</span>
-        <div>[[entityState(primary)]]</div>
+  <template is="dom-if" if="{{primary}}">
+    <div class="entity" on-click="primaryMoreInfo">
+      <span>[[entityName(primary)]]</span>
+      <div>
+        <template is="dom-if" if="{{primary.showToggle}}">
+          <ha-entity-toggle state-obj="[[primary.stateObj]]" hass="[[_hass]]"></ha-entity-toggle>
+        </template>
+        <template is="dom-if" if="{{!primary.showToggle}}">[[entityState(primary)]]</template>
       </div>
-  </template>
-  <template is="dom-if" if="{{displaySecondary}}">
-      <div class="entity" on-click="secondaryMoreInfo">
-        <span>[[entityName(secondary)]]</span>
-        <div>[[entityState(secondary)]]</div>
-      </div>
-  </template>
-  <template is="dom-if" if="{{displayValue}}">
-    <div class="state">
-      [[entityState(main)]]
     </div>
   </template>
-  <template is="dom-if" if="{{displayToggle}}">
-    <div class="toggle">
-      <ha-entity-toggle state-obj="[[main.stateObj]]" hass="[[_hass]]"></ha-entity-toggle>
+  <template is="dom-if" if="{{secondary}}">
+    <div class="entity" on-click="secondaryMoreInfo">
+      <span>[[entityName(secondary)]]</span>
+      <div>
+        <template is="dom-if" if="{{secondary.showToggle}}">
+          <ha-entity-toggle state-obj="[[secondary.stateObj]]" hass="[[_hass]]"></ha-entity-toggle>
+        </template>
+        <template is="dom-if" if="{{!secondary.showToggle}}">[[entityState(secondary)]]</template>
+      </div>
+    </div>
+  </template>
+  <template is="dom-if" if="{{tertiary}}">
+    <div class="entity" on-click="tertiaryMoreInfo">
+      <span>[[entityName(tertiary)]]</span>
+      <div>
+        <template is="dom-if" if="{{tertiary.showToggle}}">
+          <ha-entity-toggle state-obj="[[tertiary.stateObj]]" hass="[[_hass]]"></ha-entity-toggle>
+        </template>
+        <template is="dom-if" if="{{!tertiary.showToggle}}">[[entityState(tertiary)]]</template>
+      </div>
+    </div>
+  </template>
+  <template is="dom-if" if="{{!main.hide_state}}">
+    <div class="state entity">
+      <template is="dom-if" if="{{showMainHeader}}">
+        <span>[[_config.name_state]]</span>
+      </template>
+      <template is="dom-if" if="{{main.showToggle}}">
+        <div class="toggle">
+          <ha-entity-toggle state-obj="[[main.stateObj]]" hass="[[_hass]]"></ha-entity-toggle>
+        </div>
+      </template>
+      <template is="dom-if" if="{{!main.showToggle}}">
+        <div>[[entityState(main)]]</div>
+      </template>
     </div>
   </template>
 </div>`;
@@ -104,6 +129,11 @@ class MultipleEntityRow extends Polymer.Element {
         this.fireEvent(this._config.secondary.entity)
     }
 
+    tertiaryMoreInfo(e) {
+        e.stopPropagation();
+        this.fireEvent(this._config.tertiary.entity)
+    }
+
     entityName(data) {
         return data && data.stateObj && data.name !== false ? this.computeStateName(data.stateObj, data.name) : null;
     }
@@ -111,7 +141,7 @@ class MultipleEntityRow extends Polymer.Element {
     entityState(data) {
         if (!data || !data.stateObj) return this._hass.localize('state.default.unavailable');
         return data.attribute
-            ? data.stateObj.attributes[data.attribute]
+            ? (data.attribute in data.stateObj.attributes)
                 ? `${data.stateObj.attributes[data.attribute]} ${data.unit ? data.unit : ''}`
                 : this._hass.localize('state.default.unavailable')
             : this.computeStateValue(data.stateObj, data.unit);
@@ -154,14 +184,13 @@ class MultipleEntityRow extends Polymer.Element {
         if (!config.entity) throw new Error('Please define an entity.');
         if (config.primary && !config.primary.entity) throw new Error('Please define a primary entity.');
         if (config.secondary && !config.secondary.entity) throw new Error('Please define a secondary entity.');
+        if (config.tertiary && !config.tertiary.entity) throw new Error('Please define a tertiary entity.');
+        if (config.info && !config.info.entity) throw new Error('Please define an info entity.');
+
+        this.showMainHeader = config.name_state;
+        this.showLastChanged = config.secondary_info === 'last-changed' && !config.info;
 
         this._config = config;
-        this.displayToggle = config.toggle === true;
-        this.displayValue = !this.displayToggle && !config.hide_state;
-        this.displayPrimary = config.primary && config.primary.entity;
-        this.displaySecondary = config.secondary && config.secondary.entity;
-        this.displayInfo = config.info && config.info.entity;
-        this.displayLastChanged = !this.displayInfo && config.secondary_info === 'last-changed';
     }
 
     set hass(hass) {
@@ -170,24 +199,25 @@ class MultipleEntityRow extends Polymer.Element {
         if (hass && this._config) {
             const stateObj = this._config.entity in hass.states ? hass.states[this._config.entity] : null;
             if (stateObj) {
-                this.main = Object.assign({}, this._config, { stateObj });
-
-                this.primary = Object.assign({}, this._config.primary, {
-                    stateObj: this.displayPrimary && this._config.primary.entity in hass.states ?
-                        hass.states[this._config.primary.entity] : null
-                });
-                this.secondary = Object.assign({}, this._config.secondary, {
-                    stateObj: this.displaySecondary && this._config.secondary.entity in hass.states ?
-                        hass.states[this._config.secondary.entity] : null
-                });
-                this.info = Object.assign({}, this._config.info, {
-                    stateObj: this.displayInfo && this._config.info.entity in hass.states ?
-                        hass.states[this._config.info.entity] : null
-                });
+                this.main = this.initEntity(this._config);
+                this.primary = this.initEntity(this._config.primary);
+                this.secondary = this.initEntity(this._config.secondary);
+                this.tertiary = this.initEntity(this._config.tertiary);
+                this.info = this.initEntity(this._config.info);
             }
-            this.displayToggle = this._config.toggle === true && stateObj && (stateObj.state === "on" || stateObj.state === "off");
-            this.displayValue = !this.displayToggle && !this._config.hide_state;
         }
+    }
+
+    initEntity(config) {
+        const stateObj = config && config.entity && this._hass.states[config.entity];
+        return stateObj ? Object.assign({}, config, {
+            stateObj: stateObj,
+            showToggle: this.validateToggle(config, stateObj),
+        }) : null;
+    }
+
+    validateToggle(config, stateObj) {
+        return config && config.toggle === true && stateObj && (stateObj.state === "on" || stateObj.state === "off");
     }
 
     fireEvent(entity, options = {}) {
