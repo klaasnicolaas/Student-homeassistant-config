@@ -24,7 +24,7 @@
       entity_id: binary_sensor.motion_badkamer
       to: 'off'
       for:
-        minutes: 10
+        minutes: 5
   condition:
     # Keep the light on when you take a shower
     - condition: state
