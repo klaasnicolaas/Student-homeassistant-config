@@ -1,0 +1,26 @@
+---
+####################### LET'S GO #######################
+# Let Home Assistant set everything off when you go away
+#
+go_away:
+  alias: 'Verlaat het huis'
+  sequence:
+    # Turn all the lights off
+    - service: light.turn_off
+      data:
+        entity_id: 
+          - light.woonkamer
+          - light.keuken
+          - light.hal
+          - light.badkamer
+          - light.stellingkast
+
+    # Close cover
+    - service: cover.close_cover
+      data:
+        entity_id: cover.curtain_window
+
+    # Stop music
+    - service: media_player.media_stop
+      data:
+        entity_id: media_player.google_home
