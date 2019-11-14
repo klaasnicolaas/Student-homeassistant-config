@@ -8,7 +8,7 @@ go_away:
     # Turn all the lights off
     - service: light.turn_off
       data:
-        entity_id: 
+        entity_id:
           - light.woonkamer
           - light.keuken
           - light.hal
