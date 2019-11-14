@@ -11,26 +11,35 @@ start_sleep:
         message: Klaas gaat slapen
 
     # Switch boolean
-    - alias: switch go sleeping boolean
-      service: input_boolean.turn_on
+    - service: input_boolean.turn_on
       data:
         entity_id: input_boolean.go_to_sleep
 
-    # Woonkamer
-    - alias: dim lights woonkamer
-      service: light.turn_off
+    # Stellingkast
+    - service: light.turn_off
       data:
-        entity_id: light.woonkamer
-        transition: 40
-    # Keuken
-    - alias: dim lights keuken
-      service: light.turn_off
-      data:
-        entity_id: light.keuken
-        transition: 35
+        entity_id: light.stellingkast
+
+    - delay:
+        seconds: 10
+
     # Hal
-    - alias: dim lights hal
-      service: light.turn_off
+    - service: light.turn_off
       data:
         entity_id: light.hal
-        transition: 30
+
+    - delay:
+        seconds: 10
+
+    # Keuken
+    - service: light.turn_off
+      data:
+        entity_id: light.keuken
+
+    - delay:
+        seconds: 10
+
+    # Woonkamer
+    - service: light.turn_off
+      data:
+        entity_id: light.woonkamer
