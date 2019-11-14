@@ -4,10 +4,10 @@
   entities:
     light.keuken_lamp_1:
       state: true
-      brightness_pct: 100
+      brightness: 255
     light.keuken_lamp_2:
       state: true
-      brightness_pct: 70
+      brightness: 179
     light.keuken_lamp_3:
       state: true
-      brightness_pct: 70
+      brightness: 179
