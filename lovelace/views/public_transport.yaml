@@ -5,67 +5,7 @@ title: Openbaar Vervoer
 icon: mdi:train-car
 path: ov
 cards:
-  # Bus times
-  - type: vertical-stack
-    cards:
-      # Bus 237 / 57 from blauwe vogelweg to central station
-      - type: custom:monster-card
-        card:
-          type: glance
-          title: Blauwe Vogelweg -> Leiden Centraal
-          columns: 5
-          show_header_toggle: false
-          show_name: false
-        filter:
-          include:
-            - entity_id: sensor.bushalte_blauwe*
-          exclude:
-            - state: 'unknown'
-      # Bus 43 / 221 from Zernikedreef to central station
-      - type: custom:monster-card
-        card:
-          type: glance
-          title: Zernikedreef -> Leiden Centraal
-          columns: 5
-          show_header_toggle: false
-          show_name: false
-        filter:
-          include:
-            - entity_id: sensor.bushalte_zernikedreef_43*
-            - entity_id: sensor.bushalte_zernikedreef_221*
-          exclude:
-            - state: 'unknown'
-  - type: vertical-stack
-    cards:
-      # Bus 237 / 57 from central station to blauwe vogelweg
-      - type: custom:monster-card
-        card:
-          type: glance
-          title: Leiden Centraal -> Blauwe Vogelweg
-          columns: 5
-          show_header_toggle: false
-          show_name: false
-        filter:
-          include:
-            - entity_id: sensor.bushalte_centraal_station_237*
-            - entity_id: sensor.bushalte_centraal_station_57*
-          exclude:
-            - state: 'unknown'
-      # Bus 43 / 221 from central station to zernikedreef
-      - type: custom:monster-card
-        card:
-          type: glance
-          title: Leiden Centraal -> Zernikedreef
-          columns: 5
-          show_header_toggle: false
-          show_name: false
-        filter:
-          include:
-            - entity_id: sensor.bushalte_centraal_station_43*
-            - entity_id: sensor.bushalte_centraal_station_221*
-          exclude:
-            - state: 'unknown'
-
+  # Train
   - type: entities
     title: Treintijden
     show_header_toggle: false

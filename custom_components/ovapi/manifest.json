@@ -1,8 +1,0 @@
-{
-    "domain": "ovapi",
-    "name": "Sensor OvApi",
-    "documentation": "https://github.com/Paul-dH/Home-Assisant-Sensor-OvApi",
-    "dependencies": [],
-    "codeowners": [],
-    "requirements": []
-  }
