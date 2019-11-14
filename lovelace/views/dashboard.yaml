@@ -75,11 +75,12 @@ cards:
       - type: markdown
         title: Google Assistant
         content: |
-          **Ik wil koken** voor als je gaat koken.
-          **Het is avond** of **Start evening mode** voor gedimde lampen in de avond.
-          **Start slaap ritueel** voor wanneer je gaat slapen.
-          **Kanaal X graag** om TV van kanaal te veranderen
-          **Zet TV aan/uit** om de tv aan of uit te doen.
+          **Ik wil koken** -> voor als je gaat koken.
+          **Het is avond** -> voor gedimde lampen in de avond.
+          **Start slaap ritueel** -> voor wanneer je gaat slapen.
+          **Kanaal X graag** -> om TV van kanaal te veranderen
+          **Zet TV aan/uit** -> om de tv aan of uit te doen.
+          **Ik pak me fiets en ga** -> om het huis af te sluiten.
 
   # Show the lights in house
   - type: vertical-stack
@@ -152,6 +153,25 @@ cards:
             entity: light.stellingkast
             toggle: true
             hide_when_off: true
+          - type: custom:rgb-light-card
+            entity: light.stellingkast
+            justify: center
+            colors:
+              # White
+              - rgb_color:
+                - 255
+                - 255
+                - 255
+              # Orange
+              - rgb_color:
+                - 255
+                - 127
+                - 0
+              # Light blue
+              - rgb_color:
+                - 0
+                - 191
+                - 255
           - type: custom:slider-entity-row
             entity: light.werkhoek
             toggle: true
@@ -263,7 +283,6 @@ cards:
   - type: custom:google-keep-card
     entity: sensor.google_keep_19c55cfd0d
     alpha: 0.01
-    theme: dark
     hide_if_empty: false
     show:
       - checked

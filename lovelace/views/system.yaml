@@ -459,7 +459,6 @@ cards:
           - type: custom:auto-entities
             card:
               type: custom:bar-card
-              attribute: battery_level
               unit_of_measurement: "%"
               severity:
                 - value: 50
@@ -482,8 +481,7 @@ cards:
                 border-radius: 20px
             filter:
               include:
-                - attributes:
-                    battery_level: "<=100"
+                - entity_id: "*_battery_level"
               exclude:
                 - entity_id: "*_humidity"
                 - entity_id: "*_pressure"

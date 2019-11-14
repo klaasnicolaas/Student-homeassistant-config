@@ -6,7 +6,7 @@ title: Automatisering
 path: automations
 cards:
   # System
-  - type: custom:monster-card
+  - type: custom:auto-entities
     card:
       type: entities
       title: System Automations
@@ -20,7 +20,7 @@ cards:
         - entity_id: automation.system_perform_log_checks
 
   # People
-  - type: custom:monster-card
+  - type: custom:auto-entities
     card:
       type: entities
       title: People Automations
@@ -35,7 +35,7 @@ cards:
   - type: custom:vertical-stack-in-card
     cards:
       # House
-      - type: custom:monster-card
+      - type: custom:auto-entities
         card:
           type: entities
           title: House Automations
@@ -45,7 +45,7 @@ cards:
             - entity_id: automation.house*
       - type: divider
       # Lights
-      - type: custom:monster-card
+      - type: custom:auto-entities
         card:
           type: entities
           title: Light
@@ -55,7 +55,7 @@ cards:
             - entity_id: automation.light*
       - type: divider
       # Media
-      - type: custom:monster-card
+      - type: custom:auto-entities
         card:
           type: entities
           title: Media
