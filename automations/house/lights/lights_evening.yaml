@@ -1,0 +1,49 @@
+---
+#
+# Allow lamps to turn on automatically in various situations
+#
+- alias: '[Light] - Set lights on in the evening'
+  trigger:
+    - platform: numeric_state
+      entity_id: sun.sun
+      value_template: "{{ state.attributes.elevation }}"
+      below: 6
+  condition:
+    - condition: state
+      entity_id: sensor.klaas_status
+      state: 'Thuis'
+    - condition: state
+      entity_id: light.hal
+      state: 'off'
+    - condition: state
+      entity_id: light.keuken
+      state: 'off'
+    - condition: state
+      entity_id: light.woonkamer
+      state: 'off'
+  action:
+    - service: scene.turn_on
+      entity_id: scene.avond
+
+# Automate the lamps for when you return home
+- alias: '[Light] - Turn on light when come home'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.openclose_sensor_1
+      to: 'on'
+  condition:
+    # Just arrived
+    - condition: state
+      entity_id: sensor.klaas_status
+      state: 'Net Aangekomen'
+    - condition: numeric_state
+      entity_id: sun.sun
+      value_template: "{{ state.attributes.elevation }}"
+      below: 6
+    # Evening time
+    # - condition: sun
+    #  after: sunset
+    #  after_offset: "-01:00:00"
+  action:
+    - service: scene.turn_on
+      entity_id: scene.avond
