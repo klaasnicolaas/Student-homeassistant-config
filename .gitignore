@@ -43,3 +43,4 @@ known_devices.yaml
 alarm_control_panel.yaml
 emulated_hue_ids.json
 emergency.yaml
+security_automations.yaml
