@@ -62,6 +62,7 @@ class RepositoryInformation:
     homeassistant_version = None
     last_updated = None
     uid = None
+    stars = 0
     info = None
     name = None
     topics = []
@@ -309,6 +310,11 @@ class HacsRepository(Hacs):
         # Set topics
         self.information.topics = self.repository_object.topics
 
+        # Set stargazers_count
+        self.information.stars = self.repository_object.attributes.get(
+            "stargazers_count", 0
+        )
+
         # Set description
         if self.repository_object.description:
             self.information.description = self.repository_object.description
@@ -327,6 +333,11 @@ class HacsRepository(Hacs):
         # Update description
         if self.repository_object.description:
             self.information.description = self.repository_object.description
+
+        # Set stargazers_count
+        self.information.stars = self.repository_object.attributes.get(
+            "stargazers_count", 0
+        )
 
         # Update default branch
         self.information.default_branch = self.repository_object.default_branch
@@ -413,8 +424,7 @@ class HacsRepository(Hacs):
                     and self.information.full_name != "hacs/integration"
                 ):
                     await self.reload_custom_components()
-                else:
-                    self.pending_restart = True
+                self.pending_restart = True
 
             elif self.information.category == "theme":
                 try:
@@ -472,12 +482,18 @@ class HacsRepository(Hacs):
         """Download the content of a directory."""
         try:
             # Get content
-            if self.content.single:
-                contents = self.content.objects
-            else:
-                contents = await self.repository_object.get_contents(
-                    directory_path, self.ref
-                )
+            contents = []
+            if self.releases.releases:
+                for release in self.releases.objects:
+                    if self.status.selected_tag == release.tag_name:
+                        contents = release.assets
+            if not contents:
+                if self.content.single:
+                    contents = self.content.objects
+                else:
+                    contents = await self.repository_object.get_contents(
+                        directory_path, self.ref
+                    )
 
             for content in contents:
                 if content.type == "dir" and (
@@ -556,30 +572,19 @@ class HacsRepository(Hacs):
             for file in root:
                 if file.name.lower() in info_files:
 
-                    info = await self.repository_object.get_rendered_contents(
+                    info = await self.repository_object.get_contents(
                         file.name, self.ref
                     )
                     break
             if info is None:
                 self.information.additional_info = ""
             else:
-                info = info.replace("&lt;", "<")
-                info = info.replace("<svg", "<disabled").replace("</svg", "</disabled")
-                info = info.replace("<h3>", "<h6>").replace("</h3>", "</h6>")
-                info = info.replace("<h2>", "<h5>").replace("</h2>", "</h5>")
-                info = info.replace("<h1>", "<h4>").replace("</h1>", "</h4>")
-                info = info.replace("<code>", "<code class='codeinfo'>")
+                info = info.content.replace("<svg", "<disabled").replace(
+                    "</svg", "</disabled"
+                )
                 info = info.replace(
                     '<a href="http', '<a rel="noreferrer" target="_blank" href="http'
                 )
-                info = info.replace("<li>", "<li style='list-style-type: initial;'>")
-
-                # Special changes that needs to be done:
-                info = info.replace(
-                    "<your", "<&#8205;your"
-                )  # for thomasloven/hass-favicon
-
-                info += "</br>"
 
                 self.information.additional_info = render_template(info, self)
 

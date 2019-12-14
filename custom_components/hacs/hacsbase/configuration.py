@@ -14,8 +14,10 @@ class Configuration:
     config: dict = {}
     config_entry: dict = {}
     config_type: str = None
+    debug: bool = False
     dev: bool = False
     frontend_mode: str = "Grid"
+    frontend_compact: bool = False
     options: dict = {}
     plugin_path: str = "www/community/"
     python_script_path: str = "python_scripts/"

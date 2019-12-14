@@ -40,6 +40,12 @@ async def hacs_settings(hass, connection, msg):
     elif action == "set_fe_table":
         Hacs().configuration.frontend_mode = "Table"
 
+    elif action == "set_fe_compact_true":
+        Hacs().configuration.frontend_compact = False
+
+    elif action == "set_fe_compact_false":
+        Hacs().configuration.frontend_compact = True
+
     elif action == "reload_data":
         Hacs().system.status.reloading_data = True
         hass.bus.async_fire("hacs/status", {})
@@ -70,6 +76,7 @@ async def hacs_settings(hass, connection, msg):
                     repo.status.new = False
     else:
         Hacs().logger.error(f"WS action '{action}' is not valid")
+    hass.bus.async_fire("hacs/config", {})
     await Hacs().data.async_write()
 
 
@@ -81,6 +88,7 @@ async def hacs_config(hass, connection, msg):
 
     content = {}
     content["frontend_mode"] = config.frontend_mode
+    content["frontend_compact"] = config.frontend_compact
     content["version"] = Hacs().version
     content["dev"] = config.dev
     content["appdaemon"] = config.appdaemon
@@ -115,42 +123,43 @@ async def hacs_repositories(hass, connection, msg):
     repositories = Hacs().repositories
     content = []
     for repo in repositories:
-        content.append(
-            {
-                "name": repo.display_name,
-                "description": repo.information.description,
-                "category": repo.information.category,
-                "installed": repo.status.installed,
-                "id": repo.information.uid,
-                "can_install": repo.can_install,
-                "homeassistant": repo.repository_manifest.homeassistant,
-                "hide": repo.status.hide,
-                "new": repo.status.new,
-                "beta": repo.status.show_beta,
-                "status": repo.display_status,
-                "status_description": repo.display_status_description,
-                "additional_info": repo.information.additional_info,
-                "info": repo.information.info,
-                "updated_info": repo.status.updated_info,
-                "version_or_commit": repo.display_version_or_commit,
-                "custom": repo.custom,
-                "domain": repo.manifest.get("domain"),
-                "state": repo.state,
-                "installed_version": repo.display_installed_version,
-                "available_version": repo.display_available_version,
-                "main_action": repo.main_action,
-                "pending_upgrade": repo.pending_upgrade,
-                "full_name": repo.information.full_name,
-                "file_name": repo.information.file_name,
-                "javascript_type": repo.information.javascript_type,
-                "authors": repo.information.authors,
-                "local_path": repo.content.path.local,
-                "topics": repo.information.topics,
-                "releases": repo.releases.published_tags,
-                "selected_tag": repo.status.selected_tag,
-                "default_branch": repo.information.default_branch,
-            }
-        )
+        data = {
+            "name": repo.display_name,
+            "description": repo.information.description,
+            "category": repo.information.category,
+            "installed": repo.status.installed,
+            "id": repo.information.uid,
+            "can_install": repo.can_install,
+            "homeassistant": repo.repository_manifest.homeassistant,
+            "hide": repo.status.hide,
+            "new": repo.status.new,
+            "beta": repo.status.show_beta,
+            "status": repo.display_status,
+            "status_description": repo.display_status_description,
+            "additional_info": repo.information.additional_info,
+            "info": repo.information.info,
+            "updated_info": repo.status.updated_info,
+            "version_or_commit": repo.display_version_or_commit,
+            "custom": repo.custom,
+            "domain": repo.manifest.get("domain"),
+            "state": repo.state,
+            "installed_version": repo.display_installed_version,
+            "available_version": repo.display_available_version,
+            "main_action": repo.main_action,
+            "pending_upgrade": repo.pending_upgrade,
+            "full_name": repo.information.full_name,
+            "file_name": repo.information.file_name,
+            "javascript_type": repo.information.javascript_type,
+            "authors": repo.information.authors,
+            "local_path": repo.content.path.local,
+            "topics": repo.information.topics,
+            "releases": repo.releases.published_tags,
+            "stars": repo.information.stars,
+            "selected_tag": repo.status.selected_tag,
+            "default_branch": repo.information.default_branch,
+        }
+
+        content.append(data)
 
     connection.send_message(websocket_api.result_message(msg["id"], content))
 
@@ -183,11 +192,11 @@ async def hacs_repository(hass, connection, msg):
         was_installed = repository.status.installed
         await repository.install()
         if not was_installed:
-            hass.bus.async_fire("hacs/reload", {})
+            hass.bus.async_fire("hacs/reload", {"force": False})
 
     elif action == "uninstall":
         await repository.uninstall()
-        hass.bus.async_fire("hacs/reload", {})
+        hass.bus.async_fire("hacs/reload", {"force": False})
 
     elif action == "hide":
         repository.status.hide = True
@@ -260,15 +269,15 @@ async def hacs_repository_data(hass, connection, msg):
         hass.bus.async_fire("hacs/repository", {})
         return
 
-    Hacs().logger.info(f"Running {action} for {repository.information.full_name}")
+    Hacs().logger.debug(f"Running {action} for {repository.information.full_name}")
 
     if action == "set_state":
         repository.state = data
 
     elif action == "set_version":
-        repository.state = None
         repository.status.selected_tag = data
         await repository.update_repository()
+        repository.state = None
 
     elif action == "add":
         repository.state = None
