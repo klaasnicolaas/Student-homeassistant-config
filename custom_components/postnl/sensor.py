@@ -1,49 +1,57 @@
 """Sensor for PostNL packages."""
-import datetime
+from datetime import timedelta
 import logging
 
 import voluptuous as vol
 
 from homeassistant.components.sensor import PLATFORM_SCHEMA
 from homeassistant.const import (
-    ATTR_ATTRIBUTION, CONF_NAME, CONF_PASSWORD, CONF_SCAN_INTERVAL, CONF_USERNAME)
+    ATTR_ATTRIBUTION,
+    CONF_NAME,
+    CONF_PASSWORD,
+    CONF_USERNAME,
+)
 import homeassistant.helpers.config_validation as cv
 from homeassistant.helpers.entity import Entity
-
-REQUIREMENTS = ['postnlpy==0.4.1']
+from homeassistant.util import Throttle
 
 _LOGGER = logging.getLogger(__name__)
 
-ATTRIBUTION = 'Information provided by PostNL'
+ATTRIBUTION = "Information provided by PostNL"
 
-DEFAULT_NAME = 'postnl'
+ATTR_ENTROUTE = "enroute"
+ATTR_DELIVERED = "delivered"
 
-SCAN_INTERVAL = datetime.timedelta(seconds=1800)
+DEFAULT_NAME = "postnl"
 
-PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
-    vol.Required(CONF_USERNAME): cv.string,
-    vol.Required(CONF_PASSWORD): cv.string,
-    vol.Optional(CONF_SCAN_INTERVAL, default=SCAN_INTERVAL):
-            cv.time_period,
-    vol.Optional(CONF_NAME, default=DEFAULT_NAME): cv.string,
-})
+PACKAGE_ICON = "mdi:package-variant-closed"
+LETTER_ICON = "mdi:email"
+
+MIN_TIME_BETWEEN_UPDATES = timedelta(minutes=30)
+
+PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
+    {
+        vol.Required(CONF_USERNAME): cv.string,
+        vol.Required(CONF_PASSWORD): cv.string,
+        vol.Optional(CONF_NAME, default=DEFAULT_NAME): cv.string,
+    }
+)
 
 
 def setup_platform(hass, config, add_entities, discovery_info=None):
     """Set up the PostNL sensor platform."""
-    from postnlpy.postnlapi import PostnlApi
-    from postnlpy.postnlapi import UnauthorizedException
+    from postnl_api import PostNL_API, UnauthorizedException
 
     username = config.get(CONF_USERNAME)
     password = config.get(CONF_PASSWORD)
-    refresh_rate = config.get(CONF_SCAN_INTERVAL)
     name = config.get(CONF_NAME)
 
     try:
-        api = PostnlApi(username, password, refresh_rate.total_seconds())
+        api = PostNL_API(username, password)
         _LOGGER.debug("Connection with PostNL API succeeded")
+
     except UnauthorizedException:
-        _LOGGER.exception("Can't connect to the PostNL API")
+        _LOGGER.exception("Can't connect to the PostNL webservice")
         return
 
     add_entities([PostNLDelivery(api, name)], True)
@@ -52,13 +60,15 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
 
 
 class PostNLDelivery(Entity):
+    """Object holding all PostNL packages for delivery."""
+
     def __init__(self, api, name):
-        """Initialize the PostNL sensor."""
-        self._name = name + "_delivery"
+        """Initialize the PostNL delivery sensor."""
+        self._name = f"{name}_delivery"
         self._attributes = {
             ATTR_ATTRIBUTION: ATTRIBUTION,
-            'enroute': [],
-            'delivered': [],
+            ATTR_ENTROUTE: [],
+            ATTR_DELIVERED: [],
         }
         self._state = None
         self._api = api
@@ -76,7 +86,7 @@ class PostNLDelivery(Entity):
     @property
     def unit_of_measurement(self):
         """Return the unit of measurement of this entity, if any."""
-        return 'packages'
+        return "packages"
 
     @property
     def device_state_attributes(self):
@@ -86,32 +96,35 @@ class PostNLDelivery(Entity):
     @property
     def icon(self):
         """Icon to use in the frontend."""
-        return "mdi:package-variant-closed"
+        return PACKAGE_ICON
 
+    @Throttle(MIN_TIME_BETWEEN_UPDATES)
     def update(self):
         """Update device state."""
-        shipments = self._api.get_delivery()
+        shipments = self._api.get_deliveries()
 
-        self._attributes['enroute'] = []
-        self._attributes['delivered'] = []
+        self._attributes[ATTR_ENTROUTE] = []
+        self._attributes[ATTR_DELIVERED] = []
 
         for shipment in shipments:
             if shipment.delivery_date is None:
-                self._attributes['enroute'].append(vars(shipment))
+                self._attributes[ATTR_ENTROUTE].append(vars(shipment))
             else:
-                self._attributes['delivered'].append(vars(shipment))
+                self._attributes[ATTR_DELIVERED].append(vars(shipment))
 
-        self._state = len(self._attributes['enroute'])
+        self._state = len(self._attributes[ATTR_ENTROUTE])
 
 
 class PostNLDistribution(Entity):
+    """Object holding all PostNL packages for distribution."""
+
     def __init__(self, api, name):
-        """Initialize the PostNL sensor."""
-        self._name = name + "_distribution"
+        """Initialize the PostNL distribution sensor."""
+        self._name = f"{name}_distribution"
         self._attributes = {
             ATTR_ATTRIBUTION: ATTRIBUTION,
-            'enroute': [],
-            'delivered': [],
+            ATTR_ENTROUTE: [],
+            ATTR_DELIVERED: [],
         }
         self._state = None
         self._api = api
@@ -129,7 +142,7 @@ class PostNLDistribution(Entity):
     @property
     def unit_of_measurement(self):
         """Return the unit of measurement of this entity, if any."""
-        return 'packages'
+        return "packages"
 
     @property
     def device_state_attributes(self):
@@ -139,34 +152,35 @@ class PostNLDistribution(Entity):
     @property
     def icon(self):
         """Icon to use in the frontend."""
-        return "mdi:package-variant-closed"
+        return PACKAGE_ICON
 
+    @Throttle(MIN_TIME_BETWEEN_UPDATES)
     def update(self):
         """Update device state."""
-        shipments = self._api.get_distribution()
+        shipments = self._api.get_distributions()
 
-        self._attributes['enroute'] = []
-        self._attributes['delivered'] = []
+        self._attributes[ATTR_ENTROUTE] = []
+        self._attributes[ATTR_DELIVERED] = []
 
         for shipment in shipments:
             if shipment.delivery_date is None:
-                self._attributes['enroute'].append(vars(shipment))
+                self._attributes[ATTR_ENTROUTE].append(vars(shipment))
             else:
-                self._attributes['delivered'].append(vars(shipment))
+                self._attributes[ATTR_DELIVERED].append(vars(shipment))
 
-        self._state = len(self._attributes['enroute'])
+        self._state = len(self._attributes[ATTR_ENTROUTE])
 
 
 class PostNLLetter(Entity):
-    """Representation of a PostNL sensor."""
+    """Object holding all PostNL letters for delivery."""
 
     def __init__(self, api, name):
-        """Initialize the PostNL sensor."""
-        self._name = name + "_letters"
+        """Initialize the PostNL letter sensor."""
+        self._name = f"{name}_letters"
         self._attributes = {
             ATTR_ATTRIBUTION: ATTRIBUTION,
-            'letters': [],
-            'enabled': False,
+            "letters": [],
+            "enabled": False,
         }
         self._state = None
         self._api = api
@@ -184,7 +198,7 @@ class PostNLLetter(Entity):
     @property
     def unit_of_measurement(self):
         """Return the unit of measurement of this entity, if any."""
-        return 'letters'
+        return "letters"
 
     @property
     def device_state_attributes(self):
@@ -194,17 +208,18 @@ class PostNLLetter(Entity):
     @property
     def icon(self):
         """Icon to use in the frontend."""
-        return "mdi:email"
+        return LETTER_ICON
 
+    @Throttle(MIN_TIME_BETWEEN_UPDATES)
     def update(self):
         """Update device state."""
-        self._attributes['enabled'] = self._api.is_letters_activated()
+        self._attributes["enabled"] = self._api.is_letters_activated
 
-        if self._attributes['enabled']:
+        if self._attributes["enabled"]:
             letters = self._api.get_letters()
 
-            self._attributes['letters'] = []
+            self._attributes["letters"] = []
 
             for letter in letters:
-                self._attributes['letters'].append(vars(letter))
+                self._attributes["letters"].append(vars(letter))
             self._state = len(letters)
