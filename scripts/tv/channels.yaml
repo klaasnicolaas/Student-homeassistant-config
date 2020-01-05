@@ -6,7 +6,7 @@
 channel_0:
   alias: 'TV - Kanaal 0'
   sequence:
-    - service: remote.harmony_change_channel
+    - service: harmony.change_channel
       data:
         entity_id: remote.harmony_hub
         channel: 0
@@ -15,7 +15,7 @@ channel_0:
 channel_1:
   alias: 'TV - Kanaal 1'
   sequence:
-    - service: remote.harmony_change_channel
+    - service: harmony.change_channel
       data:
         entity_id: remote.harmony_hub
         channel: 1
@@ -24,7 +24,7 @@ channel_1:
 channel_2:
   alias: 'TV - Kanaal 2'
   sequence:
-    - service: remote.harmony_change_channel
+    - service: harmony.change_channel
       data:
         entity_id: remote.harmony_hub
         channel: 2
@@ -33,7 +33,7 @@ channel_2:
 channel_3:
   alias: 'TV - Kanaal 3'
   sequence:
-    - service: remote.harmony_change_channel
+    - service: harmony.change_channel
       data:
         entity_id: remote.harmony_hub
         channel: 3
@@ -42,7 +42,7 @@ channel_3:
 channel_4:
   alias: 'TV - Kanaal 4'
   sequence:
-    - service: remote.harmony_change_channel
+    - service: harmony.change_channel
       data:
         entity_id: remote.harmony_hub
         channel: 4
@@ -51,7 +51,7 @@ channel_4:
 channel_5:
   alias: 'TV - Kanaal 5'
   sequence:
-    - service: remote.harmony_change_channel
+    - service: harmony.change_channel
       data:
         entity_id: remote.harmony_hub
         channel: 5
@@ -60,7 +60,7 @@ channel_5:
 channel_6:
   alias: 'TV - Kanaal 6'
   sequence:
-    - service: remote.harmony_change_channel
+    - service: harmony.change_channel
       data:
         entity_id: remote.harmony_hub
         channel: 6
@@ -69,7 +69,7 @@ channel_6:
 channel_7:
   alias: 'TV - Kanaal 7'
   sequence:
-    - service: remote.harmony_change_channel
+    - service: harmony.change_channel
       data:
         entity_id: remote.harmony_hub
         channel: 7
@@ -78,7 +78,7 @@ channel_7:
 channel_8:
   alias: 'TV - Kanaal 8'
   sequence:
-    - service: remote.harmony_change_channel
+    - service: harmony.change_channel
       data:
         entity_id: remote.harmony_hub
         channel: 8
@@ -87,7 +87,7 @@ channel_8:
 channel_9:
   alias: 'TV - Kanaal 9'
   sequence:
-    - service: remote.harmony_change_channel
+    - service: harmony.change_channel
       data:
         entity_id: remote.harmony_hub
         channel: 9
