@@ -1,6 +1,5 @@
 """
 Support for Google Geocode sensors.
-
 For more details about this platform, please refer to the documentation at
 https://github.com/michaelmcarthur/GoogleGeocode-HASS
 """
@@ -28,6 +27,9 @@ CONF_OPTIONS = 'options'
 CONF_DISPLAY_ZONE = 'display_zone'
 CONF_ATTRIBUTION = "Data provided by maps.google.com"
 CONF_GRAVATAR = 'gravatar'
+CONF_IMAGE = 'image'
+CONF_GOOGLE_LANGUAGE = 'language'
+CONF_GOOGLE_REGION = 'region'
 
 ATTR_STREET_NUMBER = 'Street Number'
 ATTR_STREET = 'Street'
@@ -41,6 +43,8 @@ ATTR_FORMATTED_ADDRESS = 'Formatted Address'
 
 DEFAULT_NAME = 'Google Geocode'
 DEFAULT_OPTION = 'street, city'
+DEFAULT_LANGUAGE = 'en-GB'
+DEFAULT_REGION = 'GB'
 DEFAULT_DISPLAY_ZONE = 'display'
 DEFAULT_KEY = 'no key'
 current = '0,0'
@@ -51,11 +55,13 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Required(CONF_ORIGIN): cv.string,
     vol.Optional(CONF_API_KEY, default=DEFAULT_KEY): cv.string,
     vol.Optional(CONF_OPTIONS, default=DEFAULT_OPTION): cv.string,
+    vol.Optional(CONF_GOOGLE_LANGUAGE, default=DEFAULT_LANGUAGE): cv.string,
+    vol.Optional(CONF_GOOGLE_REGION, default=DEFAULT_REGION): cv.string,
     vol.Optional(CONF_DISPLAY_ZONE, default=DEFAULT_DISPLAY_ZONE): cv.string,
     vol.Optional(CONF_GRAVATAR, default=None): vol.Any(None, cv.string),
+    vol.Optional(CONF_IMAGE, default=None): vol.Any(None, cv.string),
     vol.Optional(CONF_NAME, default=DEFAULT_NAME): cv.string,
-    vol.Optional(CONF_SCAN_INTERVAL, default=SCAN_INTERVAL):
-        cv.time_period,
+    vol.Optional(CONF_SCAN_INTERVAL, default=SCAN_INTERVAL): cv.time_period,
 })
 
 TRACKABLE_DOMAINS = ['device_tracker', 'sensor', 'person']
@@ -66,24 +72,29 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
     api_key = config.get(CONF_API_KEY)
     origin = config.get(CONF_ORIGIN)
     options = config.get(CONF_OPTIONS)
+    google_language = config.get(CONF_GOOGLE_LANGUAGE)
+    google_region = config.get(CONF_GOOGLE_REGION)
     display_zone = config.get(CONF_DISPLAY_ZONE)
     gravatar = config.get(CONF_GRAVATAR) 
+    image = config.get(CONF_IMAGE) 
 
-    add_devices([GoogleGeocode(hass, origin, name, api_key, options, display_zone, gravatar)])
-
+    add_devices([GoogleGeocode(hass, origin, name, api_key, options, google_language, google_region, display_zone, gravatar, image)])
 
 class GoogleGeocode(Entity):
     """Representation of a Google Geocode Sensor."""
 
-    def __init__(self, hass, origin, name, api_key, options, display_zone, gravatar):
+    def __init__(self, hass, origin, name, api_key, options, google_language, google_region, display_zone, gravatar, image):
         """Initialize the sensor."""
         self._hass = hass
         self._name = name
         self._api_key = api_key
         self._options = options.lower()
+        self._google_language = google_language.lower()
+        self._google_region = google_region.lower()
         self._display_zone = display_zone.lower()
         self._state = "Awaiting Update"
         self._gravatar = gravatar
+        self._image = image
 
         self._street_number = None
         self._street = None
@@ -105,6 +116,8 @@ class GoogleGeocode(Entity):
 
         if gravatar is not None:
             self._picture = self._get_gravatar_for_email(gravatar)
+        elif image is not None:
+            self._picture = self._get_image_from_url(image)
         else:
             self._picture = None
 
@@ -122,7 +135,7 @@ class GoogleGeocode(Entity):
     def entity_picture(self):
         """Return the picture of the device."""
         return self._picture
-        
+
     @property
     def device_state_attributes(self):
         """Return the state attributes."""
@@ -168,16 +181,16 @@ class GoogleGeocode(Entity):
         elif current == self._origin:
             pass
         else:
-            _LOGGER.info("google request sent")
             self._zone_check_current = self.hass.states.get(self._origin_entity_id).state
             zone_check_count = 2
             lat = self._origin
             current = lat
             self._reset_attributes()
             if self._api_key == 'no key':
-                url = "https://maps.google.com/maps/api/geocode/json?latlng=" + lat
+                url = "https://maps.google.com/maps/api/geocode/json?language=" + self._google_language + "&region=" + self._google_region + "&latlng=" + lat
             else:
-                url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "&key=" + self._api_key
+                url = "https://maps.googleapis.com/maps/api/geocode/json?language=" + self._google_language + "&region=" + self._google_region + "&latlng=" + lat + "&key=" + self._api_key
+            _LOGGER.debug("Google request sent: " + url)
             response = get(url)
             json_input = response.text
             decoded = json.loads(json_input)
@@ -191,8 +204,6 @@ class GoogleGeocode(Entity):
             county = ''
             country = ''
 
-
-            
             for result in decoded["results"]:
                 for component in result["address_components"]:
                     if 'street_number' in component["types"]:
@@ -254,15 +265,17 @@ class GoogleGeocode(Entity):
                     self._append_to_user_display(county)
                 if "state" in display_options:
                     self._append_to_user_display(state)
+                if "postal_town" in display_options:
+                    self._append_to_user_display(postal_town)
                 if "postal_code" in display_options:
                     self._append_to_user_display(postal_code)
                 if "country" in display_options:
                     self._append_to_user_display(country)
                 if "formatted_address" in display_options:
                     self._append_to_user_display(formatted_address)
-                        
+
                 user_display = ', '.join(  x for x in user_display )
-                
+
                 if user_display == '':
                     user_display = street
                 self._state = user_display
@@ -308,7 +321,7 @@ class GoogleGeocode(Entity):
         """Get the lat/long string from an entities attributes."""
         attr = entity.attributes
         return "%s,%s" % (attr.get(ATTR_LATITUDE), attr.get(ATTR_LONGITUDE))
-        
+
     def _get_gravatar_for_email(self, email: str):
         """Return an 80px Gravatar for the given email address.
         Async friendly.
@@ -316,3 +329,10 @@ class GoogleGeocode(Entity):
         import hashlib
         url = 'https://www.gravatar.com/avatar/{}.jpg?s=80&d=wavatar'
         return url.format(hashlib.md5(email.encode('utf-8').lower()).hexdigest())
+
+    def _get_image_from_url(self, url: str):
+        """Return an image from a given url.
+        Async friendly.
+        """
+        import hashlib
+        return url.format(hashlib.md5(url.encode('utf-8').lower()).hexdigest())
