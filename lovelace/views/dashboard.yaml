@@ -135,14 +135,6 @@ cards:
           - type: custom:fold-entity-row
             head:
               type: section
-              label: Badkamer
-          - type: custom:slider-entity-row
-            entity: light.badkamer
-            toggle: true
-            hide_when_off: true
-          - type: custom:fold-entity-row
-            head:
-              type: section
               label: Stellingkast
             group_config:
               secondary_info: last-changed
@@ -174,6 +166,10 @@ cards:
                   - 255
           - type: custom:slider-entity-row
             entity: light.werkhoek
+            toggle: true
+            hide_when_off: true
+          - type: custom:slider-entity-row
+            entity: light.badkamer
             toggle: true
             hide_when_off: true
       - type: entities

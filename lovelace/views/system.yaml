@@ -486,6 +486,9 @@ cards:
                 - entity_id: "*_humidity"
                 - entity_id: "*_pressure"
                 - entity_id: "*sensor.lightlevel*"
+            sort:
+              method: state
+              numeric: true
 
   - type: glance
     entities:
