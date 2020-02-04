@@ -8,10 +8,6 @@ input_boolean:
     name: Ik ga naar bed/slapen
     icon: mdi:sleep
 
-  already_fired:
-    name: Actie al gestart
-    icon: mdi:gesture-tap
-
   task_notify:
     name: Huishoudelijke notificatie
     icon: mdi:checkbox-multiple-marked-outline

@@ -28,8 +28,6 @@ cards:
     filter:
       include:
         - entity_id: automation.people*
-      exclude:
-        - entity_id: automation.people_reset_already_fired_boolean
 
   # House
   - type: custom:vertical-stack-in-card
