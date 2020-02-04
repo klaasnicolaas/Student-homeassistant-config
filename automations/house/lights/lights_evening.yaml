@@ -7,7 +7,7 @@
     - platform: numeric_state
       entity_id: sun.sun
       value_template: "{{ state.attributes.elevation }}"
-      below: 6
+      below: 3
   condition:
     - condition: state
       entity_id: sensor.klaas_status
@@ -39,7 +39,7 @@
     - condition: numeric_state
       entity_id: sun.sun
       value_template: "{{ state.attributes.elevation }}"
-      below: 6
+      below: 3
   action:
     - service: scene.turn_on
       entity_id: scene.avond
