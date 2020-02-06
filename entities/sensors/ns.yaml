@@ -1,8 +1,7 @@
 ---
 # Nederlandse Spoorwegen #
 - platform: nederlandse_spoorwegen
-  email: !secret ns_email
-  password: !secret ns_password
+  api_key: !secret ns_api_key
   routes:
     - name: Alkmaar - Leiden
       from: Amr
