@@ -450,7 +450,7 @@ cards:
         show_header_toggle: false
         entities:
           - sensor.myip
-          - sensor.ssl_certificate_expiry
+          - sensor.local_ip
 
       # Battery devices information
       - type: custom:vertical-stack-in-card

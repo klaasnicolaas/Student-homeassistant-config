@@ -59,6 +59,11 @@ homeassistant:
       friendly_name: Publiek IP-adres
       icon: mdi:network
 
+    sensor.local_ip:
+      <<: *customize
+      friendly_name: Intern IP-adres
+      icon: mdi:network
+
     ################################################
     ## Script
     ################################################
@@ -132,20 +137,8 @@ sensor:
     name: Python Version
     command: python3 --version
     scan_interval: 86400
-  ##### Add-on status
-  - platform: rest
-    resource: !secret deconz_resource
-    headers:
-      Authorization: !secret bearer_token
-      Content-Type: application/json
-    name: Deconz status
-    value_template: '{{ value_json.data.state }}'
-    scan_interval: 3600
   ##### External IP
   - platform: dnsip
-  ##### When will the SSL expiry
-  - platform: cert_expiry
-    host: !secret cert_expiry_host
   ##### Github
   - platform: github
     access_token: !secret github_access_token
@@ -249,3 +242,9 @@ script:
     alias: Check config
     sequence:
       - service: homeassistant.check_config
+
+################################################
+## Integrations
+################################################
+
+local_ip:
