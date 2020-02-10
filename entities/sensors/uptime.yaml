@@ -6,7 +6,7 @@
     ha_uptime:
       friendly_name: 'HA Uptime'
       value_template: >-
-        {% if states('sensor.time_online') == '0.0' %} 
+        {% if states('sensor.time_online') == '0.0' %}
           Just restarted...
         {% else %}
           {% macro phrase(value, name) %}
@@ -14,7 +14,7 @@
           {%- set end = 's' if value > 1 else '' %}
           {{- '{} {}{}'.format(value, name, end) if value | int > 0 else '' }}
           {%- endmacro %}
-          
+
           {% set weeks = (states('sensor.time_online') | int / 7) | int %}
           {% set days = (states('sensor.time_online') | int) - (weeks * 7) %}
           {% set hours = (states('sensor.time_online') | float - states('sensor.time_online') | int) * 24 %}
