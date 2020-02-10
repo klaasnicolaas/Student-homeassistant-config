@@ -5,7 +5,7 @@
 - platform: template
   sensors:
     sensor_count:
-      entity_id: sensor.sensor_count
+      entity_id: sensor.time
       friendly_name: 'Number of Sensors'
       value_template: >
         {%- set domains = ['sensor'] -%}
@@ -18,7 +18,7 @@
         {%- endfor -%}
 
     automation_count:
-      entity_id: sensor.automation_count
+      entity_id: sensor.time
       friendly_name: 'Number of Automations'
       value_template: >
         {%- set domains = ['automation'] -%}
@@ -31,7 +31,7 @@
         {%- endfor -%}
 
     script_count:
-      entity_id: sensor.script_count
+      entity_id: sensor.time
       friendly_name: 'Number of Scripts'
       value_template: >
         {%- set domains = ['script'] -%}
@@ -44,7 +44,7 @@
         {%- endfor -%}
 
     switch_count:
-      entity_id: sensor.switch_count
+      entity_id: sensor.time
       friendly_name: 'Number of Switches'
       value_template: >
         {%- set domains = ['switch'] -%}
@@ -57,7 +57,7 @@
         {%- endfor -%}
 
     binary_sensor_count:
-      entity_id: sensor.binary_sensor_count
+      entity_id: sensor.time
       friendly_name: 'Number of Binary Sensors'
       value_template: >
         {%- set domains = ['binary_sensor'] -%}
@@ -70,7 +70,7 @@
         {%- endfor -%}
 
     lights_count:
-      entity_id: sensor.lights_count
+      entity_id: sensor.time
       friendly_name: 'Number of Lights'
       value_template: >
         {%- set domains = ['light'] -%}
@@ -83,7 +83,7 @@
         {%- endfor -%}
 
     tracker_count:
-      entity_id: sensor.tracker_count
+      entity_id: sensor.time
       friendly_name: 'Number of Devices'
       value_template: >
         {%- set domains = ['device_tracker'] -%}
@@ -96,7 +96,7 @@
         {%- endfor -%}
 
     media_player_count:
-      entity_id: sensor.media_player_count
+      entity_id: sensor.time
       friendly_name: 'Number of Media Players'
       value_template: >
         {%- set domains = ['media_player'] -%}
@@ -109,7 +109,7 @@
         {%- endfor -%}
 
     input_datetime_count:
-      entity_id: sensor.input_datetime_count
+      entity_id: sensor.time
       friendly_name: 'Number of Input DateTime'
       value_template: >
         {%- set domains = ['input_datetime'] -%}
@@ -123,7 +123,7 @@
 
     # ----- Count All Entities
     total_entities:
-      entity_id: []
+      entity_id: sensor.time
       friendly_name: 'Entities'
       icon_template: mdi:code-tags
       value_template: "{{ states | count }}"
