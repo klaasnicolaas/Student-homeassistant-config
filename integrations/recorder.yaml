@@ -14,7 +14,7 @@ recorder:
   exclude:
     entities:
       - sensor.time
-      - sensor.time_online
+      - sensor.ha_uptime
       - sensor.bushalte_blauwe_vogelweg_1
       - sensor.bushalte_blauwe_vogelweg_1_future_1
       - sensor.bushalte_blauwe_vogelweg_1_future_2

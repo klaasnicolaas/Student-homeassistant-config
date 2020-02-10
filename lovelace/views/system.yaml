@@ -103,7 +103,7 @@ cards:
         entities:
           - entity: sensor.home_assistant_log
             title: Log size
-          - entity: sensor.time_online
+          - entity: sensor.ha_uptime
             title: Uptime
 
       - type: custom:bar-card
