@@ -1,5 +1,5 @@
 ---
-# If I don't feel well at home 
+# If I don't feel well at home
 # I can press an emergency button to alert people with an exact location of me.
 #
 - alias: '[People] - Warn in case of emergency'
