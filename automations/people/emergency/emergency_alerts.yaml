@@ -1,0 +1,41 @@
+---
+# If I don't feel well at home 
+# I can press an emergency button to alert people with an exact location of me.
+#
+- alias: '[People] - Warn in case of emergency'
+  initial_state: true
+  trigger:
+    # Button
+    - platform: event
+      event_type: deconz_event
+      event_data:
+        id: switch_17
+        event: 1002
+    # Telegram inline
+    - platform: event
+      event_type: telegram_command
+      event_data:
+        user_id: !secret telegram_user_id_klaas
+        command: '/help'
+  action:
+    - service: script.turn_on
+      entity_id: script.call_emergency
+
+- alias: '[People] - It is a false alarm'
+  initial_state: true
+  trigger:
+    # Button
+    - platform: event
+      event_type: deconz_event
+      event_data:
+        id: switch_17
+        event: 1004
+    # Telegram inline
+    - platform: event
+      event_type: telegram_command
+      event_data:
+        user_id: !secret telegram_user_id_klaas
+        command: '/falsealarm'
+  action:
+    - service: script.turn_on
+      entity_id: script.false_alarm_emergency

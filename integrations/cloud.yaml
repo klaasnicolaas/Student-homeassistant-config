@@ -47,7 +47,8 @@ cloud:
         - script.start_cooking
         - script.start_relax
         - script.start_sleep
-        - script.emergency
+        - script.call_emergency
+        - script.false_alarm_emergency
         # Input boolean
         - input_boolean.tv_power
         - input_boolean.tv_mute

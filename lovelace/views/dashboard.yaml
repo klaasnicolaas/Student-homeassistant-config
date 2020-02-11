@@ -5,71 +5,132 @@ title: Thuis
 icon: mdi:home-assistant
 path: home
 cards:
-  - type: horizontal-stack
-    cards:
-      - image: /local/klaas-overlay.jpg
-        elements:
-          - style:
-              color: white
-              top: 93%
-              left: 20%
-            type: state-label
-            entity: sensor.klaas_status
-          - style:
-              color: white
-              top: 93%
-              left: 55%
-            type: state-label
-            entity: proximity.home
-        type: picture-elements
-      - image: /local/marlene-overlay.jpg
-        elements:
-          - style:
-              color: white
-              top: 93%
-              left: 20%
-            type: state-label
-            entity: sensor.marlene_status
-          - style:
-              color: white
-              top: 93%
-              left: 55%
-            type: state-label
-            entity: binary_sensor.marlene_thuis
-        type: picture-elements
-
   - type: vertical-stack
     cards:
-      # Start scenes
+      # Personal status
       - type: horizontal-stack
         cards:
-          # Cooking
-          - type: picture-entity
-            entity: scene.koken
-            image: /local/images/cooking.png
+          - image: /local/klaas-overlay.jpg
+            elements:
+              - style:
+                  color: white
+                  top: 93%
+                  left: 20%
+                type: state-label
+                entity: sensor.klaas_status
+              - style:
+                  color: white
+                  top: 93%
+                  left: 55%
+                type: state-label
+                entity: proximity.home
+            type: picture-elements
+          - image: /local/marlene-overlay.jpg
+            elements:
+              - style:
+                  color: white
+                  top: 93%
+                  left: 20%
+                type: state-label
+                entity: sensor.marlene_status
+              - style:
+                  color: white
+                  top: 93%
+                  left: 55%
+                type: state-label
+                entity: binary_sensor.marlene_thuis
+            type: picture-elements
+      # People and home status
+      - type: horizontal-stack
+        cards:
+          - type: custom:button-card
+            color_type: card
+            entity: alarm_control_panel.alarmsysteem
+            tap_action:
+              action: none
+            name: Noogeval
+            state:
+              - value: "triggered"
+                color: red
+                name: Er is ingebroken!
+                icon: mdi:alert
+                styles:
+                  card:
+                    - animation: blink 2s for 60s ease infinite
+              - value: "armed_away"
+                color: '#e37907'
+                name: Beveiliging ingeschakeld
+                icon: mdi:shield-lock
+              - value: "pending"
+                color: '#0897c7'
+                name: Beveiliging in afwachting
+                icon: mdi:timer-sand
+                styles:
+                  card:
+                    - animation: blink 2s ease infinite
+              - value: "armed_home"
+                color: '#e37907'
+                name: Beveiliging ingeschakeld
+                icon: mdi:shield-lock
+              - operator: default
+                color: green
+                name: Huis is veilig
+                icon: mdi:shield-home
+          - type: custom:button-card
+            color_type: card
+            entity: input_boolean.emergency
             tap_action:
               action: call-service
-              service: scene.turn_on
-              service_data:
-                entity_id: scene.koken
-          # Evening
-          - type: picture-entity
-            entity: scene.avond
-            image: /local/images/evening.png
-            tap_action:
-              action: call-service
-              service: scene.turn_on
-              service_data:
-                entity_id: scene.avond
-          # Go to sleep
-          - type: picture-entity
-            name: Slapen
-            entity: input_boolean.go_to_sleep
-            state_image:
-              "on": /local/images/sleeping_on.png
-              "off": /local/images/sleeping_off.png
-            tap_action:
-              action: toggle
+              service: script.false_alarm_emergency
+              confirmation:
+                text: Weet je zeker dat je de melding wil intrekken?
+            hold_action:
+              action: more-info
+            name: Noogeval
+            state:
+              - value: "on"
+                color: red
+                name: Emergency call - Klaas
+                icon: mdi:alert
+                styles:
+                  card:
+                    - animation: blink 2s ease infinite
+              - operator: default
+                color: green
+                name: Klaas is veilig
+                icon: mdi:shield-account
+      - type: vertical-stack
+        cards:
+          # Start scenes
+          - type: horizontal-stack
+            cards:
+              # Cooking
+              - type: picture-entity
+                entity: scene.koken
+                image: /local/images/cooking.png
+                tap_action:
+                  action: call-service
+                  service: scene.turn_on
+                  service_data:
+                    entity_id: scene.koken
+              # Evening
+              - type: picture-entity
+                entity: scene.avond
+                image: /local/images/evening.png
+                tap_action:
+                  action: call-service
+                  service: scene.turn_on
+                  service_data:
+                    entity_id: scene.avond
+              # Go to sleep
+              - type: picture-entity
+                name: Slapen
+                entity: input_boolean.go_to_sleep
+                state_image:
+                  "on": /local/images/sleeping_on.png
+                  "off": /local/images/sleeping_off.png
+                tap_action:
+                  action: toggle
 
       # Extra explanation
       - type: markdown
@@ -222,6 +283,7 @@ cards:
           - entity: cover.curtain_window
             name: Gordijn
           - entity: binary_sensor.gordijn
+            state_color: true
             name: Status van de gordijn
 
   # - type: custom:love-lock-card

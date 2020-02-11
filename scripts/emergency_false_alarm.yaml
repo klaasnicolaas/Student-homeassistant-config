@@ -1,0 +1,16 @@
+---
+# Turn off boolean and send telegram message
+#
+false_alarm_emergency:
+  alias: 'Vals alarm - Noodgeval'
+  sequence:
+    # Boolean
+    - service: input_boolean.turn_off
+      data:
+        entity_id: input_boolean.emergency
+    # Message
+    - service: notify.telegram_emergency
+      data:
+        title: '*Het is vals alarm!*'
+        message: |-
+          De melding wordt weer ingetrokken, het is een vals alarm of er werd mogelijk getest.

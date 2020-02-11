@@ -1,0 +1,10 @@
+---
+script.call_emergency:
+  name: Noodgeval
+  aliases:
+    - noodgeval
+    - noodalarm
+    - hulplijn
+
+script.false_alarm_emergency:
+  name: Vals alarm
