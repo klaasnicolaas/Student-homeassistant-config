@@ -129,37 +129,34 @@ cards:
         name: Hassio version
         icon: mdi:home-assistant
         type: custom:multiple-entity-row
-        hide_state: true
-        primary:
-          entity: sensor.hassio_beta_versie
-          name: Beta
-        secondary:
-          entity: sensor.hassio_stable_versie
-          name: Stable
+        show_state: false
+        entities:
+          - entity: sensor.hassio_beta_versie
+            name: Beta
+          - entity: sensor.hassio_stable_versie
+            name: Stable
       # HassOS
       - entity: sensor.hassos_version_stable
         name: HassOS version
         icon: mdi:server-security
         type: custom:multiple-entity-row
-        hide_state: true
-        primary:
-          entity: sensor.hassos_version_beta
-          name: Beta
-        secondary:
-          entity: sensor.hassos_version_stable
-          name: Stable
+        show_state: false
+        entities:
+          - entity: sensor.hassos_version_beta
+            name: Beta
+          - entity: sensor.hassos_version_stable
+            name: Stable
       # Supervisor
       - entity: sensor.supervisor_version_stable
         name: Supervisor version
         icon: mdi:account-supervisor-circle
         type: custom:multiple-entity-row
-        hide_state: true
-        primary:
-          entity: sensor.supervisor_version_beta
-          name: Beta
-        secondary:
-          entity: sensor.supervisor_version_stable
-          name: Stable
+        show_state: false
+        entities:
+          - entity: sensor.supervisor_version_beta
+            name: Beta
+          - entity: sensor.supervisor_version_stable
+            name: Stable
       - sensor.python_version
       - type: divider
       - sensor.automation_on

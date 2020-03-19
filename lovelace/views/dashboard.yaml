@@ -153,59 +153,51 @@ cards:
         entities:
           - type: custom:fold-entity-row
             head:
-              type: section
-              label: Hal
+              type: custom:slider-entity-row
+              entity: light.hal
+              toggle: true
+              hide_when_off: true
             group_config:
               secondary_info: last-changed
-            items:
+            entities:
               - light.hal_lamp_1
               - light.hal_lamp_2
               - light.hal_lamp_3
-          - type: custom:slider-entity-row
-            entity: light.hal
-            toggle: true
-            hide_when_off: true
           - type: custom:fold-entity-row
             head:
-              type: section
-              label: Keuken
+              type: custom:slider-entity-row
+              entity: light.keuken
+              toggle: true
+              hide_when_off: true
             group_config:
               secondary_info: last-changed
-            items:
+            entities:
               - light.keuken_lamp_1
               - light.keuken_lamp_2
               - light.keuken_lamp_3
-          - type: custom:slider-entity-row
-            entity: light.keuken
-            toggle: true
-            hide_when_off: true
           - type: custom:fold-entity-row
             head:
-              type: section
-              label: Woonkamer
+              type: custom:slider-entity-row
+              entity: light.woonkamer
+              toggle: true
+              hide_when_off: true
             group_config:
               secondary_info: last-changed
-            items:
+            entities:
               - light.woonkamer_lamp_1
               - light.woonkamer_lamp_2
               - light.woonkamer_lamp_3
-          - type: custom:slider-entity-row
-            entity: light.woonkamer
-            toggle: true
-            hide_when_off: true
           - type: custom:fold-entity-row
             head:
-              type: section
-              label: Stellingkast
+              type: custom:slider-entity-row
+              entity: light.stellingkast
+              toggle: true
+              hide_when_off: true
             group_config:
               secondary_info: last-changed
-            items:
+            entities:
               - light.blitzwolf_ledstrip_1
               - light.blitzwolf_ledstrip_2
-          - type: custom:slider-entity-row
-            entity: light.stellingkast
-            toggle: true
-            hide_when_off: true
           - type: custom:rgb-light-card
             entity: light.stellingkast
             justify: center
@@ -238,6 +230,23 @@ cards:
         show_header_toggle: false
         entities:
           - input_datetime.alarm_wakeup
+      # Corona Virus
+      - type: glance
+        title: Corona virus - COVID-19
+        entities:
+          - name: Bevestigd
+            entity: sensor.netherlands_coronavirus_confirmed
+            icon: mdi:counter
+          - name: Huidig
+            entity: sensor.netherlands_coronavirus_current
+            icon: mdi:account-multiple
+          - name: Hersteld
+            entity: sensor.netherlands_coronavirus_recovered
+            icon: mdi:hospital-box
+          - name: Overleden
+            entity: sensor.netherlands_coronavirus_deaths
+            icon: mdi:grave-stone
+        columns: 4
 
   # Show door and window sensors
   - type: custom:vertical-stack-in-card
