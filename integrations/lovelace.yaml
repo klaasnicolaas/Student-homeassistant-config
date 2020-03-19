@@ -9,3 +9,4 @@
 #
 lovelace:
   mode: yaml
+  resources: !include_dir_list ../lovelace/resources

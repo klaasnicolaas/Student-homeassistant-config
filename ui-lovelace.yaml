@@ -8,7 +8,6 @@
 # the tabs of the view in the UI.
 #
 title: Student Home
-resources: !include_dir_list lovelace/resources
 custom_header: !include lovelace/cards/custom_header.yaml
 swipe_nav: !include lovelace/cards/swipe_nav.yaml
 views:

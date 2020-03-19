@@ -1,3 +1,3 @@
 ---
-url: /community_plugin/lovelace-countdown-dates/lovelace-countdown-dates.js
-type: js
+url: /hacsfiles/lovelace-countdown-dates/lovelace-countdown-dates.js
+type: module

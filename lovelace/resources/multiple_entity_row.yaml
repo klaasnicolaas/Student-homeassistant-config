@@ -1,3 +1,3 @@
 ---
-url: /community_plugin/lovelace-multiple-entity-row/multiple-entity-row.js
-type: js
+url: /hacsfiles/lovelace-multiple-entity-row/multiple-entity-row.js
+type: module
