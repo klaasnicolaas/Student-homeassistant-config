@@ -26,7 +26,7 @@
       - light.hal
       - light.woonkamer
 
-- alias: 'Increase brightness of lamp from dimmer'
+- alias: '[Light] - Increase brightness of lamp from dimmer'
   trigger:
     platform: event
     event_type: deconz_event
@@ -41,7 +41,7 @@
           {% set bri = state_attr('light.keuken', 'brightness') | int %}
           {{ [bri+30, 249] | min }}
 
-- alias: 'Decrease brightness of lamp from dimmer'
+- alias: '[Light] - Decrease brightness of lamp from dimmer'
   trigger:
     platform: event
     event_type: deconz_event
