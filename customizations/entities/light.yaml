@@ -2,13 +2,13 @@
 #
 #
 light.keuken:
-  icon: mdi:ceiling-light
+  icon: mdi:lightbulb-group
 
 light.hal:
-  icon: mdi:ceiling-light
+  icon: mdi:lightbulb-group
 
 light.woonkamer:
-  icon: mdi:ceiling-light
+  icon: mdi:lightbulb-group
 
 light.werkhoek:
   icon: mdi:spotlight-beam
