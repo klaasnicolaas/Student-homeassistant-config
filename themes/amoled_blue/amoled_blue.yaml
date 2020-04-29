@@ -1,0 +1,65 @@
+# A true black theme for devices with AMOLED displays
+# Creater: Juan - @juanmtech
+# Website: https://www.juanmtech.com
+# YouTube Channel: https://youtube.com/juanmtech
+# My Home Assistant Config files: https://github.com/JuanMTech/Home_Assistant_files
+#
+#
+AMOLED Blue:
+  # Header:
+  app-header-background-color: "#000000"
+  app-header-text-color: "#BDC1C6"
+  # Main Interface Colors
+  primary-color: "#5F9BEA"
+  light-primary-color: var(--primary-color)
+  primary-background-color: "#000000"
+  secondary-background-color: var(--primary-background-color)
+  divider-color: var(--primary-background-color)
+  # Text
+  primary-text-color: "#BDC1C6"
+  secondary-text-color: "#BDC1C6"
+  text-primary-color: "#FFFFFF"
+  disabled-text-color: "#717171"
+  # Sidebar Menu
+  sidebar-icon-color: var(--app-header-text-color)
+  sidebar-text-color: '#BDC1C6'
+  sidebar-background-color: "#0D0D0D"
+  sidebar-selected-background-color: var(--primary-background-color)
+  sidebar-selected-icon-color: "#5F9BEA"
+  sidebar-selected-text-color: var(--sidebar-selected-icon-color))
+  # States and Badges
+  state-icon-color: "#ADB2B8"
+  state-icon-active-color: "#5F9BEA"
+  state-icon-unavailable-color: var(--disabled-text-color)
+  # Sliders
+  paper-slider-knob-color: "#5F9BEA"
+  paper-slider-knob-start-color: var(--paper-slider-knob-color)
+  paper-slider-pin-color: var(--paper-slider-knob-color)
+  paper-slider-active-color: var(--paper-slider-knob-color)
+  paper-slider-secondary-color: var(--light-primary-color)
+  # Labels
+  label-badge-background-color: "#000000"
+  label-badge-text-color: "#BDC1C6"
+  label-badge-red: "#BE3A3E"
+  label-badge-green: "#5CB861"
+  label-badge-blue: "#44A4CD"
+  label-badge-yellow: "#D5AE43"
+  label-badge-gray: "#5F6267"
+
+  # Cards
+  paper-card-background-color: "#000000"
+  paper-listbox-background-color: "#0D0D0D"
+  # Switches
+  switch-checked-button-color: "#5F9BEA"
+  switch-checked-track-color: "#404D64"
+  switch-unchecked-button-color: "#636466"
+  switch-unchecked-track-color: "#636466"
+  # Toggles
+  paper-toggle-button-checked-button-color: var(--switch-checked-button-color)
+  paper-toggle-button-checked-bar-color: var(--switch-checked-track-color)
+  paper-toggle-button-unchecked-button-color: var(--switch-unchecked-button-color)
+  paper-toggle-button-unchecked-bar-color: var(--switch-unchecked-track-color)
+  # Table
+  table-row-background-color: var(--primary-background-color)
+  table-row-alternative-background-color: var(--secondary-background-color)
+  data-table-background-color: var(--primary-background-color)
