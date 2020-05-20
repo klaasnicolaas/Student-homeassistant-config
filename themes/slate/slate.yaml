@@ -1,4 +1,3 @@
----
 slate:
   # Main colors
   primary-color: '#2980b9'
@@ -90,3 +89,5 @@ slate:
   material-background-color: "var(--paper-listbox-background-color)"
   material-secondary-background-color: '#222222'
   material-body-text-color: '#FFFFFF'
+  # simple-thermostat buttons
+  st-mode-background: 'var(--primary-background-color)'

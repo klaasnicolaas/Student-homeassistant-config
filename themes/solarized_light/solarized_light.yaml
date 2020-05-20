@@ -46,6 +46,7 @@ solarized_light:
   primary-text-color: "#657b83"
   secondary-background-color: "#eee8d5"
   secondary-text-color: "#93a1a1"
+  sidebar-background-color: "var(--primary-background-color)"
   table-row-alternative-background-color: "#eee8d5"
   table-row-background-color: "#fdf6e3"
   text-primary-color: "var(--primary-background-color)"
