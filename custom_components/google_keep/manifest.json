@@ -4,5 +4,5 @@
   "documentation": "https://github.com/PiotrMachowski/Home-Assistant-custom-components-Google-Keep",
   "dependencies": [],
   "codeowners": ["PiotrMachowski"],
-  "requirements": ["gkeepapi"]
+  "requirements": ["gkeepapi==0.11.16"]
 }
