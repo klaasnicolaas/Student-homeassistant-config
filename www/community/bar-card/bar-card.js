@@ -3071,7 +3071,7 @@ let BarCardEditor = class BarCardEditor extends LitElement {
         this._entityOptionsArray = [];
     }
     shouldUpdate(changedProps) {
-        return hasConfigOrEntitiesChanged(this, changedProps, false);
+        return hasConfigOrEntitiesChanged(this, changedProps, true);
     }
     setConfig(config) {
         this._config = Object.assign({}, config);
@@ -4369,9 +4369,6 @@ __decorate([
 __decorate([
     property()
 ], BarCardEditor.prototype, "_toggle", void 0);
-__decorate([
-    property()
-], BarCardEditor.prototype, "_configArray", void 0);
 BarCardEditor = __decorate([
     customElement('bar-card-editor')
 ], BarCardEditor);
@@ -4536,7 +4533,7 @@ const actionHandler = directive((options = {}) => (part) => {
     actionHandlerBind(part.committer.element, options);
 });
 
-const CARD_VERSION = '3.1.3';
+const CARD_VERSION = '3.1.6';
 
 var common = {
 	version: "Version",
@@ -4833,6 +4830,7 @@ let BarCard = class BarCard extends LitElement {
         this._configArray = [];
         this._stateArray = [];
         this._animationState = [];
+        this._rowAmount = 1;
     }
     static async getConfigElement() {
         return document.createElement('bar-card-editor');
@@ -4865,9 +4863,10 @@ let BarCard = class BarCard extends LitElement {
                 value: 'inside',
             },
         }, config);
-        if (this._config.stack)
+        if (this._config.stack == 'horizontal')
             this._config.columns = this._config.entities.length;
         this._configArray = createConfigArray(this._config);
+        this._rowAmount = this._configArray.length / this._config.columns;
     }
     render() {
         if (!this._config || !this.hass) {
@@ -4878,7 +4877,13 @@ let BarCard = class BarCard extends LitElement {
         .header=${this._config.title ? this._config.title : null}
         style="${this._config.entity_row ? 'background: #0000; box-shadow: none;' : ''}"
       >
-        <div id="states" class="card-content" style="${this._config.entity_row ? 'padding: 0px;' : ''}">
+        <div
+          id="states"
+          class="card-content"
+          style="${this._config.entity_row ? 'padding: 0px;' : ''} ${this._config.direction == 'up'
+            ? ''
+            : 'flex-grow: 0;'}"
+        >
           ${this._createBarArray()}
         </div>
       </ha-card>
@@ -5321,6 +5326,16 @@ let BarCard = class BarCard extends LitElement {
     _handleAction(ev) {
         if (this.hass && ev.target.config && ev.detail.action) {
             W(this, this.hass, ev.target.config, ev.detail.action);
+        }
+    }
+    getCardSize() {
+        if (this._config.height) {
+            const heightString = this._config.height.toString();
+            const cardSize = Math.trunc((Number(heightString.replace('px', '')) / 50) * this._rowAmount);
+            return cardSize + 1;
+        }
+        else {
+            return this._rowAmount + 1;
         }
     }
 };
