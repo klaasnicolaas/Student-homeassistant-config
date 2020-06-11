@@ -1,7 +1,0 @@
----
-# https://www.home-assistant.io/components/wwlln/
-#
-wwlln:
-  radius: 10
-  latitude: !secret homeassistant_latitude
-  longitude: !secret homeassistant_longitude
