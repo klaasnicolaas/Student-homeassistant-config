@@ -1,0 +1,9 @@
+---
+# Openweathermap integration
+#
+- platform: openweathermap
+  api_key: !secret openweathermap_key
+  monitored_conditions:
+    - temperature
+    - pressure
+    - humidity
