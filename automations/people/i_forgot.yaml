@@ -1,0 +1,54 @@
+---
+# If I forget something, Home Assistant will let me know.
+#
+# Automation for when a light is still ON in my house
+- alias: '[People] - Forgot the lights'
+  trigger:
+    # Outside home zone
+    - platform: zone
+      entity_id: person.klaas_schoute
+      zone: zone.home
+      event: leave
+  condition:
+    condition: or
+    conditions:
+      # If a light is still on
+      - condition: state
+        entity_id: light.woonkamer
+        state: 'on'
+      - condition: state
+        entity_id: light.keuken
+        state: 'on'
+      - condition: state
+        entity_id: light.hal
+        state: 'on'
+      - condition: state
+        entity_id: light.badkamer
+        state: 'on'
+      - condition: state
+        entity_id: light.stellingkast
+        state: 'on'
+  action:
+    # HA Android notification
+    - service: notify.mobile_app_samsung_klaas
+      data:
+        title: 'Lampen vergeten!'
+        message: >
+          Je bent vertrokken, maar de lampen staan nog aan.
+        data:
+          actions:
+            - action: turn_light_off
+              title: Zet lampen UIT
+
+# Turn all light of when start action from notification
+- alias: '[Light] - Turn all light off'
+  trigger:
+    # Actionable notification event trigger
+    - platform: event
+      event_type: mobile_app_notification_action
+      event_data:
+        action: turn_light_off
+  action:
+    # Turn all lights off
+    - service: script.turn_on
+      entity_id: script.all_lights_off
