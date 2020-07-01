@@ -1,0 +1,38 @@
+---
+#
+#
+home_status_message:
+  alias: 'How is home today?'
+  sequence:
+    - service: media_player.volume_set
+      data:
+        entity_id: media_player.google_home
+        volume_level: '0.60'
+
+    - service: tts.google_translate_say
+      entity_id: media_player.google_home
+      data_template:
+        message: >
+          {% if now().strftime("%H") | int < 12 %}
+            Goedemorgen,
+          {% elif now().strftime("%H") | int < 18 %}
+            Goedemiddag,
+          {% else %}
+            Goedeavond,
+          {% endif %}
+
+          {% set mo = now().strftime('%m') | int %}
+          {% set months = ["januari","februari", "maart", "april", "mei", "juni", "juli", "augustus", "september", "oktober", "november", "december"] %}
+
+          Het is vandaag {{ now().strftime('%d') }} {{ months[mo - 1] }} en de tijd is {{ now().strftime('%H:%M') }}.
+          De huidige temperatuur in huis is {{ states('sensor.home_temperature' | round) }} graden.
+
+          # Want to add calendar info in the future
+
+    - delay:
+        seconds: 20
+
+    - service: media_player.volume_set
+      data:
+        entity_id: media_player.google_home
+        volume_level: '0.40'
