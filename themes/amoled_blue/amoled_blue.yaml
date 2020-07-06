@@ -48,9 +48,10 @@ AMOLED Blue:
   label-badge-gray: "#5F6267"
 
   # Cards
+  card-background-color: "#000000"
   ha-card-border-radius: "10px"
-  paper-dialog-background-color: "#000000"
-  paper-card-background-color: var(--paper-dialog-background-color)
+  paper-dialog-background-color: var(--card-background-color)
+  paper-card-background-color: var(--card-background-color)
   paper-listbox-background-color: "#0D0D0D"
   # Switches
   switch-checked-button-color: "#5F9BEA"
@@ -70,3 +71,5 @@ AMOLED Blue:
   material-background-color: var(--secondary-background-color)
   material-secondary-background-color: var(--primary-background-color)
   mdc-theme-surface: var(--secondary-background-color)
+  # HACS
+  hacs-chip-background-color: var(--primary-color)
