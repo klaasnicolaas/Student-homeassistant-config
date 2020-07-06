@@ -1,14 +1,14 @@
 """Sensor platform for gPodder."""
 from homeassistant.helpers.entity import Entity
-from . import update_data
-from .const import DOMAIN_DATA, ICON, CONF_NAME, CONF_DEVICE
+from custom_components.gpodder import update_data
+from custom_components.gpodder.const import DOMAIN_DATA, ICON, CONF_NAME, CONF_DEVICE
 
 
-async def async_setup_platform(
-    hass, config, async_add_entities, discovery_info=None
+def setup_platform(
+    hass, config, add_entities, discovery_info=None
 ):  # pylint: disable=unused-argument
     """Setup sensor platform."""
-    async_add_entities([GpodderSensor(hass, discovery_info)], True)
+    add_entities([GpodderSensor(hass, discovery_info)], True)
 
 
 class GpodderSensor(Entity):
@@ -21,10 +21,10 @@ class GpodderSensor(Entity):
         self._name = config[CONF_NAME]
         self._device = config[CONF_DEVICE]
 
-    async def async_update(self):
+    def update(self):
         """Update the sensor."""
         # Send update "signal" to the component
-        await update_data(self.hass, self._device)
+        update_data(self.hass, self._device)
 
         # Get new data (if any)
         updated = self.hass.data[DOMAIN_DATA]

@@ -4,31 +4,32 @@ Component to integrate with gPodder.
 For more details about this component, please refer to
 https://github.com/custom-components/gpodder
 """
+import logging
 import os
 from datetime import timedelta
-import logging
-import voluptuous as vol
+from urllib.request import Request, urlopen
+
 import homeassistant.helpers.config_validation as cv
+import podcastparser
+import voluptuous as vol
 from homeassistant.helpers import discovery
 from homeassistant.util import Throttle
-from .const import (
-    DOMAIN_DATA,
-    DOMAIN,
-    ISSUE_URL,
-    PLATFORMS,
-    REQUIRED_FILES,
-    STARTUP,
-    URL,
-    VERSION,
-    CONF_SENSOR,
+from mygpoclient import api
+
+from custom_components.gpodder.const import (
+    CONF_DEVICE,
     CONF_ENABLED,
     CONF_NAME,
-    CONF_USERNAME,
     CONF_PASSWORD,
-    CONF_DEVICE,
+    CONF_SENSOR,
+    CONF_USERNAME,
     DEFAULT_NAME,
-    REQUIREMENTS,
-    REQUEST_HEADERS
+    DOMAIN,
+    DOMAIN_DATA,
+    PLATFORMS,
+    REQUEST_HEADERS,
+    REQUIRED_FILES,
+    STARTUP,
 )
 
 MIN_TIME_BETWEEN_UPDATES = timedelta(minutes=30)
@@ -49,7 +50,9 @@ CONFIG_SCHEMA = vol.Schema(
             {
                 vol.Required(CONF_USERNAME): cv.string,
                 vol.Required(CONF_PASSWORD): cv.string,
-                vol.Optional(CONF_SENSOR, default=[{}]): vol.All(cv.ensure_list, [SENSOR_SCHEMA]),
+                vol.Optional(CONF_SENSOR, default=[{}]): vol.All(
+                    cv.ensure_list, [SENSOR_SCHEMA]
+                ),
             }
         )
     },
@@ -57,15 +60,14 @@ CONFIG_SCHEMA = vol.Schema(
 )
 
 
-async def async_setup(hass, config):
+def setup(hass, config):
     """Set up this component."""
-    from mygpoclient import api
+
     # Print startup message
-    startup = STARTUP.format(name=DOMAIN, version=VERSION, issueurl=ISSUE_URL)
-    _LOGGER.info(startup)
+    _LOGGER.info(STARTUP)
 
     # Check that all required files are present
-    file_check = await check_files(hass)
+    file_check = check_files(hass)
     if not file_check:
         return False
 
@@ -75,7 +77,9 @@ async def async_setup(hass, config):
     component_config = config[DOMAIN]
 
     # Create gPodder client
-    hass.data[DOMAIN]["client"] = api.MygPodderClient(component_config[CONF_USERNAME], component_config[CONF_PASSWORD])
+    hass.data[DOMAIN]["client"] = api.MygPodderClient(
+        component_config[CONF_USERNAME], component_config[CONF_PASSWORD]
+    )
 
     # Load platforms
     for platform in PLATFORMS:
@@ -101,13 +105,14 @@ async def async_setup(hass, config):
 
 
 @Throttle(MIN_TIME_BETWEEN_UPDATES)
-async def update_data(hass, device):
+def update_data(hass, device):
     """Update data."""
     try:
         urls = hass.data[DOMAIN]["client"].get_subscriptions(device)
+        _LOGGER.debug(f"{len(urls)} urls for device '{device}'")
+        hass.data[DOMAIN_DATA] = update_using_feedservice(urls)
     except Exception as error:  # pylint: disable=broad-except
-        _LOGGER.error("Could not update data - %s", error)
-    hass.data[DOMAIN_DATA] = update_using_feedservice(urls)
+        _LOGGER.error(f"Could not update data for device '{device}' - {error}")
 
 
 def parse_entry(entry):
@@ -125,18 +130,17 @@ def parse_entry(entry):
 
 
 def update_using_feedservice(urls):
-    import podcastparser
-    from urllib.request import urlopen, Request
-
     podcasts = []
 
     for url in urls:
         try:
-            feed = podcastparser.parse(url, urlopen(Request(url, headers=REQUEST_HEADERS)), 5)
+            feed = podcastparser.parse(
+                url, urlopen(Request(url, headers=REQUEST_HEADERS)), 5
+            )
         except Exception as error:  # pylint: disable=broad-except
             _LOGGER.error("Could not update %s - %s", url, error)
             feed = None
-        
+
         if feed is None:
             _LOGGER.info("Feed not updated: %s", url)
             continue
@@ -163,21 +167,22 @@ def update_using_feedservice(urls):
 
         podcasts.append(podcast)
 
+    _LOGGER.debug(f"Podcasts: {podcasts}")
     return podcasts
 
 
-async def check_files(hass):
+def check_files(hass):
     """Return bool that indicates if all files are present."""
     # Verify that the user downloaded all files.
-    base = "{}/custom_components/{}/".format(hass.config.path(), DOMAIN)
+    base = f"{hass.config.path()}/custom_components/{DOMAIN}/"
     missing = []
     for file in REQUIRED_FILES:
-        fullpath = "{}{}".format(base, file)
+        fullpath = f"{base}{file}"
         if not os.path.exists(fullpath):
             missing.append(file)
 
     if missing:
-        _LOGGER.critical("The following files are missing: %s", str(missing))
+        _LOGGER.critical(f"The following files are missing: {str(missing)}")
         returnvalue = False
     else:
         returnvalue = True
