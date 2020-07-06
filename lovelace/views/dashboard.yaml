@@ -249,7 +249,8 @@ cards:
         columns: 4
 
   # Show door and window sensors
-  - type: custom:vertical-stack-in-card
+  - type: custom:stack-in-card
+    mode: vertical
     # title: Sensoren
     cards:
       - type: glance
@@ -298,7 +299,8 @@ cards:
   # - type: custom:love-lock-card
   #  popup: confirm
   #  cards:
-  #    - type: custom:vertical-stack-in-card
+  #    - type: custom:stack-in-card
+  #      mode: vertical
   #      cards:
   #        - type: horizontal-stack
   #          cards:

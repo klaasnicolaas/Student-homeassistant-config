@@ -5,7 +5,8 @@ title: Huishouden
 icon: mdi:calendar-check
 path: household
 cards:
-  - type: custom:vertical-stack-in-card
+  - type: custom:stack-in-card
+    mode: vertical
     cards:
       - type: 'custom:love-lock-card'
         popup: confirm

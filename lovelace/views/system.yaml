@@ -6,7 +6,8 @@ icon: mdi:server
 path: system
 cards:
   # Hassio host server info
-  - type: custom:vertical-stack-in-card
+  - type: custom:stack-in-card
+    mode: vertical
     title: Hassio Server
     cards:
       - type: horizontal-stack
@@ -210,7 +211,8 @@ cards:
       - type: divider
       - sensor.automation_on
       - sensor.hacs
-      - type: custom:vertical-stack-in-card
+      - type: custom:stack-in-card
+        mode: vertical
         style: |
           ha-card {
             box-shadow: none;
@@ -573,7 +575,8 @@ cards:
   # Show maintenance dashboard
   - type: vertical-stack
     cards:
-      - type: custom:vertical-stack-in-card
+      - type: custom:stack-in-card
+        mode: vertical
         cards:
           - type: entities
             title: Onderhoud
@@ -679,7 +682,8 @@ cards:
           - sensor.local_ip
 
       # Battery devices information
-      - type: custom:vertical-stack-in-card
+      - type: custom:stack-in-card
+        mode: vertical
         title: Batterij Status
         cards:
           - type: custom:auto-entities

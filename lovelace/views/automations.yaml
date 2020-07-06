@@ -9,7 +9,7 @@ cards:
   - type: custom:auto-entities
     card:
       type: entities
-      title: System Automations
+      title: System
       show_header_toggle: false
     filter:
       include:
@@ -27,7 +27,7 @@ cards:
   - type: custom:auto-entities
     card:
       type: entities
-      title: People Automations
+      title: People
       show_header_toggle: false
     filter:
       include:
@@ -38,46 +38,43 @@ cards:
             secondary_info: last-changed
 
   # House
-  - type: custom:vertical-stack-in-card
-    cards:
-      # House
-      - type: custom:auto-entities
-        card:
-          type: entities
-          title: House Automations
-          show_header_toggle: false
-        filter:
-          include:
-            - entity_id: automation.house*
-              options:
-                type: custom:multiple-entity-row
-                toggle: true
-                secondary_info: last-changed
-      - type: divider
-      # Lights
-      - type: custom:auto-entities
-        card:
-          type: entities
-          title: Light
-          show_header_toggle: false
-        filter:
-          include:
-            - entity_id: automation.light*
-              options:
-                type: custom:multiple-entity-row
-                toggle: true
-                secondary_info: last-changed
-      - type: divider
-      # Media
-      - type: custom:auto-entities
-        card:
-          type: entities
-          title: Media
-          show_header_toggle: false
-        filter:
-          include:
-            - entity_id: automation.media*
-              options:
-                type: custom:multiple-entity-row
-                toggle: true
-                secondary_info: last-changed
+  - type: custom:auto-entities
+    card:
+      type: entities
+      title: House
+      show_header_toggle: false
+    filter:
+      include:
+        - entity_id: automation.house*
+          options:
+            type: custom:multiple-entity-row
+            toggle: true
+            secondary_info: last-changed
+
+  # Lights
+  - type: custom:auto-entities
+    card:
+      type: entities
+      title: Lights
+      show_header_toggle: false
+    filter:
+      include:
+        - entity_id: automation.light*
+          options:
+            type: custom:multiple-entity-row
+            toggle: true
+            secondary_info: last-changed
+
+  # Media
+  - type: custom:auto-entities
+    card:
+      type: entities
+      title: Media
+      show_header_toggle: false
+    filter:
+      include:
+        - entity_id: automation.media*
+          options:
+            type: custom:multiple-entity-row
+            toggle: true
+            secondary_info: last-changed
