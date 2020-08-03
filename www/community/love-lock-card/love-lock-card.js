@@ -99,7 +99,7 @@ class LoveLockCard extends HTMLElement {
     }
 
     // Lock Icon
-    const lockicon = document.createElement("iron-icon");
+    const lockicon = document.createElement("ha-icon");
     lockicon.setAttribute("icon", "mdi:lock-outline");
     lockicon.setAttribute("style", "position:absolute; top: 10px; right:7px;");
     cover.appendChild(lockicon);
