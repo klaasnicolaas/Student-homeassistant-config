@@ -4,117 +4,117 @@
     - platform: event
       event_type: deconz_event
       event_data:
-        unique_id: "04:cf:8c:df:3c:79:70:18" 
+        unique_id: "04:cf:8c:df:3c:79:70:18"
   action:
     - choose:
-      # Lamp hal - aan
-      - conditions:
-        - condition: template
-          value_template: "{{ trigger.event.data.event == 1001 }}"
-        sequence:
-          - service: light.turn_on
-            entity_id: light.hal
-      # Lamp hal - uit
-      - conditions:
-        - condition: template
-          value_template: "{{ trigger.event.data.event == 2001 }}"
-        sequence:
-          - service: light.turn_off
-            entity_id: light.hal
-      # Increase brightness - Hal
-      - conditions:
-        - condition: template
-          value_template: "{{ trigger.event.data.event == 1002 }}"
-        sequence:
-          - service: light.turn_on
-            data_template:
+        # Lamp hal - aan
+        - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 1001 }}"
+          sequence:
+            - service: light.turn_on
               entity_id: light.hal
-              brightness: >
-                {% set bri = state_attr('light.hal', 'brightness') | int %}
-                {{ [bri+50, 249] | min }}
-      # Decrease brightness - Hal
-      - conditions:
-        - condition: template
-          value_template: "{{ trigger.event.data.event == 2002 }}"
-        sequence:
-          - service: light.turn_on
-            data_template:
+        # Lamp hal - uit
+        - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 2001 }}"
+          sequence:
+            - service: light.turn_off
               entity_id: light.hal
-              brightness: >
-                {% set bri = state_attr('light.hal', 'brightness') | int %}
-                {{ [bri-50, 0] | max }}
-      ########################################################################
-      # Lamp keuken - aan
-      - conditions:
-        - condition: template
-          value_template: "{{ trigger.event.data.event == 3001 }}"
-        sequence:
-          - service: light.turn_on
-            entity_id: light.keuken
-      # Lamp keuken - uit
-      - conditions:
-        - condition: template
-          value_template: "{{ trigger.event.data.event == 4001 }}"
-        sequence:
-          - service: light.turn_off
-            entity_id: light.keuken
-      # Increase brightness - Keuken
-      - conditions:
-        - condition: template
-          value_template: "{{ trigger.event.data.event == 3002 }}"
-        sequence:
-          - service: light.turn_on
-            data_template:
+        # Increase brightness - Hal
+        - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 1002 }}"
+          sequence:
+            - service: light.turn_on
+              data_template:
+                entity_id: light.hal
+                brightness: >
+                  {% set bri = state_attr('light.hal', 'brightness') | int %}
+                  {{ [bri+50, 249] | min }}
+        # Decrease brightness - Hal
+        - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 2002 }}"
+          sequence:
+            - service: light.turn_on
+              data_template:
+                entity_id: light.hal
+                brightness: >
+                  {% set bri = state_attr('light.hal', 'brightness') | int %}
+                  {{ [bri-50, 0] | max }}
+        ########################################################################
+        # Lamp keuken - aan
+        - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 3001 }}"
+          sequence:
+            - service: light.turn_on
               entity_id: light.keuken
-              brightness: >
-                {% set bri = state_attr('light.keuken', 'brightness') | int %}
-                {{ [bri+50, 249] | min }}
-      # Decrease brightness - Keuken
-      - conditions:
-        - condition: template
-          value_template: "{{ trigger.event.data.event == 4002 }}"
-        sequence:
-          - service: light.turn_on
-            data_template:
+        # Lamp keuken - uit
+        - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 4001 }}"
+          sequence:
+            - service: light.turn_off
               entity_id: light.keuken
-              brightness: >
-                {% set bri = state_attr('light.keuken', 'brightness') | int %}
-                {{ [bri-50, 0] | max }}
-      ########################################################################
-      # Lamp woonkamer - aan
-      - conditions:
-        - condition: template
-          value_template: "{{ trigger.event.data.event == 5001 }}"
-        sequence:
-          - service: light.turn_on
-            entity_id: light.woonkamer
-      # Lamp woonkamer - uit
-      - conditions:
-        - condition: template
-          value_template: "{{ trigger.event.data.event == 6001 }}"
-        sequence:
-          - service: light.turn_off
-            entity_id: light.woonkamer
-      # Increase brightness - Woonkamer
-      - conditions:
-        - condition: template
-          value_template: "{{ trigger.event.data.event == 5002 }}"
-        sequence:
-          - service: light.turn_on
-            data_template:
+        # Increase brightness - Keuken
+        - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 3002 }}"
+          sequence:
+            - service: light.turn_on
+              data_template:
+                entity_id: light.keuken
+                brightness: >
+                  {% set bri = state_attr('light.keuken', 'brightness') | int %}
+                  {{ [bri+50, 249] | min }}
+        # Decrease brightness - Keuken
+        - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 4002 }}"
+          sequence:
+            - service: light.turn_on
+              data_template:
+                entity_id: light.keuken
+                brightness: >
+                  {% set bri = state_attr('light.keuken', 'brightness') | int %}
+                  {{ [bri-50, 0] | max }}
+        ########################################################################
+        # Lamp woonkamer - aan
+        - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 5001 }}"
+          sequence:
+            - service: light.turn_on
               entity_id: light.woonkamer
-              brightness: >
-                {% set bri = state_attr('light.woonkamer', 'brightness') | int %}
-                {{ [bri+50, 249] | min }}
-      # Decrease brightness - Woonkamer
-      - conditions:
-        - condition: template
-          value_template: "{{ trigger.event.data.event == 6002 }}"
-        sequence:
-          - service: light.turn_on
-            data_template:
+        # Lamp woonkamer - uit
+        - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 6001 }}"
+          sequence:
+            - service: light.turn_off
               entity_id: light.woonkamer
-              brightness: >
-                {% set bri = state_attr('light.woonkamer', 'brightness') | int %}
-                {{ [bri-50, 0] | max }}
+        # Increase brightness - Woonkamer
+        - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 5002 }}"
+          sequence:
+            - service: light.turn_on
+              data_template:
+                entity_id: light.woonkamer
+                brightness: >
+                  {% set bri = state_attr('light.woonkamer', 'brightness') | int %}
+                  {{ [bri+50, 249] | min }}
+        # Decrease brightness - Woonkamer
+        - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 6002 }}"
+          sequence:
+            - service: light.turn_on
+              data_template:
+                entity_id: light.woonkamer
+                brightness: >
+                  {% set bri = state_attr('light.woonkamer', 'brightness') | int %}
+                  {{ [bri-50, 0] | max }}
 
