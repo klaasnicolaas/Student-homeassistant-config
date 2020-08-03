@@ -5,10 +5,10 @@ title: Systeeminformatie
 icon: mdi:server
 path: system
 cards:
-  # Hassio host server info
+  # Home Assistant host server info
   - type: custom:stack-in-card
     mode: vertical
-    title: Hassio Server
+    title: Home Assistant Server
     cards:
       - type: horizontal-stack
         cards:
@@ -26,7 +26,7 @@ cards:
             cards:
               - type: custom:bar-card
                 entity: sensor.ha_installed_version
-                name: Hassio Versie
+                name: Home Assistant Versie
                 max: 1
                 style: |
                   .card-content {
@@ -174,16 +174,16 @@ cards:
       - binary_sensor.student_home_assistant
       # - sensor.snapshot_backup
       - type: divider
-      # Hassio
-      - entity: sensor.hassio_stable_versie
-        name: Hassio version
+      # Home Assistant
+      - entity: sensor.home_assistant_stable_versie
+        name: Home Assistant version
         icon: mdi:home-assistant
         type: custom:multiple-entity-row
         show_state: false
         entities:
-          - entity: sensor.hassio_beta_versie
+          - entity: sensor.home_assistant_beta_versie
             name: Beta
-          - entity: sensor.hassio_stable_versie
+          - entity: sensor.home_assistant_stable_versie
             name: Stable
       # HassOS
       - entity: sensor.hassos_version_stable
@@ -588,9 +588,9 @@ cards:
           - type: horizontal-stack
             cards:
               - type: custom:button-card
-                entity: script.hassio_reboot
+                entity: script.home_assistant_reboot
                 color_type: icon
-                name: Hassio
+                name: HA config
               - type: custom:button-card
                 entity: script.host_reboot
                 color_type: card

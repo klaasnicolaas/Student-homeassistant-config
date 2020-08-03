@@ -44,7 +44,7 @@ homeassistant:
 
     sensor.ha_installed_version:
       <<: *customize
-      friendly_name: Hassio geinstalleerde versie
+      friendly_name: Home Assistant geinstalleerde versie
 
     sensor.python_version:
       <<: *customize
@@ -74,7 +74,7 @@ homeassistant:
       can_cancel: false
       friendly_name: Reboot Intel NUC
 
-    script.hassio_reboot:
+    script.home_assistant_reboot:
       <<: *customize
       icon: mdi:rotate-3d-variant
       can_cancel: false
@@ -215,8 +215,8 @@ alert:
 ################################################
 
 script:
-  hassio_reboot:
-    alias: Hassio Reboot
+  home_assistant_reboot:
+    alias: Home Assistant Reboot
     sequence:
       - service: homeassistant.turn_on
         entity_id: input_boolean.maintenance_mode
@@ -236,7 +236,7 @@ script:
     sequence:
       - delay: 00:00:02
       - service: automation.trigger
-        entity_id: automation.system_make_weekly_hassio_backup
+        entity_id: automation.system_make_weekly_home_assistant_backup
 
   config_check:
     alias: Check config

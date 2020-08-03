@@ -36,7 +36,7 @@ Below is a list of all hardware in-house
 **My host system:**
 
 - [Intel Arches Canyon NUC6CAYH][intelnuc] -> Inside 8GB Ram, 120GB SSD and running [Ubuntu Server LTS][ubuntu-server]
-- Using the [Hass.io installation][hassio]
+- Using the [Home Assistant Supervised installation][ha-supervised] (Not supported)
 
 **And I use the following hardware in my house:**
 
@@ -119,7 +119,7 @@ SOFTWARE.
 [issues]: https://github.com/klaasnicolaas/Student-homeassistant-config/issues
 [smarthome]: https://github.com/klaasnicolaas/Smarthome-homeassistant-config
 [techlife]: https://student-techlife.com/
-[hassio]: https://www.home-assistant.io/hassio/
+[ha-supervised]: https://github.com/home-assistant/supervised-installer
 [intelnuc]: https://www.intel.com/content/www/us/en/products/boards-kits/nuc/kits/nuc6cayh.html
 [conbee]: https://www.phoscon.de/en/conbee2
 [ubuntu-server]: https://www.ubuntu.com/download/server
