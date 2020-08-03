@@ -51,8 +51,8 @@ AMOLED Blue:
   card-background-color: "#000000"
   ha-card-border-radius: "10px"
   paper-dialog-background-color: var(--card-background-color)
-  paper-card-background-color: var(--card-background-color)
   paper-listbox-background-color: "#0D0D0D"
+  paper-card-background-color: var(--card-background-color)
   # Switches
   switch-checked-button-color: "#5F9BEA"
   switch-checked-track-color: "#404D64"
@@ -73,3 +73,5 @@ AMOLED Blue:
   mdc-theme-surface: var(--secondary-background-color)
   # HACS
   hacs-chip-background-color: var(--primary-color)
+  # Pre/Code
+  markdown-code-background-color: "#000000"

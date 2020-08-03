@@ -12,6 +12,7 @@ midnight_blue:
   google-green-500: "#39E949"
   google-red-500: "#E45E65"
   google-yellow-500: "#f4b400"
+  ha-card-background: "#434954"        
   label-badge-background-color: "#2E333A"
   label-badge-blue: "#039be5"
   label-badge-border-color: "green"
@@ -21,6 +22,7 @@ midnight_blue:
   label-badge-text-color: "var(--primary-text-color)"
   label-badge-yellow: "#f4b400"
   light-primary-color: "var(--accent-color)"
+  markdown-code-background-color: '#363941'          
   paper-card-background-color: "#434954"
   paper-card-header-color: "var(--accent-color)"
   paper-dialog-background-color: "#434954"
