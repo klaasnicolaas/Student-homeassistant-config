@@ -13,6 +13,7 @@ www/*
 #
 
 # Ignore Folders
+.vscode
 .storage
 .cloud
 .google.token
