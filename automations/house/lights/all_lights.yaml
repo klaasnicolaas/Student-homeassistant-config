@@ -9,22 +9,22 @@
     - choose:
         # Lamp hal - aan
         - conditions:
-          - condition: template
-            value_template: "{{ trigger.event.data.event == 1001 }}"
+            - condition: template
+              value_template: "{{ trigger.event.data.event == 1001 }}"
           sequence:
             - service: light.turn_on
               entity_id: light.hal
         # Lamp hal - uit
         - conditions:
-          - condition: template
-            value_template: "{{ trigger.event.data.event == 2001 }}"
+            - condition: template
+              value_template: "{{ trigger.event.data.event == 2001 }}"
           sequence:
             - service: light.turn_off
               entity_id: light.hal
         # Increase brightness - Hal
         - conditions:
-          - condition: template
-            value_template: "{{ trigger.event.data.event == 1002 }}"
+            - condition: template
+              value_template: "{{ trigger.event.data.event == 1002 }}"
           sequence:
             - service: light.turn_on
               data_template:
@@ -34,8 +34,8 @@
                   {{ [bri+50, 249] | min }}
         # Decrease brightness - Hal
         - conditions:
-          - condition: template
-            value_template: "{{ trigger.event.data.event == 2002 }}"
+            - condition: template
+              value_template: "{{ trigger.event.data.event == 2002 }}"
           sequence:
             - service: light.turn_on
               data_template:
@@ -46,22 +46,22 @@
         ########################################################################
         # Lamp keuken - aan
         - conditions:
-          - condition: template
-            value_template: "{{ trigger.event.data.event == 3001 }}"
+            - condition: template
+              value_template: "{{ trigger.event.data.event == 3001 }}"
           sequence:
             - service: light.turn_on
               entity_id: light.keuken
         # Lamp keuken - uit
         - conditions:
-          - condition: template
-            value_template: "{{ trigger.event.data.event == 4001 }}"
+            - condition: template
+              value_template: "{{ trigger.event.data.event == 4001 }}"
           sequence:
             - service: light.turn_off
               entity_id: light.keuken
         # Increase brightness - Keuken
         - conditions:
-          - condition: template
-            value_template: "{{ trigger.event.data.event == 3002 }}"
+            - condition: template
+              value_template: "{{ trigger.event.data.event == 3002 }}"
           sequence:
             - service: light.turn_on
               data_template:
@@ -71,8 +71,8 @@
                   {{ [bri+50, 249] | min }}
         # Decrease brightness - Keuken
         - conditions:
-          - condition: template
-            value_template: "{{ trigger.event.data.event == 4002 }}"
+            - condition: template
+              value_template: "{{ trigger.event.data.event == 4002 }}"
           sequence:
             - service: light.turn_on
               data_template:
@@ -83,22 +83,22 @@
         ########################################################################
         # Lamp woonkamer - aan
         - conditions:
-          - condition: template
-            value_template: "{{ trigger.event.data.event == 5001 }}"
+            - condition: template
+              value_template: "{{ trigger.event.data.event == 5001 }}"
           sequence:
             - service: light.turn_on
               entity_id: light.woonkamer
         # Lamp woonkamer - uit
         - conditions:
-          - condition: template
-            value_template: "{{ trigger.event.data.event == 6001 }}"
+            - condition: template
+              value_template: "{{ trigger.event.data.event == 6001 }}"
           sequence:
             - service: light.turn_off
               entity_id: light.woonkamer
         # Increase brightness - Woonkamer
         - conditions:
-          - condition: template
-            value_template: "{{ trigger.event.data.event == 5002 }}"
+            - condition: template
+              value_template: "{{ trigger.event.data.event == 5002 }}"
           sequence:
             - service: light.turn_on
               data_template:
@@ -108,8 +108,8 @@
                   {{ [bri+50, 249] | min }}
         # Decrease brightness - Woonkamer
         - conditions:
-          - condition: template
-            value_template: "{{ trigger.event.data.event == 6002 }}"
+            - condition: template
+              value_template: "{{ trigger.event.data.event == 6002 }}"
           sequence:
             - service: light.turn_on
               data_template:
