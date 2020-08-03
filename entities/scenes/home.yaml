@@ -3,50 +3,50 @@
 - name: Avond
   entities:
     light.keuken_lamp_1:
-      state: true
+      state: "on"
       brightness: 51
     light.keuken_lamp_2:
-      state: true
+      state: "on"
       brightness: 51
     light.keuken_lamp_3:
-      state: true
+      state: "on"
       brightness: 51
     light.hal_lamp_1:
-      state: true
+      state: "on"
       brightness: 51
     light.hal_lamp_2:
-      state: true
+      state: "on"
       brightness: 51
     light.hal_lamp_3:
-      state: true
+      state: "on"
       brightness: 51
     light.woonkamer_lamp_1:
-      state: true
+      state: "on"
       brightness: 64
     light.woonkamer_lamp_2:
-      state: true
+      state: "on"
       brightness: 64
     light.woonkamer_lamp_3:
-      state: true
+      state: "on"
       brightness: 64
 
 - name: Lampen uit
   entities:
     light.keuken_lamp_1:
-      state: false
+      state: "off"
     light.keuken_lamp_2:
-      state: false
+      state: "off"
     light.keuken_lamp_3:
-      state: false
+      state: "off"
     light.hal_lamp_1:
-      state: false
+      state: "off"
     light.hal_lamp_2:
-      state: false
+      state: "off"
     light.hal_lamp_3:
-      state: false
+      state: "off"
     light.woonkamer_lamp_1:
-      state: false
+      state: "off"
     light.woonkamer_lamp_2:
-      state: false
+      state: "off"
     light.woonkamer_lamp_3:
-      state: false
+      state: "off"

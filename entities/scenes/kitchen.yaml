@@ -3,11 +3,11 @@
 - name: Koken
   entities:
     light.keuken_lamp_1:
-      state: true
+      state: "on"
       brightness: 153
     light.keuken_lamp_2:
-      state: true
+      state: "on"
       brightness: 153
     light.keuken_lamp_3:
-      state: true
+      state: "on"
       brightness: 153
