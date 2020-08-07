@@ -12,3 +12,14 @@
 - sensor.home_pressure
 - sensor.home_humidity
 - binary_sensor.airco_status
+- sensor.temperature_difference_in_out
+
+# Buienradar
+- sensor.br_temperature
+- sensor.br_pressure
+- sensor.br_humidity
+- sensor.br_ground_temperature
+- sensor.br_feel_temperature
+
+# Openweathermap
+- sensor.owm_temperature
