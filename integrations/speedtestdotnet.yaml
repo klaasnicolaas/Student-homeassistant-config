@@ -10,7 +10,7 @@ homeassistant:
       icon: mdi:upload
     sensor.speedtest_ping:
       friendly_name: "Reactietijd"
-      icon: mdi:timer
+      icon: mdi:timer-outline
 
 speedtestdotnet:
   server_id: 13218  # AS4ALL, Amsterdam
