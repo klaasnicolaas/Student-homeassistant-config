@@ -15,7 +15,7 @@ cards:
           - type: vertical-stack
             cards:
               - type: picture
-                image: /local/images/hassio.jpg
+                image: /local/images/intel-nuc.jpg
                 style: |
                   ha-card {
                     margin: 10px;
@@ -155,6 +155,128 @@ cards:
         max: 500
         direction: right-reverse
         style: |
+          .card-content {
+            padding: 5px;
+            margin-right: 10px;
+            margin-left: 10px;
+            margin-bottom: 10px;
+          }
+          bar-card-currentbar, bar-card-backgroundbar {
+            border-radius: 5px;
+          }
+
+  # Synology NAS information
+  - type: custom:stack-in-card
+    mode: vertical
+    title: Synology NAS
+    cards:
+      - type: horizontal-stack
+        cards:
+          - type: vertical-stack
+            cards:
+              # Picture
+              - type: picture
+                image: /local/images/synology-nas.png
+                style: |
+                  ha-card {
+                    margin: 10px;
+                    width: 180px;
+                    box-shadow: none;
+                  }
+
+          - type: vertical-stack
+            cards:
+              # NAS volume status
+              - type: custom:bar-card
+                entity: sensor.smarty_volume_1_status
+                name: NAS Status
+                style: |
+                  .card-content {
+                    padding-left: 5px;
+                    padding-bottom: 0px;
+                  }
+                  bar-card-currentbar, bar-card-backgroundbar {
+                    border-radius: 5px;
+                  }
+                  ha-card {
+                    box-shadow: none;
+                  }
+
+              # Volume storage useage
+              - type: custom:bar-card
+                entity: sensor.smarty_volume_1_volume_used
+                name: Opslag
+                style: |
+                  .card-content {
+                    padding-left: 5px;
+                    padding-bottom: 0px;
+                  }
+                  bar-card-currentbar, bar-card-backgroundbar {
+                    border-radius: 5px;
+                  }
+                  ha-card {
+                    box-shadow: none;
+                  }
+
+              # RAM useage
+              - type: custom:bar-card
+                entity: sensor.smarty_memory_usage_real
+                name: RAM
+                style: |
+                  .card-content {
+                    padding-left: 5px;
+                    padding-bottom: 0px;
+                  }
+                  bar-card-currentbar, bar-card-backgroundbar {
+                    border-radius: 5px;
+                  }
+                  ha-card {
+                    box-shadow: none;
+                  }
+
+      # NAS Disk 1
+      - type: custom:bar-card
+        title: NAS Disk 1
+        positions:
+          indicator: inside
+        columns: 2
+        entities:
+          - entity: sensor.smarty_drive_1_status
+            name: Status
+          - entity: sensor.smarty_drive_1_temperature
+            name: Temperatuur
+        style: |
+          .card-header {
+            font-size: initial;
+            padding-top: 0px;
+            padding-bottom: 5px;
+          }
+          .card-content {
+            padding: 5px;
+            margin-right: 10px;
+            margin-left: 10px;
+          }
+          bar-card-currentbar, bar-card-backgroundbar {
+            border-radius: 5px;
+          }
+
+      # NAS Disk 2
+      - type: custom:bar-card
+        title: NAS Disk 2
+        positions:
+          indicator: inside
+        columns: 2
+        entities:
+          - entity: sensor.smarty_drive_2_status
+            name: Status
+          - entity: sensor.smarty_drive_2_temperature
+            name: Temperatuur
+        style: |
+          .card-header {
+            font-size: initial;
+            padding-top: 0px;
+            padding-bottom: 5px;
+          }
           .card-content {
             padding: 5px;
             margin-right: 10px;
