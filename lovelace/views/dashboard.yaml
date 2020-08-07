@@ -230,23 +230,6 @@ cards:
         show_header_toggle: false
         entities:
           - input_datetime.alarm_wakeup
-      # Corona Virus
-      - type: glance
-        title: Corona virus - COVID-19
-        entities:
-          - name: Bevestigd
-            entity: sensor.netherlands_coronavirus_confirmed
-            icon: mdi:counter
-          - name: Huidig
-            entity: sensor.netherlands_coronavirus_current
-            icon: mdi:account-multiple
-          - name: Hersteld
-            entity: sensor.netherlands_coronavirus_recovered
-            icon: mdi:hospital-box
-          - name: Overleden
-            entity: sensor.netherlands_coronavirus_deaths
-            icon: mdi:grave-stone
-        columns: 4
 
   # Show door and window sensors
   - type: custom:stack-in-card
