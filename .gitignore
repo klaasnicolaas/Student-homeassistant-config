@@ -25,6 +25,7 @@ __pycache__
 icloud
 bash
 security
+image
 
 # Ignore Extensions
 *.db
