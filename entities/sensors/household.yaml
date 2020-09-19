@@ -1,6 +1,6 @@
 ---
 # These sensors keep track of how long ago (in days) I did a certain task in the household
-#
+# Maybe put -1 back?
 
 # Vacuuming
 - platform: template
@@ -8,7 +8,7 @@
     days_after_vacuuming:
       friendly_name: Dagen na Stofzuigen
       unit_of_measurement: 'dagen'
-      value_template: "{{ states('sensor.time') and ((as_timestamp(now()) - state_attr('input_datetime.vacuuming','timestamp')) | int / 86400) | round(0) }}" # Maybe put -1 back?
+      value_template: "{{ states('sensor.time') and ((as_timestamp(now()) - state_attr('input_datetime.vacuuming','timestamp')) | int / 86400) | round(0) }}"
 
 # Mopping
 - platform: template
