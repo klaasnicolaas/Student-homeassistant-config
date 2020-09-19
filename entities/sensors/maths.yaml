@@ -7,9 +7,9 @@
       friendly_name: "verschil binnen/buiten temperatuur"
       unit_of_measurement: '°C'
       value_template: >-
-        {% if is_state('sensor.owm_temperature', 'unknown') %}
+        {% if is_state('sensor.openweathermap_temperature', 'unknown') %}
           unkown
         {% else %}
-          {{ ( states('sensor.home_temperature') | float - states('sensor.owm_temperature') | float ) | round(1) }}
+          {{ ( states('sensor.home_temperature') | float - states('sensor.openweathermap_temperature') | float ) | round(1) }}
         {% endif %}
       device_class: temperature

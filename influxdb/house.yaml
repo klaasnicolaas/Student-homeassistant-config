@@ -22,4 +22,4 @@
 - sensor.br_feel_temperature
 
 # Openweathermap
-- sensor.owm_temperature
+- sensor.openweathermap_temperature
