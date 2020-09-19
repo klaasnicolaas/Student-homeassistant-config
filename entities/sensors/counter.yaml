@@ -5,9 +5,9 @@
 - platform: template
   sensors:
     sensor_count:
-      entity_id: sensor.date
       friendly_name: 'Number of Sensors'
       value_template: >
+        {% set dump = states('sensor.date') %}
         {%- set domains = ['sensor'] -%}
         {%- for domain in domains -%}
           {%- for item in states[domain] -%}
@@ -18,9 +18,9 @@
         {%- endfor -%}
 
     automation_count:
-      entity_id: sensor.date
       friendly_name: 'Number of Automations'
       value_template: >
+        {% set dump = states('sensor.date') %}
         {%- set domains = ['automation'] -%}
         {%- for domain in domains -%}
           {%- for item in states[domain] -%}
@@ -31,9 +31,9 @@
         {%- endfor -%}
 
     script_count:
-      entity_id: sensor.date
       friendly_name: 'Number of Scripts'
       value_template: >
+        {% set dump = states('sensor.date') %}
         {%- set domains = ['script'] -%}
         {%- for domain in domains -%}
           {%- for item in states[domain] -%}
@@ -44,9 +44,9 @@
         {%- endfor -%}
 
     switch_count:
-      entity_id: sensor.date
       friendly_name: 'Number of Switches'
       value_template: >
+        {% set dump = states('sensor.date') %}
         {%- set domains = ['switch'] -%}
         {%- for domain in domains -%}
           {%- for item in states[domain] -%}
@@ -57,9 +57,9 @@
         {%- endfor -%}
 
     binary_sensor_count:
-      entity_id: sensor.date
       friendly_name: 'Number of Binary Sensors'
       value_template: >
+        {% set dump = states('sensor.date') %}
         {%- set domains = ['binary_sensor'] -%}
         {%- for domain in domains -%}
           {%- for item in states[domain] -%}
@@ -70,9 +70,9 @@
         {%- endfor -%}
 
     lights_count:
-      entity_id: sensor.date
       friendly_name: 'Number of Lights'
       value_template: >
+        {% set dump = states('sensor.date') %}
         {%- set domains = ['light'] -%}
         {%- for domain in domains -%}
           {%- for item in states[domain] -%}
@@ -83,9 +83,9 @@
         {%- endfor -%}
 
     tracker_count:
-      entity_id: sensor.date
       friendly_name: 'Number of Devices'
       value_template: >
+        {% set dump = states('sensor.date') %}
         {%- set domains = ['device_tracker'] -%}
         {%- for domain in domains -%}
           {%- for item in states[domain] -%}
@@ -96,9 +96,9 @@
         {%- endfor -%}
 
     media_player_count:
-      entity_id: sensor.date
       friendly_name: 'Number of Media Players'
       value_template: >
+        {% set dump = states('sensor.date') %}
         {%- set domains = ['media_player'] -%}
         {%- for domain in domains -%}
           {%- for item in states[domain] -%}
@@ -109,9 +109,9 @@
         {%- endfor -%}
 
     input_datetime_count:
-      entity_id: sensor.date
       friendly_name: 'Number of Input DateTime'
       value_template: >
+        {% set dump = states('sensor.date') %}
         {%- set domains = ['input_datetime'] -%}
         {%- for domain in domains -%}
           {%- for item in states[domain] -%}
@@ -123,7 +123,6 @@
 
     # ----- Count All Entities
     total_entities:
-      entity_id: sensor.date
       friendly_name: 'Entities'
       icon_template: mdi:code-tags
-      value_template: "{{ states | count }}"
+      value_template: "{{ states('sensor.date') and states | count }}"
