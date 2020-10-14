@@ -1,7 +1,7 @@
 ---
 # When it's to hot in house
 #
-- alias: "[House] - Notify when it's to warm in house"
+- alias: "[House] - Notify when it's too warm in house"
   trigger:
     - platform: numeric_state
       entity_id: sensor.home_temperature
