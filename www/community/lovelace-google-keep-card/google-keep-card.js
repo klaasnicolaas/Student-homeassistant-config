@@ -123,6 +123,9 @@ class GoogleKeepCard extends LitElement {
                 font-size: 120%;
                 color: ${this.getTextColor()};
               }
+              p.noteTitle > a, p.noteTitle > a:visited, p.noteTitle > a:link {
+                color: ${this.getTextColor()};
+              }
               p.noteBody {
                 margin: -3px;
               }
@@ -150,7 +153,7 @@ class GoogleKeepCard extends LitElement {
     renderTextNote(note) {
         return html`
 <div class="noteBackground" style="background:${this.getColor(note['color'])};">
-    <p class="noteTitle">${note['title']}</p>
+    <p class="noteTitle">${(typeof note['url']!= "undefined") ? html`<a target="_blank" href="${note['url']}">${note['title']}</a>` : html`${note['title']}` }</p>
     <p class="noteBody">${note['lines'].map(line => this.renderLine(line))}</p>
 </div>`
     }
@@ -161,7 +164,7 @@ class GoogleKeepCard extends LitElement {
         const showChecked = note['checked'].length && show.includes('checked');
         return html`
 <div class="noteBackground" style="background:${this.getColor(note['color'])};">
-    <p class="noteTitle">${note['title']}</p>
+    <p class="noteTitle">${(typeof note['url']!= "undefined") ? html`<a target="_blank" href="${note['url']}">${note['title']}</a>` : html`${note['title']}` }</p>
     ${showUnchecked ? this.renderUncheckedList(note) : html``}
     ${showUnchecked && showChecked ? html`<hr>` : html``}
     ${showChecked ? this.renderCheckedList(note) : html``}
