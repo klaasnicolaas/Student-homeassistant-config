@@ -96,6 +96,7 @@ class GoogleKeepSensor(Entity):
         for note in notes:
             note_type = note.type
             title = str(note.title)
+            url = str(note.url)
             lines = list(map(lambda n: str(n), note.text.split("\n")))
             color = note.color.name
             checked = []
@@ -106,14 +107,15 @@ class GoogleKeepSensor(Entity):
                 unchecked = list(map(lambda n: str(n), note.unchecked))
                 children = list(
                     map(lambda c: GoogleKeepSensor.map_node(c), filter(lambda c: not c.indented, note.items)))
-            parsed_note = GoogleKeepSensor.make_note(str(note_type), title, lines, children, checked, unchecked, color)
+            parsed_note = GoogleKeepSensor.make_note(str(note_type), title, lines, children, checked, unchecked, color, url)
             self._notes.append(parsed_note)
 
     @staticmethod
-    def make_note(note_type, title, lines, children, checked, unchecked, color):
+    def make_note(note_type, title, lines, children, checked, unchecked, color, url):
         note = dict()
         note["note_type"] = note_type
         note["title"] = title
+        note["url"] = url
         note["lines"] = lines
         note["children"] = children
         note["color"] = color
