@@ -1,8 +1,0 @@
----
-# https://www.home-assistant.io/components/icloud/
-#
-platform: icloud
-username: !secret icloud_username
-password: !secret icloud_password
-account_name: iPhone_Marlene
-max_interval: 10
