@@ -1,211 +1,53 @@
-function swipeNavigation() {
-  let root = document.querySelector("home-assistant");
-  root = root && root.shadowRoot;
-  root = root && root.querySelector("home-assistant-main");
-  root = root && root.shadowRoot;
-  root = root && root.querySelector("app-drawer-layout partial-panel-resolver");
-  root = (root && root.shadowRoot) || root;
-  root = root && root.querySelector("ha-panel-lovelace");
-  root = root && root.shadowRoot;
-  root = root && root.querySelector("hui-root");
-  if (root == null) {
-    setTimeout(swipeNavigation, 300);
-    return;
-  }
-  const config = root.lovelace.config.swipe_nav || {};
-
-  let rtl =
-    (root.lovelace.config.custom_header &&
-      root.lovelace.config.custom_header.reverse_tab_direction) ||
-    document.querySelector("home-assistant").style.direction == "rtl"
-  let animate = config.animate !== undefined ? config.animate : "none";
-  let wrap = config.wrap !== undefined ? config.wrap : true;
-  let prevent_default =
-    config.prevent_default !== undefined ? config.prevent_default : false;
-  let swipe_amount =
-    config.swipe_amount !== undefined
-      ? config.swipe_amount / Math.pow(10, 2)
-      : 0.15;
-  let skip_hidden =
-    config.skip_hidden !== undefined ? config.skip_hidden : true;
-  let skip_tabs =
-    config.skip_tabs !== undefined
-      ? String(config.skip_tabs)
-          .replace(/\s+/g, "")
-          .split(",")
-          .map(function(item) {
-            return parseInt(item, 10);
-          })
-      : [];
-
-  const appLayout = root.shadowRoot.querySelector("ha-app-layout");
-  const view = appLayout.querySelector('[id="view"]');
-  const tabContainer = appLayout.querySelector("paper-tabs");
-  let xDown, yDown, xDiff, yDiff, activeTab, firstTab, lastTab, left;
-  let tabs = Array.from(tabContainer.querySelectorAll("paper-tab"));
-
-  appLayout.addEventListener("touchstart", handleTouchStart, { passive: true });
-  appLayout.addEventListener("touchmove", handleTouchMove, { passive: false });
-  appLayout.addEventListener("touchend", handleTouchEnd, { passive: true });
-
-  function handleTouchStart(event) {
-    let ignored = [
-      "APP-HEADER",
-      "HA-SLIDER",
-      "SWIPE-CARD",
-      "HUI-MAP-CARD",
-      "ROUND-SLIDER",
-      "HUI-THERMOSTAT-CARD",
-      "CH-HEADER",
-      "CH-HEADER-BOTTOM",
-      "XIAOMI-VACUUM-MAP-CARD"
-    ];
-    if (typeof event.path == "object") {
-      for (let element of event.path) {
-        if (element.nodeName == "HUI-VIEW") break;
-        else if (ignored.indexOf(element.nodeName) > -1) return;
-      }
-    }
-    xDown = event.touches[0].clientX;
-    yDown = event.touches[0].clientY;
-    if (!lastTab) filterTabs();
-    activeTab = tabs.indexOf(tabContainer.querySelector(".iron-selected"));
-  }
-
-  function handleTouchMove(event) {
-    if (xDown && yDown) {
-      xDiff = xDown - event.touches[0].clientX;
-      yDiff = yDown - event.touches[0].clientY;
-      if (Math.abs(xDiff) > Math.abs(yDiff) && prevent_default) {
-        event.preventDefault();
-      }
-    }
-  }
-
-  function handleTouchEnd() {
-    if (activeTab < 0 || Math.abs(xDiff) < Math.abs(yDiff)) {
-      xDown = yDown = xDiff = yDiff = null;
-      return;
-    }
-    if (rtl) {
-      xDiff = -xDiff;
-    }
-    if (xDiff > Math.abs(screen.width * swipe_amount)) {
-      left = false;
-      activeTab == tabs.length - 1 ? click(firstTab) : click(activeTab + 1);
-    } else if (xDiff < -Math.abs(screen.width * swipe_amount)) {
-      left = true;
-      activeTab == 0 ? click(lastTab) : click(activeTab - 1);
-    }
-    if (rtl) {
-      left = !left;
-    }
-    xDown = yDown = xDiff = yDiff = null;
-  }
-
-  function filterTabs() {
-    if (skip_hidden) {
-      tabs = tabs.filter(element => {
-        return (
-          !skip_tabs.includes(tabs.indexOf(element)) &&
-          getComputedStyle(element, null).display != "none"
-        );
-      });
-    } else {
-      tabs = tabs.filter(element => {
-        return !skip_tabs.includes(tabs.indexOf(element));
-      });
-    }
-    firstTab = wrap ? 0 : null;
-    lastTab = wrap ? tabs.length - 1 : null;
-  }
-
-  function click(index) {
-    if (
-      (activeTab == 0 && !wrap && left) ||
-      (activeTab == tabs.length - 1 && !wrap && !left)
-    ) {
-      return;
-    }
-    if (animate == "swipe") {
-      let _in = left ? `${screen.width / 1.5}px` : `-${screen.width / 1.5}px`;
-      let _out = left ? `-${screen.width / 1.5}px` : `${screen.width / 1.5}px`;
-      view.style.transitionDuration = "200ms";
-      view.style.opacity = 0;
-      view.style.transform = `translate(${_in}, 0)`;
-      view.style.transition = "transform 0.20s, opacity 0.18s";
-      setTimeout(function() {
-        tabs[index].dispatchEvent(
-          new MouseEvent("click", { bubbles: false, cancelable: true })
-        );
-        view.style.transitionDuration = "0ms";
-        view.style.transform = `translate(${_out}, 0)`;
-        view.style.transition = "transform 0s";
-      }, 210);
-      setTimeout(function() {
-        view.style.transitionDuration = "200ms";
-        view.style.opacity = 1;
-        view.style.transform = `translate(0px, 0)`;
-        view.style.transition = "transform 0.20s, opacity 0.18s";
-      }, 250);
-    } else if (animate == "fade") {
-      view.style.transitionDuration = "200ms";
-      view.style.transition = "opacity 0.20s";
-      view.style.opacity = 0;
-      setTimeout(function() {
-        tabs[index].dispatchEvent(
-          new MouseEvent("click", { bubbles: false, cancelable: true })
-        );
-        view.style.transitionDuration = "0ms";
-        view.style.opacity = 0;
-        view.style.transition = "opacity 0s";
-      }, 210);
-      setTimeout(function() {
-        view.style.transitionDuration = "200ms";
-        view.style.transition = "opacity 0.20s";
-        view.style.opacity = 1;
-      }, 250);
-    } else if (animate == "flip") {
-      view.style.transitionDuration = "200ms";
-      view.style.transform = "rotatey(90deg)";
-      view.style.transition = "transform 0.20s, opacity 0.20s";
-      view.style.opacity = 0.25;
-      setTimeout(function() {
-        tabs[index].dispatchEvent(
-          new MouseEvent("click", { bubbles: false, cancelable: true })
-        );
-      }, 210);
-      setTimeout(function() {
-        view.style.transitionDuration = "200ms";
-        view.style.transform = "rotatey(0deg)";
-        view.style.transition = "transform 0.20s, opacity 0.20s";
-        view.style.opacity = 1;
-      }, 250);
-    } else {
-      tabs[index].dispatchEvent(
-        new MouseEvent("click", { bubbles: false, cancelable: true })
-      );
-    }
-  }
-}
-
-const callback = mutations => {
-  mutations.forEach(({ addedNodes }) => {
-    for (const node of addedNodes) {
-      if (node.nodeName == "HA-PANEL-LOVELACE") {
-        swipeNavigation();
-      }
-    }
-  });
-};
-
-const dashboard_observer = new MutationObserver(callback);
-dashboard_observer.observe(
-  document
-    .querySelector("home-assistant")
-    .shadowRoot.querySelector("home-assistant-main")
-    .shadowRoot.querySelector("partial-panel-resolver"),
-  { childList: true }
-);
-
-swipeNavigation();
+"use strict";function t(t,e){return o(t)||r(t,e)||s(t,e)||n()}function n(){throw new TypeError(
+"Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}
+function r(t,e){if("undefined"!=typeof Symbol&&Symbol.iterator in Object(t)){var n=[],r=!0,o=!1,a=void 0;try{for(var i,l=t[Symbol.iterator]();!(r=(
+i=l.next()).done)&&(n.push(i.value),!e||n.length!==e);r=!0);}catch(t){o=!0,a=t}finally{try{r||null==l.return||l.return()}finally{if(o)throw a}}
+return n}}function o(t){if(Array.isArray(t))return t}function e(t){return l(t)||i(t)||s(t)||a()}function a(){throw new TypeError(
+"Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}function i(t){
+if("undefined"!=typeof Symbol&&Symbol.iterator in Object(t))return Array.from(t)}function l(t){if(Array.isArray(t))return c(t)}function g(t,e){var n
+;if("undefined"==typeof Symbol||null==t[Symbol.iterator]){if(Array.isArray(t)||(n=s(t))||e&&t&&"number"==typeof t.length){n&&(t=n);var r=0,e=function(
+){};return{s:e,n:function(){return r>=t.length?{done:!0}:{done:!1,value:t[r++]}},e:function(t){throw t},f:e}}throw new TypeError(
+"Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}var o,a=!0,
+i=!1;return{s:function(){n=t[Symbol.iterator]()},n:function(){var t=n.next();return a=t.done,t},e:function(t){i=!0,o=t},f:function(){try{
+a||null==n.return||n.return()}finally{if(i)throw o}}}}function s(t,e){if(t){if("string"==typeof t)return c(t,e);var n=Object.prototype.toString.call(t
+).slice(8,-1);return"Object"===n&&t.constructor&&(n=t.constructor.name),"Map"===n||"Set"===n?Array.from(t
+):"Arguments"===n||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)?c(t,e):void 0}}function c(t,e){(null==e||e>t.length)&&(e=t.length);for(var n=0,
+r=new Array(e);n<e;n++)r[n]=t[n];return r}function A(t){return(A="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){
+return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t})(t)}
+var x=document.querySelector("home-assistant"),E=x.shadowRoot.querySelector("home-assistant-main").shadowRoot,u=E.querySelector(
+"partial-panel-resolver"),M=["APP-HEADER","HA-SLIDER","SWIPE-CARD","HUI-MAP-CARD","ROUND-SLIDER","XIAOMI-VACUUM-MAP-CARD","HA-SIDEBAR"];function y(){
+var r,o,e,n,a,i,l,s,t=E.querySelector("ha-panel-lovelace"),c=t.shadowRoot.querySelector("hui-root").shadowRoot.querySelector("ha-app-layout"),
+u=c.querySelector('[id="view"]'),y=c.querySelector("paper-tabs")||c.querySelector("ha-tabs"),f=y?Array.from(y.querySelectorAll("paper-tab")):[],
+d="rtl"==x.style.direction,t=t.lovelace.config.swipe_nav||{},p=null!=t.animate?t.animate:"none",h=null==t.wrap||t.wrap,
+v=null!=t.prevent_default&&t.prevent_default,b=null!=t.swipe_amount?t.swipe_amount/Math.pow(10,2):.15,m=null==t.skip_hidden||t.skip_hidden,
+w=null!=t.skip_tabs?String(t.skip_tabs).replace(/\s+/g,"").split(",").map(function(t){return parseInt(t,10)}):[];function S(t){var e,n
+;0==a&&!h&&s||a==f.length-1&&!h&&!s||("swipe"==p?(e=(s?"":"-").concat(screen.width/1.5,"px"),n=(s?"-":"").concat(screen.width/1.5,"px"),
+u.style.transitionDuration="200ms",u.style.opacity=0,u.style.transform="translate(".concat(e,", 0)"),
+u.style.transition="transform 0.20s, opacity 0.18s",setTimeout(function(){f[t].dispatchEvent(new MouseEvent("click",{bubbles:!1,cancelable:!0})),
+u.style.transitionDuration="0ms",u.style.transform="translate(".concat(n,", 0)"),u.style.transition="transform 0s"},210),setTimeout(function(){
+u.style.transitionDuration="200ms",u.style.opacity=1,u.style.transform="translate(0px, 0)",u.style.transition="transform 0.20s, opacity 0.18s"},250)
+):"fade"==p?(u.style.transitionDuration="200ms",u.style.transition="opacity 0.20s",u.style.opacity=0,setTimeout(function(){f[t].dispatchEvent(
+new MouseEvent("click",{bubbles:!1,cancelable:!0})),u.style.transitionDuration="0ms",u.style.opacity=0,u.style.transition="opacity 0s"},210),
+setTimeout(function(){u.style.transitionDuration="200ms",u.style.transition="opacity 0.20s",u.style.opacity=1},250)):"flip"==p?(
+u.style.transitionDuration="200ms",u.style.transform="rotatey(90deg)",u.style.transition="transform 0.20s, opacity 0.20s",u.style.opacity=.25,
+setTimeout(function(){f[t].dispatchEvent(new MouseEvent("click",{bubbles:!1,cancelable:!0}))},210),setTimeout(function(){
+u.style.transitionDuration="200ms",u.style.transform="rotatey(0deg)",u.style.transition="transform 0.20s, opacity 0.20s",u.style.opacity=1},250)
+):f[t].dispatchEvent(new MouseEvent("click",{bubbles:!1,cancelable:!0})))}y&&(c.addEventListener("touchstart",function(t){if("object"==A(t.path)){
+var e=g(t.path);try{for(e.s();!(n=e.n()).done;){var n=n.value;if("HUI-VIEW"==n.nodeName)break;if(-1<M.indexOf(n.nodeName))return}}catch(t){e.e(t)
+}finally{e.f()}}r=t.touches[0].clientX,o=t.touches[0].clientY,l||function(){f=m?f.filter(function(t){return!w.includes(f.indexOf(t)
+)&&"none"!=getComputedStyle(t,null).display}):f.filter(function(t){return!w.includes(f.indexOf(t))});i=h?0:null,l=h?f.length-1:null}();a=f.indexOf(
+y.querySelector(".iron-selected"))},{passive:!0}),c.addEventListener("touchmove",function(t){r&&o&&(e=r-t.touches[0].clientX,n=o-t.touches[0].clientY,
+Math.abs(e)>Math.abs(n)&&v&&t.preventDefault())},{passive:!1}),c.addEventListener("touchend",function(){if(a<0||Math.abs(e)<Math.abs(n))return void(
+r=o=e=n=null);d&&(e=-e);e>Math.abs(screen.width*b)?(s=!1,a==f.length-1?S(i):S(a+1)):e<-Math.abs(screen.width*b)&&(s=!0,S(0==a?l:a-1));d&&(s=!s)
+;r=o=e=n=null},{passive:!0}),"swipe"==p&&(c.style.overflow="hidden"))}function f(t){var e,n=g(t);try{for(n.s();!(e=n.n()).done;){var r=g(
+e.value.addedNodes);try{for(r.s();!(o=r.n()).done;){var o=o.value;if("ha-panel-lovelace"==o.localName)return void new MutationObserver(d).observe(
+o.shadowRoot,{childList:!0})}}catch(t){r.e(t)}finally{r.f()}}}catch(t){n.e(t)}finally{n.f()}}function d(t){var e,n=g(t);try{for(n.s();!(e=n.n()).done;
+){var r=g(e.value.addedNodes);try{for(r.s();!(o=r.n()).done;){var o=o.value;if("hui-root"==o.localName)return void new MutationObserver(p).observe(
+o.shadowRoot,{childList:!0})}}catch(t){r.e(t)}finally{r.f()}}}catch(t){n.e(t)}finally{n.f()}}function p(t){var e,n=g(t);try{for(n.s();!(e=n.n()).done;
+){var r,o=g(e.value.addedNodes);try{for(o.s();!(r=o.n()).done;)if("ha-app-layout"==r.value.localName)return void y()}catch(t){o.e(t)}finally{o.f()}}
+}catch(t){n.e(t)}finally{n.f()}}y(),new MutationObserver(f).observe(u,{childList:!0});for(var h={header:"%c≡ swipe-navigation".padEnd(27),
+ver:"%cversion 1.3.0 "},v="%c\n",b=Math.max.apply(Math,e(Object.values(h).map(function(t){return t.length}))),m=0,w=Object.entries(h);m<w.length;m++){
+var S=t(w[m],1),D=S[0];h[D].length<=b&&(h[D]=h[D].padEnd(b)),"header"==D&&(h[D]="".concat(h[D].slice(0,-1),"⋮ "))}
+var I="display:inline-block;border-width:1px 1px 0 1px;border-style:solid;border-color:#424242;color:white;background:#03a9f4;font-size:12px;padding:4px 4.5px 5px 6px;"
+,O="border-width:0px 1px 1px 1px;padding:7px;background:white;color:#424242;line-height:0.7;";console.info(h.header+v+h.ver,I,"","".concat(I," "
+).concat(O));
