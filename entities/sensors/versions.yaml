@@ -14,14 +14,14 @@
 
 # HassOS version beta
 - platform: rest
-  resource: https://s3.amazonaws.com/hassio-version/beta.json
+  resource: https://version.home-assistant.io/beta.json
   name: HassOs version - beta
   value_template: "{{ value_json.hassos.ova }}"
   scan_interval: 3600
 
 # Supervisor version beta
 - platform: rest
-  resource: https://s3.amazonaws.com/hassio-version/beta.json
+  resource: https://version.home-assistant.io/beta.json
   name: Supervisor version - beta
   value_template: "{{ value_json.supervisor }}"
   scan_interval: 3600
@@ -36,14 +36,36 @@
 
 # HassOS version stable
 - platform: rest
-  resource: https://s3.amazonaws.com/hassio-version/stable.json
+  resource: https://version.home-assistant.io/stable.json
   name: HassOs version - stable
   value_template: "{{ value_json.hassos.ova }}"
   scan_interval: 3600
 
 # Supervisor version stable
 - platform: rest
-  resource: https://s3.amazonaws.com/hassio-version/stable.json
+  resource: https://version.home-assistant.io/stable.json
   name: Supervisor version - stable
+  value_template: "{{ value_json.supervisor }}"
+  scan_interval: 3600
+
+########## DEV ##########
+# Home Assistant version dev
+- platform: rest
+  resource: https://version.home-assistant.io/dev.json
+  name: Home Assistant Dev versie
+  value_template: "{{ value_json.homeassistant.default }}"
+  scan_interval: 3600
+
+# HassOS version dev
+- platform: rest
+  resource: https://version.home-assistant.io/dev.json
+  name: HassOs version - dev
+  value_template: "{{ value_json.hassos.ova }}"
+  scan_interval: 3600
+
+# Supervisor version dev
+- platform: rest
+  resource: https://version.home-assistant.io/dev.json
+  name: Supervisor version - dev
   value_template: "{{ value_json.supervisor }}"
   scan_interval: 3600
