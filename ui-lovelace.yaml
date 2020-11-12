@@ -16,5 +16,5 @@ views:
   - !include lovelace/views/temperature.yaml
   - !include lovelace/views/household.yaml
   - !include lovelace/views/media_player.yaml
-  - !include lovelace/views/automations.yaml
+  - !include lovelace/views/all_automations.yaml
   - !include lovelace/views/system.yaml
