@@ -1,6 +1,5 @@
 ---
-#
-#
+# Customize light entities
 light.keuken:
   icon: mdi:lightbulb-group
 
