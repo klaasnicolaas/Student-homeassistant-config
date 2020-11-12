@@ -44,12 +44,13 @@ Below is a list of all hardware in-house
 - [Ikea tradfri][tradfri] lights - All types of fittings
 - [Google Home][google_home]
 - [Logitech Harmony Hub companion][harmony]
-- Xiaomi [Temperature & Humidity Sensors][xiaomi_temp]
-- Xiaomi [Window Door Sensors][xiaomi_door]
-- Xiaomi [Motion Sensors][xiaomi_motion]
+- Xiaomi Aqara [Temperature & Humidity Sensors][xiaomi_temp]
+- Xiaomi Aqara [Window Door Sensors][xiaomi_door]
+- Xiaomi Aqara [Motion Sensors][xiaomi_motion]
 - Xiaomi Curtains with [track][xiaomi_curtains_track] and [motor][xiaomi_curtains_motor]
-- Xiaomi [Smart switch][xiaomi_switch]
+- Xiaomi Aqara [Smart switch][xiaomi_switch]
 - Xiaomi Mijia [Smart Light Sensors][xiaomi_light_sensor]
+- Xiaomi Aqara [D1 - 1 way switch][xiaomi_d1_1way_switch]
 - Blitzwolf [BW-LT11] led strips
 - There is more soon :)
 
@@ -67,7 +68,7 @@ On my website I have already written a number of blogs that address specific par
 
 ## Needing Help or Questions?
 
-If you have a specific question about my configuration send me a Private Message on the HA forum, my username over there is **[Klaasnicolaas](https://community.home-assistant.io/u/klaasnicolaas)**. Or send me a message via Discord, my username is there **Mister Nicolaz**. If you have found something incorrect, please submit an issue here on Github and I will get it fixed.
+If you have a specific question about my configuration send me a Private Message on the HA forum, my username over there is **[klaasnicolaas](https://community.home-assistant.io/u/klaasnicolaas)**. Or send me a message via Discord, my username is there **Doc Master Nicolaz**. If you have found something incorrect, please submit an issue here on Github and I will get it fixed.
 
 ## Links
 
@@ -82,7 +83,7 @@ If you have a specific question about my configuration send me a Private Message
 
 MIT License
 
-Copyright (c) 2019 Klaas Schoute
+Copyright (c) 2019-2020 Klaas Schoute
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
