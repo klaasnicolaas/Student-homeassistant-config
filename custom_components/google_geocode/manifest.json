@@ -1,8 +1,0 @@
-{
-  "domain": "google_geocode",
-  "name": "Google Geocode",
-  "documentation": "https://github.com/gregoryduckworth/GoogleGeocode-HASS",
-  "dependencies": [],
-  "codeowners": [],
-  "requirements": []
-}

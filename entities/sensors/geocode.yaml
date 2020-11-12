@@ -1,7 +1,0 @@
----
-# https://github.com/michaelmcarthur/GoogleGeocode-HASS
-#
-- platform: google_geocode
-  origin: device_tracker.life360_klaas_schoute
-  name: Klaas Geocode
-  api_key: !secret geocode_api
