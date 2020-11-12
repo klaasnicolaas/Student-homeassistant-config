@@ -2,6 +2,7 @@
 #
 # https://github.com/custom-components/gpodder
 #
+
 gpodder:
   username: !secret gpodder_user
   password: !secret gpodder_pass

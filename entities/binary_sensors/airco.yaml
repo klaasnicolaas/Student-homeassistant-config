@@ -1,6 +1,7 @@
 ---
 # This will show if my airco is on or off
 #
+
 - platform: template
   sensors:
     airco_status:

@@ -3,6 +3,7 @@
 #
 # I want to track when I have done certain household tasks so that HA can help me remember
 #
+
 vacuuming:
   name: Stofzuigen
   has_date: true

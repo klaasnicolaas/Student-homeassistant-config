@@ -4,6 +4,7 @@
 #
 # https://www.home-assistant.io/components/version/
 #
+
 ########## BETA ##########
 # Fetch beta version of HA
 - platform: version

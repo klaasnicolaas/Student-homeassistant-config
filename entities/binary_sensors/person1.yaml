@@ -1,5 +1,8 @@
 ---
-## Experimental sensor for home/away detection
+#
+# Experimental sensor for home/away detection
+#
+
 - platform: 'bayesian'
   prior: 0.65
   name: 'Klaas Thuis'

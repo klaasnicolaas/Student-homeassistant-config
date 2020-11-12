@@ -2,6 +2,7 @@
 #
 # https://www.home-assistant.io/components/logger/
 #
+
 logger:
   default: info
   logs:

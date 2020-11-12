@@ -2,6 +2,7 @@
 #
 # https://github.com/JamesMcCarthy79/Home-Assistant-Config/blob/2c91d5cf8f26fbba33d6af1fa3a04a90f0bd8c16/config/packages/things_status/things_status.yaml
 #
+
 - platform: template
   sensors:
     sensor_count:
