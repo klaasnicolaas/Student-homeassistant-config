@@ -136,6 +136,7 @@ SOFTWARE.
 [xiaomi_switch]: https://www.banggood.com/Original-Xiaomi-Aqara-Smart-Wireless-Switch-Smart-Home-Kit-Remote-Control-Touch-Switch-p-1224921.html?rmmds=myorder&cur_warehouse=CN
 [BW-LT11]: https://www.banggood.com/BlitzWolf-BW-LT11-2M5M-Smart-APP-Control-RGBW-LED-Light-Strip-Kit-Work-With-Amazon-Alexa-Google-Assistant-p-1390470.html?rmmds=search
 [xiaomi_light_sensor]: https://nl.aliexpress.com/item/4000476379615.html?spm=a2g0s.9042311.0.0.5cdf4c4dK3J0n2
+[xiaomi_d1_1way_switch]: https://www.banggood.com/Aqara-D1-1-Gang-or-2-Gang-ZigBee-Smart-Wireless-Switch-APP-Remote-Control-Timer-Work-with-APP-HomeKit-p-1644321.html?rmmds=search&ID=6265280&cur_warehouse=CN
 
 [sleep]: https://student-techlife.com/2019/05/16/hey-google-time-to-sleep/
 [tv]: https://student-techlife.com/2019/06/02/my-tv-is-out-of-own-control/
