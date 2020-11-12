@@ -6,6 +6,6 @@
 proximity:
   home:
     devices:
-      # Life360
-      - device_tracker.life360_klaas_schoute
+      # Android Companion app
+      - device_tracker.klaas_samsung_s9
     tolerance: 50

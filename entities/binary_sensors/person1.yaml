@@ -11,8 +11,8 @@
       prob_given_false: 0.3
       platform: 'state'
       to_state: 'home'
-    # Life360
-    - entity_id: device_tracker.life360_klaas_schoute
+    # Android Companion app
+    - entity_id: device_tracker.klaas_samsung_s9
       prob_given_true: 0.9
       prob_given_false: 0.1
       platform: 'state'
