@@ -1,6 +1,7 @@
 ---
 # https://www.home-assistant.io/components/nmap_tracker/
 #
+
 platform: nmap_tracker
 track_new_devices: true
 interval_seconds: 30
