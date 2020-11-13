@@ -11,4 +11,4 @@
     - service: notify.telegram_klaas
       data:
         title: '*Certificaat verloop bijna*'
-        message: "Vernieuw je SSL certificaat want deze verloop over minder dan 30 dagen"
+        message: "Vernieuw je SSL certificaat want deze verloopt over minder dan 30 dagen"
