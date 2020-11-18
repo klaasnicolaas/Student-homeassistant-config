@@ -1,0 +1,9 @@
+---
+# Microsoft TTS - Neural voice
+# https://www.home-assistant.io/integrations/microsoft/
+#
+platform: microsoft
+api_key: !secret tts_azure_api_key
+region: westeurope
+language: nl-nl
+type: ColetteNeural

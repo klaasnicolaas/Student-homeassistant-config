@@ -7,9 +7,9 @@ home_status_message:
     - service: media_player.volume_set
       data:
         entity_id: media_player.google_home
-        volume_level: '0.60'
+        volume_level: '0.50'
 
-    - service: tts.google_translate_say
+    - service: tts.microsoft_say
       entity_id: media_player.google_home
       data_template:
         message: >
@@ -26,9 +26,6 @@ home_status_message:
 
           Het is vandaag {{ now().strftime('%d') }} {{ months[mo - 1] }} en de tijd is {{ now().strftime('%H:%M') }}.
           De huidige temperatuur in huis is {{ states('sensor.home_temperature' | round) }} graden.
-
-          # Want to add calendar info in the future
-
     - delay:
         seconds: 20
 
