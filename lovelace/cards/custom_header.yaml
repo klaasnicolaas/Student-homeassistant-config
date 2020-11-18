@@ -1,6 +1,0 @@
----
-compact_mode: true
-button_icons:
-  voice: mdi:comment-processing-outline
-menu_hide: true
-chevrons: false
