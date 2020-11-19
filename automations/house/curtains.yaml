@@ -12,16 +12,16 @@
     - choose:
         # Curtain open
         - conditions:
-          - condition: template
-            value_template: "{{ trigger.event.data.event == 1002 }}"
+            - condition: template
+              value_template: "{{ trigger.event.data.event == 1002 }}"
           sequence:
             - service: cover.open_cover
               entity_id: cover.curtain_window
-      
+
         # Curtain closing
         - conditions:
-          - condition: template
-            value_template: "{{ trigger.event.data.event == 1001 }}"
+            - condition: template
+              value_template: "{{ trigger.event.data.event == 1001 }}"
           sequence:
             - service: cover.close_cover
               entity_id: cover.curtain_window
