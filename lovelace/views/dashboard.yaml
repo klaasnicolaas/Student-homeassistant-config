@@ -136,12 +136,12 @@ cards:
       - type: markdown
         title: Google Assistant
         content: |
-          **Ik wil koken** -> voor als je gaat koken.
-          **Het is avond** -> voor gedimde lampen in de avond.
-          **Start slaap ritueel** -> voor wanneer je gaat slapen.
-          **Kanaal X graag** -> om TV van kanaal te veranderen
-          **Zet TV aan/uit** -> om de tv aan of uit te doen.
-          **Ik pak me fiets en ga** -> om het huis af te sluiten.
+          **Ik wil koken** (Google) -> voor als je gaat koken.
+          **Het is avond** (Google) -> voor gedimde lampen in de avond.
+          **Start slaap ritueel** (Google) -> voor wanneer je gaat slapen.
+          **Kanaal X graag** (IFTTT) -> om TV van kanaal te veranderen
+          **Zet TV aan/uit** (Google) -> om de tv aan of uit te doen.
+          **Ik pak me fiets en ga** (Google) -> om het huis af te sluiten.
 
   # Show the lights in house
   - type: vertical-stack
@@ -352,14 +352,6 @@ cards:
               extrema: true
             animate: true
             hour24: true
-
-  - type: custom:google-keep-card
-    entity: sensor.google_keep_19c55cfd0d
-    alpha: 0.01
-    hide_if_empty: false
-    show:
-      - checked
-      - unchecked
 
   - type: entities
     title: Garage - P6 Pathe Arena

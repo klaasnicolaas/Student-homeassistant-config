@@ -30,7 +30,7 @@
         state: 'on'
   action:
     # HA Android notification
-    - service: notify.mobile_app_samsung_klaas
+    - service: notify.mobile_app_klaas_samsung_s9
       data:
         title: 'Lampen vergeten!'
         message: >

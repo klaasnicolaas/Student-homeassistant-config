@@ -42,6 +42,7 @@ cloud:
         - script.channel_8
         - script.channel_9
         - script.play_radio
+        - script.go_away
         - script.select_hdmi
         - script.select_kabel
         - script.start_cooking
