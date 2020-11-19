@@ -10,15 +10,13 @@ play_radio:
       data_template:
         entity_id: media_player.google_home
         media_content_id: >
-          {% if is_state("input_select.radio_station", "Radio 538") %} http://18973.live.streamtheworld.com/RADIO538.mp3
+          {% if is_state("input_select.radio_station", "Radio 538") %} http://playerservices.streamtheworld.com/api/livestream-redirect/RADIO538.mp3
           {% elif is_state("input_select.radio_station", "Q-Music") %} http://icecast-qmusic.cdp.triple-it.nl/Qmusic_nl_live_96.mp3
           {% elif is_state("input_select.radio_station", "3FM") %} http://icecast.omroep.nl/3fm-bb-mp3
           {% elif is_state("input_select.radio_station", "100% NL") %} http://stream.100p.nl/100pctnl.mp3
-          {% elif is_state("input_select.radio_station", "Veronica") %} http://8543.live.streamtheworld.com/VERONICACMP3
-          {% elif is_state("input_select.radio_station", "Sky Radio") %} http://8623.live.streamtheworld.com:80/SKYRADIOAAC_SC
-          {% elif is_state("input_select.radio_station", "Arrow Classic Rock") %} http://91.221.151.155/listen.mp3
-          {% elif is_state("input_select.radio_station", "Classic FM") %} http://19143.live.streamtheworld.com/CLASSICFM_SC
+          {% elif is_state("input_select.radio_station", "Veronica") %} http://playerservices.streamtheworld.com/api/livestream-redirect/VERONICA.mp3
+          {% elif is_state("input_select.radio_station", "Sky Radio") %} http://playerservices.streamtheworld.com/api/livestream-redirect/SKYRADIO.mp3
           {% elif is_state("input_select.radio_station", "BNR Nieuwsradio") %} http://icecast-bnr.cdp.triple-it.nl/bnr_mp3_96_03
-          {% elif is_state("input_select.radio_station", "Radio 2") %} http://icecast.omroep.nl/radio1-bb-mp3
+          {% elif is_state("input_select.radio_station", "Radio 2") %} https://icecast.omroep.nl/radio2-bb-mp3
           {% endif %}
         media_content_type: 'audio/mp4'
