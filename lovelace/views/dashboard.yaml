@@ -275,29 +275,9 @@ cards:
         entities:
           - entity: cover.curtain_window
             name: Gordijn
-          - entity: binary_sensor.gordijn
+          - entity: binary_sensor.curtain
             state_color: true
             name: Status van de gordijn
-
-  # - type: custom:love-lock-card
-  #  popup: confirm
-  #  cards:
-  #    - type: custom:stack-in-card
-  #      mode: vertical
-  #      cards:
-  #        - type: horizontal-stack
-  #          cards:
-  #            - type: custom:cover-element
-  #              entity: cover.curtain_window
-  #              label: Gordijnen
-  #            - type: custom:button-card
-  #              entity: binary_sensor.gordijn
-  #              show_icon: true
-  #              show_state: false
-  #              show_name: false
-  #        - type: custom:slider-entity-row
-  #          entity: cover.curtain_window
-  #          hide_state: true
 
   # Temperature and humidity in house
   - type: vertical-stack

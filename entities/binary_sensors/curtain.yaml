@@ -4,7 +4,7 @@
 # {{ is_state('cover.curtain_window', 'open') }}
 - platform: template
   sensors:
-    gordijn:
+    curtain:
       device_class: window
       value_template: >-
         {{ state_attr('cover.curtain_window', 'current_position') | int > 1 }}

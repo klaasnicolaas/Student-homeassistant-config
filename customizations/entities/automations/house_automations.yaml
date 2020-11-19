@@ -12,3 +12,5 @@ automation.house_send_household_tasks_overview:
   icon: mdi:telegram
 automation.house_notify_if_there_is_a_thunderstorm:
   icon: mdi:flash-outline
+automation.house_operate_curtains_with_switch:
+  icon: mdi:window-open-variant
