@@ -1,8 +1,0 @@
-{
-  "domain": "google_keep",
-  "name": "Google Keep",
-  "documentation": "https://github.com/PiotrMachowski/Home-Assistant-custom-components-Google-Keep",
-  "dependencies": [],
-  "codeowners": ["@PiotrMachowski"],
-  "requirements": ["gkeepapi==0.11.16"]
-}
