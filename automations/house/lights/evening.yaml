@@ -6,19 +6,26 @@
   trigger:
     - platform: numeric_state
       entity_id:
-        - sensor.hal_light_sensor
         - sensor.woonkamer_light_sensor
       below: 15
+    - platform: numeric_state
+      entity_id:
+        - sensor.kitchen_light_sensor
+      below: 5
   condition:
+    # Check if I'm home :)
     - condition: state
       entity_id: sensor.klaas_status
       state: 'Thuis'
+    # Prevent trigger in the morning/night
+    - condition: time
+      after: '15:00:00'
   action:
     - choose:
         # Hal and kitchen
         - conditions:
             - condition: template
-              value_template: "{{ trigger.entity_id == 'sensor.hal_light_sensor' }}"
+              value_template: "{{ trigger.entity_id == 'sensor.kitchen_light_sensor' }}"
             # Check if light are off
             - condition: state
               entity_id: light.hal

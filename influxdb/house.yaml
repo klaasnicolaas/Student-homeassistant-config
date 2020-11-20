@@ -13,6 +13,8 @@
 - sensor.home_humidity
 - binary_sensor.airco_status
 - sensor.temperature_difference_in_out
+- sensor.kitchen_light_sensor
+- sensor.woonkamer_light_sensor
 
 # Buienradar
 - sensor.br_temperature

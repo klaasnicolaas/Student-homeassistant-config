@@ -230,6 +230,7 @@ cards:
         show_header_toggle: false
         entities:
           - input_datetime.alarm_wakeup
+          - sensor.klaas_samsung_s9_next_alarm
 
   # Show door and window sensors
   - type: custom:stack-in-card
@@ -325,8 +326,8 @@ cards:
             hour24: true
           - type: custom:mini-graph-card
             entities:
-              - entity: sensor.hal_light_sensor
-                name: Hal
+              - entity: sensor.kitchen_light_sensor
+                name: Keuken
             show:
               fill: true
               extrema: true
