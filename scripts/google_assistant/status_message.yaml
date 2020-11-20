@@ -29,7 +29,7 @@ home_status_message:
     - delay:
         seconds: 20
 
-    - service: media_player.volume_set
+    # Note that status message is done
+    - service: input_boolean.turn_on
       data:
-        entity_id: media_player.google_home
-        volume_level: '0.40'
+        entity_id: input_boolean.wakeup_wait

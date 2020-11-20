@@ -39,22 +39,36 @@ wake_up:
         seconds: 600
 
     # ALARM TURNS ON
-    # Below it makes a distinction between the manual alarm and the google home alarm
-    - service_template: >
-        {% if (entity_id == 'binary_sensor.google_home_alarm') %}
-          script.alarm_google
-        {% else %}
-          script.alarm_manual
-        {% endif %}
-
-    - wait_template: "{{ is_state('input_boolean.wakeup_wait', 'on') }}"
+    # Below it makes a distinction between the manual alarm and the Samsung alarm
+    - choose:
+        # IF alarm was setup with Samsung App on mobile
+        - conditions:
+            - condition: template
+              value_template: "{{ (entity_id == 'binary_sensor.samsung_mobile_alarm') }}"
+          sequence:
+            - delay:
+                seconds: 30
+      # OR use manual alarm from Lovelace UI
+      default:
+        # An alarm clock sound goes through Google Home
+        - service: media_player.volume_set
+          data:
+            entity_id: media_player.google_home
+            volume_level: '0.50'
+        - service: media_player.play_media
+          data:
+            entity_id: media_player.google_home
+            media_content_id: !secret wakeup_alarm
+            media_content_type: 'music'
+        - delay:
+            seconds: 30
 
     # Start morning briefing
     - service: script.turn_on
       entity_id: script.home_status_message
 
-    - delay:
-        seconds: 15
+    # Wait until morning briefing is done 
+    - wait_template: "{{ is_state('input_boolean.wakeup_wait', 'on') }}"
 
     # Put the radio ON
     - service: script.turn_on
