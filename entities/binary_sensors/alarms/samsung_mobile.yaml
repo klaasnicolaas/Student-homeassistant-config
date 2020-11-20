@@ -3,7 +3,7 @@
 # Samsung alarm template sensor
 #
 # 5*60 means it will be 5 min back in time.
-# Normally I want the sensor to switch ON 10 minutes before the alarm goes on, 
+# Normally I want the sensor to switch ON 10 minutes before the alarm goes on,
 # but the Samsung alarm app keep also deviates 5 minutes from the time you have set by default.
 
 - platform: template

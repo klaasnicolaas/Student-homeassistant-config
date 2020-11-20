@@ -67,7 +67,7 @@ wake_up:
     - service: script.turn_on
       entity_id: script.home_status_message
 
-    # Wait until morning briefing is done 
+    # Wait until morning briefing is done
     - wait_template: "{{ is_state('input_boolean.wakeup_wait', 'on') }}"
 
     # Put the radio ON
