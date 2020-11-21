@@ -4,7 +4,7 @@ automation.house_wake_up_ritual:
   icon: mdi:sleep
 automation.house_welcome_home_message:
   icon: mdi:home-heart
-automation.house_notify_when_it_s_to_warm_in_house:
+automation.house_notify_when_it_s_too_warm_in_house:
   icon: mdi:temperature-celsius
 automation.house_household_task_over_date:
   icon: mdi:checkbox-multiple-marked-outline

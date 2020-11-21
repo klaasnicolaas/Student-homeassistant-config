@@ -1,18 +1,20 @@
 ---
 # Custom icons for the light automations
-automation.light_set_lights_on_in_the_evening:
-  icon: mdi:light-switch
-automation.light_toggle_all_lights_off:
-  icon: mdi:light-switch
-automation.light_toggle_all_lights_on:
-  icon: mdi:light-switch
+automation.light_control_all_lights:
+  icon: mdi:lightbulb-multiple-outline
+automation.light_turn_all_light_off:
+  icon: mdi:lightbulb-multiple-outline
+automation.light_turn_lights_off_automated:
+  icon: mdi:lightbulb-multiple-outline
+automation.light_turn_lights_on_automated:
+  icon: mdi:lightbulb-multiple-outline
 automation.light_turn_off_bathroom_light:
-  icon: mdi:light-switch
+  icon: mdi:lightbulb-multiple-outline
 automation.light_turn_on_bathroom_light:
-  icon: mdi:light-switch
+  icon: mdi:lightbulb-multiple-outline
 automation.light_turn_on_light_when_come_home:
-  icon: mdi:light-switch
+  icon: mdi:lightbulb-multiple-outline
 automation.light_turn_wardrobe_light_off:
-  icon: mdi:light-switch
+  icon: mdi:lightbulb-multiple-outline
 automation.light_turn_wardrobe_light_on:
-  icon: mdi:light-switch
+  icon: mdi:lightbulb-multiple-outline
