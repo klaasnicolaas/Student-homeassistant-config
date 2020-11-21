@@ -1,0 +1,7 @@
+---
+#
+#
+- platform: tts
+  name: Woonkamer
+  tts_service: tts.microsoft_say
+  media_player: media_player.google_home

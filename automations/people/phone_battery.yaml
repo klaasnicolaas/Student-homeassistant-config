@@ -18,7 +18,6 @@
       entity_id: binary_sensor.night
       state: 'off'
   action:
-    - service: tts.microsoft_say
-      entity_id: media_player.google_home
+    - service: notify.woonkamer
       data:
         message: 'Je telefoon is 100% opgeladen'
