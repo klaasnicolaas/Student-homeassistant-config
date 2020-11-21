@@ -14,7 +14,7 @@
       entity_id: light.badkamer
       data_template:
         brightness: >
-          {% if is_state ('binary_sensor.nacht' , 'on') %} 13
+          {% if is_state ('binary_sensor.night' , 'on') %} 13
           {% else %} 115
           {% endif %}
 
@@ -24,12 +24,12 @@
       entity_id: binary_sensor.motion_badkamer
       to: 'off'
       for:
-        minutes: 5
+        minutes: 6
   condition:
     # Keep the light on when you take a shower
-    - condition: state
-      entity_id: binary_sensor.bathroom_water_leak
-      state: 'off'
+    - condition: numeric_state
+      entity_id: sensor.bathroom_humidity
+      below: 75
   action:
     - service: light.turn_off
       data:
