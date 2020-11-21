@@ -1,0 +1,27 @@
+---
+# https://www.home-assistant.io/components/tod/
+#
+
+# Morning
+- platform: tod
+  name: Morning
+  after: '06:00'
+  before: '12:00'
+
+# Afternoon
+- platform: tod
+  name: Afternoon
+  after: '12:00'
+  before: '18:00'
+
+# Evening
+- platform: tod
+  name: Evening
+  after: '18:00'
+  before: '23:00'
+
+# Night
+- platform: tod
+  name: Night
+  after: '23:00'
+  before: '06:00'
