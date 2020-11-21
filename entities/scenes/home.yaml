@@ -4,31 +4,31 @@
   entities:
     light.keuken_lamp_1:
       state: "on"
-      brightness: 51
+      brightness_pct: 20
     light.keuken_lamp_2:
       state: "on"
-      brightness: 51
+      brightness_pct: 20
     light.keuken_lamp_3:
       state: "on"
-      brightness: 51
+      brightness_pct: 20
     light.hal_lamp_1:
       state: "on"
-      brightness: 51
+      brightness_pct: 20
     light.hal_lamp_2:
       state: "on"
-      brightness: 51
+      brightness_pct: 20
     light.hal_lamp_3:
       state: "on"
-      brightness: 51
+      brightness_pct: 20
     light.woonkamer_lamp_1:
       state: "on"
-      brightness: 64
+      brightness_pct: 25
     light.woonkamer_lamp_2:
       state: "on"
-      brightness: 64
+      brightness_pct: 25
     light.woonkamer_lamp_3:
       state: "on"
-      brightness: 64
+      brightness_pct: 25
 
 - name: Lampen uit
   entities:
