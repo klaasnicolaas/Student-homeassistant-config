@@ -1,52 +1,52 @@
 ---
-  ########## Home Scenes ##########
-  - name: Avond
-    entities:
-      light.keuken_lamp_1:
-        state: "on"
-        brightness: 51
-      light.keuken_lamp_2:
-        state: "on"
-        brightness: 51
-      light.keuken_lamp_3:
-        state: "on"
-        brightness: 51
-      light.hal_lamp_1:
-        state: "on"
-        brightness: 51
-      light.hal_lamp_2:
-        state: "on"
-        brightness: 51
-      light.hal_lamp_3:
-        state: "on"
-        brightness: 51
-      light.woonkamer_lamp_1:
-        state: "on"
-        brightness: 64
-      light.woonkamer_lamp_2:
-        state: "on"
-        brightness: 64
-      light.woonkamer_lamp_3:
-        state: "on"
-        brightness: 64
-  
-  - name: Lampen uit
-    entities:
-      light.keuken_lamp_1:
-        state: "off"
-      light.keuken_lamp_2:
-        state: "off"
-      light.keuken_lamp_3:
-        state: "off"
-      light.hal_lamp_1:
-        state: "off"
-      light.hal_lamp_2:
-        state: "off"
-      light.hal_lamp_3:
-        state: "off"
-      light.woonkamer_lamp_1:
-        state: "off"
-      light.woonkamer_lamp_2:
-        state: "off"
-      light.woonkamer_lamp_3:
-        state: "off"
+########## Home Scenes ##########
+- name: Avond
+  entities:
+    light.keuken_lamp_1:
+      state: "on"
+      brightness: 51
+    light.keuken_lamp_2:
+      state: "on"
+      brightness: 51
+    light.keuken_lamp_3:
+      state: "on"
+      brightness: 51
+    light.hal_lamp_1:
+      state: "on"
+      brightness: 51
+    light.hal_lamp_2:
+      state: "on"
+      brightness: 51
+    light.hal_lamp_3:
+      state: "on"
+      brightness: 51
+    light.woonkamer_lamp_1:
+      state: "on"
+      brightness: 64
+    light.woonkamer_lamp_2:
+      state: "on"
+      brightness: 64
+    light.woonkamer_lamp_3:
+      state: "on"
+      brightness: 64
+
+- name: Lampen uit
+  entities:
+    light.keuken_lamp_1:
+      state: "off"
+    light.keuken_lamp_2:
+      state: "off"
+    light.keuken_lamp_3:
+      state: "off"
+    light.hal_lamp_1:
+      state: "off"
+    light.hal_lamp_2:
+      state: "off"
+    light.hal_lamp_3:
+      state: "off"
+    light.woonkamer_lamp_1:
+      state: "off"
+    light.woonkamer_lamp_2:
+      state: "off"
+    light.woonkamer_lamp_3:
+      state: "off"
