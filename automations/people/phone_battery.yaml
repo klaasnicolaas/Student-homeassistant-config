@@ -6,7 +6,7 @@
 - alias: '[People] - Notify when phone is fully charged'
   trigger:
     - platform: numeric_state
-      entity_id: sensor.klaas_samsung_s9_battery_level
+      entity_id: sensor.klaas_samsung_s20_plus_batterijniveau
       above: 99
       for: '00:03:00'
   condition:

@@ -15,13 +15,13 @@
       platform: 'state'
       to_state: 'home'
     # Android Companion app
-    - entity_id: device_tracker.klaas_samsung_s9
+    - entity_id: device_tracker.klaas_samsung_s20_plus
       prob_given_true: 0.9
       prob_given_false: 0.1
       platform: 'state'
       to_state: 'home'
     # Phone wifi connection
-    - entity_id: sensor.klaas_samsung_s9_wifi_connection
+    - entity_id: sensor.klaas_samsung_s20_plus_wifi_verbinding
       prob_given_true: 0.8
       prob_given_false: 0.1
       platform: 'state'

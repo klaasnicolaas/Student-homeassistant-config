@@ -10,5 +10,5 @@
   sensors:
     samsung_mobile_alarm:
       value_template: >
-        {% set ts = as_timestamp(states("sensor.klaas_samsung_s9_next_alarm")) %}
+        {% set ts = as_timestamp(states("sensor.klaas_samsung_s20_plus_volgende_alarm")) %}
         {{ ts is not none and states("sensor.time") == (ts - 5*60)|timestamp_custom ("%H:%M") }}
