@@ -1,3 +1,4 @@
+---
 blueprint:
   name: deCONZ - Aqara Opple (6 way) remote for lights
   description: |
@@ -77,199 +78,199 @@ action:
       event: '{{ trigger.event.data.event }}'
 
   - choose:
-    # ---------------------------- TURN ON OR OFF ---------------------------- #
-    - conditions:
-      - '{{ event == 1002 }}'
-      sequence:
-        - choose:
-            - conditions: "{{ force_brightness }}"
+      # ---------------------------- TURN ON OR OFF ---------------------------- #
+      - conditions:
+          - '{{ event == 1002 }}'
+        sequence:
+          - choose:
+              - conditions: "{{ force_brightness }}"
+                sequence:
+                  - service: light.turn_on
+                    target: !input 'light_1'
+                    data:
+                      transition: 1
+                      brightness_pct: !input brightness
+            default:
+              - service: light.turn_on
+                target: !input 'light_1'
+                data: {}
+      - conditions:
+          - '{{ event == 2002 }}'
+        sequence:
+          - service: light.turn_off
+            data: {}
+            target: !input 'light_1'
+      - conditions:
+          - '{{ event == 3002 }}'
+        sequence:
+          - choose:
+              - conditions: "{{ force_brightness }}"
+                sequence:
+                  - service: light.turn_on
+                    target: !input 'light_2'
+                    data:
+                      transition: 1
+                      brightness_pct: !input brightness
+            default:
+              - service: light.turn_on
+                target: !input 'light_2'
+                data: {}
+      - conditions:
+          - '{{ event == 4002 }}'
+        sequence:
+          - service: light.turn_off
+            data: {}
+            target: !input 'light_2'
+      - conditions:
+          - '{{ event == 5002 }}'
+        sequence:
+          - choose:
+              - conditions: "{{ force_brightness }}"
+                sequence:
+                  - service: light.turn_on
+                    target: !input 'light_3'
+                    data:
+                      transition: 1
+                      brightness_pct: !input brightness
+            default:
+              - service: light.turn_on
+                target: !input 'light_3'
+                data: {}
+      - conditions:
+          - '{{ event == 6002 }}'
+        sequence:
+          - service: light.turn_off
+            data: {}
+            target: !input 'light_3'
+      # ---------------------------- INCREASE OR DECREASE BRIGHTNESS ---------------------------- #
+      - conditions:
+          - '{{ event == 1001 }}'
+        sequence:
+          - repeat:
+              until:
+                - condition: template
+                  value_template: '{{ event == 1003 }}'
               sequence:
                 - service: light.turn_on
+                  data:
+                    brightness_step_pct: 10
+                    transition: 0.5
                   target: !input 'light_1'
-                  data:
-                    transition: 1
-                    brightness_pct: !input brightness
-          default:
-            - service: light.turn_on
-              target: !input 'light_1'
-              data: {}
-    - conditions:
-      - '{{ event == 2002 }}'
-      sequence:
-      - service: light.turn_off
-        data: {}
-        target: !input 'light_1'
-    - conditions:
-      - '{{ event == 3002 }}'
-      sequence:
-        - choose:
-            - conditions: "{{ force_brightness }}"
+                - delay: '0.2'
+      - conditions:
+          - '{{ event == 2001 }}'
+        sequence:
+          - repeat:
+              until:
+                - condition: template
+                  value_template: '{{ event == 2003 }}'
               sequence:
                 - service: light.turn_on
+                  data:
+                    brightness_step_pct: -10
+                    transition: 0.5
+                  target: !input 'light_1'
+                - delay: '0.5'
+      - conditions:
+          - '{{ event == 3001 }}'
+        sequence:
+          - repeat:
+              until:
+                - condition: template
+                  value_template: '{{ event == 3003 }}'
+              sequence:
+                - service: light.turn_on
+                  data:
+                    brightness_step_pct: 10
                   target: !input 'light_2'
-                  data:
-                    transition: 1
-                    brightness_pct: !input brightness
-          default:
-            - service: light.turn_on
-              target: !input 'light_2'
-              data: {}
-    - conditions:
-      - '{{ event == 4002 }}'
-      sequence:
-      - service: light.turn_off
-        data: {}
-        target: !input 'light_2'
-    - conditions:
-      - '{{ event == 5002 }}'
-      sequence:
-        - choose:
-            - conditions: "{{ force_brightness }}"
+                - delay: '0.2'
+      - conditions:
+          - '{{ event == 4001 }}'
+        sequence:
+          - repeat:
+              until:
+                - condition: template
+                  value_template: '{{ event == 4003 }}'
               sequence:
                 - service: light.turn_on
-                  target: !input 'light_3'
                   data:
-                    transition: 1
-                    brightness_pct: !input brightness
-          default:
-            - service: light.turn_on
-              target: !input 'light_3'
-              data: {}
-    - conditions:
-      - '{{ event == 6002 }}'
-      sequence:
-      - service: light.turn_off
-        data: {}
-        target: !input 'light_3'
-    # ---------------------------- INCREASE OR DECREASE BRIGHTNESS ---------------------------- #
-    - conditions:
-      - '{{ event == 1001 }}'
-      sequence:
-      - repeat:
-          until:
-            - condition: template
-              value_template: '{{ event == 1003 }}'
-          sequence:
+                    brightness_step_pct: -10
+                  target: !input 'light_2'
+                - delay: '0.5'
+      - conditions:
+          - '{{ event == 5001 }}'
+        sequence:
+          - repeat:
+              until:
+                - condition: template
+                  value_template: '{{ event == 5003 }}'
+              sequence:
+                - service: light.turn_on
+                  data:
+                    brightness_step_pct: 10
+                  target: !input 'light_3'
+                - delay: '0.2'
+      - conditions:
+          - '{{ event == 6001 }}'
+        sequence:
+          - repeat:
+              until:
+                - condition: template
+                  value_template: '{{ event == 6003 }}'
+              sequence:
+                - service: light.turn_on
+                  data:
+                    brightness_step_pct: -10
+                  target: !input 'light_3'
+                - delay: '0.5'
+      # ---------------------------- MAX OR MIN BRIGHTNESS ---------------------------- #
+      # ---------- MAX ---------- #
+      - conditions:
+          - '{{ event == 1004 }}'
+        sequence:
           - service: light.turn_on
             data:
-              brightness_step_pct: 10
+              brightness_pct: 100
               transition: 0.5
             target: !input 'light_1'
-          - delay: '0.2'
-    - conditions:
-      - '{{ event == 2001 }}'
-      sequence:
-      - repeat:
-          until:
-            - condition: template
-              value_template: '{{ event == 2003 }}'
-          sequence:
+      - conditions:
+          - '{{ event == 3004 }}'
+        sequence:
           - service: light.turn_on
             data:
-              brightness_step_pct: -10
+              brightness_pct: 100
+              transition: 0.5
+            target: !input 'light_2'
+      - conditions:
+          - '{{ event == 5004 }}'
+        sequence:
+          - service: light.turn_on
+            data:
+              brightness_pct: 100
+              transition: 0.5
+            target: !input 'light_3'
+      # ---------- MIN ---------- #
+      - conditions:
+          - '{{ event == 2004 }}'
+        sequence:
+          - service: light.turn_on
+            data:
+              brightness_pct: 10
               transition: 0.5
             target: !input 'light_1'
-          - delay: '0.5'
-    - conditions:
-      - '{{ event == 3001 }}'
-      sequence:
-      - repeat:
-          until:
-            - condition: template
-              value_template: '{{ event == 3003 }}'
-          sequence:
+      - conditions:
+          - '{{ event == 4004 }}'
+        sequence:
           - service: light.turn_on
             data:
-              brightness_step_pct: 10
+              brightness_pct: 10
+              transition: 0.5
             target: !input 'light_2'
-          - delay: '0.2'
-    - conditions:
-      - '{{ event == 4001 }}'
-      sequence:
-      - repeat:
-          until:
-            - condition: template
-              value_template: '{{ event == 4003 }}'
-          sequence:
+      - conditions:
+          - '{{ event == 6004 }}'
+        sequence:
           - service: light.turn_on
             data:
-              brightness_step_pct: -10
-            target: !input 'light_2'
-          - delay: '0.5'
-    - conditions:
-      - '{{ event == 5001 }}'
-      sequence:
-      - repeat:
-          until:
-            - condition: template
-              value_template: '{{ event == 5003 }}'
-          sequence:
-          - service: light.turn_on
-            data:
-              brightness_step_pct: 10
+              brightness_pct: 10
+              transition: 0.5
             target: !input 'light_3'
-          - delay: '0.2'
-    - conditions:
-      - '{{ event == 6001 }}'
-      sequence:
-      - repeat:
-          until:
-            - condition: template
-              value_template: '{{ event == 6003 }}'
-          sequence:
-          - service: light.turn_on
-            data:
-              brightness_step_pct: -10
-            target: !input 'light_3'
-          - delay: '0.5'
-    # ---------------------------- MAX OR MIN BRIGHTNESS ---------------------------- #
-    # ---------- MAX ---------- #
-    - conditions:
-      - '{{ event == 1004 }}'
-      sequence:
-        - service: light.turn_on
-          data:
-            brightness_pct: 100
-            transition: 0.5
-          target: !input 'light_1'
-    - conditions:
-      - '{{ event == 3004 }}'
-      sequence:
-        - service: light.turn_on
-          data:
-            brightness_pct: 100
-            transition: 0.5
-          target: !input 'light_2'
-    - conditions:
-      - '{{ event == 5004 }}'
-      sequence:
-        - service: light.turn_on
-          data:
-            brightness_pct: 100
-            transition: 0.5
-          target: !input 'light_3'
-    # ---------- MIN ---------- #
-    - conditions:
-      - '{{ event == 2004 }}'
-      sequence:
-        - service: light.turn_on
-          data:
-            brightness_pct: 10
-            transition: 0.5
-          target: !input 'light_1'
-    - conditions:
-      - '{{ event == 4004 }}'
-      sequence:
-        - service: light.turn_on
-          data:
-            brightness_pct: 10
-            transition: 0.5
-          target: !input 'light_2'
-    - conditions:
-      - '{{ event == 6004 }}'
-      sequence:
-        - service: light.turn_on
-          data:
-            brightness_pct: 10
-            transition: 0.5
-          target: !input 'light_3'
