@@ -1,0 +1,62 @@
+---
+blueprint:
+  name: deCONZ - Aqara D1 (1 way) remote for cover
+  description: |
+    Control cover with an Aqara D1 (1 way) remote (WXKG06LM).
+
+    - single press to open cover
+    - double press to close cover
+    - long press to stop the cover from moving
+  domain: automation
+  input:
+    remote:
+      name: Remote
+      description: Aqara D1 remote to use
+      selector:
+        device:
+          integration: deconz
+          manufacturer: LUMI
+          model: lumi.remote.b186acn02
+    cover:
+      name: Cover
+      description: The cover to control
+      selector:
+        target:
+          entity:
+            domain: cover
+
+mode: restart
+max_exceeded: silent
+
+trigger:
+  - platform: event
+    event_type: deconz_event
+    event_data:
+      device_id: !input 'remote'
+
+action:
+  - variables:
+      event: '{{ trigger.event.data.event }}'
+
+  - choose:
+      # Curtain closing
+      - conditions:
+          - '{{ event == 1004 }}'
+        sequence:
+          - service: cover.open_cover
+            target: !input 'cover'
+            data: {}
+      # Curtain open
+      - conditions:
+          - '{{ event == 1002 }}'
+        sequence:
+          - service: cover.close_cover
+            target: !input 'cover'
+            data: {}
+      # Stop curtain
+      - conditions:
+          - '{{ event == 1001 }}'
+        sequence:
+          - service: cover.stop_cover
+            target: !input 'cover'
+            data: {}
