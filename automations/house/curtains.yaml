@@ -4,27 +4,10 @@
     Operate the curtains with an aqara D1 1-way switch
 
   id: f03dd47f-b349-4462-9d16-2112b4770362
-  mode: single
 
-  trigger:
-    - platform: event
-      event_type: deconz_event
-      event_data:
-        unique_id: "00:15:8d:00:04:62:00:56"
-
-  action:
-    - choose:
-        # Curtain open
-        - conditions:
-            - condition: template
-              value_template: "{{ trigger.event.data.event == 1002 }}"
-          sequence:
-            - service: cover.open_cover
-              entity_id: cover.curtain_window
-        # Curtain closing
-        - conditions:
-            - condition: template
-              value_template: "{{ trigger.event.data.event == 1001 }}"
-          sequence:
-            - service: cover.close_cover
-              entity_id: cover.curtain_window
+  use_blueprint:
+    path: aqara_d1_1way_remote.yaml
+    input:
+      remote: 1207f1a3c8f5f1392bc4686c1a133b93
+      cover:
+        entity_id: cover.curtain_window
