@@ -170,7 +170,7 @@ action:
                     brightness_step_pct: -10
                     transition: 0.5
                   target: !input 'light_1'
-                - delay: '0.5'
+                - delay: '1'
       - conditions:
           - '{{ event == 3001 }}'
         sequence:
@@ -196,7 +196,7 @@ action:
                   data:
                     brightness_step_pct: -10
                   target: !input 'light_2'
-                - delay: '0.5'
+                - delay: '1'
       - conditions:
           - '{{ event == 5001 }}'
         sequence:
@@ -222,7 +222,7 @@ action:
                   data:
                     brightness_step_pct: -10
                   target: !input 'light_3'
-                - delay: '0.5'
+                - delay: '1'
       # ---------------------------- MAX OR MIN BRIGHTNESS ---------------------------- #
       # ---------- MAX ---------- #
       - conditions:
