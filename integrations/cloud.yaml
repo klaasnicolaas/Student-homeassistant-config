@@ -43,11 +43,13 @@ cloud:
         - script.channel_9
         - script.play_radio
         - script.go_away
+        - script.goodmorning
         - script.select_hdmi
         - script.select_kabel
         - script.start_cooking
         - script.start_relax
         - script.start_sleep
+        - script.start_sleep_with_alarm
         - script.call_emergency
         - script.false_alarm_emergency
         # Input boolean

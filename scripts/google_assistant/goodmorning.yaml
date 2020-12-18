@@ -1,0 +1,11 @@
+---
+# Goodmorning!
+#
+goodmorning:
+  alias: 'Ik ben wakker'
+  sequence:
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.go_to_sleep
+    # Turn on Automated Lights cycle
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.lights_automated

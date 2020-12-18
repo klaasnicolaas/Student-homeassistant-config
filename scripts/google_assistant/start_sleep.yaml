@@ -1,45 +1,84 @@
 ---
 # This script ensures step by step that my house and I are ready to sleep
 #
-start_sleep:
-  alias: 'Slapen gaan ritueel'
+start_sleep_with_alarm:
+  alias: 'Slapen gaan ritueel - met alarm'
   sequence:
     # Log het slapen gaan
     - service: logbook.log
       data:
         name: Slapen -
-        message: Klaas gaat slapen
+        message: Klaas gaat slapen met alarm
 
     # Switch boolean
     - service: input_boolean.turn_on
-      data:
-        entity_id: input_boolean.go_to_sleep
+      entity_id:
+        - input_boolean.go_to_sleep
+        - input_boolean.wakeup_with_alarm
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.lights_automated
 
     # Stellingkast
     - service: light.turn_off
-      data:
-        entity_id: light.stellingkast
+      entity_id: light.stellingkast
 
     - delay:
         seconds: 10
 
     # Hal
     - service: light.turn_off
-      data:
-        entity_id: light.hal
+      entity_id: light.hal
 
     - delay:
         seconds: 10
 
     # Keuken
     - service: light.turn_off
-      data:
-        entity_id: light.keuken
+      entity_id: light.keuken
 
     - delay:
         seconds: 10
 
     # Woonkamer
     - service: light.turn_off
+      entity_id: light.woonkamer
+
+start_sleep:
+  alias: 'Slapen gaan ritueel - zonder alarm'
+  sequence:
+    # Log het slapen gaan
+    - service: logbook.log
       data:
-        entity_id: light.woonkamer
+        name: Slapen -
+        message: Klaas gaat slapen zonder alarm
+
+    # Switch boolean
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.go_to_sleep
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.lights_automated
+
+    # Stellingkast
+    - service: light.turn_off
+      entity_id: light.stellingkast
+
+    - delay:
+        seconds: 10
+
+    # Hal
+    - service: light.turn_off
+      entity_id: light.hal
+
+    - delay:
+        seconds: 10
+
+    # Keuken
+    - service: light.turn_off
+      entity_id: light.keuken
+
+    - delay:
+        seconds: 10
+
+    # Woonkamer
+    - service: light.turn_off
+      entity_id: light.woonkamer

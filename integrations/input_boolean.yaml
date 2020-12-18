@@ -8,6 +8,10 @@ input_boolean:
     name: Ik ga naar bed/slapen
     icon: mdi:sleep
 
+  wakeup_with_alarm:
+    name: Wakker worden met wekker
+    icon: mdi:alarm-note-off
+
   task_notify:
     name: Huishoudelijke notificatie
     icon: mdi:checkbox-multiple-marked-outline

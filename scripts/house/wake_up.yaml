@@ -13,11 +13,10 @@ wake_up:
 
     # Switch boolean
     - service: input_boolean.turn_off
-      data:
-        entity_id: input_boolean.go_to_sleep
-    - service: input_boolean.turn_off
-      data:
-        entity_id: input_boolean.wakeup_wait
+      entity_id:
+        - input_boolean.go_to_sleep
+        - input_boolean.wakeup_with_alarm
+        - input_boolean.wakeup_wait
 
     # Turn open cover to 30%
     - service: cover.set_cover_position
@@ -73,6 +72,10 @@ wake_up:
     # Put the radio ON
     - service: script.turn_on
       entity_id: script.play_radio
+
+    # Turn on Automated Lights cycle
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.lights_automated
 
     # Turn open cover to 100%
     - service: cover.set_cover_position

@@ -1,6 +1,4 @@
 ---
-# Start wakeup sequence
-#
 - alias: '[House] - Wake up ritual'
   description: >-
     Start wakeup sequence
@@ -18,7 +16,7 @@
     - platform: template
       value_template: >
         {{ is_state('binary_sensor.manual_time_match_wakeup', 'on') and
-           states('sensor.klaas_samsung_s9_next_alarm') in ('none', 'unavailable', 'unknown') }}
+        states('sensor.klaas_samsung_s20_plus_volgende_alarm') in ('none', 'unavailable', 'unknown') }}
   condition:
     condition: and
     conditions:
@@ -30,6 +28,10 @@
       - condition: state
         entity_id: sensor.klaas_status
         state: 'Thuis'
+      # check if I have setup an alarm
+      - condition: state
+        entity_id: input_boolean.wakeup_with_alarm
+        state: 'on'
   action:
     # Start wake up script ritual
     - service: script.wake_up
