@@ -1,13 +1,17 @@
 ---
-#
-# Operate the curtains with an aqara D1 1-way switch
-#
 - alias: '[House] - Operate curtains with switch'
+  description: >-
+    Operate the curtains with an aqara D1 1-way switch
+
+  id: f03dd47f-b349-4462-9d16-2112b4770362
+  mode: single
+
   trigger:
     - platform: event
       event_type: deconz_event
       event_data:
         unique_id: "00:15:8d:00:04:62:00:56"
+
   action:
     - choose:
         # Curtain open
@@ -17,7 +21,6 @@
           sequence:
             - service: cover.open_cover
               entity_id: cover.curtain_window
-
         # Curtain closing
         - conditions:
             - condition: template

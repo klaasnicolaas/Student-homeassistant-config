@@ -1,8 +1,13 @@
 ---
 # If I forget something, Home Assistant will let me know.
 #
-# Automation for when a light is still ON in my house
 - alias: '[People] - Forgot the lights'
+  description: >-
+    Automation for when a light is still ON in my house
+
+  id: fb712601-6f02-4908-9ec1-4213ca66a99b
+  mode: single
+
   trigger:
     # Outside home zone
     - platform: zone
@@ -40,8 +45,13 @@
             - action: turn_light_off
               title: Zet lampen UIT
 
-# Turn all light of when start action from notification
 - alias: '[Light] - Turn all light off'
+  description: >-
+    Turn all light of when start action from notification
+
+  id: ca887d6b-7d28-4150-b821-4002f996a0f5
+  mode: single
+
   trigger:
     # Actionable notification event trigger
     - platform: event

@@ -1,9 +1,12 @@
 ---
-#
-# Give me a TTS notification when my phone is full charged
-# And only if I am home and it is before midnight
-#
 - alias: '[People] - Notify when phone is fully charged'
+  description: >-
+    Give me a TTS notification when my phone is full charged
+    and only if I am home and it is before midnight
+
+  id: 1bb2fb11-efdc-41c4-823a-e39f9b4902d6
+  mode: single
+
   trigger:
     - platform: numeric_state
       entity_id: sensor.klaas_samsung_s20_plus_batterijniveau

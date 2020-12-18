@@ -2,6 +2,12 @@
 # Start wakeup sequence
 #
 - alias: '[House] - Wake up ritual'
+  description: >-
+    Start wakeup sequence
+
+  id: 6db6c97d-fe7d-4217-a8f1-0dd3c01804b0
+  mode: single
+
   trigger:
     # Trigger is moment that current time is 10 minutes before alarm
     # Samsung app Alarm

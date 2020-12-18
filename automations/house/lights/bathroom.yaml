@@ -4,6 +4,12 @@
 # Also the lights will be dimmed in the night
 #
 - alias: '[Light] - Turn ON bathroom light'
+  description: >-
+    Turn the light on when I open a door or if there is motion
+
+  id: 2498664e-7b8d-4de5-9613-25435b183274
+  mode: single
+
   trigger:
     - platform: state
       entity_id: binary_sensor.openclose_sensor_4, binary_sensor.motion_badkamer
@@ -19,6 +25,12 @@
           {% endif %}
 
 - alias: '[Light] - Turn OFF bathroom light'
+  description: >-
+    Turn the light off when there is no motion for 6 minutes
+
+  id: 40f79c91-8483-4ef7-b6d5-4025ad306276
+  mode: single
+
   trigger:
     - platform: state
       entity_id: binary_sensor.motion_badkamer

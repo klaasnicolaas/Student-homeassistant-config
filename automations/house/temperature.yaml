@@ -1,11 +1,16 @@
 ---
-# When it's to hot in house
-#
-- alias: "[House] - Notify when it's too warm in house"
+- alias: "[House] - Notify too warm in house"
+  description: >-
+    Notify me if it gets too warm in house
+
+  id: b9fee44a-eca0-421a-891a-57fae1b91296
+  mode: single
+
   trigger:
     - platform: numeric_state
       entity_id: sensor.home_temperature
       above: 30
+
   action:
     - service: notify.telegram_klaas
       data_template:

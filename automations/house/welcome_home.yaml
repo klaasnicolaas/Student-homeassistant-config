@@ -2,16 +2,24 @@
 # Get a briefing after coming home
 #
 - alias: '[House] - Welcome home message'
+  description: >-
+    Let Google Home do a briefing when I get home
+
+  id: dde327a1-dfa2-4d38-b835-2e158867169b
+  mode: single
+
   trigger:
     # Front door
     - platform: state
       entity_id: binary_sensor.openclose_sensor_1
       to: 'on'
+
   condition:
     # Just Arrived
     - condition: state
       entity_id: sensor.klaas_status
       state: 'Net Aangekomen'
+
   action:
     - delay:
         seconds: 3

@@ -1,9 +1,14 @@
 ---
-# If I don't feel well at home
-# I can press an emergency button to alert people with an exact location of me.
+#
+# If I don't feel well at home.
 #
 - alias: '[People] - Warn in case of emergency'
+  description: >-
+    I can single press an emergency button to alert people with an exact location of me.
+  id: 50f12371-553c-4702-8b78-a4a671afe080
+  mode: single
   initial_state: true
+
   trigger:
     # Button
     - platform: event
@@ -22,7 +27,12 @@
       entity_id: script.call_emergency
 
 - alias: '[People] - It is a false alarm'
+  description: >-
+    Double press to alert people that it was false alarm.
+  id: 5be01cf8-299b-4f4c-b680-cb47905929af
+  mode: single
   initial_state: true
+
   trigger:
     # Button
     - platform: event

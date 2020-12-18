@@ -1,7 +1,11 @@
 ---
-#
-# Trigger when task comes above certain value
 - alias: '[House] - Household task over date'
+  description: >-
+    Trigger when task comes above certain value
+
+  id: 670c5c63-4a1d-4bd3-a473-2933673cce3b
+  mode: single
+
   trigger:
     - platform: numeric_state
       entity_id:
@@ -31,10 +35,17 @@
 
 # Send the notification
 - alias: '[House] - Send household tasks overview'
+  description: >-
+    Send a notification via Telegram about household
+
+  id: 908c4538-a60d-4a66-8b24-fb8b2680b66c
+  mode: single
+
   trigger:
     - platform: state
       entity_id: input_boolean.task_notify
       to: 'on'
+
   action:
     - service: notify.telegram_klaas
       data_template:

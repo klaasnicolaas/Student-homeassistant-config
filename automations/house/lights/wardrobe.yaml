@@ -1,8 +1,12 @@
 ---
-# These automations ensure that the lamp above my wardrobe
-# will go on / off when you open / close the doors.
-#
 - alias: '[Light] - Turn wardrobe light ON'
+  description: >-
+    These automations ensure that the lamp above my wardrobe
+    will go on when you open a door.
+
+  id: af8651c9-55a0-410c-a9cd-bf65c63c8511
+  mode: single
+
   trigger:
     - platform: state
       entity_id: binary_sensor.wardrobe_left, binary_sensor.wardrobe_middle, binary_sensor.wardrobe_right
@@ -19,6 +23,13 @@
         brightness: 128
 
 - alias: '[Light] - Turn wardrobe light OFF'
+  description: >-
+    These automations ensure that the lamp above my wardrobe
+    will go off when you close all the doors.
+
+  id: 9c6b9883-fd6f-4246-b22b-9b328765dcce
+  mode: single
+
   trigger:
     - platform: state
       entity_id: group.wardrobe_sensors
