@@ -5,6 +5,7 @@ title: Thuis
 icon: mdi:home-assistant
 path: home
 cards:
+  ########## Stack 1 ###########
   - type: vertical-stack
     cards:
       # Personal status
@@ -48,7 +49,7 @@ cards:
             entity: alarm_control_panel.alarmsysteem
             tap_action:
               action: none
-            name: Noogeval
+            name: Noodgeval
             state:
               - value: "triggered"
                 color: red
@@ -136,21 +137,37 @@ cards:
       - type: markdown
         title: Google Assistant
         content: |
-          **Ik wil koken** (Google) -> voor als je gaat koken.
-          **Het is avond** (Google) -> voor gedimde lampen in de avond.
-          **Start slaap ritueel** (Google) -> voor wanneer je gaat slapen.
-          **Kanaal X graag** (IFTTT) -> om TV van kanaal te veranderen
-          **Zet TV aan/uit** (Google) -> om de tv aan of uit te doen.
-          **Ik pak me fiets en ga** (Google) -> om het huis af te sluiten.
+          **Ik wil koken** -> voor als je gaat koken.
+          **Het is avond** -> voor gedimde lampen in de avond.
+          **Ik wil morgen vroeg op** -> wakker worden met wekker.
+          **Ik spreek je morgen weer** -> slapen gaan zonder wekker.
+          **Goedemorgen** -> zodat HA weet dat je wakker bent.
+          **Kanaal X graag** (IFTTT) -> om TV van kanaal te veranderen.
+          **Zet TV aan/uit** -> om de tv aan of uit te doen.
+          **Ik pak me fiets en ga** -> om het huis af te sluiten.
 
+  ########## Stack 2 ###########
   # Show the lights in house
   - type: vertical-stack
     cards:
+      - type: custom:button-card
+        color_type: label-card
+        color: 'var(--primary-color)'
+        name: Lampen
       # Light slider groups
       - type: entities
-        title: Lampen
         show_header_toggle: false
         entities:
+          - type: custom:fold-entity-row
+            head: input_boolean.lights_automated
+            padding: 0
+            entities:
+              - input_number.brightness_dimmed
+              - input_number.brightness_normal
+              # - input_number.lux_value_low
+              # - input_number.lux_value_high
+          - type: divider
+          # Entree
           - type: custom:fold-entity-row
             head:
               type: custom:slider-entity-row
@@ -163,6 +180,7 @@ cards:
               - light.hal_lamp_1
               - light.hal_lamp_2
               - light.hal_lamp_3
+          # Kitchen
           - type: custom:fold-entity-row
             head:
               type: custom:slider-entity-row
@@ -175,6 +193,7 @@ cards:
               - light.keuken_lamp_1
               - light.keuken_lamp_2
               - light.keuken_lamp_3
+          # Living room
           - type: custom:fold-entity-row
             head:
               type: custom:slider-entity-row
@@ -187,6 +206,8 @@ cards:
               - light.woonkamer_lamp_1
               - light.woonkamer_lamp_2
               - light.woonkamer_lamp_3
+          - type: divider
+          # Stellingkast
           - type: custom:fold-entity-row
             head:
               type: custom:slider-entity-row
@@ -225,61 +246,70 @@ cards:
             entity: light.badkamer
             toggle: true
             hide_when_off: true
-      - type: entities
-        title: Wekkers
-        show_header_toggle: false
-        entities:
-          - input_datetime.alarm_wakeup
-          - sensor.klaas_samsung_s9_next_alarm
+      - type: custom:stack-in-card
+        mode: vertical
+        cards:
+          - type: custom:time-picker-card
+            entity: input_datetime.alarm_wakeup
+          - type: entities
+            entities:
+              - sensor.klaas_samsung_s20_plus_volgende_alarm
 
-  # Show door and window sensors
-  - type: custom:stack-in-card
-    mode: vertical
-    # title: Sensoren
+  ########## Stack 3 ###########
+  - type: vertical-stack
     cards:
-      - type: glance
-        title: Huis
-        columns: 3
-        entities:
-          - entity: binary_sensor.openclose_sensor_1
-          - entity: binary_sensor.openclose_sensor_2
-          - entity: binary_sensor.openclose_sensor_3
-          - entity: binary_sensor.motion_huis
-            name: Huis
-          - entity: binary_sensor.airco_status
-      - type: glance
-        title: Kledingkast
-        entities:
-          - entity: binary_sensor.wardrobe_left
-            name: Links
-          - entity: binary_sensor.wardrobe_middle
-            name: Midden
-          - entity: binary_sensor.wardrobe_right
-            name: Rechts
-      - type: glance
-        title: Badkamer
-        entities:
-          - entity: binary_sensor.openclose_sensor_4
-            name: Deur
-          - entity: binary_sensor.motion_badkamer
-            name: Badkamer
-          - entity: binary_sensor.bathroom_water_leak
+      - type: custom:button-card
+        color_type: label-card
+        color: 'var(--primary-color)'
+        name: Huis
+      # Show door and window sensors
+      - type: custom:stack-in-card
+        mode: vertical
+        # title: Sensoren
+        cards:
+          - type: glance
+            columns: 3
+            entities:
+              - entity: binary_sensor.openclose_sensor_1
+              - entity: binary_sensor.openclose_sensor_2
+              - entity: binary_sensor.openclose_sensor_3
+              - entity: binary_sensor.motion_huis
+                name: Huis
+              - entity: binary_sensor.airco_status
+              - entity: binary_sensor.bathroom_water_leak
+          - type: glance
+            title: Kledingkast
+            entities:
+              - entity: binary_sensor.wardrobe_left
+                name: Links
+              - entity: binary_sensor.wardrobe_middle
+                name: Midden
+              - entity: binary_sensor.wardrobe_right
+                name: Rechts
+          - type: glance
+            title: Badkamer
+            entities:
+              - entity: binary_sensor.openclose_sensor_4
+                name: Deur
+              - entity: binary_sensor.motion_badkamer
+                name: Badkamer
+              - entity: binary_sensor.shower_status
+          # Curtains
+          - type: 'custom:love-lock-card'
+            tite: Gordijnen
+            popup: confirm
+            cards:
+              - type: entities
+                title: Gordijnen
+                show_header_toggle: false
+                entities:
+                  - entity: cover.curtain_window
+                    name: Gordijn
+                  - entity: binary_sensor.curtain
+                    state_color: true
+                    name: Status van de gordijn
 
-  # Curtains
-  - type: 'custom:love-lock-card'
-    tite: Gordijnen
-    popup: confirm
-    cards:
-      - type: entities
-        title: Gordijnen
-        show_header_toggle: false
-        entities:
-          - entity: cover.curtain_window
-            name: Gordijn
-          - entity: binary_sensor.curtain
-            state_color: true
-            name: Status van de gordijn
-
+  ########## Stack 4 ###########
   # Temperature and humidity in house
   - type: vertical-stack
     cards:
