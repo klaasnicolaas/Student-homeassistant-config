@@ -36,3 +36,8 @@ input_boolean:
 
   alarm_armed:
     name: Alarm geactiveerd
+
+  # Automated lights
+  lights_automated:
+    name: Geautomatiseerde verlichting
+    icon: mdi:brightness-auto

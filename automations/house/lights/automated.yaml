@@ -1,0 +1,114 @@
+---
+- alias: '[Light] - Turn lights on automated'
+  description: >-
+    Turn the lights on if LUX value is low
+  id: c4832407-c05d-4dba-94c8-52712d401ea4
+  mode: single
+  trigger:
+    - platform: numeric_state
+      entity_id:
+        - sensor.woonkamer_light_sensor
+        - sensor.kitchen_light_sensor
+      below: 15
+  condition:
+    # Check if Automated lights mode is enabled
+    - condition: state
+      entity_id: input_boolean.lights_automated
+      state: 'on'
+    # Check if I'm home :)
+    - condition: state
+      entity_id: sensor.klaas_status
+      state: 'Thuis'
+    # Prevent trigger in the morning/night
+    - condition: state
+      entity_id: binary_sensor.afternoon
+      state: 'on'
+  action:
+    - choose:
+        # Hal and kitchen
+        - conditions:
+            - condition: template
+              value_template: "{{ trigger.entity_id == 'sensor.kitchen_light_sensor' }}"
+            # Check if light are off
+            - condition: state
+              entity_id: light.hal
+              state: 'off'
+            - condition: state
+              entity_id: light.keuken
+              state: 'off'
+          sequence:
+            - service: light.turn_on
+              entity_id:
+                - light.hal
+                - light.keuken
+              data:
+                brightness_pct: "{{ states('input_number.brightness_dimmed') | round }}"
+
+        # Living room
+        - conditions:
+            - condition: template
+              value_template: "{{ trigger.entity_id == 'sensor.woonkamer_light_sensor' }}"
+            # Check if light are off
+            - condition: state
+              entity_id: light.woonkamer
+              state: 'off'
+          sequence:
+            - service: light.turn_on
+              entity_id: light.woonkamer
+              data:
+                brightness_pct: "{{ states('input_number.brightness_dimmed') | round }}"
+
+- alias: '[Light] - Turn lights off automated'
+  description: >-
+    Turn the lights off if LUX value is high
+  id: 94f3b667-32d2-4797-8f6f-5f9e758bb5d6
+  mode: single
+  trigger:
+    - platform: numeric_state
+      entity_id:
+        - sensor.woonkamer_light_sensor
+        - sensor.kitchen_light_sensor
+      above: 45
+  condition:
+    # Check if Automated lights mode is enabled
+    - condition: state
+      entity_id: input_boolean.lights_automated
+      state: 'on'
+    # Check if I'm home :)
+    - condition: state
+      entity_id: sensor.klaas_status
+      state: 'Thuis'
+    # Prevent trigger in the morning/night
+    # - condition: state
+    # entity_id: binary_sensor.afternoon
+    # state: 'on'
+  action:
+    - choose:
+        # Hal and kitchen
+        - conditions:
+            - condition: template
+              value_template: "{{ trigger.entity_id == 'sensor.kitchen_light_sensor' }}"
+            # Check if light are on
+            - condition: state
+              entity_id: light.hal
+              state: 'on'
+            - condition: state
+              entity_id: light.keuken
+              state: 'on'
+          sequence:
+            - service: light.turn_off
+              entity_id:
+                - light.hal
+                - light.keuken
+
+        # Living room
+        - conditions:
+            - condition: template
+              value_template: "{{ trigger.entity_id == 'sensor.woonkamer_light_sensor' }}"
+            # Check if light are on
+            - condition: state
+              entity_id: light.woonkamer
+              state: 'on'
+          sequence:
+            - service: light.turn_off
+              entity_id: light.woonkamer

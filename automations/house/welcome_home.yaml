@@ -1,6 +1,4 @@
 ---
-# Get a briefing after coming home
-#
 - alias: '[House] - Welcome home message'
   description: >-
     Let Google Home do a briefing when I get home
@@ -21,6 +19,8 @@
       state: 'Net Aangekomen'
 
   action:
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.lights_automated
     - delay:
         seconds: 3
     - service: script.turn_on
