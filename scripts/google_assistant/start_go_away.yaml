@@ -5,6 +5,10 @@
 go_away:
   alias: 'Verlaat het huis'
   sequence:
+    # Turn off automated lights
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.lights_automated
+
     # Turn all the lights off
     - service: light.turn_off
       data:
@@ -17,10 +21,8 @@ go_away:
 
     # Close cover
     - service: cover.close_cover
-      data:
-        entity_id: cover.curtain_window
+      entity_id: cover.curtain_window
 
     # Stop music
     - service: media_player.media_stop
-      data:
-        entity_id: media_player.google_home
+      entity_id: media_player.google_home
