@@ -19,9 +19,10 @@
     - service: light.turn_on
       entity_id: light.badkamer
       data_template:
-        brightness: >
-          {% if is_state ('binary_sensor.night' , 'on') %} 13
-          {% else %} 115
+        color_temp: 380
+        brightness_pct: >
+          {% if is_state ('binary_sensor.night' , 'on') %} 15
+          {% else %} 70
           {% endif %}
 
 - alias: '[Light] - Turn OFF bathroom light'
@@ -46,3 +47,69 @@
     - service: light.turn_off
       data:
         entity_id: light.badkamer
+
+- alias: '[Light] - Shower warning - 5 min'
+  description: >-
+    Show me a green color warning when showring for 5 min
+
+  id: f793694b-3cb0-41a8-99b0-53e89cfe0b17
+  mode: single
+
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.shower_status
+      to: 'on'
+      for:
+        minutes: 5
+  condition:
+    # The bathroom light should be ON
+    - condition: state
+      entity_id: light.badkamer
+      state: 'on'
+  action:
+    - service: scene.create
+      data:
+        scene_id: bathroom_before
+        snapshot_entities:
+          - light.badkamer
+    - service: light.turn_on
+      entity_id: light.badkamer
+      data:
+        transition: 5
+        rgb_color: [109, 255, 108]
+    - delay: 00:00:10
+    - service: scene.turn_on
+      entity_id: scene.bathroom_before
+
+- alias: '[Light] - Shower warning - 10 min'
+  description: >-
+    Show me a red color warning when showring to loooooooong
+
+  id: 6ae1e947-7ca9-4d81-9ff0-640759f353f8
+  mode: single
+
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.shower_status
+      to: 'on'
+      for:
+        minutes: 10
+  condition:
+    # The bathroom light should be ON
+    - condition: state
+      entity_id: light.badkamer
+      state: 'on'
+  action:
+    - service: scene.create
+      data:
+        scene_id: bathroom_before
+        snapshot_entities:
+          - light.badkamer
+    - service: light.turn_on
+      entity_id: light.badkamer
+      data:
+        transition: 5
+        rgb_color: [255, 75, 75]
+    - delay: 00:00:10
+    - service: scene.turn_on
+      entity_id: scene.bathroom_before
