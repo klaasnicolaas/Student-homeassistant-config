@@ -7,7 +7,7 @@ homeassistant:
   # Packages #
   packages: !include_dir_named integrations
   # Whitelist #
-  whitelist_external_dirs: !secret whitelist_dir_config
+  allowlist_external_dirs: !secret whitelist_dir_config
   # Authentication #
   auth_providers:
     - type: homeassistant
