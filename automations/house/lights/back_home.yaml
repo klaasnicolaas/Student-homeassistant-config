@@ -1,0 +1,22 @@
+---
+- alias: '[Light] - Turn on light when come home'
+  description: >-
+    Automate the lights for when you return home
+  id: b9d75a5f-1b8b-4f2c-bc87-b3898b2f3a0f
+  mode: single
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.openclose_sensor_1
+      to: 'on'
+  condition:
+    # Just arrived
+    - condition: state
+      entity_id: sensor.klaas_status
+      state: 'Net Aangekomen'
+    - condition: numeric_state
+      entity_id: sun.sun
+      value_template: "{{ state.attributes.elevation }}"
+      below: 3
+  action:
+    - service: scene.turn_on
+      entity_id: scene.avond
