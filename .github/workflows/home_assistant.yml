@@ -39,7 +39,11 @@ jobs:
       - name: Getting your configuration from GitHub
         uses: actions/checkout@v2
       - name: Copy stub file into configuration folder
-        run: cp ./.stubs/fake_secrets.yaml secrets.yaml
+        run: |
+          cp ./.stubs/fake_secrets.yaml secrets.yaml
+          touch ./home-assistant_v2.db
+          touch ./home-assistant.log
+          touch ./OZW_Log.txt
       - name: Home Assistant Version
         uses: "docker://homeassistant/home-assistant:stable"
         with:
@@ -59,7 +63,11 @@ jobs:
       - name: Getting your configuration from GitHub
         uses: actions/checkout@v2
       - name: Copy stub file into configuration folder
-        run: cp ./.stubs/fake_secrets.yaml secrets.yaml
+        run: |
+          cp ./.stubs/fake_secrets.yaml secrets.yaml
+          touch ./home-assistant_v2.db
+          touch ./home-assistant.log
+          touch ./OZW_Log.txt
       - name: Home Assistant Version
         uses: "docker://homeassistant/home-assistant:beta"
         with:
@@ -79,7 +87,11 @@ jobs:
       - name: Getting your configuration from GitHub
         uses: actions/checkout@v2
       - name: Copy stub file into configuration folder
-        run: cp ./.stubs/fake_secrets.yaml secrets.yaml
+        run: |
+          cp ./.stubs/fake_secrets.yaml secrets.yaml
+          touch ./home-assistant_v2.db
+          touch ./home-assistant.log
+          touch ./OZW_Log.txt
       - name: Home Assistant Version
         uses: "docker://homeassistant/home-assistant:dev"
         with:
