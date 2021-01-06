@@ -2,8 +2,8 @@
 ignore: |
   custom_components/
   ip_bans.yaml
-  themes/*
-  .github/*
+  themes/
+  .github/
 rules:
   braces:
     level: error
