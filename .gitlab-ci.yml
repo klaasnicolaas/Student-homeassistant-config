@@ -16,7 +16,7 @@ stages:
     PYTHONPATH: "/usr/src/app:$PYTHONPATH"
   before_script:
     - python -m homeassistant --version
-    - cp fake_secrets.yaml secrets.yaml
+    - cp ./.stubs/fake_secrets.yaml secrets.yaml
     - touch ./home-assistant_v2.db
     - touch ./home-assistant.log
     - touch ./OZW_Log.txt
