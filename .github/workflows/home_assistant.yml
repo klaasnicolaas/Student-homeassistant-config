@@ -49,7 +49,7 @@ jobs:
         uses: "docker://homeassistant/home-assistant:stable"
         with:
           args: |
-            python -m homeassistant --config ./config/ --script check_config  --info all
+            python -m homeassistant --config . --script check_config  --info all
   
   #Home Assistant - Beta
   home_assistant_beta:
@@ -69,7 +69,7 @@ jobs:
         uses: "docker://homeassistant/home-assistant:beta"
         with:
           args: |
-            python -m homeassistant --config ./config/ --script check_config  --info all
+            python -m homeassistant --config . --script check_config  --info all
 
   #Home Assistant - Dev
   home_assistant_dev:
@@ -89,4 +89,4 @@ jobs:
         uses: "docker://homeassistant/home-assistant:dev"
         with:
           args: |
-            python -m homeassistant --config ./config/ --script check_config  --info all
+            python -m homeassistant --config . --script check_config  --info all
