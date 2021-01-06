@@ -1,9 +1,9 @@
 ---
 ignore: |
-  config/custom_components/
-  config/ip_bans.yaml
-  config/themes/*
-  config/.github/*
+  custom_components/
+  ip_bans.yaml
+  themes/*
+  .github/*
 rules:
   braces:
     level: error
