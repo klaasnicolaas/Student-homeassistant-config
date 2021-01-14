@@ -5,27 +5,25 @@ on:
   push:
   pull_request:
   schedule:
-    - cron: 0 3 * * *
+    - cron: 0 2 * * *
 
 jobs:
   # YAML Lint
   yamllint:
-    name: YAML Lint
+    name: 🧹 YAML Lint
     runs-on: ubuntu-latest
     steps:
-      - name: Getting your configuration from GitHub
+      - name: ⤵️ Check out configuration from GitHub
         uses: actions/checkout@v2
-      - name: Running YAMLlint
-        uses: "docker://pipelinecomponents/yamllint:latest"
-        with:
-          args: yamllint .
+      - name: 🚀 Run yamllint
+        uses: frenck/action-yamllint@v1
 
   #Remark Lint
   remarklint:
     name: Remark Lint
     runs-on: ubuntu-latest
     steps:
-      - name: Getting your configuration from GitHub
+      - name: ⤵️ Check out configuration from GitHub
         uses: actions/checkout@v2
       - name: Running Remark lint
         uses: "docker://pipelinecomponents/remark-lint:latest"
