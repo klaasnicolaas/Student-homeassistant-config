@@ -1,7 +1,10 @@
 ---
-#
-# Control mute for TV
 - alias: '[Media] - Toggle TV mute'
+  description: >-
+    Control mute for TV
+  id: 2ba53b49-f36f-40c8-9955-7cdb0188e2ae
+  mode: single
+
   trigger:
     - platform: state
       entity_id: input_boolean.tv_mute

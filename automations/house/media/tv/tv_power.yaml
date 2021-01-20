@@ -1,7 +1,10 @@
 ---
-#
-# Control TV power
 - alias: '[Media] - Toggle TV switch on'
+  description: >-
+    Turn the TV switch on
+  id: 96cebf6c-1893-4c7e-9880-47b21b27307f
+  mode: single
+
   trigger:
     - platform: state
       entity_id: input_boolean.tv_power
@@ -12,6 +15,11 @@
         entity_id: switch.watch_tv
 
 - alias: '[Media] - Toggle TV switch off'
+  description: >-
+    Turn the TV switch off
+  id: e2c39cc9-2de0-4d89-a083-49286d763bf5
+  mode: single
+
   trigger:
     - platform: state
       entity_id: input_boolean.tv_power
@@ -22,6 +30,11 @@
         entity_id: switch.watch_tv
 
 - alias: '[Media] - Turn TV boolean on'
+  description: >-
+    Turn TV Boolean on
+  id: 8a8ddd08-8312-42fa-b190-d2dcb19ab5c9
+  mode: single
+
   trigger:
     - platform: template
       value_template: "{{ is_state_attr('remote.harmony_hub', 'current_activity', 'Tv kijken') }}"
@@ -31,6 +44,11 @@
         entity_id: input_boolean.tv_power
 
 - alias: '[Media] - Turn TV boolean off'
+  description: >-
+    Turn TV boolean off
+  id: d909420b-95fe-4858-84db-07e4804f31fa
+  mode: single
+
   trigger:
     - platform: template
       value_template: "{{ is_state_attr('remote.harmony_hub', 'current_activity', 'PowerOff') }}"

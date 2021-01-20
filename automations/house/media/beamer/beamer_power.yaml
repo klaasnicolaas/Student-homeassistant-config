@@ -1,7 +1,10 @@
 ---
-#
-# Turn the beamer on or off
 - alias: '[Media] - Toggle Beamer power'
+  description: >-
+    Turn the beamer on or off
+  id: 1f425977-25f5-4725-9b89-bc5c508c1513
+  mode: single
+
   trigger:
     - platform: state
       entity_id: input_boolean.beamer_power
