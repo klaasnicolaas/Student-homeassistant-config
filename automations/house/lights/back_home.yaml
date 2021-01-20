@@ -13,10 +13,10 @@
     - condition: state
       entity_id: sensor.klaas_status
       state: 'Net Aangekomen'
+    # Check light sensor value
     - condition: numeric_state
-      entity_id: sun.sun
-      value_template: "{{ state.attributes.elevation }}"
-      below: 3
+      entity_id: sensor.kitchen_light_sensor
+      below: 5
   action:
     - service: scene.turn_on
       entity_id: scene.avond
