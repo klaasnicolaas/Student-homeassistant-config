@@ -1,6 +1,5 @@
 ---
 ########## Household ###########
-id: household
 title: Huishouden
 icon: mdi:calendar-check
 path: household

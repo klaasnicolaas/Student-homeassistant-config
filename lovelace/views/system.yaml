@@ -1,6 +1,5 @@
 ---
 ########## System ###########
-id: system_info
 title: Systeeminformatie
 icon: mdi:server
 path: system

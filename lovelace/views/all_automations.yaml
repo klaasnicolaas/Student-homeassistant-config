@@ -1,80 +1,104 @@
 ---
 ########## Automations ###########
-id: automation
 title: Automatisering
 icon: mdi:creation
 path: automations
 cards:
   # System
-  - type: custom:auto-entities
-    card:
-      type: entities
-      title: System
-      show_header_toggle: false
-    filter:
-      include:
-        - entity_id: automation.system*
-          options:
-            type: custom:multiple-entity-row
-            toggle: true
-            secondary_info: last-changed
-      exclude:
-        - entity_id: automation.system_ifttt_handling
-        - entity_id: automation.system_perform_system_checks
-        - entity_id: automation.system_perform_log_checks
+  - type: vertical-stack
+    cards:
+      - type: custom:button-card
+        color_type: label-card
+        color: 'var(--primary-color)'
+        name: Systeem
+      - type: custom:auto-entities
+        card:
+          type: entities
+          show_header_toggle: false
+        filter:
+          include:
+            - entity_id: automation.system*
+              options:
+                type: custom:multiple-entity-row
+                toggle: true
+                secondary_info: last-changed
+          exclude:
+            - entity_id: automation.system_ifttt_handling
+            - entity_id: automation.system_perform_system_checks
+            - entity_id: automation.system_perform_log_checks
 
   # People
-  - type: custom:auto-entities
-    card:
-      type: entities
-      title: People
-      show_header_toggle: false
-    filter:
-      include:
-        - entity_id: automation.people*
-          options:
-            type: custom:multiple-entity-row
-            toggle: true
-            secondary_info: last-changed
+  - type: vertical-stack
+    cards:
+      - type: custom:button-card
+        color_type: label-card
+        color: 'var(--primary-color)'
+        name: People
+      - type: custom:auto-entities
+        card:
+          type: entities
+          show_header_toggle: false
+        filter:
+          include:
+            - entity_id: automation.people*
+              options:
+                type: custom:multiple-entity-row
+                toggle: true
+                secondary_info: last-changed
 
   # House
-  - type: custom:auto-entities
-    card:
-      type: entities
-      title: House
-      show_header_toggle: false
-    filter:
-      include:
-        - entity_id: automation.house*
-          options:
-            type: custom:multiple-entity-row
-            toggle: true
-            secondary_info: last-changed
+  - type: vertical-stack
+    cards:
+      - type: custom:button-card
+        color_type: label-card
+        color: 'var(--primary-color)'
+        name: House
+      - type: custom:auto-entities
+        card:
+          type: entities
+          show_header_toggle: false
+        filter:
+          include:
+            - entity_id: automation.house*
+              options:
+                type: custom:multiple-entity-row
+                toggle: true
+                secondary_info: last-changed
 
   # Lights
-  - type: custom:auto-entities
-    card:
-      type: entities
-      title: Lights
-      show_header_toggle: false
-    filter:
-      include:
-        - entity_id: automation.light*
-          options:
-            type: custom:multiple-entity-row
-            toggle: true
-            secondary_info: last-changed
+  - type: vertical-stack
+    cards:
+      - type: custom:button-card
+        color_type: label-card
+        color: 'var(--primary-color)'
+        name: Lights
+      - type: custom:auto-entities
+        card:
+          type: entities
+          show_header_toggle: false
+        filter:
+          include:
+            - entity_id: automation.light*
+              options:
+                type: custom:multiple-entity-row
+                toggle: true
+                secondary_info: last-changed
 
   # Media
-  - type: custom:auto-entities
-    card:
-      type: entities
-      title: Media
-      show_header_toggle: false
-    filter:
-      include:
-        - entity_id: automation.media*
-          options:
-            type: custom:multiple-entity-row
-            toggle: true
-            secondary_info: last-changed
+  - type: vertical-stack
+    cards:
+      - type: custom:button-card
+        color_type: label-card
+        color: 'var(--primary-color)'
+        name: Media
+      - type: custom:auto-entities
+        card:
+          type: entities
+          show_header_toggle: false
+        filter:
+          include:
+            - entity_id: automation.media*
+              options:
+                type: custom:multiple-entity-row
+                toggle: true
+                secondary_info: last-changed

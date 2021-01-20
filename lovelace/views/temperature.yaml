@@ -1,6 +1,5 @@
 ---
 ########## Dashboard ###########
-id: temperature
 title: Temperatuur
 icon: mdi:temperature-celsius
 path: temperature

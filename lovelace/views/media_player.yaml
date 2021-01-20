@@ -1,6 +1,5 @@
 ---
 ########## Media Player ###########
-id: media_player
 title: Media Player
 icon: mdi:play-pause
 path: media
@@ -28,7 +27,7 @@ cards:
     cards:
       - type: horizontal-stack
         cards:
-          - type: entity-button
+          - type: button
             entity: script.channel_1
             icon: mdi:numeric-1-box-outline
             name: NED 1
@@ -37,7 +36,7 @@ cards:
               service: script.turn_on
               service_data:
                 entity_id: script.channel_1
-          - type: entity-button
+          - type: button
             entity: script.channel_2
             icon: mdi:numeric-2-box-outline
             name: NED 2
@@ -46,7 +45,7 @@ cards:
               service: script.turn_on
               service_data:
                 entity_id: script.channel_2
-          - type: entity-button
+          - type: button
             entity: script.channel_3
             icon: mdi:numeric-3-box-outline
             name: NED 3
@@ -57,7 +56,7 @@ cards:
                 entity_id: script.channel_3
       - type: horizontal-stack
         cards:
-          - type: entity-button
+          - type: button
             entity: script.channel_4
             icon: mdi:numeric-4-box-outline
             name: RTL 4
@@ -66,7 +65,7 @@ cards:
               service: script.turn_on
               service_data:
                 entity_id: script.channel_4
-          - type: entity-button
+          - type: button
             entity: script.channel_5
             icon: mdi:numeric-5-box-outline
             name: RTL 5
@@ -75,7 +74,7 @@ cards:
               service: script.turn_on
               service_data:
                 entity_id: script.channel_5
-          - type: entity-button
+          - type: button
             entity: script.channel_6
             icon: mdi:numeric-6-box-outline
             name: SBS 6
@@ -86,7 +85,7 @@ cards:
                 entity_id: script.channel_6
       - type: horizontal-stack
         cards:
-          - type: entity-button
+          - type: button
             entity: script.channel_7
             icon: mdi:numeric-7-box-outline
             name: RTL 7
@@ -95,7 +94,7 @@ cards:
               service: script.turn_on
               service_data:
                 entity_id: script.channel_7
-          - type: entity-button
+          - type: button
             entity: script.channel_8
             icon: mdi:numeric-8-box-outline
             name: RTL 8
@@ -104,7 +103,7 @@ cards:
               service: script.turn_on
               service_data:
                 entity_id: script.channel_8
-          - type: entity-button
+          - type: button
             entity: script.channel_9
             icon: mdi:numeric-9-box-outline
             name: NET 5
@@ -115,7 +114,7 @@ cards:
                 entity_id: script.channel_9
       - type: horizontal-stack
         cards:
-          - type: entity-button
+          - type: button
             entity: script.select_hdmi
             icon: mdi:video-input-hdmi
             name: HDMI
@@ -124,7 +123,7 @@ cards:
               service: script.turn_on
               service_data:
                 entity_id: script.select_hdmi
-          - type: entity-button
+          - type: button
             entity: script.channel_0
             icon: mdi:numeric-0-box-outline
             name: Kanaal 0
@@ -133,7 +132,7 @@ cards:
               service: script.turn_on
               service_data:
                 entity_id: script.channel_0
-          - type: entity-button
+          - type: button
             entity: script.select_kabel
             icon: mdi:television
             name: Kabel TV
@@ -144,19 +143,19 @@ cards:
                 entity_id: script.select_kabel
       - type: horizontal-stack
         cards:
-          - type: entity-button
+          - type: button
             entity: switch.watch_tv
             icon: mdi:power-standby
             name: TV Aan/Uit
             tap_action:
               action: toggle
-          - type: entity-button
+          - type: button
             entity: input_boolean.tv_mute
             icon: mdi:volume-high
             name: Geluid Aan/Uit
             tap_action:
               action: toggle
-          - type: entity-button
+          - type: button
             entity: input_boolean.beamer_power
             icon: mdi:projector
             name: Beamer Aan/Uit

@@ -1,6 +1,5 @@
 ---
 ########## Dashboard ###########
-id: dashboard
 title: Thuis
 icon: mdi:home-assistant
 path: home
