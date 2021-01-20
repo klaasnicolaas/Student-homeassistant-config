@@ -1,9 +1,7 @@
 ---
-# If I forget something, Home Assistant will let me know.
-#
-- alias: '[People] - Forgot the lights'
+- alias: '[House] - Forgot the lights'
   description: >-
-    Automation for when a light is still ON in my house
+    Automation for when a light is still ON in my house when I leave
 
   id: fb712601-6f02-4908-9ec1-4213ca66a99b
   mode: single
@@ -40,6 +38,37 @@
         title: 'Lampen vergeten!'
         message: >
           Je bent vertrokken, maar de lampen staan nog aan.
+        data:
+          actions:
+            - action: turn_light_off
+              title: Zet lampen UIT
+
+- alias: '[House] - Light turns on in empty house'
+  description: >-
+    Notify when a light was turned on but nobody is home
+
+  id: 20faccbc-348c-4520-abdb-9d7d9f6827ea
+  mode: single
+
+  trigger:
+    - platform: state
+      entity_id:
+        - light.badkamer
+        - light.hal
+        - light.keuken
+        - light.woonkamer
+      from: 'off'
+      to: 'on'
+  condition:
+    - condition: state
+      entity_id: device_tracker.klaas_samsung_s20_plus
+      state: 'not_home'
+  action:
+    - service: notify.mobile_app_klaas_samsung_s20_plus
+      data:
+        title: 'Lamp is aan gegaan!'
+        message: >
+          Een lamp uit de groep {{ trigger.to_state.attributes.friendly_name }} is aan gegaan.
         data:
           actions:
             - action: turn_light_off
