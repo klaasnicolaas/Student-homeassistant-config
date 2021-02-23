@@ -216,8 +216,8 @@ cards:
             group_config:
               secondary_info: last-changed
             entities:
-              - light.blitzwolf_ledstrip_1
-              - light.blitzwolf_ledstrip_2
+              - light.blitzwolf_bw_lt11_led_strip_links
+              - light.blitzwolf_bw_lt11_led_strip_rechts
           - type: custom:rgb-light-card
             entity: light.stellingkast
             justify: center

@@ -5,5 +5,5 @@
 - platform: group
   name: Stellingkast
   entities:
-    - light.blitzwolf_ledstrip_1
-    - light.blitzwolf_ledstrip_2
+    - light.blitzwolf_bw_lt11_led_strip_left
+    - light.blitzwolf_bw_lt11_led_strip_right
