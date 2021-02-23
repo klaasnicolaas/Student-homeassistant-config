@@ -19,7 +19,7 @@ Be free to use the code from this repo for your own Home Assistant environment, 
 
 ## Status Information
 
-| [![Gitlab CI][gitlabci-shield]][gitlabci] | [![GitHub Last Commit][last-commit-shield]][commits]|
+| [![Home Assistant CI][homeassistantci-shield]][homeassistantci] | [![GitHub Last Commit][last-commit-shield]][commits]|
 |:---:|:---:|
 | This shows whether the configuration in this repo is valid | This shows how up to date this repo is |
 | [![GitHub issues][issues-shield]][issues] | [![HA Version][ha-version-shield]][home-assistant] |
@@ -52,7 +52,7 @@ Below is a list of all hardware in-house
 - Xiaomi Aqara [Smart switch][xiaomi_switch]
 - Xiaomi Mijia [Smart Light Sensors][xiaomi_light_sensor]
 - Xiaomi Aqara [D1 - 1 way switch][xiaomi_d1_1way_switch]
-- Blitzwolf [BW-LT11] led strips
+- Blitzwolf [BW-LT11] led strips (ESPHome flashed)
 - There is more soon :)
 
 ---
@@ -109,7 +109,7 @@ SOFTWARE.
 [stars-shield]: https://img.shields.io/github/stars/klaasnicolaas/Student-homeassistant-config.svg
 [ha-version-shield]: https://img.shields.io/badge/Home%20Assistant-2021.2.3-blue.svg
 [uptime-shield]: https://img.shields.io/uptimerobot/status/m782530846-8e789b9650b16e61fb717d28.svg
-[gitlabci-shield]: https://gitlab.com/klaasnicolaas/Student-homeassistant-config/badges/master/pipeline.svg
+[homeassistantci-shield]: https://github.com/klaasnicolaas/Student-homeassistant-config/actions/workflows/home_assistant.yml/badge.svg
 [paypal-shield]: https://img.shields.io/badge/BuyMeAFanta-Paypal-orange.svg
 [issues-shield]: https://img.shields.io/github/issues/klaasnicolaas/Student-homeassistant-config.svg
 
@@ -117,7 +117,7 @@ SOFTWARE.
 [stars]: https://github.com/klaasnicolaas/Student-homeassistant-config/stargazers
 [home-assistant]: https://home-assistant.io
 [uptime-robot]: https://uptimerobot.com
-[gitlabci]: https://gitlab.com/klaasnicolaas/Student-homeassistant-config/pipelines
+[homeassistantci]: https://github.com/klaasnicolaas/Student-homeassistant-config/actions/workflows/home_assistant.yml
 [paypal]: https://www.paypal.me/dexterfpv
 [issues]: https://github.com/klaasnicolaas/Student-homeassistant-config/issues
 [smarthome]: https://github.com/klaasnicolaas/Smarthome-homeassistant-config
