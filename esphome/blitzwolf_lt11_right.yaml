@@ -1,3 +1,4 @@
+---
 esphome:
   name: blitzwolf_lt11_rechts
   platform: ESP8266
@@ -34,7 +35,7 @@ binary_sensor:
     pin:
       number: GPIO0
       mode: INPUT_PULLUP
-      inverted: True
+      inverted: true
     name: "Blitzwolf LED Strip Button"
     on_press:
       - light.toggle: led_light

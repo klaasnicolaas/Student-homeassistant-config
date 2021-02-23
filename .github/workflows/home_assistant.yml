@@ -52,6 +52,7 @@ jobs:
           version: "${{ matrix.version }}"
 
   esphome:
+    name: "🛠️ ESPHome check"
     runs-on: ubuntu-latest
     needs: [yamllint]
     steps:
