@@ -69,8 +69,8 @@ jobs:
           pip list
           esphome version
       - name: Copy stub files into configuration folder
-        run: cp -R ./.stubs/* ./esphome/
+        run: cp -R ./.stubs/fake-secrets.yaml ./esphome/secrets.yaml
       - name: Run esphome on all files
         # yamllint disable rule:line-length
         run: |
-          for file in $(find ./esphome -type f -name "*.yaml" -not -name "fake_secrets.yaml"); do esphome "${file}" config; done
+          for file in $(find ./esphome -type f -name "*.yaml" -not -name "secrets.yaml"); do esphome "${file}" config; done
