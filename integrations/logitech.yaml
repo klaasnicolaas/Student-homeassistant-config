@@ -1,7 +1,0 @@
----
-# https://www.home-assistant.io/components/harmony/
-#
-remote:
-  - platform: harmony
-    name: Harmony Hub
-    host: !secret harmony_ip
