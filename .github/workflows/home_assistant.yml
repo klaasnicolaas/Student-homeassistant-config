@@ -37,6 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [yamllint, remarklint]
     strategy:
+      fail-fast: false
       matrix:
         version: ["stable", "beta", "dev"]
     steps:
