@@ -1,9 +1,0 @@
----
-# Blitzwolf
-#
-
-- platform: group
-  name: Stellingkast
-  entities:
-    - light.blitzwolf_bw_lt11_led_strip_links
-    - light.blitzwolf_bw_lt11_led_strip_rechts

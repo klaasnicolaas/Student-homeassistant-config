@@ -1,0 +1,16 @@
+---
+# Workdesk
+#
+
+- platform: group
+  name: Stellingkast
+  entities:
+    - light.blitzwolf_bw_lt11_led_strip_links
+    - light.blitzwolf_bw_lt11_led_strip_rechts
+
+- platform: group
+  name: Bureau
+  entities:
+    - light.blitzwolf_bw_lt11_led_strip_links
+    - light.blitzwolf_bw_lt11_led_strip_rechts
+    - light.wled_workdesk
