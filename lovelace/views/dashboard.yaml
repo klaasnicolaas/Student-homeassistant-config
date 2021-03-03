@@ -206,18 +206,38 @@ cards:
               - light.woonkamer_lamp_2
               - light.woonkamer_lamp_3
           - type: divider
-          # Stellingkast
+          # Desk
           - type: custom:fold-entity-row
             head:
               type: custom:slider-entity-row
-              entity: light.stellingkast
+              entity: light.bureau
               toggle: true
               hide_when_off: true
-            group_config:
-              secondary_info: last-changed
             entities:
-              - light.blitzwolf_bw_lt11_led_strip_links
-              - light.blitzwolf_bw_lt11_led_strip_rechts
+              # Desk light - above
+              - type: custom:fold-entity-row
+                head:
+                  type: custom:slider-entity-row
+                  entity: light.wled_workdesk
+                  toggle: true
+                  hide_when_off: true
+                group_config:
+                  secondary_info: last-changed
+                entities:
+                  - sensor.wled_workdesk_estimated_current
+              # Stellingkast
+              - type: custom:fold-entity-row
+                head:
+                  type: custom:slider-entity-row
+                  entity: light.stellingkast
+                  toggle: true
+                  hide_when_off: true
+                group_config:
+                  secondary_info: last-changed
+                entities:
+                  - light.blitzwolf_bw_lt11_led_strip_links
+                  - light.blitzwolf_bw_lt11_led_strip_rechts
+          # Specific colors for Shelving unit
           - type: custom:rgb-light-card
             entity: light.stellingkast
             justify: center
@@ -237,14 +257,59 @@ cards:
                   - 0
                   - 191
                   - 255
-          - type: custom:slider-entity-row
-            entity: light.werkhoek
-            toggle: true
-            hide_when_off: true
+          - type: divider
+          # Bathroom
           - type: custom:slider-entity-row
             entity: light.badkamer
             toggle: true
             hide_when_off: true
+      - type: horizontal-stack
+        cards:
+          - type: 'custom:button-card'
+            icon: mdi:desk
+            color: auto
+            color_type: card
+            tap_action:
+              action: call-service
+              service: scene.turn_on
+              service_data:
+                entity_id: scene.bureau_normal
+                transition: 1.5
+            name: Normal
+            styles:
+              card:
+                - font-size: 14px
+                - font-weight: bold
+          - type: 'custom:button-card'
+            icon: mdi:briefcase
+            color: auto
+            color_type: card
+            tap_action:
+              action: call-service
+              service: scene.turn_on
+              service_data:
+                entity_id: scene.bureau_work
+                transition: 1.5
+            name: Work
+            styles:
+              card:
+                - font-size: 14px
+                - font-weight: bold
+          - type: 'custom:button-card'
+            icon: mdi:party-popper
+            color: auto
+            color_type: card
+            tap_action:
+              action: call-service
+              service: scene.turn_on
+              service_data:
+                entity_id: scene.bureau_party
+                transition: 1.5
+            name: Party
+            styles:
+              card:
+                - font-size: 14px
+                - font-weight: bold
       - type: custom:stack-in-card
         mode: vertical
         cards:

@@ -25,7 +25,7 @@ cards:
             cards:
               - type: custom:bar-card
                 entity: sensor.ha_installed_version
-                name: Home Assistant Versie
+                name: HA Versie
                 max: 1
                 style: |
                   .card-content {
@@ -40,7 +40,8 @@ cards:
                   }
               - type: custom:bar-card
                 entity: sensor.ha_restart_time
-                name: Restart Time
+                icon: mdi:timelapse
+                name: Restart
                 max: 1
                 style: |
                   .card-content {
@@ -114,9 +115,8 @@ cards:
         entities:
           - entity: sensor.swap_use_percent
             name: SWAP
-          - entity: sensor.db_size
-            name: DB
-            max: 1000
+          - entity: sensor.home_assistant_log
+            name: Log size
         style: |
           .card-content {
             padding: 5px;
@@ -130,12 +130,10 @@ cards:
       - type: custom:bar-card
         positions:
           indicator: inside
-        columns: 2
         entities:
-          - entity: sensor.home_assistant_log
-            name: Log size
-          - entity: sensor.ha_uptime
-            name: Uptime
+          - entity: sensor.db_size
+            name: Database size
+            max: 1000
         style: |
           .card-content {
             padding: 5px;
@@ -292,7 +290,6 @@ cards:
     show_header_toggle: false
     entities:
       - sensor.last_boot
-      - binary_sensor.student_home_assistant
       # - sensor.snapshot_backup
       - type: divider
       # Home Assistant
@@ -805,7 +802,7 @@ cards:
       # Battery devices information
       - type: custom:stack-in-card
         mode: vertical
-        title: Batterij Status
+        title: Batterij Status - Top 10
         cards:
           - type: custom:auto-entities
             card:
@@ -852,6 +849,7 @@ cards:
             sort:
               method: state
               numeric: true
+              count: 10
 
   - type: glance
     entities:
