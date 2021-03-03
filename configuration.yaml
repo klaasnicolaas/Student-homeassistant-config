@@ -11,10 +11,6 @@ homeassistant:
   # Authentication #
   auth_providers:
     - type: homeassistant
-    - type: trusted_networks
-      trusted_networks:
-        - !secret intern_ip_1
-        - !secret ping_tablet
 
 # Configure a default setup of Home Assistant (frontend, api, etc)
 default_config:
