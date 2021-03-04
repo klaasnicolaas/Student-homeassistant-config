@@ -24,8 +24,8 @@ Be free to use the code from this repo for your own Home Assistant environment, 
 | This shows whether the configuration in this repo is valid | This shows how up to date this repo is |
 | [![GitHub issues][issues-shield]][issues] | [![HA Version][ha-version-shield]][home-assistant] |
 | I now use the issues as a TODO list | This is the version that I am currently running with Home Assistant |
-| [![Uptime Robot status][uptime-shield]][uptime-robot] | [![GitHub Activity][commits-shield]][commits] |
-| I use Uptime Robot to monitor my instance from outside in case of crashes | Shows how active I am with this repo annually |
+| ![Project Maintenance][maintenance-shield] | [![GitHub Activity][commits-shield]][commits] |
+| Is this repository still actively maintained? | Shows how active I am with this repo annually |
 | [![GitHub Stars][stars-shield]][stars] | [![Buy Me A Fanta][paypal-shield]][paypal] |
 | Please :star: this repo if you find it useful, like these people have | If this config was very helpfull, you could buy a fanta :tropical_drink: for me :smile: |
 
@@ -107,8 +107,8 @@ SOFTWARE.
 [commits-shield]: https://img.shields.io/github/commit-activity/y/klaasnicolaas/student-homeassistant-config.svg
 [last-commit-shield]: https://img.shields.io/github/last-commit/klaasnicolaas/Student-homeassistant-config.svg?color=blue&style=plasticr
 [stars-shield]: https://img.shields.io/github/stars/klaasnicolaas/Student-homeassistant-config.svg
-[ha-version-shield]: https://img.shields.io/badge/Home%20Assistant-2021.2.3-blue.svg
-[uptime-shield]: https://img.shields.io/uptimerobot/status/m782530846-8e789b9650b16e61fb717d28.svg
+[ha-version-shield]: https://img.shields.io/badge/Home%20Assistant-2021.3.0-blue.svg
+[maintenance-shield]: https://img.shields.io/maintenance/yes/2021.svg
 [homeassistantci-shield]: https://github.com/klaasnicolaas/Student-homeassistant-config/actions/workflows/home_assistant.yml/badge.svg
 [paypal-shield]: https://img.shields.io/badge/BuyMeAFanta-Paypal-orange.svg
 [issues-shield]: https://img.shields.io/github/issues/klaasnicolaas/Student-homeassistant-config.svg
@@ -116,7 +116,6 @@ SOFTWARE.
 [commits]: https://github.com/klaasnicolaas/Student-homeassistant-config/commits/master
 [stars]: https://github.com/klaasnicolaas/Student-homeassistant-config/stargazers
 [home-assistant]: https://home-assistant.io
-[uptime-robot]: https://uptimerobot.com
 [homeassistantci]: https://github.com/klaasnicolaas/Student-homeassistant-config/actions/workflows/home_assistant.yml
 [paypal]: https://www.paypal.me/dexterfpv
 [issues]: https://github.com/klaasnicolaas/Student-homeassistant-config/issues
