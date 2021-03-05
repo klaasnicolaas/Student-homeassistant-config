@@ -1,3 +1,4 @@
+---
 blueprint:
   name: Certificate Expiration
   description: This automation blueprint notifies when a SSL certificate is about
@@ -48,8 +49,8 @@ condition:
   condition: template
   value_template: '{{ expire_days_var < days_var }}'
 action:
-- device_id: !input 'notify_device'
-  domain: mobile_app
-  type: notify
-  title: SSL - {{ state_attr(certificate_var, 'friendly_name') }}
-  message: Het SSL-certificaat verloopt over {{ expire_days_var }} dagen
+  - device_id: !input 'notify_device'
+    domain: mobile_app
+    type: notify
+    title: SSL - {{ state_attr(certificate_var, 'friendly_name') }}
+    message: Het SSL-certificaat verloopt over {{ expire_days_var }} dagen
