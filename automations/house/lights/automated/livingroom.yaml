@@ -24,9 +24,9 @@
       entity_id: sensor.klaas_status
       state: 'Thuis'
     # Prevent trigger in the morning/night
-    # - condition: state
-    #   entity_id: binary_sensor.afternoon
-    #   state: 'on'
+    - condition: state
+      entity_id: binary_sensor.afternoon
+      state: 'on'
   action:
     - choose:
         # ON
