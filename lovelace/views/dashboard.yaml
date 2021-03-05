@@ -163,8 +163,20 @@ cards:
             entities:
               - input_number.brightness_dimmed
               - input_number.brightness_normal
-              # - input_number.lux_value_low
-              # - input_number.lux_value_high
+              - type: custom:fold-entity-row
+                head:
+                  type: section
+                  label: Keuken & Hal
+                entities:
+                  - input_number.lux_value_kitchen_high
+                  - input_number.lux_value_kitchen_low
+              - type: custom:fold-entity-row
+                head:
+                  type: section
+                  label: Woonkamer
+                entities:
+                  - input_number.lux_value_living_high
+                  - input_number.lux_value_living_low
           - type: divider
           # Entree
           - type: custom:fold-entity-row
@@ -411,7 +423,7 @@ cards:
         cards:
           - type: custom:mini-graph-card
             entities:
-              - entity: sensor.woonkamer_light_sensor
+              - entity: sensor.livingroom_light_sensor
                 name: Woonkamer
             show:
               fill: true

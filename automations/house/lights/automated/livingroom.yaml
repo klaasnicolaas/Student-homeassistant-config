@@ -1,0 +1,67 @@
+---
+- alias: '[Light] - Livingroom automated'
+  description: >-
+    Turn the lights on if LUX value is low or on if high
+
+  id: 7d8ada0b-770a-4d2f-b662-26c1965e7a09
+  mode: single
+  trigger:
+    - platform: numeric_state
+      entity_id:
+        - sensor.livingroom_light_sensor
+      below: input_number.lux_value_living_low
+    - platform: numeric_state
+      entity_id:
+        - sensor.livingroom_light_sensor
+      above: input_number.lux_value_living_high
+  condition:
+    # Check if Automated lights mode is enabled
+    - condition: state
+      entity_id: input_boolean.lights_automated
+      state: 'on'
+    # Check if I'm home :)
+    - condition: state
+      entity_id: sensor.klaas_status
+      state: 'Thuis'
+    # Prevent trigger in the morning/night
+    # - condition: state
+    #   entity_id: binary_sensor.afternoon
+    #   state: 'on'
+  action:
+    - choose:
+        # ON
+        - conditions:
+            - condition: template
+              value_template: "{{ ((trigger.to_state.state)|float) <= (states('input_number.lux_value_living_low')|float) }}"
+            # Check if light are off
+            - condition: state
+              entity_id: light.woonkamer
+              state: 'off'
+          sequence:
+            - service: logbook.log
+              data:
+                name: Woonkamer
+                message: "- Lampen worden automatisch ingeschakeld"
+                entity_id: light.woonkamer
+            - service: light.turn_on
+              target:
+                entity_id: light.woonkamer
+              data:
+                brightness_pct: "{{ states('input_number.brightness_dimmed') | round }}"
+        # OFF
+        - conditions:
+            - condition: template
+              value_template: "{{ ((trigger.to_state.state)|float) >= (states('input_number.lux_value_living_high')|float) }}"
+            # Check if light are on
+            - condition: state
+              entity_id: light.woonkamer
+              state: 'on'
+          sequence:
+            - service: logbook.log
+              data:
+                name: Woonkamer
+                message: "- Lampen worden automatisch uitgeschakeld"
+                entity_id: light.woonkamer
+            - service: light.turn_off
+              target:
+                entity_id: light.woonkamer

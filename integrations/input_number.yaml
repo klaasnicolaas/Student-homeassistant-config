@@ -1,0 +1,54 @@
+---
+# https://www.home-assistant.io/integrations/input_number/
+#
+input_number:
+  # Brightness dimmed level
+  brightness_dimmed:
+    name: Helderheid - Gedimd
+    step: 5
+    min: 0
+    max: 100
+    icon: mdi:brightness-percent
+    unit_of_measurement: "%"
+  # Brightness normal level
+  brightness_normal:
+    name: Helderheid - Normaal
+    step: 5
+    min: 0
+    max: 100
+    icon: mdi:brightness-percent
+    unit_of_measurement: "%"
+  # Livingroom
+  lux_value_living_low:
+    name: LUX waarde - laag
+    step: 1
+    min: 1
+    max: 100
+    mode: box
+    icon: mdi:lightbulb-on
+    unit_of_measurement: "lx"
+  lux_value_living_high:
+    name: LUX waarde - hoog
+    step: 1
+    min: 1
+    max: 100
+    mode: box
+    icon: mdi:lightbulb-off
+    unit_of_measurement: "lx"
+  # Kitchen
+  lux_value_kitchen_low:
+    name: LUX waarde - laag
+    step: 1
+    min: 1
+    max: 100
+    mode: box
+    icon: mdi:lightbulb-on
+    unit_of_measurement: "lx"
+  lux_value_kitchen_high:
+    name: LUX waarde - hoog
+    step: 1
+    min: 1
+    max: 100
+    mode: box
+    icon: mdi:lightbulb-off
+    unit_of_measurement: "lx"
