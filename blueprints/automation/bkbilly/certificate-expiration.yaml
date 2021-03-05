@@ -1,0 +1,55 @@
+blueprint:
+  name: Certificate Expiration
+  description: This automation blueprint notifies when a SSL certificate is about
+    to expire
+  domain: automation
+  input:
+    certificate_input:
+      name: Certificate
+      description: The certificate timestamp
+      selector:
+        entity:
+          integration: cert_expiry
+    days_input:
+      name: Days before
+      description: Set how many days before expiration it should start sending notifications
+      default: 5
+      selector:
+        number:
+          min: 0.0
+          max: 100.0
+          unit_of_measurement: days
+          mode: slider
+          step: 1.0
+    time_input:
+      name: Time
+      description: What time of the day it should check and send the notification?
+      default: '15:00'
+      selector:
+        time: {}
+    notify_device:
+      name: Device to notify
+      description: Device needs to run the official Home Assistant app to receive
+        notifications
+      selector:
+        device:
+          integration: mobile_app
+  source_url: https://community.home-assistant.io/t/certificate-expiration/280125
+trigger:
+  platform: time
+  at: !input 'time_input'
+variables:
+  notify_device: !input 'notify_device'
+  days_var: !input 'days_input'
+  certificate_var: !input 'certificate_input'
+  expire_days_var: '{{ ((as_timestamp(states(certificate_var)) - as_timestamp(now()))
+    / 60 / 60 / 24 ) | int }}'
+condition:
+  condition: template
+  value_template: '{{ expire_days_var < days_var }}'
+action:
+- device_id: !input 'notify_device'
+  domain: mobile_app
+  type: notify
+  title: SSL - {{ state_attr(certificate_var, 'friendly_name') }}
+  message: Het SSL-certificaat verloopt over {{ expire_days_var }} dagen

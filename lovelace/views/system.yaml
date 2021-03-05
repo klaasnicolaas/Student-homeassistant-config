@@ -798,6 +798,9 @@ cards:
         entities:
           - sensor.myip
           - sensor.local_ip
+          - type: divider
+          - sensor.cert_expiry_timestamp_techlife_nl
+          - sensor.cert_expiry_timestamp_techlife_com
 
       # Battery devices information
       - type: custom:stack-in-card

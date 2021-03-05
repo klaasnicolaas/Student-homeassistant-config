@@ -1,14 +1,30 @@
 ---
 # Notify me when the SSL certificate will expire soon
 #
+- alias: '[System] - Notify SSL techlife.com expire'
+  description: >-
+    Get a notification on my phone when the SSL certificate will expire
 
-- alias: '[System] - Notify when SSL certificate will expire'
-  trigger:
-    - platform: numeric_state
-      entity_id: sensor.ssl_certificate_expiry
-      below: 30
-  action:
-    - service: notify.telegram_klaas
-      data:
-        title: '*Certificaat verloop bijna*'
-        message: "Vernieuw je SSL certificaat want deze verloopt over minder dan 30 dagen"
+  id: 0d8a6fef-2a76-454a-9866-2d8305726c42
+
+  use_blueprint:
+    path: bkbilly/certificate-expiration.yaml
+    input:
+      time_input: '12:00:00'
+      certificate_input: sensor.cert_expiry_timestamp_techlife_com
+      days_input: 30
+      notify_device: 5e3a9bc1a6710fb13b08435ab16cd62b
+
+- alias: '[System] - Notify SSL techlife.nl expire'
+  description: >-
+    Get a notification on my phone when the SSL certificate will expire
+
+  id: 2cf3d5c1-3d04-45a9-83ed-769a12db710a
+
+  use_blueprint:
+    path: bkbilly/certificate-expiration.yaml
+    input:
+      time_input: '12:00:00'
+      certificate_input: sensor.cert_expiry_timestamp_techlife_nl
+      days_input: 30
+      notify_device: 5e3a9bc1a6710fb13b08435ab16cd62b
