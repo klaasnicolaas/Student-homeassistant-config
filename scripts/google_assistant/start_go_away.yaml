@@ -17,7 +17,7 @@ go_away:
           - light.keuken
           - light.hal
           - light.badkamer
-          - light.stellingkast
+          - light.bureau
 
     # Close cover
     - service: cover.close_cover

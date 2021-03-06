@@ -4,14 +4,21 @@
 logbook:
   include:
     entities:
-      - light.hal
-      - light.woonkamer
-      - light.keuken
+      - alarm_control_panel.alarmsysteem
       - binary_sensor.openclose_sensor_1
       - binary_sensor.openclose_sensor_2
       - binary_sensor.openclose_sensor_3
       - binary_sensor.openclose_sensor_4
-      - alarm_control_panel.alarmsysteem
+      - light.hal
+      - light.woonkamer
+      - light.keuken
+      - light.badkamer
+      - sensor.klaas_status
+      - script.start_sleep_with_alarm
+      - script.start_sleep
+      - script.wake_up
+    domains:
+      - logbook
   exclude:
     entities:
       - sensor.error

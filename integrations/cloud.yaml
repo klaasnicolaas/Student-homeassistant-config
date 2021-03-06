@@ -29,8 +29,8 @@ cloud:
         - light.woonkamer_lamp_2
         - light.woonkamer_lamp_3
         - light.badkamer
-        - light.werkhoek
         - light.stellingkast
+        - light.bureau
         # Scripts
         - script.channel_1
         - script.channel_2

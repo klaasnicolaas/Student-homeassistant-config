@@ -8,8 +8,9 @@ wake_up:
     # Log the wake up
     - service: logbook.log
       data:
-        name: Opstaan -
-        message: Klaas moet opstaan
+        name: Opstaan
+        message: "- Klaas moet opstaan"
+        entity_id: script.wake_up
 
     # Switch boolean
     - service: input_boolean.turn_off

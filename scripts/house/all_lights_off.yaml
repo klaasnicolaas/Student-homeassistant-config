@@ -12,4 +12,4 @@ all_lights_off:
           - light.keuken
           - light.hal
           - light.badkamer
-          - light.stellingkast
+          - light.bureau

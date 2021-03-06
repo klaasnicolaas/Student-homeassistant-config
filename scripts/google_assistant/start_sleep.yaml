@@ -7,8 +7,9 @@ start_sleep_with_alarm:
     # Log het slapen gaan
     - service: logbook.log
       data:
-        name: Slapen -
-        message: Klaas gaat slapen met alarm
+        name: Slapen
+        message: "- Klaas gaat slapen met alarm"
+        entity_id: script.start_sleep_with_alarm
 
     # Switch boolean
     - service: input_boolean.turn_on
@@ -20,28 +21,32 @@ start_sleep_with_alarm:
 
     # Stellingkast
     - service: light.turn_off
-      entity_id: light.stellingkast
+      target:
+        entity_id: light.bureau
 
     - delay:
         seconds: 10
 
     # Hal
     - service: light.turn_off
-      entity_id: light.hal
+      target:
+        entity_id: light.hal
 
     - delay:
         seconds: 10
 
     # Keuken
     - service: light.turn_off
-      entity_id: light.keuken
+      target:
+        entity_id: light.keuken
 
     - delay:
         seconds: 10
 
     # Woonkamer
     - service: light.turn_off
-      entity_id: light.woonkamer
+      target:
+        entity_id: light.woonkamer
 
 start_sleep:
   alias: 'Slapen gaan ritueel - zonder alarm'
@@ -49,8 +54,9 @@ start_sleep:
     # Log het slapen gaan
     - service: logbook.log
       data:
-        name: Slapen -
-        message: Klaas gaat slapen zonder alarm
+        name: Slapen
+        message: "- Klaas gaat slapen zonder alarm"
+        entity_id: script.start_sleep
 
     # Switch boolean
     - service: input_boolean.turn_on
@@ -60,25 +66,29 @@ start_sleep:
 
     # Stellingkast
     - service: light.turn_off
-      entity_id: light.stellingkast
+      target:
+        entity_id: light.bureau
 
     - delay:
         seconds: 10
 
     # Hal
     - service: light.turn_off
-      entity_id: light.hal
+      target:
+        entity_id: light.hal
 
     - delay:
         seconds: 10
 
     # Keuken
     - service: light.turn_off
-      entity_id: light.keuken
+      target:
+        entity_id: light.keuken
 
     - delay:
         seconds: 10
 
     # Woonkamer
     - service: light.turn_off
-      entity_id: light.woonkamer
+      target:
+        entity_id: light.woonkamer
