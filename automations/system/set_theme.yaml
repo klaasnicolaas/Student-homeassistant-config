@@ -1,5 +1,10 @@
 ---
 - alias: '[System] - Set HA theme'
+  description: >-
+    Change theme based on day or night
+  id: 6de4f15a-300c-46ae-ad72-a379732c8ed4
+  mode: single
+
   trigger:
     - platform: homeassistant
       event: start

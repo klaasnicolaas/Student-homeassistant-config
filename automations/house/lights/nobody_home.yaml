@@ -29,7 +29,7 @@
         entity_id: light.badkamer
         state: 'on'
       - condition: state
-        entity_id: light.stellingkast
+        entity_id: light.bureau
         state: 'on'
   action:
     # HA Android notification

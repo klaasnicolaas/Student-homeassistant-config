@@ -6,6 +6,7 @@
     Get a notification on my phone when the SSL certificate will expire
 
   id: 0d8a6fef-2a76-454a-9866-2d8305726c42
+  mode: single
 
   use_blueprint:
     path: bkbilly/certificate-expiration.yaml
@@ -20,6 +21,7 @@
     Get a notification on my phone when the SSL certificate will expire
 
   id: 2cf3d5c1-3d04-45a9-83ed-769a12db710a
+  mode: single
 
   use_blueprint:
     path: bkbilly/certificate-expiration.yaml

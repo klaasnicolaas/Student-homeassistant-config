@@ -1,0 +1,27 @@
+---
+# Home Assistant backups
+#
+- alias: '[System] - Make weekly Home Assistant backup'
+  description: >-
+    Every week a make backups on specific days
+
+  id: 436bf2e1-ac2b-448e-855f-55bb96d8afed
+  mode: single
+
+  trigger:
+    - platform: time
+      at: '03:00:00'
+  condition:
+    - condition: time
+      weekday:
+        - sun
+        - thu
+  action:
+    - service: hassio.snapshot_full
+      data_template:
+        name: Backup {{ now().strftime('%Y-%m-%d') }} running HA version {{ states('sensor.ha_installed_version') }}
+    - service: notify.mobile_app_klaas_samsung_s20_plus
+      data_template:
+        title: '*Home Assistant Backup!*'
+        message: >-
+          Backup is gemaakt met de naam: Backup {{ now().strftime('%Y-%m-%d') }} running HA version {{ states('sensor.ha_installed_version') }}
