@@ -1,0 +1,77 @@
+blueprint:
+  name: Home Assistant update notification
+  description: Send a notification when there's an update availiable for Home Assistant
+  domain: automation
+  input:
+    updater:
+      name: Update sensor
+      description: The sensor which indicates if there's an update
+      selector:
+        entity:
+          domain: binary_sensor
+    notification_title:
+      name: Notification title (Optional)
+      description: 'Default: "Upgrade time!"'
+      default: Upgrade time!
+    notification_message:
+      name: Notification message (Optional)
+      description: 'Default: "Home Assistant {{ newest_version }} is available"'
+      default: Home Assistant {{ newest_version }} is available
+    delay:
+      name: Delay (Optional)
+      description: Wait before sending the notification
+      default:
+      selector:
+        number:
+          min: 0.0
+          max: 60.0
+          unit_of_measurement: seconds
+          mode: slider
+          step: 1.0
+    notify_device:
+      name: Device to notify
+      description: Device needs to run the official Home Assistant app to receive
+        notifications
+      selector:
+        device:
+          integration: mobile_app
+    include_release_notes:
+      name: Include release notes
+      description: Toggle if you'd like to receive the release notes within the notification,
+        default is true
+      selector:
+        boolean: {}
+      default: true
+    is_ios:
+      name: Is it an iOS device?
+      description: Toggle if your selected device runs iOS, default is true
+      selector:
+        boolean: {}
+      default: true
+  source_url: https://gist.github.com/Klumper/0ad49c0613606b14f1a56551e4a7d737
+trigger:
+  platform: state
+  entity_id: !input 'updater'
+  from: 'off'
+  to: 'on'
+variables:
+  updater: !input 'updater'
+  newest_version: '{{ states[updater].attributes.newest_version }}'
+  release_notes: '{{ states[updater].attributes.release_notes }}'
+  is_ios: !input 'is_ios'
+  notify_device: !input 'notify_device'
+  include_release_notes: !input 'include_release_notes'
+  notification_title: !input 'notification_title'
+  notification_message: !input 'notification_message'
+  delay: !input 'delay'
+action:
+- delay: '{{ delay }}'
+- device_id: !input 'notify_device'
+  domain: mobile_app
+  type: notify
+  title: '{{ notification_title }}'
+  message: '{{ notification_message }}'
+  data: "{% if include_release_notes %}\n  {% set android_data = { \"clickAction\"\
+    : \"%s\" } | format(release_notes) %}\n  {% set ios_data = { \"url\": \"%s\" }\
+    \ | format(release_notes) %}\n  {{ ios_data if is_ios else android_data }}\n{%\
+    \ endif %}\n"

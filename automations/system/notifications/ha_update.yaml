@@ -1,0 +1,15 @@
+---
+- alias: '[System] - Notify on Home Assistant update'
+  description: >-
+    Send a notification when there is a new update
+  id: 536bc66c-c91d-436f-afe1-174dbc424862
+  mode: single
+
+  use_blueprint:
+    path: Klumper/update_notification.yaml
+    input:
+      notification_message: Home Assistant {{ newest_version }} is available
+      delay: 0
+      notify_device: 5e3a9bc1a6710fb13b08435ab16cd62b
+      is_ios: false
+      updater: binary_sensor.updater
