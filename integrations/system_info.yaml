@@ -64,34 +64,6 @@ homeassistant:
       friendly_name: Intern IP-adres
       icon: mdi:network
 
-    ################################################
-    ## Script
-    ################################################
-
-    script.host_reboot:
-      <<: *customize
-      icon: mdi:rotate-3d-variant
-      can_cancel: false
-      friendly_name: Reboot Intel NUC
-
-    script.home_assistant_reboot:
-      <<: *customize
-      icon: mdi:rotate-3d-variant
-      can_cancel: false
-      friendly_name: Restart Home Assistant
-
-    script.backup_now:
-      <<: *customize
-      icon: mdi:backup-restore
-      can_cancel: false
-      friendly_name: Make Snapshot
-
-    script.config_check:
-      <<: *customize
-      icon: mdi:file-check
-      can_cancel: false
-      friendly_name: Check Config
-
 ################################################
 ## Binary Sensor
 ################################################
@@ -209,39 +181,6 @@ alert:
     skip_first: true
     notifiers:
       - telegram_klaas
-
-################################################
-## Script
-################################################
-
-script:
-  home_assistant_reboot:
-    alias: Home Assistant Reboot
-    sequence:
-      - service: homeassistant.turn_on
-        entity_id: input_boolean.maintenance_mode
-      - delay: 00:00:02
-      - service: homeassistant.restart
-
-  host_reboot:
-    alias: Host Reboot
-    sequence:
-      - service: homeassistant.turn_on
-        entity_id: input_boolean.maintenance_mode
-      - delay: 00:00:02
-      - service: hassio.host_reboot
-
-  backup_now:
-    alias: New Snapshot
-    sequence:
-      - delay: 00:00:02
-      - service: automation.trigger
-        entity_id: automation.system_make_weekly_home_assistant_backup
-
-  config_check:
-    alias: Check config
-    sequence:
-      - service: homeassistant.check_config
 
 ################################################
 ## Integrations

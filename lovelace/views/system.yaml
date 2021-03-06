@@ -4,723 +4,788 @@ title: Systeeminformatie
 icon: mdi:server
 path: system
 cards:
-  # Home Assistant host server info
-  - type: custom:stack-in-card
-    mode: vertical
-    title: Home Assistant Server
+  ########## Stack 1 ##########
+  - type: vertical-stack
     cards:
-      - type: horizontal-stack
-        cards:
-          - type: vertical-stack
-            cards:
-              - type: picture
-                image: /local/images/intel-nuc.jpg
-                style: |
-                  ha-card {
-                    margin: 10px;
-                    box-shadow: none;
-                  }
-
-          - type: vertical-stack
-            cards:
-              - type: custom:bar-card
-                entity: sensor.ha_installed_version
-                name: HA Versie
-                max: 1
-                style: |
-                  .card-content {
-                    padding-left: 5px;
-                    padding-bottom: 0px;
-                  }
-                  bar-card-currentbar, bar-card-backgroundbar {
-                    border-radius: 5px;
-                  }
-                  ha-card {
-                    box-shadow: none;
-                  }
-              - type: custom:bar-card
-                entity: sensor.ha_restart_time
-                icon: mdi:timelapse
-                name: Restart
-                max: 1
-                style: |
-                  .card-content {
-                    padding-left: 5px;
-                    padding-bottom: 0px;
-                  }
-                  bar-card-currentbar, bar-card-backgroundbar {
-                    border-radius: 5px;
-                  }
-                  ha-card {
-                    box-shadow: none;
-                  }
-              - type: custom:bar-card
-                entity: sensor.potential_breaking_changes
-                name: Breaking Changes
-                max: 20
-                style: |
-                  .card-content {
-                    padding-left: 5px;
-                  }
-                  bar-card-currentbar, bar-card-backgroundbar {
-                    border-radius: 5px;
-                  }
-                  ha-card {
-                    box-shadow: none;
-                  }
-
-      - type: custom:bar-card
-        positions:
-          indicator: inside
-        columns: 2
-        entities:
-          - entity: sensor.disk_use_percent
-            name: Opslag
-          - entity: sensor.memory_use_percent
-            name: RAM
-        style: |
-          .card-content {
-            padding: 5px;
-            margin-right: 10px;
-            margin-left: 10px;
-          }
-          bar-card-currentbar, bar-card-backgroundbar {
-            border-radius: 5px;
-          }
-
-      - type: custom:bar-card
-        positions:
-          indicator: inside
-        columns: 2
-        entities:
-          - entity: sensor.processor_use
-            name: CPU
-          - entity: sensor.cpu_temperature
-            name: Temp
-            icon: mdi:thermometer
-        style: |
-          .card-content {
-            padding: 5px;
-            margin-right: 10px;
-            margin-left: 10px;
-          }
-          bar-card-currentbar, bar-card-backgroundbar {
-            border-radius: 5px;
-          }
-
-      - type: custom:bar-card
-        positions:
-          indicator: inside
-        columns: 2
-        entities:
-          - entity: sensor.swap_use_percent
-            name: SWAP
-          - entity: sensor.home_assistant_log
-            name: Log size
-        style: |
-          .card-content {
-            padding: 5px;
-            margin-right: 10px;
-            margin-left: 10px;
-          }
-          bar-card-currentbar, bar-card-backgroundbar {
-            border-radius: 5px;
-          }
-
-      - type: custom:bar-card
-        positions:
-          indicator: inside
-        entities:
-          - entity: sensor.db_size
-            name: Database size
-            max: 1000
-        style: |
-          .card-content {
-            padding: 5px;
-            margin-right: 10px;
-            margin-left: 10px;
-          }
-          bar-card-currentbar, bar-card-backgroundbar {
-            border-radius: 5px;
-          }
-
-      - type: custom:bar-card
-        entity: sensor.disk_free
-        positions:
-          name: inside
-          indicator: inside
-        max: 500
-        direction: right-reverse
-        style: |
-          .card-content {
-            padding: 5px;
-            margin-right: 10px;
-            margin-left: 10px;
-            margin-bottom: 10px;
-          }
-          bar-card-currentbar, bar-card-backgroundbar {
-            border-radius: 5px;
-          }
-
-  # Synology NAS information
-  - type: custom:stack-in-card
-    mode: vertical
-    title: Synology NAS
-    cards:
-      - type: horizontal-stack
-        cards:
-          - type: vertical-stack
-            cards:
-              # Picture
-              - type: picture
-                image: /local/images/synology-nas.png
-                style: |
-                  ha-card {
-                    margin: 10px;
-                    width: 180px;
-                    box-shadow: none;
-                  }
-
-          - type: vertical-stack
-            cards:
-              # NAS volume status
-              - type: custom:bar-card
-                entity: sensor.smarty_volume_1_status
-                name: NAS Status
-                style: |
-                  .card-content {
-                    padding-left: 5px;
-                    padding-bottom: 0px;
-                  }
-                  bar-card-currentbar, bar-card-backgroundbar {
-                    border-radius: 5px;
-                  }
-                  ha-card {
-                    box-shadow: none;
-                  }
-
-              # Volume storage useage
-              - type: custom:bar-card
-                entity: sensor.smarty_volume_1_volume_used
-                name: Opslag
-                style: |
-                  .card-content {
-                    padding-left: 5px;
-                    padding-bottom: 0px;
-                  }
-                  bar-card-currentbar, bar-card-backgroundbar {
-                    border-radius: 5px;
-                  }
-                  ha-card {
-                    box-shadow: none;
-                  }
-
-              # RAM useage
-              - type: custom:bar-card
-                entity: sensor.smarty_memory_usage_real
-                name: RAM
-                style: |
-                  .card-content {
-                    padding-left: 5px;
-                    padding-bottom: 0px;
-                  }
-                  bar-card-currentbar, bar-card-backgroundbar {
-                    border-radius: 5px;
-                  }
-                  ha-card {
-                    box-shadow: none;
-                  }
-
-      # NAS Disk 1
-      - type: custom:bar-card
-        title: NAS Disk 1
-        positions:
-          indicator: inside
-        columns: 2
-        entities:
-          - entity: sensor.smarty_drive_1_status
-            name: Status
-          - entity: sensor.smarty_drive_1_temperature
-            name: Temperatuur
-        style: |
-          .card-header {
-            font-size: initial;
-            padding-top: 0px;
-            padding-bottom: 5px;
-          }
-          .card-content {
-            padding: 5px;
-            margin-right: 10px;
-            margin-left: 10px;
-          }
-          bar-card-currentbar, bar-card-backgroundbar {
-            border-radius: 5px;
-          }
-
-      # NAS Disk 2
-      - type: custom:bar-card
-        title: NAS Disk 2
-        positions:
-          indicator: inside
-        columns: 2
-        entities:
-          - entity: sensor.smarty_drive_2_status
-            name: Status
-          - entity: sensor.smarty_drive_2_temperature
-            name: Temperatuur
-        style: |
-          .card-header {
-            font-size: initial;
-            padding-top: 0px;
-            padding-bottom: 5px;
-          }
-          .card-content {
-            padding: 5px;
-            margin-right: 10px;
-            margin-left: 10px;
-            margin-bottom: 10px;
-          }
-          bar-card-currentbar, bar-card-backgroundbar {
-            border-radius: 5px;
-          }
-
-  # Show information about Home Assistant
-  - type: entities
-    title: Home Assistant Info
-    show_header_toggle: false
-    entities:
-      - sensor.last_boot
-      # - sensor.snapshot_backup
-      - type: divider
-      # Home Assistant
-      - entity: sensor.home_assistant_stable_versie
-        name: Home Assistant version
-        icon: mdi:home-assistant
-        type: custom:multiple-entity-row
-        show_state: false
-        entities:
-          - entity: sensor.home_assistant_beta_versie
-            name: Beta
-          - entity: sensor.home_assistant_stable_versie
-            name: Stable
-      # HassOS
-      - entity: sensor.hassos_version_stable
-        name: HassOS version
-        icon: mdi:server-security
-        type: custom:multiple-entity-row
-        show_state: false
-        entities:
-          - entity: sensor.hassos_version_beta
-            name: Beta
-          - entity: sensor.hassos_version_stable
-            name: Stable
-      # Supervisor
-      - entity: sensor.supervisor_version_stable
-        name: Supervisor version
-        icon: mdi:account-supervisor-circle
-        type: custom:multiple-entity-row
-        show_state: false
-        entities:
-          - entity: sensor.supervisor_version_beta
-            name: Beta
-          - entity: sensor.supervisor_version_stable
-            name: Stable
-      - sensor.python_version
-      - type: divider
-      - sensor.automation_on
-      - sensor.hacs
+      - type: custom:button-card
+        color_type: label-card
+        color: 'var(--primary-color)'
+        name: Home Assistant Server
+      # Home Assistant host server info
       - type: custom:stack-in-card
         mode: vertical
-        style: |
-          ha-card {
-            box-shadow: none;
-          }
         cards:
           - type: horizontal-stack
             cards:
-              - type: custom:bar-card
-                name: Lights
-                entity: sensor.lights_count
-                positions:
-                  name: inside
-                  icon: 'off'
-                  value: inside
-                  indicator: inside
-                max: 40
-                height: 35
-                severity:
-                  - color: '#bf4040'
-                    from: 0
-                    to: 1
-                  - color: '#1db954'
-                    from: 1
-                    to: 30
-                  - color: '#bf9540'
-                    from: 30
-                    to: 40
-                style: |
-                  .card-content {
-                    padding: 5px;
-                    margin-right: 5px;
-                  }
-                  bar-card-currentbar, bar-card-backgroundbar {
-                    border-radius: 5px;
-                  }
-                  bar-card-value {
-                    font-size: 15px;
-                    font-weight: bold;
-                    margin-right: 20px;
-                  }
+              - type: vertical-stack
+                cards:
+                  - type: picture
+                    image: /local/images/intel-nuc.jpg
+                    style: |
+                      ha-card {
+                        margin: 10px;
+                        box-shadow: none;
+                      }
 
-              - type: custom:bar-card
-                name: Trackers
-                entity: sensor.tracker_count
-                positions:
-                  name: inside
-                  icon: 'off'
-                  value: inside
-                  indicator: inside
-                max: 100
-                height: 35
-                severity:
-                  - color: '#bf4040'
-                    from: 0
-                    to: 1
-                  - color: '#1db954'
-                    from: 1
-                    to: 87
-                  - color: '#bf9540'
-                    from: 87
-                    to: 100
-                style: |
-                  .card-content {
-                    padding: 5px;
-                    margin-right: 5px;
-                  }
-                  bar-card-currentbar, bar-card-backgroundbar {
-                    border-radius: 5px;
-                  }
-                  bar-card-value {
-                    font-size: 15px;
-                    font-weight: bold;
-                    margin-right: 20px;
-                  }
+              - type: vertical-stack
+                cards:
+                  - type: custom:bar-card
+                    entity: sensor.ha_installed_version
+                    name: HA Versie
+                    max: 1
+                    style: |
+                      .card-content {
+                        padding-left: 5px;
+                        padding-bottom: 0px;
+                      }
+                      bar-card-currentbar, bar-card-backgroundbar {
+                        border-radius: 5px;
+                      }
+                      ha-card {
+                        box-shadow: none;
+                      }
+                  - type: custom:bar-card
+                    entity: sensor.ha_restart_time
+                    icon: mdi:timelapse
+                    name: Restart
+                    max: 1
+                    style: |
+                      .card-content {
+                        padding-left: 5px;
+                        padding-bottom: 0px;
+                      }
+                      bar-card-currentbar, bar-card-backgroundbar {
+                        border-radius: 5px;
+                      }
+                      ha-card {
+                        box-shadow: none;
+                      }
+                  - type: custom:bar-card
+                    entity: sensor.potential_breaking_changes
+                    name: Breaking Changes
+                    max: 20
+                    style: |
+                      .card-content {
+                        padding-left: 5px;
+                      }
+                      bar-card-currentbar, bar-card-backgroundbar {
+                        border-radius: 5px;
+                      }
+                      ha-card {
+                        box-shadow: none;
+                      }
 
-              - type: custom:bar-card
-                name: Input DateTime
-                entity: sensor.input_datetime_count
-                positions:
-                  name: inside
-                  icon: 'off'
-                  value: inside
-                  indicator: inside
-                max: 100
-                severity:
-                  - color: '#bf4040'
-                    from: 0
-                    to: 10
-                  - color: '#1db954'
-                    from: 10
-                    to: 50
-                  - color: '#bf9540'
-                    from: 50
-                    to: 100
-                style: |
-                  .card-content {
-                    padding: 5px;
-                    margin-right: 5px;
-                  }
-                  bar-card-currentbar, bar-card-backgroundbar {
-                    border-radius: 5px;
-                  }
-                  bar-card-value {
-                    font-size: 15px;
-                    font-weight: bold;
-                    margin-right: 20px;
-                  }
+          - type: custom:bar-card
+            positions:
+              indicator: inside
+            columns: 2
+            entities:
+              - entity: sensor.disk_use_percent
+                name: Opslag
+              - entity: sensor.memory_use_percent
+                name: RAM
+            style: |
+              .card-content {
+                padding: 5px;
+                margin-right: 10px;
+                margin-left: 10px;
+              }
+              bar-card-currentbar, bar-card-backgroundbar {
+                border-radius: 5px;
+              }
+
+          - type: custom:bar-card
+            positions:
+              indicator: inside
+            columns: 2
+            entities:
+              - entity: sensor.processor_use
+                name: CPU
+              - entity: sensor.cpu_temperature
+                name: Temp
+                icon: mdi:thermometer
+            style: |
+              .card-content {
+                padding: 5px;
+                margin-right: 10px;
+                margin-left: 10px;
+              }
+              bar-card-currentbar, bar-card-backgroundbar {
+                border-radius: 5px;
+              }
+
+          - type: custom:bar-card
+            positions:
+              indicator: inside
+            columns: 2
+            entities:
+              - entity: sensor.swap_use_percent
+                name: SWAP
+              - entity: sensor.home_assistant_log
+                name: Log size
+            style: |
+              .card-content {
+                padding: 5px;
+                margin-right: 10px;
+                margin-left: 10px;
+              }
+              bar-card-currentbar, bar-card-backgroundbar {
+                border-radius: 5px;
+              }
+
+          - type: custom:bar-card
+            positions:
+              indicator: inside
+            entities:
+              - entity: sensor.db_size
+                name: Database size
+                max: 1000
+            style: |
+              .card-content {
+                padding: 5px;
+                margin-right: 10px;
+                margin-left: 10px;
+              }
+              bar-card-currentbar, bar-card-backgroundbar {
+                border-radius: 5px;
+              }
+
+          - type: custom:bar-card
+            entity: sensor.disk_free
+            positions:
+              name: inside
+              indicator: inside
+            max: 500
+            direction: right-reverse
+            style: |
+              .card-content {
+                padding: 5px;
+                margin-right: 10px;
+                margin-left: 10px;
+                margin-bottom: 10px;
+              }
+              bar-card-currentbar, bar-card-backgroundbar {
+                border-radius: 5px;
+              }
+
+      - type: custom:button-card
+        color_type: label-card
+        color: 'var(--primary-color)'
+        name: Network
+      # Show information about the internet connection
+      - type: vertical-stack
+        cards:
+          - type: horizontal-stack
+            cards:
+              - type: custom:mini-graph-card
+                entities:
+                  - sensor.speedtest_ping
+                height: 20
+                line_width: 2
+                font_size: 70
+                hours_to_show: 168
+                points_per_hour: 0.3
+                show:
+                  # extrema: true
+                  fill: true
+                  graph: bar
 
           - type: horizontal-stack
             cards:
-              - type: custom:bar-card
-                name: Automations
-                entity: sensor.automation_count
-                positions:
-                  name: inside
-                  icon: 'off'
-                  value: inside
-                  indicator: inside
-                max: 400
-                height: 35
-                severity:
-                  - color: '#bf4040'
-                    from: 0
-                    to: 1
-                  - color: '#1db954'
-                    from: 1
-                    to: 300
-                  - color: '#bf9540'
-                    from: 300
-                    to: 400
-                style: |
-                  .card-content {
-                    padding: 5px;
-                    margin-right: 5px;
-                  }
-                  bar-card-currentbar, bar-card-backgroundbar {
-                    border-radius: 5px;
-                  }
-                  bar-card-value {
-                    font-size: 15px;
-                    font-weight: bold;
-                    margin-right: 20px;
-                  }
+              - type: custom:mini-graph-card
+                entities:
+                  - sensor.speedtest_download
+                height: 50
+                line_width: 2
+                font_size: 70
+                hours_to_show: 168
+                points_per_hour: 0.3
+                show:
+                  extrema: true
+                  fill: true
+                color_thresholds:
+                  - value: 150
+                    color: "#bf4040"
 
-              - type: custom:bar-card
-                name: Entities
-                entity: sensor.total_entities
-                positions:
-                  name: inside
-                  icon: 'off'
-                  value: inside
-                  indicator: inside
-                max: 600
-                height: 35
-                severity:
-                  - value: 1
-                    color: '#bf4040'
-                  - value: 300
-                    color: '#1db954'
-                  - value: 450
-                    color: '#bf9540'
-                  - color: '#bf4040'
-                    from: 0
-                    to: 1
-                  - color: '#1db954'
-                    from: 1
-                    to: 400
-                  - color: '#bf9540'
-                    from: 400
-                    to: 600
-                style: |
-                  .card-content {
-                    padding: 5px;
-                    margin-right: 5px;
-                  }
-                  bar-card-currentbar, bar-card-backgroundbar {
-                    border-radius: 5px;
-                  }
-                  bar-card-value {
-                    font-size: 15px;
-                    font-weight: bold;
-                    margin-right: 20px;
-                  }
+              - type: custom:mini-graph-card
+                entities:
+                  - sensor.speedtest_upload
+                height: 50
+                line_width: 2
+                font_size: 70
+                hours_to_show: 168
+                points_per_hour: 0.3
+                show:
+                  extrema: true
+                  fill: true
+                color_thresholds:
+                  - value: 13
+                    color: "#bf4040"
 
-              - type: custom:bar-card
-                name: Binary Sensors
-                entity: sensor.binary_sensor_count
-                positions:
-                  name: inside
-                  icon: 'off'
-                  value: inside
-                  indicator: inside
-                max: 200
-                height: 35
-                severity:
-                  - color: '#bf4040'
-                    from: 0
-                    to: 1
-                  - color: '#1db954'
-                    from: 1
-                    to: 150
-                  - color: '#bf9540'
-                    from: 150
-                    to: 200
-                style: |
-                  .card-content {
-                    padding: 5px;
-                    margin-right: 5px;
-                  }
-                  bar-card-currentbar, bar-card-backgroundbar {
-                    border-radius: 5px;
-                  }
-                  bar-card-value {
-                    font-size: 15px;
-                    font-weight: bold;
-                    margin-right: 20px;
-                  }
+          - type: entities
+            show_header_toggle: false
+            entities:
+              - sensor.myip
+              - sensor.local_ip
+              - type: divider
+              - sensor.cert_expiry_timestamp_techlife_nl
+              - sensor.cert_expiry_timestamp_techlife_com
 
+  ########## Stack 2 ##########
+  - type: vertical-stack
+    cards:
+      - type: custom:button-card
+        color_type: label-card
+        color: 'var(--primary-color)'
+        name: Synology NAS
+      # Synology NAS information
+      - type: custom:stack-in-card
+        mode: vertical
+        cards:
           - type: horizontal-stack
             cards:
-              - type: custom:bar-card
-                name: Media Players
-                entity: sensor.media_player_count
-                positions:
-                  name: inside
-                  icon: 'off'
-                  value: inside
-                  indicator: inside
-                max: 30
-                height: 35
-                severity:
-                  - color: '#bf4040'
-                    from: 0
-                    to: 1
-                  - color: '#1db954'
-                    from: 1
-                    to: 16
-                  - color: '#bf9540'
-                    from: 16
-                    to: 30
-                style: |
-                  .card-content {
-                    padding: 5px;
-                    margin-right: 5px;
-                  }
-                  bar-card-currentbar, bar-card-backgroundbar {
-                    border-radius: 5px;
-                  }
-                  bar-card-value {
-                    font-size: 15px;
-                    font-weight: bold;
-                    margin-right: 20px;
-                  }
+              - type: vertical-stack
+                cards:
+                  # Picture
+                  - type: picture
+                    image: /local/images/synology-nas.png
+                    style: |
+                      ha-card {
+                        margin: 10px;
+                        width: 180px;
+                        box-shadow: none;
+                      }
 
-              - type: custom:bar-card
-                name: Scripts
-                entity: sensor.script_count
-                positions:
-                  name: inside
-                  icon: 'off'
-                  value: inside
-                  indicator: inside
-                max: 50
-                height: 35
-                severity:
-                  - color: '#bf4040'
-                    from: 0
-                    to: 1
-                  - color: '#1db954'
-                    from: 1
-                    to: 34
-                  - color: '#bf9540'
-                    from: 34
-                    to: 50
-                style: |
-                  .card-content {
-                    padding: 5px;
-                    margin-right: 5px;
-                  }
-                  bar-card-currentbar, bar-card-backgroundbar {
-                    border-radius: 5px;
-                  }
-                  bar-card-value {
-                    font-size: 15px;
-                    font-weight: bold;
-                    margin-right: 20px;
-                  }
+              - type: vertical-stack
+                cards:
+                  # NAS volume status
+                  - type: custom:bar-card
+                    entity: sensor.smarty_volume_1_status
+                    name: NAS Status
+                    style: |
+                      .card-content {
+                        padding-left: 5px;
+                        padding-bottom: 0px;
+                      }
+                      bar-card-currentbar, bar-card-backgroundbar {
+                        border-radius: 5px;
+                      }
+                      ha-card {
+                        box-shadow: none;
+                      }
 
-          - type: horizontal-stack
+                  # Volume storage useage
+                  - type: custom:bar-card
+                    entity: sensor.smarty_volume_1_volume_used
+                    name: Opslag
+                    style: |
+                      .card-content {
+                        padding-left: 5px;
+                        padding-bottom: 0px;
+                      }
+                      bar-card-currentbar, bar-card-backgroundbar {
+                        border-radius: 5px;
+                      }
+                      ha-card {
+                        box-shadow: none;
+                      }
+
+                  # RAM useage
+                  - type: custom:bar-card
+                    entity: sensor.smarty_memory_usage_real
+                    name: RAM
+                    style: |
+                      .card-content {
+                        padding-left: 5px;
+                        padding-bottom: 0px;
+                      }
+                      bar-card-currentbar, bar-card-backgroundbar {
+                        border-radius: 5px;
+                      }
+                      ha-card {
+                        box-shadow: none;
+                      }
+
+          # NAS Disk 1
+          - type: custom:bar-card
+            title: NAS Disk 1
+            positions:
+              indicator: inside
+            columns: 2
+            entities:
+              - entity: sensor.smarty_drive_1_status
+                name: Status
+              - entity: sensor.smarty_drive_1_temperature
+                name: Temperatuur
+            style: |
+              .card-header {
+                font-size: initial;
+                padding-top: 0px;
+                padding-bottom: 5px;
+              }
+              .card-content {
+                padding: 5px;
+                margin-right: 10px;
+                margin-left: 10px;
+              }
+              bar-card-currentbar, bar-card-backgroundbar {
+                border-radius: 5px;
+              }
+
+          # NAS Disk 2
+          - type: custom:bar-card
+            title: NAS Disk 2
+            positions:
+              indicator: inside
+            columns: 2
+            entities:
+              - entity: sensor.smarty_drive_2_status
+                name: Status
+              - entity: sensor.smarty_drive_2_temperature
+                name: Temperatuur
+            style: |
+              .card-header {
+                font-size: initial;
+                padding-top: 0px;
+                padding-bottom: 5px;
+              }
+              .card-content {
+                padding: 5px;
+                margin-right: 10px;
+                margin-left: 10px;
+                margin-bottom: 10px;
+              }
+              bar-card-currentbar, bar-card-backgroundbar {
+                border-radius: 5px;
+              }
+
+  ########## Stack 3 ##########
+  - type: vertical-stack
+    cards:
+      - type: custom:button-card
+        color_type: label-card
+        color: 'var(--primary-color)'
+        name: Home Assistant Info
+      # Show information about Home Assistant
+      - type: entities
+        show_header_toggle: false
+        entities:
+          - sensor.last_boot
+          # - sensor.snapshot_backup
+          - type: divider
+          # Home Assistant
+          - entity: sensor.home_assistant_stable_versie
+            name: Home Assistant version
+            icon: mdi:home-assistant
+            type: custom:multiple-entity-row
+            show_state: false
+            entities:
+              - entity: sensor.home_assistant_beta_versie
+                name: Beta
+              - entity: sensor.home_assistant_stable_versie
+                name: Stable
+          # HassOS
+          - entity: sensor.hassos_version_stable
+            name: HassOS version
+            icon: mdi:server-security
+            type: custom:multiple-entity-row
+            show_state: false
+            entities:
+              - entity: sensor.hassos_version_beta
+                name: Beta
+              - entity: sensor.hassos_version_stable
+                name: Stable
+          # Supervisor
+          - entity: sensor.supervisor_version_stable
+            name: Supervisor version
+            icon: mdi:account-supervisor-circle
+            type: custom:multiple-entity-row
+            show_state: false
+            entities:
+              - entity: sensor.supervisor_version_beta
+                name: Beta
+              - entity: sensor.supervisor_version_stable
+                name: Stable
+          - sensor.python_version
+          - type: divider
+          - sensor.automation_on
+          - sensor.hacs
+          - type: custom:stack-in-card
+            mode: vertical
+            style: |
+              ha-card {
+                box-shadow: none;
+              }
             cards:
-              - type: custom:bar-card
-                name: Sensors
-                entity: sensor.sensor_count
-                positions:
-                  name: inside
-                  icon: 'off'
-                  value: inside
-                  indicator: inside
-                max: 800
-                height: 35
-                severity:
-                  - color: '#bf4040'
-                    from: 0
-                    to: 1
-                  - color: '#1db954'
-                    from: 1
-                    to: 700
-                  - color: '#bf9540'
-                    from: 700
-                    to: 800
-                style: |
-                  .card-content {
-                    padding: 5px;
-                    margin-right: 5px;
-                  }
-                  bar-card-currentbar, bar-card-backgroundbar {
-                    border-radius: 5px;
-                  }
-                  bar-card-value {
-                    font-size: 15px;
-                    font-weight: bold;
-                    margin-right: 20px;
-                  }
+              - type: horizontal-stack
+                cards:
+                  - type: custom:bar-card
+                    name: Lights
+                    entity: sensor.lights_count
+                    positions:
+                      name: inside
+                      icon: 'off'
+                      value: inside
+                      indicator: inside
+                    max: 40
+                    height: 35
+                    severity:
+                      - color: '#bf4040'
+                        from: 0
+                        to: 1
+                      - color: '#1db954'
+                        from: 1
+                        to: 30
+                      - color: '#bf9540'
+                        from: 30
+                        to: 40
+                    style: |
+                      .card-content {
+                        padding: 5px;
+                        margin-right: 5px;
+                      }
+                      bar-card-currentbar, bar-card-backgroundbar {
+                        border-radius: 5px;
+                      }
+                      bar-card-value {
+                        font-size: 15px;
+                        font-weight: bold;
+                        margin-right: 20px;
+                      }
 
-              - type: custom:bar-card
-                name: Switches
-                entity: sensor.switch_count
-                title_position: inside
-                positions:
-                  name: inside
-                  icon: 'off'
-                  value: inside
-                  indicator: inside
-                max: 65
-                height: 35
-                severity:
-                  - color: '#bf4040'
-                    from: 0
-                    to: 1
-                  - color: '#1db954'
-                    from: 1
-                    to: 65
-                  - color: '#bf9540'
-                    from: 65
-                    to: 70
-                style: |
-                  .card-content {
-                    padding: 5px;
-                    margin-right: 5px;
-                  }
-                  bar-card-currentbar, bar-card-backgroundbar {
-                    border-radius: 5px;
-                  }
-                  bar-card-value {
-                    font-size: 15px;
-                    font-weight: bold;
-                    margin-right: 20px;
-                  }
+                  - type: custom:bar-card
+                    name: Trackers
+                    entity: sensor.tracker_count
+                    positions:
+                      name: inside
+                      icon: 'off'
+                      value: inside
+                      indicator: inside
+                    max: 100
+                    height: 35
+                    severity:
+                      - color: '#bf4040'
+                        from: 0
+                        to: 1
+                      - color: '#1db954'
+                        from: 1
+                        to: 87
+                      - color: '#bf9540'
+                        from: 87
+                        to: 100
+                    style: |
+                      .card-content {
+                        padding: 5px;
+                        margin-right: 5px;
+                      }
+                      bar-card-currentbar, bar-card-backgroundbar {
+                        border-radius: 5px;
+                      }
+                      bar-card-value {
+                        font-size: 15px;
+                        font-weight: bold;
+                        margin-right: 20px;
+                      }
 
+                  - type: custom:bar-card
+                    name: Input DateTime
+                    entity: sensor.input_datetime_count
+                    positions:
+                      name: inside
+                      icon: 'off'
+                      value: inside
+                      indicator: inside
+                    max: 100
+                    severity:
+                      - color: '#bf4040'
+                        from: 0
+                        to: 10
+                      - color: '#1db954'
+                        from: 10
+                        to: 50
+                      - color: '#bf9540'
+                        from: 50
+                        to: 100
+                    style: |
+                      .card-content {
+                        padding: 5px;
+                        margin-right: 5px;
+                      }
+                      bar-card-currentbar, bar-card-backgroundbar {
+                        border-radius: 5px;
+                      }
+                      bar-card-value {
+                        font-size: 15px;
+                        font-weight: bold;
+                        margin-right: 20px;
+                      }
+
+              - type: horizontal-stack
+                cards:
+                  - type: custom:bar-card
+                    name: Automations
+                    entity: sensor.automation_count
+                    positions:
+                      name: inside
+                      icon: 'off'
+                      value: inside
+                      indicator: inside
+                    max: 400
+                    height: 35
+                    severity:
+                      - color: '#bf4040'
+                        from: 0
+                        to: 1
+                      - color: '#1db954'
+                        from: 1
+                        to: 300
+                      - color: '#bf9540'
+                        from: 300
+                        to: 400
+                    style: |
+                      .card-content {
+                        padding: 5px;
+                        margin-right: 5px;
+                      }
+                      bar-card-currentbar, bar-card-backgroundbar {
+                        border-radius: 5px;
+                      }
+                      bar-card-value {
+                        font-size: 15px;
+                        font-weight: bold;
+                        margin-right: 20px;
+                      }
+
+                  - type: custom:bar-card
+                    name: Entities
+                    entity: sensor.total_entities
+                    positions:
+                      name: inside
+                      icon: 'off'
+                      value: inside
+                      indicator: inside
+                    max: 600
+                    height: 35
+                    severity:
+                      - value: 1
+                        color: '#bf4040'
+                      - value: 300
+                        color: '#1db954'
+                      - value: 450
+                        color: '#bf9540'
+                      - color: '#bf4040'
+                        from: 0
+                        to: 1
+                      - color: '#1db954'
+                        from: 1
+                        to: 400
+                      - color: '#bf9540'
+                        from: 400
+                        to: 600
+                    style: |
+                      .card-content {
+                        padding: 5px;
+                        margin-right: 5px;
+                      }
+                      bar-card-currentbar, bar-card-backgroundbar {
+                        border-radius: 5px;
+                      }
+                      bar-card-value {
+                        font-size: 15px;
+                        font-weight: bold;
+                        margin-right: 20px;
+                      }
+
+                  - type: custom:bar-card
+                    name: Binary Sensors
+                    entity: sensor.binary_sensor_count
+                    positions:
+                      name: inside
+                      icon: 'off'
+                      value: inside
+                      indicator: inside
+                    max: 200
+                    height: 35
+                    severity:
+                      - color: '#bf4040'
+                        from: 0
+                        to: 1
+                      - color: '#1db954'
+                        from: 1
+                        to: 150
+                      - color: '#bf9540'
+                        from: 150
+                        to: 200
+                    style: |
+                      .card-content {
+                        padding: 5px;
+                        margin-right: 5px;
+                      }
+                      bar-card-currentbar, bar-card-backgroundbar {
+                        border-radius: 5px;
+                      }
+                      bar-card-value {
+                        font-size: 15px;
+                        font-weight: bold;
+                        margin-right: 20px;
+                      }
+
+              - type: horizontal-stack
+                cards:
+                  - type: custom:bar-card
+                    name: Media Players
+                    entity: sensor.media_player_count
+                    positions:
+                      name: inside
+                      icon: 'off'
+                      value: inside
+                      indicator: inside
+                    max: 30
+                    height: 35
+                    severity:
+                      - color: '#bf4040'
+                        from: 0
+                        to: 1
+                      - color: '#1db954'
+                        from: 1
+                        to: 16
+                      - color: '#bf9540'
+                        from: 16
+                        to: 30
+                    style: |
+                      .card-content {
+                        padding: 5px;
+                        margin-right: 5px;
+                      }
+                      bar-card-currentbar, bar-card-backgroundbar {
+                        border-radius: 5px;
+                      }
+                      bar-card-value {
+                        font-size: 15px;
+                        font-weight: bold;
+                        margin-right: 20px;
+                      }
+
+                  - type: custom:bar-card
+                    name: Scripts
+                    entity: sensor.script_count
+                    positions:
+                      name: inside
+                      icon: 'off'
+                      value: inside
+                      indicator: inside
+                    max: 50
+                    height: 35
+                    severity:
+                      - color: '#bf4040'
+                        from: 0
+                        to: 1
+                      - color: '#1db954'
+                        from: 1
+                        to: 34
+                      - color: '#bf9540'
+                        from: 34
+                        to: 50
+                    style: |
+                      .card-content {
+                        padding: 5px;
+                        margin-right: 5px;
+                      }
+                      bar-card-currentbar, bar-card-backgroundbar {
+                        border-radius: 5px;
+                      }
+                      bar-card-value {
+                        font-size: 15px;
+                        font-weight: bold;
+                        margin-right: 20px;
+                      }
+
+              - type: horizontal-stack
+                cards:
+                  - type: custom:bar-card
+                    name: Sensors
+                    entity: sensor.sensor_count
+                    positions:
+                      name: inside
+                      icon: 'off'
+                      value: inside
+                      indicator: inside
+                    max: 800
+                    height: 35
+                    severity:
+                      - color: '#bf4040'
+                        from: 0
+                        to: 1
+                      - color: '#1db954'
+                        from: 1
+                        to: 700
+                      - color: '#bf9540'
+                        from: 700
+                        to: 800
+                    style: |
+                      .card-content {
+                        padding: 5px;
+                        margin-right: 5px;
+                      }
+                      bar-card-currentbar, bar-card-backgroundbar {
+                        border-radius: 5px;
+                      }
+                      bar-card-value {
+                        font-size: 15px;
+                        font-weight: bold;
+                        margin-right: 20px;
+                      }
+
+                  - type: custom:bar-card
+                    name: Switches
+                    entity: sensor.switch_count
+                    title_position: inside
+                    positions:
+                      name: inside
+                      icon: 'off'
+                      value: inside
+                      indicator: inside
+                    max: 65
+                    height: 35
+                    severity:
+                      - color: '#bf4040'
+                        from: 0
+                        to: 1
+                      - color: '#1db954'
+                        from: 1
+                        to: 65
+                      - color: '#bf9540'
+                        from: 65
+                        to: 70
+                    style: |
+                      .card-content {
+                        padding: 5px;
+                        margin-right: 5px;
+                      }
+                      bar-card-currentbar, bar-card-backgroundbar {
+                        border-radius: 5px;
+                      }
+                      bar-card-value {
+                        font-size: 15px;
+                        font-weight: bold;
+                        margin-right: 20px;
+                      }
+
+  ########## Stack 4 ##########
   # Show maintenance dashboard
   - type: vertical-stack
     cards:
+      - type: custom:button-card
+        color_type: label-card
+        color: 'var(--primary-color)'
+        name: Onderhoud
       - type: custom:stack-in-card
         mode: vertical
         cards:
           - type: entities
-            title: Onderhoud
             show_header_toggle: false
             entities:
               - input_boolean.maintenance_mode
-              - type: divider
-          # Buttons
-          - type: horizontal-stack
-            cards:
-              - type: custom:button-card
-                entity: script.home_assistant_reboot
-                color_type: icon
-                name: HA config
-              - type: custom:button-card
-                entity: script.host_reboot
-                color_type: card
-                name: Host
-                lock: true
-              - type: custom:button-card
-                entity: script.config_check
-                color_type: icon
-              - type: custom:button-card
-                entity: script.backup_now
-                color_type: icon
-                name: Snapshot
           - type: entities
             show_header_toggle: false
             entities:
@@ -734,78 +799,13 @@ cards:
               - type: weblink
                 name: Github - Home Assistant config
                 url: https://github.com/klaasnicolaas/Student-homeassistant-config
-
-      # Show alerts that can appear
-      - type: entities
-        title: Alerts
-        show_header_toggle: false
-        entities:
-          - binary_sensor.cpu_high
-          - binary_sensor.cpu_hot
-
-  # Show information about the internet connection
-  - type: vertical-stack
-    cards:
-      - type: horizontal-stack
-        cards:
-          - type: custom:mini-graph-card
-            entities:
-              - sensor.speedtest_ping
-            height: 20
-            line_width: 2
-            font_size: 70
-            hours_to_show: 168
-            points_per_hour: 0.3
-            show:
-              # extrema: true
-              fill: true
-              graph: bar
-
-      - type: horizontal-stack
-        cards:
-          - type: custom:mini-graph-card
-            entities:
-              - sensor.speedtest_download
-            height: 50
-            line_width: 2
-            font_size: 70
-            hours_to_show: 168
-            points_per_hour: 0.3
-            show:
-              extrema: true
-              fill: true
-            color_thresholds:
-              - value: 150
-                color: "#bf4040"
-
-          - type: custom:mini-graph-card
-            entities:
-              - sensor.speedtest_upload
-            height: 50
-            line_width: 2
-            font_size: 70
-            hours_to_show: 168
-            points_per_hour: 0.3
-            show:
-              extrema: true
-              fill: true
-            color_thresholds:
-              - value: 13
-                color: "#bf4040"
-
-      - type: entities
-        show_header_toggle: false
-        entities:
-          - sensor.myip
-          - sensor.local_ip
-          - type: divider
-          - sensor.cert_expiry_timestamp_techlife_nl
-          - sensor.cert_expiry_timestamp_techlife_com
-
-      # Battery devices information
+      - type: custom:button-card
+        color_type: label-card
+        color: 'var(--primary-color)'
+        name: Batterij Status - Top 10
+        # Battery devices information
       - type: custom:stack-in-card
         mode: vertical
-        title: Batterij Status - Top 10
         cards:
           - type: custom:auto-entities
             card:
@@ -853,6 +853,14 @@ cards:
               method: state
               numeric: true
               count: 10
+
+      # Show alerts that can appear
+      - type: entities
+        title: Alerts
+        show_header_toggle: false
+        entities:
+          - binary_sensor.cpu_high
+          - binary_sensor.cpu_hot
 
   - type: glance
     entities:

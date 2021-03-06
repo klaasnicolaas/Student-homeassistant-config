@@ -24,8 +24,6 @@ cards:
                 secondary_info: last-changed
           exclude:
             - entity_id: automation.system_ifttt_handling
-            - entity_id: automation.system_perform_system_checks
-            - entity_id: automation.system_perform_log_checks
 
   # People
   - type: vertical-stack
