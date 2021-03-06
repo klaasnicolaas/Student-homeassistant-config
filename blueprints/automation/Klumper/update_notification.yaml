@@ -1,3 +1,4 @@
+---
 blueprint:
   name: Home Assistant update notification
   description: Send a notification when there's an update availiable for Home Assistant
@@ -65,13 +66,13 @@ variables:
   notification_message: !input 'notification_message'
   delay: !input 'delay'
 action:
-- delay: '{{ delay }}'
-- device_id: !input 'notify_device'
-  domain: mobile_app
-  type: notify
-  title: '{{ notification_title }}'
-  message: '{{ notification_message }}'
-  data: "{% if include_release_notes %}\n  {% set android_data = { \"clickAction\"\
-    : \"%s\" } | format(release_notes) %}\n  {% set ios_data = { \"url\": \"%s\" }\
-    \ | format(release_notes) %}\n  {{ ios_data if is_ios else android_data }}\n{%\
-    \ endif %}\n"
+  - delay: '{{ delay }}'
+  - device_id: !input 'notify_device'
+    domain: mobile_app
+    type: notify
+    title: '{{ notification_title }}'
+    message: '{{ notification_message }}'
+    data: "{% if include_release_notes %}\n  {% set android_data = { \"clickAction\"\
+      : \"%s\" } | format(release_notes) %}\n  {% set ios_data = { \"url\": \"%s\" }\
+      \ | format(release_notes) %}\n  {{ ios_data if is_ios else android_data }}\n{%\
+      \ endif %}\n"
