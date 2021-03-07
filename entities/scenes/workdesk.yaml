@@ -1,0 +1,37 @@
+---
+########## Desk Scenes ##########
+- name: Bureau - normal
+  icon: mdi:desk
+  entities:
+    light.wled_workdesk:
+      state: 'on'
+      brightness: 230
+      rgb_color: [255, 136, 12]
+      effect: Solid
+    light.stellingkast:
+      state: 'on'
+      brightness: 128
+      rgb_color: [255, 255, 255]
+- name: Bureau - work
+  icon: mdi:briefcase
+  entities:
+    light.wled_workdesk:
+      state: 'on'
+      brightness: 230
+      rgb_color: [255, 255, 255]
+      effect: Solid
+    light.stellingkast:
+      state: 'on'
+      brightness: 255
+      rgb_color: [255, 125, 0]
+- name: Bureau - party
+  icon: mdi:party-popper
+  entities:
+    light.wled_workdesk:
+      state: 'on'
+      brightness: 255
+      effect: Rainbow
+    light.stellingkast:
+      state: 'on'
+      brightness: 255
+      rgb_color: [255, 125, 0]
