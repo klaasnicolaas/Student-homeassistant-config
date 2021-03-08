@@ -12,6 +12,12 @@
   trigger:
     - platform: state
       entity_id: sensor.laptop_webcam
+      from: 'False'
+      to: 'True'
+    - platform: state
+      entity_id: sensor.laptop_webcam
+      from: 'True'
+      to: 'False'
   condition:
     # Check if I'm home :)
     - condition: state
