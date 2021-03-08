@@ -1,48 +1,35 @@
 ---
-- alias: '[Light] - Turn wardrobe light ON'
+- alias: '[Light] - Set wardrobe lights'
   description: >-
-    These automations ensure that the lamp above my wardrobe
-    will go on when you open a door.
+    These automations ensure that the lights above my wardrobe
+    will go on or off based on the door sensors.
 
-  id: af8651c9-55a0-410c-a9cd-bf65c63c8511
-  mode: single
-
-  trigger:
-    - platform: state
-      entity_id: binary_sensor.wardrobe_left, binary_sensor.wardrobe_middle, binary_sensor.wardrobe_right
-      from: 'off'
-      to: 'on'
-  condition:
-    condition: state
-    entity_id: light.hal
-    state: 'off'
-  action:
-    - service: light.turn_on
-      data:
-        entity_id: light.hal
-        brightness: 128
-
-- alias: '[Light] - Turn wardrobe light OFF'
-  description: >-
-    These automations ensure that the lamp above my wardrobe
-    will go off when you close all the doors.
-
-  id: 9c6b9883-fd6f-4246-b22b-9b328765dcce
+  id: 8c0b35c6-0917-4768-aabc-b4235301c115
   mode: single
 
   trigger:
     - platform: state
       entity_id: group.wardrobe_sensors
-      from: 'on'
-      to: 'off'
-  condition:
-    condition: and
-    conditions:
-      - condition: sun
-        before: sunset
-      - condition: sun
-        after: sunrise
   action:
-    - service: light.turn_off
-      data:
-        entity_id: light.hal
+    - alias: "Turn lights OFF if group off else turn light ON"
+      choose:
+        - alias: "Doors are closed"
+          conditions:
+            - condition: state
+              entity_id: group.wardrobe_sensors
+              state: 'off'
+          sequence:
+            - service: scene.turn_on
+              target:
+                entity_id: scene.wardrobe_before
+      default:
+        - service: scene.create
+          data:
+            scene_id: wardrobe_before
+            snapshot_entities:
+              - light.hal
+        - service: light.turn_on
+          target:
+            entity_id: light.hal
+          data:
+            brightness: 128
