@@ -11,13 +11,13 @@
 
   trigger:
     - platform: state
-      entity_id: sensor.laptop_webcam
-      from: 'False'
-      to: 'True'
+      entity_id: binary_sensor.laptop_webcam
+      from: 'off'
+      to: 'on'
     - platform: state
-      entity_id: sensor.laptop_webcam
-      from: 'True'
-      to: 'False'
+      entity_id: binary_sensor.laptop_webcam
+      from: 'on'
+      to: 'off'
   condition:
     # Check if I'm home :)
     - condition: state
@@ -28,8 +28,8 @@
         # Into a meeting
         - conditions:
             - condition: state
-              entity_id: sensor.laptop_webcam
-              state: 'True'
+              entity_id: binary_sensor.laptop_webcam
+              state: 'on'
           sequence:
             - service: scene.create
               data:
@@ -46,8 +46,8 @@
         # Exit a meeting
         - conditions:
             - condition: state
-              entity_id: sensor.laptop_webcam
-              state: 'False'
+              entity_id: binary_sensor.laptop_webcam
+              state: 'off'
           sequence:
             - service: scene.turn_on
               target:
