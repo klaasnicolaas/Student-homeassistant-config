@@ -5,4 +5,5 @@ start_cooking:
   alias: 'Start met koken'
   sequence:
     - service: scene.turn_on
-      entity_id: scene.koken
+      target:
+        entity_id: scene.koken

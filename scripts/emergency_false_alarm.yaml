@@ -6,7 +6,7 @@ false_alarm_emergency:
   sequence:
     # Boolean
     - service: input_boolean.turn_off
-      data:
+      target:
         entity_id: input_boolean.emergency
     # Message
     - service: notify.telegram_emergency

@@ -90,4 +90,5 @@
   action:
     # Turn all lights off
     - service: script.turn_on
-      entity_id: script.all_lights_off
+      target:
+        entity_id: script.all_lights_off

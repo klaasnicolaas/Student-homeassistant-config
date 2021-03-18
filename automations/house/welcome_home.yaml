@@ -20,8 +20,10 @@
 
   action:
     - service: input_boolean.turn_on
-      entity_id: input_boolean.lights_automated
+      target:
+        entity_id: input_boolean.lights_automated
     - delay:
         seconds: 3
     - service: script.turn_on
-      entity_id: script.home_status_message
+      target:
+        entity_id: script.home_status_message

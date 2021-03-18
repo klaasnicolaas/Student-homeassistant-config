@@ -14,10 +14,11 @@ wake_up:
 
     # Switch boolean
     - service: input_boolean.turn_off
-      entity_id:
-        - input_boolean.go_to_sleep
-        - input_boolean.wakeup_with_alarm
-        - input_boolean.wakeup_wait
+      target:
+        entity_id:
+          - input_boolean.go_to_sleep
+          - input_boolean.wakeup_with_alarm
+          - input_boolean.wakeup_wait
 
     # Turn open cover to 30%
     - service: cover.set_cover_position
@@ -25,13 +26,14 @@ wake_up:
         entity_id: cover.curtain_window
         position: 30
 
-    # Use the lamps as a wakeup light for 10 minutes to 70%
+    # Use the lamps as a wakeup light for 10 minutes to 50%
     # Hall and Kitchen
     - service: light.turn_on
-      data:
+      target:
         entity_id:
           - light.hal
           - light.keuken
+      data:
         brightness: 128
 
     # FROM HERE IT'S STILL 10 MINUTSE BEFORE ALARM
@@ -65,18 +67,21 @@ wake_up:
 
     # Start morning briefing
     - service: script.turn_on
-      entity_id: script.home_status_message
+      target:
+        entity_id: script.home_status_message
 
     # Wait until morning briefing is done
     - wait_template: "{{ is_state('input_boolean.wakeup_wait', 'on') }}"
 
     # Put the radio ON
     - service: script.turn_on
-      entity_id: script.play_radio
+      target:
+        entity_id: script.play_radio
 
     # Turn on Automated Lights cycle
     - service: input_boolean.turn_on
-      entity_id: input_boolean.lights_automated
+      target:
+        entity_id: input_boolean.lights_automated
 
     # Turn open cover to 100%
     - service: cover.set_cover_position

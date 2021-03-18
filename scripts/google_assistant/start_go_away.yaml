@@ -7,11 +7,12 @@ go_away:
   sequence:
     # Turn off automated lights
     - service: input_boolean.turn_off
-      entity_id: input_boolean.lights_automated
+      target:
+        entity_id: input_boolean.lights_automated
 
     # Turn all the lights off
     - service: light.turn_off
-      data:
+      target:
         entity_id:
           - light.woonkamer
           - light.keuken

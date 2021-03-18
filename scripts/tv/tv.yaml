@@ -29,13 +29,13 @@ turn_tv_on:
         entity_id: remote.harmony_hub
         activity: !secret tv_activity
     - service: input_boolean.turn_on
-      data:
+      target:
         entity_id: input_boolean.tv_power
 turn_tv_off:
   sequence:
     - service: remote.turn_off
-      data:
+      target:
         entity_id: remote.harmony_hub
     - service: input_boolean.turn_off
-      data:
+      target:
         entity_id: input_boolean.tv_power

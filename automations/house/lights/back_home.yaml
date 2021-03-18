@@ -19,4 +19,5 @@
       below: 5
   action:
     - service: scene.turn_on
-      entity_id: scene.avond
+      target:
+        entity_id: scene.avond

@@ -24,7 +24,8 @@
         command: '/help'
   action:
     - service: script.turn_on
-      entity_id: script.call_emergency
+      target:
+        entity_id: script.call_emergency
 
 - alias: '[People] - It is a false alarm'
   description: >-
@@ -48,4 +49,5 @@
         command: '/falsealarm'
   action:
     - service: script.turn_on
-      entity_id: script.false_alarm_emergency
+      target:
+        entity_id: script.false_alarm_emergency

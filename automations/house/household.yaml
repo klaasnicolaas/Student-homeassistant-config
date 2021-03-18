@@ -31,7 +31,8 @@
       state: 'off'
   action:
     - service: input_boolean.turn_on
-      entity_id: input_boolean.task_notify
+      target:
+        entity_id: input_boolean.task_notify
 
 # Send the notification
 - alias: '[House] - Send household tasks overview'
@@ -62,4 +63,5 @@
     - delay:
         seconds: 2
     - service: input_boolean.turn_off
-      entity_id: input_boolean.task_notify
+      target:
+        entity_id: input_boolean.task_notify

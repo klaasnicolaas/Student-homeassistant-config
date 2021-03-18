@@ -17,7 +17,8 @@
       from: 'off'
   action:
     - service: light.turn_on
-      entity_id: light.badkamer
+      target:
+        entity_id: light.badkamer
       data_template:
         color_temp: 380
         brightness_pct: >
@@ -45,7 +46,7 @@
       below: 75
   action:
     - service: light.turn_off
-      data:
+      target:
         entity_id: light.badkamer
 
 - alias: '[Light] - Shower warning - 5 min'
@@ -73,13 +74,15 @@
         snapshot_entities:
           - light.badkamer
     - service: light.turn_on
-      entity_id: light.badkamer
+      target:
+        entity_id: light.badkamer
       data:
         transition: 5
         rgb_color: [109, 255, 108]
     - delay: 00:00:10
     - service: scene.turn_on
-      entity_id: scene.bathroom_before
+      target:
+        entity_id: scene.bathroom_before
 
 - alias: '[Light] - Shower warning - 10 min'
   description: >-
@@ -106,10 +109,12 @@
         snapshot_entities:
           - light.badkamer
     - service: light.turn_on
-      entity_id: light.badkamer
+      target:
+        entity_id: light.badkamer
       data:
         transition: 5
         rgb_color: [255, 75, 75]
     - delay: 00:00:10
     - service: scene.turn_on
-      entity_id: scene.bathroom_before
+      target:
+        entity_id: scene.bathroom_before

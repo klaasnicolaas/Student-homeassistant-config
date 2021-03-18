@@ -31,5 +31,5 @@ home_status_message:
 
     # Note that status message is done
     - service: input_boolean.turn_on
-      data:
+      target:
         entity_id: input_boolean.wakeup_wait
