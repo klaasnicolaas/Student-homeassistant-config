@@ -109,7 +109,7 @@ SOFTWARE.
 [commits-shield]: https://img.shields.io/github/commit-activity/y/klaasnicolaas/student-homeassistant-config.svg
 [last-commit-shield]: https://img.shields.io/github/last-commit/klaasnicolaas/Student-homeassistant-config.svg?color=blue&style=plasticr
 [stars-shield]: https://img.shields.io/github/stars/klaasnicolaas/Student-homeassistant-config.svg
-[ha-version-shield]: https://img.shields.io/badge/Home%20Assistant-2021.3.0-blue.svg
+[ha-version-shield]: https://img.shields.io/badge/Home%20Assistant-2021.3.4-blue.svg
 [maintenance-shield]: https://img.shields.io/maintenance/yes/2021.svg
 [homeassistantci-shield]: https://github.com/klaasnicolaas/Student-homeassistant-config/actions/workflows/home_assistant.yml/badge.svg
 [paypal-shield]: https://img.shields.io/badge/BuyMeAFanta-Paypal-orange.svg
