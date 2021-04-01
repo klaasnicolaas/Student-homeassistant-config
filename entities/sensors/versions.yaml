@@ -10,8 +10,7 @@
 - platform: version
   name: Home Assistant Beta versie
   beta: true
-  image: intel-nuc
-  source: hassio
+  source: pypi
 
 # HassOS version beta
 - platform: rest
@@ -32,8 +31,7 @@
 - platform: version
   name: Home Assistant Stable versie
   beta: false
-  image: intel-nuc
-  source: hassio
+  source: pypi
 
 # HassOS version stable
 - platform: rest
