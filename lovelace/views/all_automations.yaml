@@ -7,10 +7,17 @@ cards:
   # System
   - type: vertical-stack
     cards:
-      - type: custom:button-card
-        color_type: label-card
-        color: 'var(--primary-color)'
-        name: Systeem
+      - type: custom:banner-card
+        background: 'var(--primary-color)'
+        color: 'white'
+        heading:
+          - mdi:home-assistant
+          - System
+        style: |
+          ha-card .heading {
+            font-size: 1.1rem;
+            font-weight: 500;
+          }
       - type: custom:auto-entities
         card:
           type: entities
@@ -28,10 +35,17 @@ cards:
   # People
   - type: vertical-stack
     cards:
-      - type: custom:button-card
-        color_type: label-card
-        color: 'var(--primary-color)'
-        name: People
+      - type: custom:banner-card
+        background: 'var(--primary-color)'
+        color: 'white'
+        heading:
+          - mdi:account-multiple
+          - People
+        style: |
+          ha-card .heading {
+            font-size: 1.1rem;
+            font-weight: 500;
+          }
       - type: custom:auto-entities
         card:
           type: entities
@@ -47,10 +61,17 @@ cards:
   # House
   - type: vertical-stack
     cards:
-      - type: custom:button-card
-        color_type: label-card
-        color: 'var(--primary-color)'
-        name: House
+      - type: custom:banner-card
+        background: 'var(--primary-color)'
+        color: 'white'
+        heading:
+          - mdi:home
+          - House
+        style: |
+          ha-card .heading {
+            font-size: 1.1rem;
+            font-weight: 500;
+          }
       - type: custom:auto-entities
         card:
           type: entities
@@ -66,10 +87,17 @@ cards:
   # Lights
   - type: vertical-stack
     cards:
-      - type: custom:button-card
-        color_type: label-card
-        color: 'var(--primary-color)'
-        name: Lights
+      - type: custom:banner-card
+        background: 'var(--primary-color)'
+        color: 'white'
+        heading:
+          - mdi:lightbulb-multiple-outline
+          - Lights
+        style: |
+          ha-card .heading {
+            font-size: 1.1rem;
+            font-weight: 500;
+          }
       - type: custom:auto-entities
         card:
           type: entities
@@ -85,10 +113,17 @@ cards:
   # Media
   - type: vertical-stack
     cards:
-      - type: custom:button-card
-        color_type: label-card
-        color: 'var(--primary-color)'
-        name: Media
+      - type: custom:banner-card
+        background: 'var(--primary-color)'
+        color: 'white'
+        heading:
+          - mdi:movie-open-play-outline
+          - Media
+        style: |
+          ha-card .heading {
+            font-size: 1.1rem;
+            font-weight: 500;
+          }
       - type: custom:auto-entities
         card:
           type: entities

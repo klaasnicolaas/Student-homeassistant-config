@@ -149,10 +149,17 @@ cards:
   # Show the lights in house
   - type: vertical-stack
     cards:
-      - type: custom:button-card
-        color_type: label-card
-        color: 'var(--primary-color)'
-        name: Lampen
+      - type: custom:banner-card
+        background: 'var(--primary-color)'
+        color: 'white'
+        heading:
+          - mdi:lightbulb-multiple-outline
+          - Lampen
+        style: |
+          ha-card .heading {
+            font-size: 1.1rem;
+            font-weight: 500;
+          }
       # Light slider groups
       - type: entities
         show_header_toggle: false
@@ -334,10 +341,17 @@ cards:
   ########## Stack 3 ###########
   - type: vertical-stack
     cards:
-      - type: custom:button-card
-        color_type: label-card
-        color: 'var(--primary-color)'
-        name: Huis
+      - type: custom:banner-card
+        background: 'var(--primary-color)'
+        color: 'white'
+        heading:
+          - mdi:home
+          - Huis
+        style: |
+          ha-card .heading {
+            font-size: 1.1rem;
+            font-weight: 500;
+          }
       # Show door and window sensors
       - type: custom:stack-in-card
         mode: vertical

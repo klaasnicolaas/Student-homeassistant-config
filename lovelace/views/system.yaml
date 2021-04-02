@@ -7,10 +7,17 @@ cards:
   ########## Stack 1 ##########
   - type: vertical-stack
     cards:
-      - type: custom:button-card
-        color_type: label-card
-        color: 'var(--primary-color)'
-        name: Home Assistant Server
+      - type: custom:banner-card
+        background: 'var(--primary-color)'
+        color: 'white'
+        heading:
+          - mdi:server
+          - Home Assistant Server
+        style: |
+          ha-card .heading {
+            font-size: 1.1rem;
+            font-weight: 500;
+          }
       # Home Assistant host server info
       - type: custom:stack-in-card
         mode: vertical
@@ -168,10 +175,17 @@ cards:
                 border-radius: 5px;
               }
 
-      - type: custom:button-card
-        color_type: label-card
-        color: 'var(--primary-color)'
-        name: Network
+      - type: custom:banner-card
+        background: 'var(--primary-color)'
+        color: 'white'
+        heading:
+          - mdi:lan
+          - Network
+        style: |
+          ha-card .heading {
+            font-size: 1.1rem;
+            font-weight: 500;
+          }
       # Show information about the internet connection
       - type: vertical-stack
         cards:
@@ -234,10 +248,17 @@ cards:
   ########## Stack 2 ##########
   - type: vertical-stack
     cards:
-      - type: custom:button-card
-        color_type: label-card
-        color: 'var(--primary-color)'
-        name: Synology NAS
+      - type: custom:banner-card
+        background: 'var(--primary-color)'
+        color: 'white'
+        heading:
+          - mdi:nas
+          - Synology NAS
+        style: |
+          ha-card .heading {
+            font-size: 1.1rem;
+            font-weight: 500;
+          }
       # Synology NAS information
       - type: custom:stack-in-card
         mode: vertical
@@ -362,10 +383,17 @@ cards:
   ########## Stack 3 ##########
   - type: vertical-stack
     cards:
-      - type: custom:button-card
-        color_type: label-card
-        color: 'var(--primary-color)'
-        name: Home Assistant Info
+      - type: custom:banner-card
+        background: 'var(--primary-color)'
+        color: 'white'
+        heading:
+          - mdi:information-outline
+          - Home Assistant Info
+        style: |
+          ha-card .heading {
+            font-size: 1.1rem;
+            font-weight: 500;
+          }
       # Show information about Home Assistant
       - type: entities
         show_header_toggle: false
@@ -775,10 +803,17 @@ cards:
   # Show maintenance dashboard
   - type: vertical-stack
     cards:
-      - type: custom:button-card
-        color_type: label-card
-        color: 'var(--primary-color)'
-        name: Onderhoud
+      - type: custom:banner-card
+        background: 'var(--primary-color)'
+        color: 'white'
+        heading:
+          - mdi:hammer-screwdriver
+          - Onderhoud
+        style: |
+          ha-card .heading {
+            font-size: 1.1rem;
+            font-weight: 500;
+          }
       - type: custom:stack-in-card
         mode: vertical
         cards:
@@ -799,10 +834,17 @@ cards:
               - type: weblink
                 name: Github - Home Assistant config
                 url: https://github.com/klaasnicolaas/Student-homeassistant-config
-      - type: custom:button-card
-        color_type: label-card
-        color: 'var(--primary-color)'
-        name: Batterij Status - Top 10
+      - type: custom:banner-card
+        background: 'var(--primary-color)'
+        color: 'white'
+        heading:
+          - mdi:battery-high
+          - Batterij Status - Top 10
+        style: |
+          ha-card .heading {
+            font-size: 1.1rem;
+            font-weight: 500;
+          }
         # Battery devices information
       - type: custom:stack-in-card
         mode: vertical
