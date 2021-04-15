@@ -6,10 +6,12 @@
   mode: single
 
   use_blueprint:
-    path: Klumper/update_notification.yaml
+    path: fortepc/update-notif-for-android.yaml
     input:
-      notification_message: Home Assistant {{ newest_version }} is available
+      clickAction: https://my.home-assistant.io/redirect/supervisor/
       delay: 0
       notify_device: 5e3a9bc1a6710fb13b08435ab16cd62b
-      is_ios: false
-      updater: binary_sensor.updater
+      notification_title: Tijd om te upgraden!
+      group: Updates
+      notification_message: 'Er is een nieuwe versie voor Home Assistant beschikbaar,
+        versie: {{ newest_version }}'

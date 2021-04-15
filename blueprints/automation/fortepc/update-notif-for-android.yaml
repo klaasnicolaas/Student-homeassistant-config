@@ -1,0 +1,129 @@
+blueprint:
+  name: Home Assistant Update Notification for Android
+  description: Send a notification when there's an update availiable for Home Assistant
+  domain: automation
+  input:
+    updater:
+      name: Update sensor
+      description: The sensor which indicates if there's an update. Default is 'binary_sensor.updater'
+      default: binary_sensor.updater
+      selector:
+        entity:
+          domain: binary_sensor
+    notify_device:
+      name: Device to notify
+      description: Device needs to run the official Home Assistant app to receive
+        notifications
+      selector:
+        device:
+          integration: mobile_app
+    notification_title:
+      name: Notification title
+      description: What would you like to appear as the title of the notification
+        on your device? If you put "{{ newest_version }}" in your message it will
+        be replaced with the actual version number in your notification
+      default: Upgrade time!
+    notification_message:
+      name: Notification message
+      description: What would you like the message in your notification to be? If
+        you put "{{ newest_version }}" in your message it will be replaced with the
+        actual version number in your notification
+      default: Home Assistant {{ newest_version }} is available
+    category:
+      name: Notification Category
+      description: Devices running Android 8.0+ are able to create and manage notification
+        channels on the fly. Once a channel is created you can navigate to your notification
+        settings and you will find the newly created channel, from there you can customize
+        the behavior (like notication sounds, etc) based on what your device allows.
+      default: Home Assistant Updates
+    color:
+      name: Notification Color
+      description: You can set the color of the notification, you can use either the
+        color name or the hex code.
+      default: homeassistant
+    importance:
+      name: Notification importance
+      description: When you are setting the channel for your notification you also
+        have the option to set the importance for the channel per notification. Possible
+        values for this property are high, low, max, min and default.
+      default: high
+    group:
+      name: Notification Group
+      description: Setting a notifiction group will group it with other notifications
+        of the same group. Useful to be able to group other update notifications together.
+      default: Available Updates
+    delay:
+      name: Delay
+      description: Wait before sending the notification
+      default:
+      selector:
+        number:
+          min: 0.0
+          max: 60.0
+          unit_of_measurement: seconds
+          mode: slider
+          step: 1.0
+    clickAction:
+      name: Click Action
+      description: Clicking on the notification takes you where?
+      default: https://my.home-assistant.io/redirect/supervisor/
+    include_release_notes:
+      name: Include release notes
+      description: Add a "release notes" button to the notification
+      selector:
+        boolean: {}
+      default: true
+    include_hasspodcast:
+      name: Include HassPodcast link
+      description: Add a HassPodcast button to the notification
+      selector:
+        boolean: {}
+      default: false
+  source_url: https://github.com/fortepc/My-Home-Assistant/blob/master/Blueprints/update-notif-for-android.yaml
+trigger:
+  platform: state
+  entity_id: !input 'updater'
+  to: 'on'
+  for: !input 'delay'
+mode: restart
+max_exceeded: silent
+variables:
+  updater: !input 'updater'
+  newest_version: '{{ states[updater].attributes.newest_version }}'
+  release_notes: '{{ states[updater].attributes.release_notes }}'
+  include_release_notes: !input 'include_release_notes'
+  include_hasspodcast: !input 'include_hasspodcast'
+  color: !input 'color'
+  category: !input 'category'
+  group: !input 'group'
+  importance: !input 'importance'
+  notify_device: !input 'notify_device'
+  notification_title: !input 'notification_title'
+  notification_message: !input 'notification_message'
+  action_1_title: '{% if include_release_notes %}Release Notes{% endif %}'
+  action_1_uri: '{% if include_release_notes %}{{ release_notes }}{% endif %}'
+  action_2_title: '{% if include_hasspodcast %}HassPodcast{% endif %}'
+  action_2_uri: '{% if include_hasspodcast %}https://hasspodcast.io/episodes{% endif
+    %}'
+  clickAction: !input 'clickAction'
+action:
+- domain: mobile_app
+  type: notify
+  device_id: !input 'notify_device'
+  title: '{{ notification_title }}'
+  message: '{{ notification_message }}'
+  data:
+    persistent: '{{ persistent_notification }}'
+    color: '{{ color }}'
+    channel: '{{ category }}'
+    group: '{{ group }}'
+    importance: '{{ importance }}'
+    clickAction: '{{ clickAction }}'
+    actions: "{% set titles = [action_1_title, action_2_title, action_3_title] %}\
+      \ {% set uris = [action_1_uri, action_2_uri, action_3_uri] %} {% set actions\
+      \ = namespace(data = []) %}\n{% for title in titles %}\n  {% if title|length\
+      \ %}\n    {% set uri = uris[loop.index - 1] %}\n    {% set action_name = \"\
+      action\" + loop.index|string %}\n    {% set action = {\n      \"action\": \"\
+      URI\" if uri|length else action_name,\n      \"title\": title,\n      \"uri\"\
+      : uri \n      }\n    %}\n    {% set actions.data = actions.data + [action] %}\n\
+      \  {% endif %}\n{% endfor %} {{ actions.data }}\n"
