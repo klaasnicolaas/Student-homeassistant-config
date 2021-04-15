@@ -1,3 +1,4 @@
+---
 blueprint:
   name: Home Assistant Update Notification for Android
   description: Send a notification when there's an update availiable for Home Assistant
@@ -107,23 +108,23 @@ variables:
     %}'
   clickAction: !input 'clickAction'
 action:
-- domain: mobile_app
-  type: notify
-  device_id: !input 'notify_device'
-  title: '{{ notification_title }}'
-  message: '{{ notification_message }}'
-  data:
-    persistent: '{{ persistent_notification }}'
-    color: '{{ color }}'
-    channel: '{{ category }}'
-    group: '{{ group }}'
-    importance: '{{ importance }}'
-    clickAction: '{{ clickAction }}'
-    actions: "{% set titles = [action_1_title, action_2_title, action_3_title] %}\
-      \ {% set uris = [action_1_uri, action_2_uri, action_3_uri] %} {% set actions\
-      \ = namespace(data = []) %}\n{% for title in titles %}\n  {% if title|length\
-      \ %}\n    {% set uri = uris[loop.index - 1] %}\n    {% set action_name = \"\
-      action\" + loop.index|string %}\n    {% set action = {\n      \"action\": \"\
-      URI\" if uri|length else action_name,\n      \"title\": title,\n      \"uri\"\
-      : uri \n      }\n    %}\n    {% set actions.data = actions.data + [action] %}\n\
-      \  {% endif %}\n{% endfor %} {{ actions.data }}\n"
+  - domain: mobile_app
+    type: notify
+    device_id: !input 'notify_device'
+    title: '{{ notification_title }}'
+    message: '{{ notification_message }}'
+    data:
+      persistent: '{{ persistent_notification }}'
+      color: '{{ color }}'
+      channel: '{{ category }}'
+      group: '{{ group }}'
+      importance: '{{ importance }}'
+      clickAction: '{{ clickAction }}'
+      actions: "{% set titles = [action_1_title, action_2_title, action_3_title] %}\
+        \ {% set uris = [action_1_uri, action_2_uri, action_3_uri] %} {% set actions\
+        \ = namespace(data = []) %}\n{% for title in titles %}\n  {% if title|length\
+        \ %}\n    {% set uri = uris[loop.index - 1] %}\n    {% set action_name = \"\
+        action\" + loop.index|string %}\n    {% set action = {\n      \"action\": \"\
+        URI\" if uri|length else action_name,\n      \"title\": title,\n      \"uri\"\
+        : uri \n      }\n    %}\n    {% set actions.data = actions.data + [action] %}\n\
+        \  {% endif %}\n{% endfor %} {{ actions.data }}\n"
