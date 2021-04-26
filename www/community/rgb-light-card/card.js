@@ -14,7 +14,7 @@ class RGBLightCard extends HTMLElement {
 
         this.content = document.createElement('div');
         this.content.className = 'wrapper';
-        this.content.onclick = ev => ev.stopPropagation();
+        this.content.onclick = (ev) => ev.stopPropagation();
         shadow.appendChild(this.content);
     }
 
@@ -129,7 +129,7 @@ class RGBLightCard extends HTMLElement {
             ...color,
             icon_color: undefined,
             type: undefined,
-            label: undefined
+            label: undefined,
         };
         this._hass.callService('light', 'turn_on', serviceData);
     }
@@ -143,9 +143,9 @@ class RGBLightCard extends HTMLElement {
             this._hass.states &&
             this._hass.states.hasOwnProperty(this.config.entity)
         ) {
-            const hidden = this.config['hide_when_off'] && this._hass.states[this.config.entity].state === 'off';
+            const isOff = ['off', 'unavailable'].indexOf(this._hass.states[this.config.entity].state) !== -1;
+            const hidden = this.config['hide_when_off'] && isOff;
             this.content.className = hidden ? 'wrapper hidden' : 'wrapper';
-            // this.content.classList.toggle('hidden', hidden);
         }
     }
 
@@ -188,7 +188,7 @@ class RGBLightCard extends HTMLElement {
             const cr = [[166, 209, 255], [255, 255, 255], [255, 160, 0]].slice(mireds < center ? 0 : 1); // prettier-ignore
             const tr = [154, center, 500].slice(mireds < center ? 0 : 1); // Defined here: https://git.io/JvRKR
             return `rgb(${[0, 1, 2]
-                .map(i => ((mireds - tr[0]) * (cr[1][i] - cr[0][i])) / (tr[1] - tr[0]) + cr[0][i])
+                .map((i) => ((mireds - tr[0]) * (cr[1][i] - cr[0][i])) / (tr[1] - tr[0]) + cr[0][i])
                 .map(Math.round)
                 .join(',')})`;
         }
@@ -208,7 +208,7 @@ class RGBLightCard extends HTMLElement {
                 right: 'flex-end',
                 center: 'center',
                 between: 'space-between',
-                around: 'space-around'
+                around: 'space-around',
             }[option] || 'flex-start'
         );
     }
@@ -217,7 +217,7 @@ class RGBLightCard extends HTMLElement {
 customElements.define('rgb-light-card', RGBLightCard);
 
 console.info(
-    '\n %c RGB Light Card %c v1.7.1 %c \n',
+    '\n %c RGB Light Card %c v1.8.0 %c \n',
     'background-color: #555;color: #fff;padding: 3px 2px 3px 3px;border-radius: 3px 0 0 3px;font-family: DejaVu Sans,Verdana,Geneva,sans-serif;text-shadow: 0 1px 0 rgba(1, 1, 1, 0.3)',
     'background-color: #bc81e0;background-image: linear-gradient(90deg, #b65cff, #11cbfa);color: #fff;padding: 3px 3px 3px 2px;border-radius: 0 3px 3px 0;font-family: DejaVu Sans,Verdana,Geneva,sans-serif;text-shadow: 0 1px 0 rgba(1, 1, 1, 0.3)',
     'background-color: transparent'
