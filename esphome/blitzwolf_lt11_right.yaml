@@ -75,4 +75,5 @@ light:
 
 text_sensor:
   - platform: version
+    hide_timestamp: true
     name: "Blitzwolf BW-LT11 Version - Rechts"
