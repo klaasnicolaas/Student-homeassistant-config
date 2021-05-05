@@ -1,0 +1,70 @@
+---
+# https://community.home-assistant.io/t/energy-gas-and-water-consumption-overview/151306/14
+#
+- platform: workday
+  country: NL
+  workdays: [mon, tue, wed, thu, fri]
+  excludes: [sat, sun, holiday]
+  add_holidays:
+    - '2020-04-27'  # Koningsdag
+    - '2020-05-05'  # Bevrijdingsdag
+    - '2020-05-21'  # O.H. Hemelvaart
+    - '2020-05-31'  # Pinksteren
+    - '2020-06-01'  # Pinkstermaandag
+    - '2020-12-25'  # Kerstmis
+    - '2020-12-26'  # 2de Kerstdag
+    - '2021-01-01'  # Nieuwjaarsdag
+    - '2021-04-02'  # Goede vrijdag
+    - '2021-04-04'  # Pasen
+    - '2021-04-05'  # Paasmaandag
+    - '2021-04-27'  # Koningsdag
+    - '2021-05-05'  # Bevrijdingsdag
+    - '2021-05-13'  # O.H. Hemelvaart
+    - '2021-05-23'  # Pinksteren
+    - '2021-06-24'  # Pinkstermaandag
+    - '2021-12-25'  # Kerstmis
+    - '2021-12-26'  # 2de Kerstdag
+    - '2022-01-01'  # Nieuwjaarsdag
+    - '2022-04-15'  # Goede vrijdag
+    - '2022-04-17'  # Pasen
+    - '2022-04-18'  # Paasmaandag
+    - '2022-04-27'  # Koningsdag
+    - '2022-05-05'  # Bevrijdingsdag
+    - '2022-05-26'  # O.H. Hemelvaart
+    - '2022-06-05'  # Pinksteren
+    - '2022-06-06'  # Pinkstermaandag
+    - '2022-12-25'  # Kerstmis
+    - '2022-12-26'  # 2de Kerstdag
+    - '2023-01-01'  # Nieuwjaarsdag
+    - '2023-04-07'  # Goede vrijdag
+    - '2023-04-09'  # Pasen
+    - '2023-04-10'  # Paasmaandag
+    - '2023-04-27'  # Koningsdag
+    - '2023-05-05'  # Bevrijdingsdag
+    - '2023-05-18'  # O.H. Hemelvaart
+    - '2023-05-28'  # Pinksteren
+    - '2023-05-29'  # Pinkstermaandag
+    - '2023-12-25'  # Kerstmis
+    - '2023-12-26'  # 2de Kerstdag
+    - '2024-01-01'  # Nieuwjaarsdag
+    - '2024-03-29'  # Goede vrijdag
+    - '2024-03-31'  # Pasen
+    - '2024-04-01'  # Paasmaandag
+    - '2024-04-27'  # Koningsdag
+    - '2024-05-05'  # Bevrijdingsdag
+    - '2024-05-09'  # O.H. Hemelvaart
+    - '2024-05-19'  # Pinksteren
+    - '2024-05-20'  # Pinkstermaandag
+    - '2024-12-25'  # Kerstmis
+    - '2024-12-26'  # 2de Kerstdag
+    - '2025-01-01'  # Nieuwjaarsdag
+    - '2025-04-18'  # Goede vrijdag
+    - '2025-04-21'  # Pasen
+    - '2025-04-21'  # Paasmaandag
+    - '2025-04-27'  # Koningsdag
+    - '2025-05-05'  # Bevrijdingsdag
+    - '2025-05-29'  # O.H. Hemelvaart
+    - '2025-06-08'  # Pinksteren
+    - '2025-06-09'  # Pinkstermaandag
+    - '2025-12-25'  # Kerstmis
+    - '2025-12-26'  # 2de Kerstdag
