@@ -35,6 +35,7 @@ image
 *.HA_VERSION
 *.db-shm
 *.db-wal
+*.csv
 
 # Ensure these YAML files are ignored, otherwise your secret data/credentials will leak.
 ip_bans.yaml
