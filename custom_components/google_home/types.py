@@ -1,8 +1,6 @@
 """Various types used in type hints."""
 from typing import List, Mapping, Optional, Set, Tuple, TypedDict, Union
 
-JsonDict = Mapping[str, Union[bool, int, str, List[str]]]
-
 
 class AlarmJsonDict(TypedDict, total=False):
     """Typed dict for JSON representation of alarm returned by Google Home API"""
@@ -29,6 +27,8 @@ class GoogleHomeAlarmDict(TypedDict):
 
     alarm_id: str
     fire_time: int
+    local_time: str
+    local_time_iso: str
     status: str
     label: Optional[str]
     recurrence: Optional[str]
@@ -38,7 +38,9 @@ class GoogleHomeTimerDict(TypedDict):
     """Typed dict representation of Google Home timer"""
 
     timer_id: str
-    fire_time: int
+    fire_time: Optional[int]
+    local_time: Optional[str]
+    local_time_iso: Optional[str]
     duration: str
     status: str
     label: Optional[str]
@@ -83,3 +85,8 @@ class OptionsFlowDict(TypedDict):
     """Typed dict for options flow handler"""
 
     data_collection: bool
+
+
+JsonDict = Mapping[
+    str, Union[bool, int, str, List[str], List[AlarmJsonDict], List[TimerJsonDict]]
+]
