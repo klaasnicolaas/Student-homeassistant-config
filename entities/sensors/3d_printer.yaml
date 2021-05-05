@@ -1,0 +1,6 @@
+- platform: rest
+  name: Ender 3 V2 Current Filename
+  resource: http://octopi.local/api/job
+  headers:
+    X-Api-Key: !secret octoprint_key
+  value_template: '{{ value_json.job.file.path }}'

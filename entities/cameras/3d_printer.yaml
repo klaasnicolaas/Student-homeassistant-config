@@ -1,0 +1,8 @@
+---
+#
+#
+- platform: generic
+  name: Ender 3 V2 - STL Preview
+  still_image_url: "http://octopi.local/plugin/UltimakerFormatPackage/thumbnail/{{ states('sensor.ender_3_v2_current_filename') |regex_replace(find='gcode', replace='png', ignorecase=True)}}"
+  scan_interval: 5
+  content_type: image/png

@@ -1,0 +1,9 @@
+---
+# https://www.home-assistant.io/integrations/octoprint/
+#
+octoprint:
+  host: !secret octoprint_host
+  api_key: !secret octoprint_key
+  name: Ender 3 V2
+  bed: true
+  number_of_tools: 2
