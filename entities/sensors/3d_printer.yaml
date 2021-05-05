@@ -1,3 +1,5 @@
+---
+#
 - platform: rest
   name: Ender 3 V2 Current Filename
   resource: http://octopi.local/api/job
