@@ -212,12 +212,50 @@ class RGBLightCard extends HTMLElement {
             }[option] || 'flex-start'
         );
     }
+
+    // Default config when creating the card from the UI
+    static getStubConfig(ha) {
+        const supportedEntities = Object.values(ha.states).filter(
+            (entity) =>
+                entity.entity_id.indexOf('light.') === 0 &&
+                entity.attributes &&
+                entity.attributes.supported_color_modes &&
+                entity.attributes.supported_color_modes.find((mode) => ['hs', 'rgb', 'xy'].indexOf(mode) !== -1)
+        );
+        const entity = supportedEntities.length > 0 ? supportedEntities[0].entity_id : 'light.example_light';
+
+        return {
+            type: 'entities',
+            show_header_toggle: false,
+            entities: [
+                { entity: entity },
+                {
+                    type: 'custom:rgb-light-card',
+                    entity: entity,
+                    colors: [
+                        { rgb_color: [234, 136, 140], brightness: 255, transition: 1 },
+                        { rgb_color: [251, 180, 139], brightness: 200, transition: 1 },
+                        { rgb_color: [136, 198, 237], brightness: 150, transition: 1 },
+                        { rgb_color: [140, 231, 185], brightness: 100, transition: 1 },
+                    ],
+                },
+            ],
+        };
+    }
 }
 
 customElements.define('rgb-light-card', RGBLightCard);
 
+window.customCards = window.customCards || [];
+window.customCards.push({
+    type: 'rgb-light-card',
+    name: 'RGB Light Card',
+    description: 'A custom card for RGB lights',
+    preview: true,
+});
+
 console.info(
-    '\n %c RGB Light Card %c v1.8.0 %c \n',
+    '\n %c RGB Light Card %c v1.9.0 %c \n',
     'background-color: #555;color: #fff;padding: 3px 2px 3px 3px;border-radius: 3px 0 0 3px;font-family: DejaVu Sans,Verdana,Geneva,sans-serif;text-shadow: 0 1px 0 rgba(1, 1, 1, 0.3)',
     'background-color: #bc81e0;background-image: linear-gradient(90deg, #b65cff, #11cbfa);color: #fff;padding: 3px 3px 3px 2px;border-radius: 0 3px 3px 0;font-family: DejaVu Sans,Verdana,Geneva,sans-serif;text-shadow: 0 1px 0 rgba(1, 1, 1, 0.3)',
     'background-color: transparent'
