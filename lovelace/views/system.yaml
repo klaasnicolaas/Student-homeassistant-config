@@ -108,9 +108,9 @@ cards:
             entities:
               - entity: sensor.processor_use
                 name: CPU
-              - entity: sensor.cpu_temperature
-                name: Temp
-                icon: mdi:thermometer
+              - entity: sensor.db_size
+                name: DB size
+                max: 1000
             style: |
               .card-content {
                 padding: 5px;
@@ -130,23 +130,6 @@ cards:
                 name: SWAP
               - entity: sensor.home_assistant_log
                 name: Log size
-            style: |
-              .card-content {
-                padding: 5px;
-                margin-right: 10px;
-                margin-left: 10px;
-              }
-              bar-card-currentbar, bar-card-backgroundbar {
-                border-radius: 5px;
-              }
-
-          - type: custom:bar-card
-            positions:
-              indicator: inside
-            entities:
-              - entity: sensor.db_size
-                name: Database size
-                max: 1000
             style: |
               .card-content {
                 padding: 5px;
@@ -952,3 +935,18 @@ cards:
         font-weight: bold;
         padding-top: 5px;
       }
+
+  - type: custom:uptime-card
+    entity: binary_sensor.p06_pathe_hmh
+    icon: 'mdi:parking'
+    ok: 'off'
+    ko: 'on'
+    bar:
+      height: 46
+      round: 1
+      spacing: 4
+      amount: 36
+    name: Parking garage
+    hours_to_show: 48
+    show:
+      footer: false
