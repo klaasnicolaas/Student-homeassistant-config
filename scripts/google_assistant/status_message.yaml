@@ -9,7 +9,7 @@ home_status_message:
         entity_id: media_player.google_home
         volume_level: '0.50'
 
-    - service: tts.microsoft_say
+    - service: tts.cloud_say
       entity_id: media_player.google_home
       data_template:
         message: >

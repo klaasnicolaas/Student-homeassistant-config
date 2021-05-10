@@ -1,7 +1,7 @@
 ---
-#
+# https://www.home-assistant.io/integrations/notify.tts/
 #
 - platform: tts
   name: Woonkamer
-  tts_service: tts.microsoft_say
+  tts_service: tts.cloud_say
   media_player: media_player.google_home
