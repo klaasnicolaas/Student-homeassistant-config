@@ -28,7 +28,7 @@ cards:
               options:
                 type: custom:multiple-entity-row
                 toggle: true
-                secondary_info: last-changed
+                secondary_info: last-triggered
           exclude:
             - entity_id: automation.system_ifttt_handling
 
@@ -56,7 +56,7 @@ cards:
               options:
                 type: custom:multiple-entity-row
                 toggle: true
-                secondary_info: last-changed
+                secondary_info: last-triggered
 
   # House
   - type: vertical-stack
@@ -82,7 +82,7 @@ cards:
               options:
                 type: custom:multiple-entity-row
                 toggle: true
-                secondary_info: last-changed
+                secondary_info: last-triggered
 
   # Lights
   - type: vertical-stack
@@ -108,7 +108,7 @@ cards:
               options:
                 type: custom:multiple-entity-row
                 toggle: true
-                secondary_info: last-changed
+                secondary_info: last-triggered
 
   # Media
   - type: vertical-stack
@@ -134,4 +134,4 @@ cards:
               options:
                 type: custom:multiple-entity-row
                 toggle: true
-                secondary_info: last-changed
+                secondary_info: last-triggered
