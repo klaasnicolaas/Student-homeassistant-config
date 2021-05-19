@@ -15,13 +15,6 @@ cards:
     entity: media_player.tv_woonkamer
     artwork: cover
 
-  # Podcast
-  - type: custom:podcast-card
-    entity: sensor.gpodder
-    default_target: media_player.google_home
-    show_player: false
-    custom_player: true
-
   # TV Remote
   - type: vertical-stack
     cards:
