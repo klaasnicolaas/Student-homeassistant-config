@@ -181,9 +181,3 @@ alert:
     skip_first: true
     notifiers:
       - telegram_klaas
-
-################################################
-## Integrations
-################################################
-
-local_ip:
