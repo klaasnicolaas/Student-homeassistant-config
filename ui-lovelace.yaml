@@ -12,6 +12,7 @@ swipe_nav: !include lovelace/cards/swipe_nav.yaml
 views:
   - !include lovelace/views/dashboard.yaml
   - !include lovelace/views/security.yaml
+  - !include lovelace/views/3d_printer.yaml
   - !include lovelace/views/temperature.yaml
   - !include lovelace/views/household.yaml
   - !include lovelace/views/media_player.yaml
