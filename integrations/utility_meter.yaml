@@ -1,0 +1,16 @@
+---
+# Utility Meter
+#
+utility_meter:
+  # Energy per day
+  house_daily_energy:
+    source: sensor.house_electricity_kwh
+    cycle: daily
+  # Energy per week
+  house_weekly_energy:
+    source: sensor.house_electricity_kwh
+    cycle: weekly
+  # Energy per month
+  house_monthly_energy:
+    source: sensor.house_electricity_kwh
+    cycle: monthly

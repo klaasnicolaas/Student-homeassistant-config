@@ -52,3 +52,13 @@ input_number:
     mode: box
     icon: mdi:lightbulb-off
     unit_of_measurement: "lx"
+  ## Cost per kWh
+  energy_supplier_tariff:
+    name: Stroom - tarief
+    initial: 0.22
+    step: 0.001
+    min: 0.001
+    max: 2
+    mode: box
+    icon: mdi:currency-eur
+    unit_of_measurement: "€/kWh"
