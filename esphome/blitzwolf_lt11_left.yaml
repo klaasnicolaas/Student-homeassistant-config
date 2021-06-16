@@ -1,6 +1,10 @@
 ---
 esphome:
   name: blitzwolf_lt11_bureau_links
+  comment: "Blitzwolf LT11 left side"
+  project:
+    name: "klaasnicolaas.blitzwolf_lt11"
+    version: "1.0.0"
   platform: ESP8266
   board: esp8285
 
@@ -23,6 +27,9 @@ api:
 
 ota:
   password: !secret esphome_ota_password
+  safe_mode: true
+  reboot_timeout: 10min
+  num_attempts: 5
 
 web_server:
   port: 80
