@@ -1,16 +1,18 @@
 ---
 # Customize binary sensors
-binary_sensor.openclose_sensor_1:
+binary_sensor.front_door:
   device_class: door
-binary_sensor.openclose_sensor_2:
+binary_sensor.windows_left:
   device_class: window
-binary_sensor.openclose_sensor_3:
+binary_sensor.window_right:
   device_class: window
-binary_sensor.openclose_sensor_4:
+binary_sensor.bathroom_door:
   device_class: door
 binary_sensor.wardrobe_left:
   device_class: door
 binary_sensor.wardrobe_middle:
   device_class: door
 binary_sensor.wardrobe_right:
+  device_class: door
+binary_sensor.meter_cupboard:
   device_class: door

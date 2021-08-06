@@ -5,10 +5,10 @@ logbook:
   include:
     entities:
       - alarm_control_panel.alarmsysteem
-      - binary_sensor.openclose_sensor_1
-      - binary_sensor.openclose_sensor_2
-      - binary_sensor.openclose_sensor_3
-      - binary_sensor.openclose_sensor_4
+      - binary_sensor.front_door
+      - binary_sensor.window_left
+      - binary_sensor.window_right
+      - binary_sensor.bathroom_door
       - light.hal
       - light.woonkamer
       - light.keuken

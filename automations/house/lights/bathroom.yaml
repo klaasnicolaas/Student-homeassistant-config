@@ -12,7 +12,7 @@
 
   trigger:
     - platform: state
-      entity_id: binary_sensor.openclose_sensor_4, binary_sensor.motion_badkamer
+      entity_id: binary_sensor.bathroom_door, binary_sensor.motion_badkamer
       to: 'on'
       from: 'off'
   action:

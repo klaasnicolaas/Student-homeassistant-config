@@ -9,7 +9,7 @@
   trigger:
     # Front door
     - platform: state
-      entity_id: binary_sensor.openclose_sensor_1
+      entity_id: binary_sensor.front_door
       to: 'on'
 
   condition:

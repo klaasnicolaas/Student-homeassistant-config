@@ -360,12 +360,12 @@ cards:
           - type: glance
             columns: 3
             entities:
-              - entity: binary_sensor.openclose_sensor_1
-              - entity: binary_sensor.openclose_sensor_2
-              - entity: binary_sensor.openclose_sensor_3
+              - entity: binary_sensor.front_door
+              - entity: binary_sensor.meter_cupboard
               - entity: binary_sensor.motion_huis
                 name: Huis
-              - entity: binary_sensor.airco_status
+              - entity: binary_sensor.window_left
+              - entity: binary_sensor.window_right
               - entity: binary_sensor.bathroom_water_leak
           - type: glance
             title: Kledingkast
@@ -379,7 +379,7 @@ cards:
           - type: glance
             title: Badkamer
             entities:
-              - entity: binary_sensor.openclose_sensor_4
+              - entity: binary_sensor.bathroom_door
                 name: Deur
               - entity: binary_sensor.motion_badkamer
                 name: Badkamer
@@ -403,35 +403,37 @@ cards:
   # Temperature and humidity in house
   - type: vertical-stack
     cards:
-      - type: custom:mini-graph-card
-        name: Temperatuur
-        entities:
-          - entity: sensor.home_temperature
-            name: Huis
-        hours_to_show: 72
-        points_per_hour: 0.3
-        show:
-          fill: true
-          extrema: true
-        height: 75
-        animate: true
-        hour24: true
-        line_color: var(--primary-color)
+      - type: custom:swipe-card
+        cards:
+          - type: custom:mini-graph-card
+            name: Temperatuur
+            entities:
+              - entity: sensor.home_temperature
+                name: Huis
+            hours_to_show: 72
+            points_per_hour: 0.3
+            show:
+              fill: true
+              extrema: true
+            height: 75
+            animate: true
+            hour24: true
+            line_color: var(--primary-color)
 
-      - type: custom:mini-graph-card
-        name: Vochtigheid
-        entities:
-          - entity: sensor.home_humidity
-            name: Huis
-        hours_to_show: 72
-        points_per_hour: 0.3
-        show:
-          fill: true
-          extrema: true
-        height: 75
-        animate: true
-        hour24: true
-        line_color: var(--primary-color)
+          - type: custom:mini-graph-card
+            name: Vochtigheid
+            entities:
+              - entity: sensor.home_humidity
+                name: Huis
+            hours_to_show: 72
+            points_per_hour: 0.3
+            show:
+              fill: true
+              extrema: true
+            height: 75
+            animate: true
+            hour24: true
+            line_color: var(--primary-color)
 
       - type: horizontal-stack
         cards:
@@ -453,12 +455,3 @@ cards:
               extrema: true
             animate: true
             hour24: true
-
-  - type: entities
-    title: Garage - P6 Pathe Arena
-    entities:
-      - entity: sensor.p06_pathe_hmh_free_space_long
-      - entity: sensor.p06_pathe_hmh_free_space_short
-      - entity: sensor.p06_pathe_hmh_long_capacity
-      - entity: sensor.p06_pathe_hmh_short_capacity
-      - entity: binary_sensor.p06_pathe_hmh
