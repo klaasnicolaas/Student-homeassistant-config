@@ -2,7 +2,7 @@
 # Customize binary sensors
 binary_sensor.front_door:
   device_class: door
-binary_sensor.windows_left:
+binary_sensor.window_left:
   device_class: window
 binary_sensor.window_right:
   device_class: window
