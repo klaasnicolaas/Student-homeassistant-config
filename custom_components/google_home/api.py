@@ -1,7 +1,9 @@
 """Sample API Client."""
+from __future__ import annotations
+
 import asyncio
 import logging
-from typing import Dict, List, Literal, Optional, cast
+from typing import List, Literal, cast
 
 from aiohttp import ClientError, ClientSession
 from aiohttp.client_exceptions import ClientConnectorError, ContentTypeError
@@ -13,13 +15,15 @@ from homeassistant.const import HTTP_NOT_FOUND, HTTP_OK, HTTP_UNAUTHORIZED
 from homeassistant.core import HomeAssistant
 
 from .const import (
+    API_ENDPOINT_ALARM_DELETE,
+    API_ENDPOINT_ALARM_VOLUME,
     API_ENDPOINT_ALARMS,
-    API_ENDPOINT_DELETE,
     API_ENDPOINT_DO_NOT_DISTURB,
     API_ENDPOINT_REBOOT,
     HEADER_CAST_LOCAL_AUTH,
     HEADER_CONTENT_TYPE,
     JSON_ALARM,
+    JSON_ALARM_VOLUME,
     JSON_NOTIFICATIONS_ENABLED,
     JSON_TIMER,
     PORT,
@@ -39,11 +43,11 @@ class GlocaltokensApiClient:
         self,
         hass: HomeAssistant,
         session: ClientSession,
-        username: Optional[str] = None,
-        password: Optional[str] = None,
-        master_token: Optional[str] = None,
-        android_id: Optional[str] = None,
-        zeroconf_instance: Optional[Zeroconf] = None,
+        username: str | None = None,
+        password: str | None = None,
+        master_token: str | None = None,
+        android_id: str | None = None,
+        zeroconf_instance: Zeroconf | None = None,
     ):
         """Sample API Client."""
         self.hass = hass
@@ -59,13 +63,13 @@ class GlocaltokensApiClient:
             android_id=android_id,
             verbose=verbose,
         )
-        self.google_devices: List[GoogleHomeDevice] = []
+        self.google_devices: list[GoogleHomeDevice] = []
         self.zeroconf_instance = zeroconf_instance
 
     async def async_get_master_token(self) -> str:
         """Get master API token"""
 
-        def _get_master_token() -> Optional[str]:
+        def _get_master_token() -> str | None:
             return self._client.get_master_token()
 
         master_token = await self.hass.async_add_executor_job(_get_master_token)
@@ -73,13 +77,13 @@ class GlocaltokensApiClient:
             raise InvalidMasterToken
         return master_token
 
-    async def get_google_devices(self) -> List[GoogleHomeDevice]:
+    async def get_google_devices(self) -> list[GoogleHomeDevice]:
         """Get google device authentication tokens.
         Note this method will fetch necessary access tokens if missing"""
 
         if not self.google_devices:
 
-            def _get_google_devices() -> List[Device]:
+            def _get_google_devices() -> list[Device]:
                 return self._client.get_google_devices(
                     zeroconf_instance=self.zeroconf_instance,
                     force_homegraph_reload=True,
@@ -88,6 +92,7 @@ class GlocaltokensApiClient:
             google_devices = await self.hass.async_add_executor_job(_get_google_devices)
             self.google_devices = [
                 GoogleHomeDevice(
+                    device_id=device.device_id,
                     name=device.device_name,
                     auth_token=device.local_auth_token,
                     ip_address=device.ip_address,
@@ -97,10 +102,10 @@ class GlocaltokensApiClient:
             ]
         return self.google_devices
 
-    async def get_android_id(self) -> Optional[str]:
+    async def get_android_id(self) -> str | None:
         """Generate random android_id"""
 
-        def _get_android_id() -> Optional[str]:
+        def _get_android_id() -> str | None:
             return self._client.get_android_id()
 
         return await self.hass.async_add_executor_job(_get_android_id)
@@ -111,7 +116,7 @@ class GlocaltokensApiClient:
         Note: port argument is unused because all request must be done to 8443"""
         return f"https://{ip_address}:{port}/{api_endpoint}"
 
-    async def update_google_devices_information(self) -> List[GoogleHomeDevice]:
+    async def update_google_devices_information(self) -> list[GoogleHomeDevice]:
         """Retrieves devices from glocaltokens and
         fetches alarm/timer data from each of the device"""
 
@@ -147,6 +152,7 @@ class GlocaltokensApiClient:
     ) -> GoogleHomeDevice:
         """Collect data from different endpoints."""
         device = await self.update_alarms_and_timers(device)
+        device = await self.update_alarm_volume(device)
         device = await self.update_do_not_disturb(device)
         return device
 
@@ -193,7 +199,7 @@ class GlocaltokensApiClient:
         )
 
         response = await self.request(
-            method="POST", endpoint=API_ENDPOINT_DELETE, device=device, data=data
+            method="POST", endpoint=API_ENDPOINT_ALARM_DELETE, device=device, data=data
         )
 
         if response is not None:
@@ -246,7 +252,7 @@ class GlocaltokensApiClient:
             )
 
     async def update_do_not_disturb(
-        self, device: GoogleHomeDevice, enable: Optional[bool] = None
+        self, device: GoogleHomeDevice, enable: bool | None = None
     ) -> GoogleHomeDevice:
         """Gets or sets the do not disturb setting on a Google Home device."""
 
@@ -288,7 +294,64 @@ class GlocaltokensApiClient:
                 device.set_do_not_disturb(enabled)
             else:
                 _LOGGER.debug(
-                    "Response not expected from Google Home device %s - %s",
+                    (
+                        "Unexpected response from Google Home device '%s' "
+                        "when fetching DND status - %s"
+                    ),
+                    device.name,
+                    response,
+                )
+
+        return device
+
+    async def update_alarm_volume(
+        self, device: GoogleHomeDevice, volume: float | None = None
+    ) -> GoogleHomeDevice:
+        """Gets or sets the alarm volume setting on a Google Home device."""
+
+        data: JsonDict | None = None
+        polling = False
+
+        if volume is not None:
+            # Setting is inverted on device
+            data = {JSON_ALARM_VOLUME: volume}
+            _LOGGER.debug(
+                "Setting Alarm Volume setting to %f on Google Home device %s",
+                volume,
+                device.name,
+            )
+        else:
+            polling = True
+            _LOGGER.debug(
+                "Getting Alarm Volume setting from Google Home device %s",
+                device.name,
+            )
+
+        response = await self.request(
+            method="POST",
+            endpoint=API_ENDPOINT_ALARM_VOLUME,
+            device=device,
+            data=data,
+            polling=polling,
+        )
+        if response:
+            if JSON_ALARM_VOLUME in response:
+                volume_raw = str(response[JSON_ALARM_VOLUME])
+                loaded_volume = float(volume_raw)
+                _LOGGER.debug(
+                    "Received Alarm Volume setting from Google Home device %s"
+                    " - Volume: %f",
+                    device.name,
+                    loaded_volume,
+                )
+
+                device.set_alarm_volume(loaded_volume)
+            else:
+                _LOGGER.debug(
+                    (
+                        "Unexpected response from Google Home device '%s' "
+                        "when fetching alarm volume setting - %s"
+                    ),
                     device.name,
                     response,
                 )
@@ -300,9 +363,9 @@ class GlocaltokensApiClient:
         method: Literal["GET", "POST"],
         endpoint: str,
         device: GoogleHomeDevice,
-        data: Optional[JsonDict] = None,
+        data: JsonDict | None = None,
         polling: bool = False,
-    ) -> Optional[JsonDict]:
+    ) -> JsonDict | None:
         """Shared request method"""
 
         if device.ip_address is None:
@@ -315,7 +378,7 @@ class GlocaltokensApiClient:
 
         url = self.create_url(device.ip_address, PORT, endpoint)
 
-        headers: Dict[str, str] = {
+        headers: dict[str, str] = {
             HEADER_CAST_LOCAL_AUTH: device.auth_token,
             HEADER_CONTENT_TYPE: "application/json",
         }

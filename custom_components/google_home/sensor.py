@@ -1,6 +1,8 @@
 """Sensor platform for Google Home"""
+from __future__ import annotations
+
 import logging
-from typing import Callable, Iterable, List, Optional
+from typing import Callable, Iterable
 
 import voluptuous as vol
 
@@ -15,6 +17,7 @@ from .const import (
     DATA_CLIENT,
     DATA_COORDINATOR,
     DOMAIN,
+    GOOGLE_HOME_ALARM_DEFAULT_VALUE,
     ICON_ALARMS,
     ICON_TIMERS,
     ICON_TOKEN,
@@ -48,12 +51,13 @@ async def async_setup_entry(
     """Setup sensor platform."""
     client = hass.data[DOMAIN][entry.entry_id][DATA_CLIENT]
     coordinator = hass.data[DOMAIN][entry.entry_id][DATA_COORDINATOR]
-    sensors: List[Entity] = []
+    sensors: list[Entity] = []
     for device in coordinator.data:
         sensors.append(
             GoogleHomeDeviceSensor(
                 coordinator,
                 client,
+                device.device_id,
                 device.name,
             )
         )
@@ -62,11 +66,13 @@ async def async_setup_entry(
                 GoogleHomeAlarmsSensor(
                     coordinator,
                     client,
+                    device.device_id,
                     device.name,
                 ),
                 GoogleHomeTimersSensor(
                     coordinator,
                     client,
+                    device.device_id,
                     device.name,
                 ),
             ]
@@ -110,15 +116,16 @@ class GoogleHomeDeviceSensor(GoogleHomeBaseEntity):
         return ICON_TOKEN
 
     @property
-    def state(self) -> Optional[str]:
+    def state(self) -> str | None:
         device = self.get_device()
-        return device.auth_token if device else None
+        return device.ip_address if device else None
 
     @property
     def device_state_attributes(self) -> DeviceAttributes:
         """Return the state attributes."""
         device = self.get_device()
         attributes: DeviceAttributes = {
+            "device_id": None,
             "device_name": self.device_name,
             "auth_token": None,
             "ip_address": None,
@@ -132,6 +139,7 @@ class GoogleHomeDeviceSensor(GoogleHomeBaseEntity):
     def get_device_attributes(device: GoogleHomeDevice) -> DeviceAttributes:
         """Device representation as dictionary"""
         return {
+            "device_id": device.device_id,
             "device_name": device.name,
             "auth_token": device.auth_token,
             "ip_address": device.ip_address,
@@ -170,7 +178,7 @@ class GoogleHomeAlarmsSensor(GoogleHomeBaseEntity):
         return DEVICE_CLASS_TIMESTAMP
 
     @property
-    def state(self) -> Optional[str]:
+    def state(self) -> str | None:
         device = self.get_device()
         if not device:
             return None
@@ -186,6 +194,7 @@ class GoogleHomeAlarmsSensor(GoogleHomeBaseEntity):
         """Return the state attributes."""
         return {
             "next_alarm_status": self._get_next_alarm_status(),
+            "alarm_volume": self._get_alarm_volume(),
             "alarms": self._get_alarms_data(),
             "integration": DOMAIN,
         }
@@ -200,7 +209,13 @@ class GoogleHomeAlarmsSensor(GoogleHomeBaseEntity):
             else GoogleHomeAlarmStatus.NONE.name.lower()
         )
 
-    def _get_alarms_data(self) -> List[GoogleHomeAlarmDict]:
+    def _get_alarm_volume(self) -> float:
+        """Update alarm volume status from coordinator"""
+        device = self.get_device()
+        alarm_volume = device.get_alarm_volume() if device else None
+        return alarm_volume if alarm_volume else GOOGLE_HOME_ALARM_DEFAULT_VALUE
+
+    def _get_alarms_data(self) -> list[GoogleHomeAlarmDict]:
         """Update alarms data extracting it from coordinator"""
         device = self.get_device()
         return (
@@ -251,7 +266,7 @@ class GoogleHomeTimersSensor(GoogleHomeBaseEntity):
         return DEVICE_CLASS_TIMESTAMP
 
     @property
-    def state(self) -> Optional[str]:
+    def state(self) -> str | None:
         device = self.get_device()
         if not device:
             return None
@@ -281,7 +296,7 @@ class GoogleHomeTimersSensor(GoogleHomeBaseEntity):
             else GoogleHomeTimerStatus.NONE.name.lower()
         )
 
-    def _get_timers_data(self) -> List[GoogleHomeTimerDict]:
+    def _get_timers_data(self) -> list[GoogleHomeTimerDict]:
         """Update timers data extracting it from coordinator"""
         device = self.get_device()
         return (
