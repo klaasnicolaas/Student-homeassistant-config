@@ -839,12 +839,12 @@ cards:
               severity:
                 - color: '#bf4040'
                   from: 0
-                  to: 50
+                  to: 30
                 - color: '#bf9540'
-                  from: 50
-                  to: 75
+                  from: 30
+                  to: 50
                 - color: '#40bf40'
-                  from: 75
+                  from: 50
                   to: 100
               positions:
                 icon: 'off'
@@ -936,17 +936,17 @@ cards:
         padding-top: 5px;
       }
 
-  - type: custom:uptime-card
-    entity: binary_sensor.p06_pathe_hmh
-    icon: 'mdi:parking'
-    ok: 'off'
-    ko: 'on'
-    bar:
-      height: 46
-      round: 1
-      spacing: 4
-      amount: 36
-    name: Parking garage
-    hours_to_show: 48
-    show:
-      footer: false
+  # - type: custom:uptime-card
+  #   entity: binary_sensor.p06_pathe_hmh
+  #   icon: 'mdi:parking'
+  #   ok: 'off'
+  #   ko: 'on'
+  #   bar:
+  #     height: 46
+  #     round: 1
+  #     spacing: 4
+  #     amount: 36
+  #   name: Parking garage
+  #   hours_to_show: 48
+  #   show:
+  #     footer: false

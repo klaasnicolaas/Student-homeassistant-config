@@ -154,7 +154,7 @@ cards:
         color: 'white'
         heading:
           - mdi:lightbulb-multiple-outline
-          - Lampen
+          - Lights
         style: |
           ha-card .heading {
             font-size: 1.1rem;
@@ -346,7 +346,7 @@ cards:
         color: 'white'
         heading:
           - mdi:home
-          - Huis
+          - House
         style: |
           ha-card .heading {
             font-size: 1.1rem;
@@ -403,6 +403,15 @@ cards:
   # Temperature and humidity in house
   - type: vertical-stack
     cards:
+      - type: gauge
+        entity: sensor.house_power_consumption
+        name: Power usage
+        needle: true
+        max: 300
+        severity:
+          green: 0
+          yellow: 100
+          red: 150
       - type: custom:swipe-card
         cards:
           - type: custom:mini-graph-card
