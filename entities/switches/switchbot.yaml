@@ -1,0 +1,6 @@
+---
+# Control the small Switchbot Switch
+#
+- platform: switchbot
+  name: Airco
+  mac: !secret sb_mac_addr
