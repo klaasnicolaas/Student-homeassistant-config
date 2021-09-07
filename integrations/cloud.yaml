@@ -52,6 +52,8 @@ cloud:
         - script.start_sleep_with_alarm
         - script.call_emergency
         - script.false_alarm_emergency
+        - script.airco_on
+        - script.airco_off
         # Input boolean
         - input_boolean.tv_power
         - input_boolean.tv_mute

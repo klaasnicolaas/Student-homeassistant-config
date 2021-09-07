@@ -1,0 +1,26 @@
+---
+#
+# This script will turn off the airco
+#
+airco_off:
+  alias: 'Airco uitzetten'
+  sequence:
+    - condition: state
+      entity_id: binary_sensor.airco_status
+      state: 'on'
+    - service: switch.turn_off
+      target:
+        entity_id: switch.switchbot
+
+#
+# This script will turn on the airco
+#
+airco_on:
+  alias: 'Airco aanzetten'
+  sequence:
+    - condition: state
+      entity_id: binary_sensor.airco_status
+      state: 'off'
+    - service: switch.turn_on
+      target:
+        entity_id: switch.switchbot
