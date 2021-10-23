@@ -69,7 +69,7 @@ On my website I have already written a number of blogs that address specific par
 | [- My TV 📺 is out of (own) control][tv] | Operating your TV via Google Assistant or Home Assistant |
 | [- What task do we do today? ✅][household] | Tracking household tasks with sensors and notifications |
 
-## Need Help / Ask a question? :thinking:
+## Need Help / Ask a question? 🤔
 
 If you have a specific question about my configuration send me a Private Message on the HA forum, my username is **[klaasnicolaas](https://community.home-assistant.io/u/klaasnicolaas)**. Or send me a message via Discord, my username is **Doc Master Nicolaz**. If you have found any bug or errors, please submit an issue here on Github and I will get it fixed.
 
