@@ -1,10 +1,10 @@
 # Make a Student Home 🏠 -> Smart 💡
 
-You will probably think, what is Home Assistant!? Well Home Assistant is a home automation platform running on Python 3. It is able to track and control all devices at home and offer a platform for automating control.
+You are probably wondering, what is Home Assistant!? Well Home Assistant is a home automation platform running on Python 3. It is able to track and control all devices at home and offers a platform for automating control.
 
 ## Story
 
-During student life there is often that one step that you will live on your own, I recently took that step but with an important goal. You could almost say *"I am a man with a mission"*, because I want to make the 25m2 that I have a **super smart house**.
+During student life there is often that one phase where you will  live on your own, I recently took that step but with an important goal. You could almost say *"I am a man on a mission"*, because I want to make the 25m2 that I have a **super smart house**.
 
 &nbsp;
 
@@ -12,22 +12,22 @@ During student life there is often that one step that you will live on your own,
 
 You can follow my entire adventure via **[student-techlife.com][techlife]**
 
-This is by the way not my first [Home Assistant][home-assistant] configuration that you can find on Github.
-Take also a look at this [configuration/repository][smarthome].
+Also, this is not my first [Home Assistant][home-assistant] configuration that you can find on Github.
+Feel free to take a look at this [configuration/repository][smarthome].
 
-Use the code from this repo for your own Home Assistant environment, keep in mind that you can not always copy everything line by line. If you have any questions, feel free to ask them via email or socials!
+Use the code from this repo for your own Home Assistant environment, keep in mind to not always copy everything line-by-line. If you have any questions, feel free to ask them via email or socials!
 
 ## Status Information
 
 | [![Home Assistant CI][homeassistantci-shield]][homeassistantci] | [![GitHub Last Commit][last-commit-shield]][commits]|
 |:---:|:---:|
-| This shows whether the configuration in this repo is valid | This shows how up to date this repo is |
+|  Shows whether the configuration in this repo is valid | shows how up to date this repo is |
 | [![GitHub issues][issues-shield]][issues] | [![HA Version][ha-version-shield]][home-assistant] |
-| I now use the issues as a TODO list | This is the version that I am currently running with Home Assistant |
+| I now use the issues as a TODO list | Current version of Home Assistant |
 | ![Project Maintenance][maintenance-shield] | [![GitHub Activity][commits-shield]][commits] |
 | Is this repository still actively maintained? | Shows how active I am with this repo annually |
 | [![GitHub Stars][stars-shield]][stars] | [![Buy Me A Fanta][paypal-shield]][paypal] |
-| Please :star: this repo if you find it useful, like these people have | If this config was very helpfull, you could buy a fanta :tropical_drink: for me :smile: |
+| Please :star: this repo if you find it useful, like these people have | If this config was helpful, you could buy a fanta :tropical_drink: for me :smile: |
 
 ## Current House Configuration
 
@@ -55,7 +55,7 @@ Below is a list of all hardware in-house
 - Xiaomi Aqara [Opple 6 way switch][opple_switch]
 - Blitzwolf [BW-LT11][bw-lt11] led strips (ESPHome flashed)
 - Blitzwolf [BW-SHP13][bw-shp13] smart plugs
-- There is more soon :)
+- More coming soon :)
 
 ---
 
@@ -69,9 +69,9 @@ On my website I have already written a number of blogs that address specific par
 | [- My TV 📺 is out of (own) control][tv] | Operating your TV via Google Assistant or Home Assistant |
 | [- What task do we do today? ✅][household] | Tracking household tasks with sensors and notifications |
 
-## Needing Help or Questions?
+## Need Help / Ask a question? :thinking:
 
-If you have a specific question about my configuration send me a Private Message on the HA forum, my username over there is **[klaasnicolaas](https://community.home-assistant.io/u/klaasnicolaas)**. Or send me a message via Discord, my username is there **Doc Master Nicolaz**. If you have found something incorrect, please submit an issue here on Github and I will get it fixed.
+If you have a specific question about my configuration send me a Private Message on the HA forum, my username is **[klaasnicolaas](https://community.home-assistant.io/u/klaasnicolaas)**. Or send me a message via Discord, my username is **Doc Master Nicolaz**. If you have found any bug or errors, please submit an issue here on Github and I will get it fixed.
 
 ## Links
 
