@@ -4,7 +4,7 @@ You are probably wondering, what is Home Assistant!? Well Home Assistant is a ho
 
 ## Story
 
-During student life there is often that one phase where you will  live on your own, I recently took that step but with an important goal. You could almost say *"I am a man on a mission"*, because I want to make the 25m2 that I have a **super smart house**.
+During student life there is often that one phase where you will live on your own, I recently took that step but with an important goal. You could almost say *"I am a man on a mission"*, because I want to make the 25m2 that I have a **super smart house**.
 
 &nbsp;
 
