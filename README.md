@@ -71,7 +71,7 @@ On my website I have already written a number of blogs that address specific par
 
 ## Need Help / Ask a question? 🤔
 
-If you have a specific question about my configuration send me a Private Message on the HA forum, my username is **[klaasnicolaas](https://community.home-assistant.io/u/klaasnicolaas)**. Or send me a message via Discord, my username is **Doc Master Nicolaz**. If you have found any bug or errors, please submit an issue here on Github and I will get it fixed.
+If you have a specific question about my configuration send me a private message (PM) on the HA forum, my username is **[klaasnicolaas](https://community.home-assistant.io/u/klaasnicolaas)**. Or send me a message via Discord, my username is **Doc Master Nicolaz**. If you have found any bug or errors, please submit an issue here on Github and I will get it fixed.
 
 ## Links
 
