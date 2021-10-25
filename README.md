@@ -1,6 +1,6 @@
 # Make a Student Home 🏠 -> Smart 💡
 
-You are probably wondering, what is Home Assistant!? Well Home Assistant is a home automation platform running on Python 3. It is able to track and control all devices at home and offers a platform for automating control.
+You are probably wondering, what is Home Assistant!? Well, Home Assistant is a home automation platform running on Python 3. It is able to track and control all devices at home and offers a platform for automating control.
 
 ## Story
 
