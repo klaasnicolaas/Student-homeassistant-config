@@ -21,7 +21,7 @@ Use the code from this repo for your own Home Assistant environment, keep in min
 
 | [![Home Assistant CI][homeassistantci-shield]][homeassistantci] | [![GitHub Last Commit][last-commit-shield]][commits]|
 |:---:|:---:|
-|  Shows whether the configuration in this repo is valid | shows how up to date this repo is |
+|  Shows whether the configuration in this repo is valid | Shows how up to date this repo is |
 | [![GitHub issues][issues-shield]][issues] | [![HA Version][ha-version-shield]][home-assistant] |
 | I now use the issues as a TODO list | Current version of Home Assistant |
 | ![Project Maintenance][maintenance-shield] | [![GitHub Activity][commits-shield]][commits] |
