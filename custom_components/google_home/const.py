@@ -36,7 +36,8 @@ BINARY_SENSOR_DEVICE_CLASS: Final = "connectivity"
 # Platforms
 SENSOR: Final = "sensor"
 SWITCH: Final = "switch"
-PLATFORMS: Final = [SENSOR, SWITCH]
+NUMBER: Final = "number"
+PLATFORMS: Final = [SENSOR, SWITCH, NUMBER]
 
 # Services
 SERVICE_REBOOT: Final = "reboot_device"
@@ -53,10 +54,10 @@ CONF_MASTER_TOKEN: Final = "master_token"
 
 # Defaults
 DEFAULT_NAME: Final = "Google Home"
-GOOGLE_HOME_ALARM_DEFAULT_VALUE: Final = 0.0
+GOOGLE_HOME_ALARM_DEFAULT_VALUE: Final = 0
 
 LABEL_ALARMS: Final = "alarms"
-LABEL_ALARM_VOLUME: Final = "alarm_volume"
+LABEL_ALARM_VOLUME: Final = "alarm volume"
 LABEL_AVAILABLE: Final = "available"
 LABEL_TIMERS: Final = "timers"
 LABEL_DEVICE: Final = "device"
