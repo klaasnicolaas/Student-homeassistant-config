@@ -55,6 +55,7 @@ Below is a list of all hardware in-house
 - Xiaomi Aqara [Opple 6 way switch][opple_switch]
 - Blitzwolf [BW-LT11][bw-lt11] led strips (ESPHome flashed)
 - Blitzwolf [BW-SHP13][bw-shp13] smart plugs
+- [Home Assistant Glow][glow]
 - There is more soon :)
 
 ---
@@ -143,6 +144,7 @@ SOFTWARE.
 [xiaomi_light_sensor]: https://nl.aliexpress.com/item/4000476379615.html?spm=a2g0s.9042311.0.0.5cdf4c4dK3J0n2
 [xiaomi_d1_1way_switch]: https://www.banggood.com/Aqara-D1-1-Gang-or-2-Gang-ZigBee-Smart-Wireless-Switch-APP-Remote-Control-Timer-Work-with-APP-HomeKit-p-1644321.html?rmmds=search&ID=6265280&cur_warehouse=CN
 [tint_E27]: https://zigbee.blakadder.com/Muller_Licht_404000.html
+[glow]: https://github.com/klaasnicolaas/home-assistant-glow
 
 [sleep]: https://student-techlife.com/2019/05/16/hey-google-time-to-sleep/
 [tv]: https://student-techlife.com/2019/06/02/my-tv-is-out-of-own-control/
