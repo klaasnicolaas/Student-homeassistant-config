@@ -12,14 +12,23 @@ substitutions:
   device_description: "Measure your energy consumption with the pulse LED on your smart meter"
   pulse_pin: GPIO12
   status_led: GPIO5
+
+  # imp/kWh rate ⬇ #
   pulse_rate: '1000'
+
+  # Webserver credentials ⬇ #
+  web_username: !secret esphome_web_username
+  web_password: !secret esphome_web_password
+
+dashboard_import:
+  package_import_url: github://klaasnicolaas/home-assistant-glow/home_assistant_glow.yaml
 
 esphome:
   name: '${device_name}'
   comment: '${device_description}'
   project:
     name: "klaasnicolaas.home_assistant_glow"
-    version: "2.0.1"
+    version: "2.3.0"
   platform: ESP32
   board: nodemcu-32s
 
@@ -29,13 +38,16 @@ wifi:
 
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
-    ssid: "${device_name} - Fallback"
+    ssid: '${device_name}'
     password: !secret fallback_password
 
 captive_portal:
 
 # Enable logging
 logger:
+
+# Enable improv over serial
+improv_serial:
 
 # Enable Home Assistant API
 api:
@@ -49,8 +61,8 @@ ota:
 web_server:
   port: 80
   auth:
-    username: !secret esphome_web_username
-    password: !secret esphome_web_password
+    username: '${web_username}'
+    password: '${web_password}'
 
 output:
   # - platform: gpio
@@ -98,6 +110,7 @@ sensor:
     icon: mdi:flash-outline
     accuracy_decimals: 0
     pin: ${pulse_pin}
+    internal_filter: 100ms
     on_value:
       then:
         - light.turn_on:
