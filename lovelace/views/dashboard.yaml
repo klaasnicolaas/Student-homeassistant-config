@@ -165,6 +165,12 @@ cards:
         show_header_toggle: false
         entities:
           - type: custom:fold-entity-row
+            head: input_boolean.climate_automated
+            padding: 0
+            entities:
+              - input_number.temp_value_climate_high
+              - input_number.temp_value_climate_low
+          - type: custom:fold-entity-row
             head: input_boolean.lights_automated
             padding: 0
             entities:
@@ -366,7 +372,7 @@ cards:
                 name: Huis
               - entity: binary_sensor.window_left
               - entity: binary_sensor.window_right
-              - entity: binary_sensor.bathroom_water_leak
+              - entity: binary_sensor.airco_status
           - type: glance
             title: Kledingkast
             entities:
@@ -403,15 +409,22 @@ cards:
   # Temperature and humidity in house
   - type: vertical-stack
     cards:
-      - type: gauge
-        entity: sensor.house_power_consumption
-        name: Power usage
-        needle: true
-        max: 300
-        severity:
-          green: 0
-          yellow: 100
-          red: 150
+      - type: horizontal-stack
+        cards:
+          - type: custom:button-card
+            entity: switch.airco
+            state_color: true
+            lock:
+              enabled: true
+          - type: gauge
+            entity: sensor.house_power_consumption
+            name: Power usage
+            needle: true
+            max: 300
+            severity:
+              green: 0
+              yellow: 100
+              red: 150
       - type: custom:swipe-card
         cards:
           - type: custom:mini-graph-card

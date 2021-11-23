@@ -1,7 +1,6 @@
 ---
 # This will show if my airco is on or off
 #
-
 - platform: template
   sensors:
     airco_status:
@@ -9,4 +8,4 @@
       icon_template: mdi:air-conditioner
       device_class: power
       value_template: >-
-        {{ is_state('climate.4418108384f3eb36f037','unknown') }}
+        {{ states('sensor.measure_airco_power')|int >= 5 }}

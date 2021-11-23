@@ -10,7 +10,7 @@ airco_off:
       state: 'on'
     - service: switch.turn_off
       target:
-        entity_id: switch.switchbot
+        entity_id: switch.airco
 
 #
 # This script will turn on the airco
@@ -23,4 +23,4 @@ airco_on:
       state: 'off'
     - service: switch.turn_on
       target:
-        entity_id: switch.switchbot
+        entity_id: switch.airco

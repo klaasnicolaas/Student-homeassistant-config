@@ -41,3 +41,8 @@ input_boolean:
   lights_automated:
     name: Geautomatiseerde verlichting
     icon: mdi:brightness-auto
+
+  # Automated climate
+  climate_automated:
+    name: Geautomatiseerd klimaat
+    icon: mdi:fan-auto

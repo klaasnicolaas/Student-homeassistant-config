@@ -1,0 +1,22 @@
+---
+- alias: '[House] - Airco off on windows open'
+  description: >-
+    Turn off the air conditioner when opening a window
+
+  id: caa78028-a1c5-4c75-b2b2-6b5db1e3e63c
+  mode: single
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.window_left
+        - binary_sensor.window_right
+      from: 'off'
+      to: 'on'
+  condition:
+    condition: state
+    entity_id: binary_sensor.airco_status
+    state: 'on'
+  action:
+    - service: switch.turn_off
+      target:
+        entity_id: switch.airco

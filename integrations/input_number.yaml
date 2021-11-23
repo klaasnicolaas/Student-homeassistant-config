@@ -52,7 +52,7 @@ input_number:
     mode: box
     icon: mdi:lightbulb-off
     unit_of_measurement: "lx"
-  ## Cost per kWh
+  # Cost per kWh
   energy_supplier_tariff:
     name: Stroom - tarief
     initial: 0.22
@@ -62,3 +62,20 @@ input_number:
     mode: box
     icon: mdi:currency-eur
     unit_of_measurement: "€/kWh"
+  # Climate
+  temp_value_climate_low:
+    name: Temp waarde - laag
+    step: 0.5
+    min: 15
+    max: 40
+    mode: box
+    icon: mdi:thermometer-chevron-down
+    unit_of_measurement: "°C"
+  temp_value_climate_high:
+    name: Temp waarde - hoog
+    step: 0.5
+    min: 15
+    max: 40
+    mode: box
+    icon: mdi:thermometer-chevron-up
+    unit_of_measurement: "°C"

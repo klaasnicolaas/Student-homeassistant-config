@@ -1,0 +1,59 @@
+---
+- alias: '[House] - Studio climate automated'
+  description: >-
+    Make sure the climate is livable in my warm studio
+
+  id: ee8b0ad0-5888-44a9-8291-1305dc646cf7
+  mode: single
+  trigger:
+    # When the climate is ok
+    - platform: numeric_state
+      id: low
+      entity_id:
+        - sensor.home_temperature
+      below: input_number.temp_value_climate_low
+      for:
+        minutes: 5
+    # When it's to hot in the studio
+    - platform: numeric_state
+      id: high
+      entity_id:
+        - sensor.home_temperature
+      above: input_number.temp_value_climate_high
+      for:
+        minutes: 5
+  condition:
+    # Check if Automated climate mode is enabled
+    - condition: state
+      entity_id: input_boolean.climate_automated
+      state: 'on'
+    # Condition is that I am not sleeping
+    - condition: state
+      entity_id: input_boolean.go_to_sleep
+      state: 'off'
+    # And I also have to be home :)
+    - condition: state
+      entity_id: sensor.klaas_status
+      state: 'Thuis'
+  action:
+    - choose:
+        - alias: "Turn the air conditioning ON"
+          conditions:
+            - "{{ trigger.id == 'high' }}"
+            - condition: state
+              entity_id: binary_sensor.airco_status
+              state: 'off'
+          sequence:
+            - service: switch.turn_on
+              target:
+                entity_id: switch.airco
+        - alias: "Turn the air conditioning OFF"
+          conditions:
+            - "{{ trigger.id == 'low' }}"
+            - condition: state
+              entity_id: binary_sensor.airco_status
+              state: 'on'
+          sequence:
+            - service: switch.turn_off
+              target:
+                entity_id: switch.airco
