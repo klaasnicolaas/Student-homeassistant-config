@@ -5,7 +5,7 @@
 #
 # https://github.com/hassio-addons/addon-influxdb
 # https://github.com/hassio-addons/addon-grafana
-# https://www.home-assistant.io/components/influxdb/
+# https://www.home-assistant.io/integrations/influxdb/
 #
 influxdb:
   # This is the Hass.io add-on slug, allowing a direct connection to the addon.

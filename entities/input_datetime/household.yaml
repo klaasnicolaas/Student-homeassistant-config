@@ -1,5 +1,5 @@
 ---
-# https://www.home-assistant.io/components/input_datetime/
+# https://www.home-assistant.io/integrations/input_datetime/
 #
 # I want to track when I have done certain household tasks so that HA can help me remember
 #

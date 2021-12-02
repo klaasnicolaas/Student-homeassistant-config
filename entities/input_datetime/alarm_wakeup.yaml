@@ -1,5 +1,5 @@
 ---
-# https://www.home-assistant.io/components/input_datetime/
+# https://www.home-assistant.io/integrations/input_datetime/
 #
 
 alarm_wakeup:

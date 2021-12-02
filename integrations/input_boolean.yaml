@@ -1,6 +1,6 @@
 ---
 #
-# https://www.home-assistant.io/components/input_boolean/
+# https://www.home-assistant.io/integrations/input_boolean/
 
 # Input boolean for if I go to bed
 input_boolean:

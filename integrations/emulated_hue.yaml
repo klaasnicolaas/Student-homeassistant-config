@@ -1,5 +1,5 @@
 ---
-# https://www.home-assistant.io/components/emulated_hue/
+# https://www.home-assistant.io/integrations/emulated_hue/
 #
 emulated_hue:
   host_ip: !secret ha_host_ip

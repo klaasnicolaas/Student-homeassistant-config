@@ -1,7 +1,7 @@
 ---
 #
 # How for am I from home
-# https://www.home-assistant.io/components/proximity/
+# https://www.home-assistant.io/integrations/proximity/
 #
 proximity:
   home:

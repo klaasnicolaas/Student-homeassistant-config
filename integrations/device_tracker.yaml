@@ -4,7 +4,7 @@
 #
 # This configuration loads up my device trackers
 #
-# https://www.home-assistant.io/components/device_tracker/
+# https://www.home-assistant.io/integrations/device_tracker/
 #
 
 device_tracker: !include_dir_list ../entities/device_trackers

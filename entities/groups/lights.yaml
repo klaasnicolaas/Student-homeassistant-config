@@ -1,5 +1,5 @@
 ---
-# https://www.home-assistant.io/components/group/
+# https://www.home-assistant.io/integrations/group/
 #
 home_lights:
   name: Lampen in huis

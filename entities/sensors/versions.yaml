@@ -2,7 +2,7 @@
 # Enables a custom component called "versions".
 # It is a sensor that fetches the version number of current Home Assistant releases.
 #
-# https://www.home-assistant.io/components/version/
+# https://www.home-assistant.io/integrations/version/
 #
 
 ########## BETA ##########

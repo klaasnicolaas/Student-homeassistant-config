@@ -1,5 +1,5 @@
 ---
-# https://www.home-assistant.io/components/telegram/
+# https://www.home-assistant.io/integrations/telegram/
 #
 telegram_bot:
   - platform: polling

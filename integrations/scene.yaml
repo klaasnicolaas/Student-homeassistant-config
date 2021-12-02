@@ -3,7 +3,7 @@
 #
 # This loads up my scenes configurations
 #
-# https://www.home-assistant.io/components/scene/
+# https://www.home-assistant.io/integrations/scene/
 #
 
 scene: !include_dir_merge_list ../entities/scenes
