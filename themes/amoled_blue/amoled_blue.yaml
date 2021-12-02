@@ -75,3 +75,17 @@ AMOLED Blue:
   hacs-chip-background-color: var(--primary-color)
   # Pre/Code
   markdown-code-background-color: "#000000"
+  # Checkboxes
+  mdc-select-fill-color: "#0D0D0D"
+  mdc-select-ink-color: var(--primary-text-color)
+  mdc-select-label-ink-color: var(--secondary-text-color)
+  mdc-select-idle-line-color: var(--primary-text-color)
+  mdc-select-dropdown-icon-color: var(--secondary-text-color)
+  mdc-select-hover-line-color: var(--accent-color)
+  # Input
+  input-fill-color: "#0D0D0D"
+  input-dropdown-icon-color: var(--secondary-text-color)
+  input-ink-color: var(--primary-text-color)
+  input-label-ink-color: var(--secondary-text-color)
+  input-idle-line-color: var(--primary-text-color)
+  input-hover-line-color: var(--accent-color)
