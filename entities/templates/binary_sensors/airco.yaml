@@ -2,9 +2,9 @@
 # This will show if my airco is on or off
 #
 - binary_sensor:
-  - name: "Airco"
-    unique_id: airco_status
-    icon: mdi:air-conditioner
-    device_class: power
-    state: >-
-      {{ states('sensor.measure_airco_power')|int >= 5 }}
+    - name: "Airco"
+      unique_id: airco_status
+      icon: mdi:air-conditioner
+      device_class: power
+      state: >-
+        {{ states('sensor.measure_airco_power')|int >= 5 }}

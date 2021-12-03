@@ -3,7 +3,7 @@
 #
 
 - binary_sensor:
-  - name: "Manual - Wakeup alarm"
-    unique_id: manual_time_match_wakeup
-    state: >-
-      {{ states('sensor.time') == ((state_attr('input_datetime.alarm_wakeup', 'timestamp') | int - 10*60) | timestamp_custom('%H:%M', False)) }}
+    - name: "Manual - Wakeup alarm"
+      unique_id: manual_time_match_wakeup
+      state: >-
+        {{ states('sensor.time') == ((state_attr('input_datetime.alarm_wakeup', 'timestamp') | int - 10*60) | timestamp_custom('%H:%M', False)) }}

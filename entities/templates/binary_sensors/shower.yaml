@@ -2,8 +2,8 @@
 # Determine if someone is showering
 #
 - binary_sensor:
-  - name: "Shower"
-    unique_id: shower_status
-    icon: mdi:shower-head
-    state: >-
-      {{ states('sensor.bathroom_humidity') | int > 75 }}
+    - name: "Shower"
+      unique_id: shower_status
+      icon: mdi:shower-head
+      state: >-
+        {{ states('sensor.bathroom_humidity') | int > 75 }}
