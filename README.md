@@ -36,11 +36,11 @@ Below is a list of all hardware in-house
 **My host system:**
 
 - [Intel Arches Canyon NUC6CAYH][intelnuc] -> Inside 8GB Ram, 120GB SSD
-- Using the [Home Assistant Supervised installation][ha-supervised] on [Proxmox][proxmox] with Debian VM
+- Running a [Proxmox][proxmox] server, with a [Home Assistant OS][ha-os] VM on it.
+- [Deconz - Conbee II][conbee] stick
 
 **And I use the following hardware in my house:**
 
-- [Conbee II][conbee] stick
 - [Ikea tradfri][tradfri] lights - All types of fittings
 - [Tint A60 806lm E27 RGBCCT Bulb][tint_E27]
 - [Google Home][google_home]
@@ -107,6 +107,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
+<!-- Repository -->
 [commits-shield]: https://img.shields.io/github/commit-activity/y/klaasnicolaas/student-homeassistant-config.svg
 [last-commit-shield]: https://img.shields.io/github/last-commit/klaasnicolaas/Student-homeassistant-config.svg?color=blue&style=plasticr
 [stars-shield]: https://img.shields.io/github/stars/klaasnicolaas/Student-homeassistant-config.svg
@@ -124,12 +125,14 @@ SOFTWARE.
 [issues]: https://github.com/klaasnicolaas/Student-homeassistant-config/issues
 [smarthome]: https://github.com/klaasnicolaas/Smarthome-homeassistant-config
 [techlife]: https://student-techlife.com/
-[ha-supervised]: https://github.com/home-assistant/supervised-installer
+[ha-os]: https://github.com/whiskerz007/proxmox_hassos_install
 [intelnuc]: https://www.intel.com/content/www/us/en/products/boards-kits/nuc/kits/nuc6cayh.html
 [conbee]: https://www.phoscon.de/en/conbee2
 [ubuntu-server]: https://www.ubuntu.com/download/server
 [tradfri]: https://www.ikea.com/nl/nl/catalog/products/80365270/
 [proxmox]: https://www.proxmox.com/en/
+
+<!-- Products -->
 [xiaomi_temp]: https://www.banggood.com/Original-Xiaomi-Aqara-Atmos-Version-Temperature-Humidity-Sensor-Smart-Home-Thermometer-Hygrometer-p-1148666.html?rmmds=myorder&cur_warehouse=GWTR
 [xiaomi_door]: https://www.banggood.com/Original-Xiaomi-Aqara-Zig_Bee-Version-Window-Door-Sensor-Smart-Home-Kit-Remote-Alarm-p-1149705.html?rmmds=myorder&cur_warehouse=GWTR
 [harmony]: https://www.logitech.com/nl-nl/product/harmony-companion
@@ -146,6 +149,7 @@ SOFTWARE.
 [tint_E27]: https://zigbee.blakadder.com/Muller_Licht_404000.html
 [glow]: https://github.com/klaasnicolaas/home-assistant-glow
 
+<!-- Blogs -->
 [sleep]: https://student-techlife.com/2019/05/16/hey-google-time-to-sleep/
 [tv]: https://student-techlife.com/2019/06/02/my-tv-is-out-of-own-control/
 [household]: https://student-techlife.com/2019/07/09/what-task-do-we-do-today/

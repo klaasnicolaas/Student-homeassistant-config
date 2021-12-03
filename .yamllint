@@ -1,8 +1,11 @@
 ---
 ignore: |
+  automations.yaml
+  blueprints/*/homeassistant/*.yaml
   custom_components/
   ip_bans.yaml
   themes/
+  esphome/.esphome/
   .github/
 rules:
   braces:
