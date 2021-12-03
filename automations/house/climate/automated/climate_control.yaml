@@ -41,7 +41,7 @@
           conditions:
             - "{{ trigger.id == 'high' }}"
             - condition: state
-              entity_id: binary_sensor.airco_status
+              entity_id: binary_sensor.airco
               state: 'off'
           sequence:
             - service: switch.turn_on
@@ -51,7 +51,7 @@
           conditions:
             - "{{ trigger.id == 'low' }}"
             - condition: state
-              entity_id: binary_sensor.airco_status
+              entity_id: binary_sensor.airco
               state: 'on'
           sequence:
             - service: switch.turn_off

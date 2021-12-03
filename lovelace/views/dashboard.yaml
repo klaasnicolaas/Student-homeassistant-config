@@ -372,7 +372,7 @@ cards:
                 name: Huis
               - entity: binary_sensor.window_left
               - entity: binary_sensor.window_right
-              - entity: binary_sensor.airco_status
+              - entity: binary_sensor.airco
           - type: glance
             title: Kledingkast
             entities:
@@ -389,7 +389,7 @@ cards:
                 name: Deur
               - entity: binary_sensor.motion_badkamer
                 name: Badkamer
-              - entity: binary_sensor.shower_status
+              - entity: binary_sensor.shower
           # Curtains
           - type: 'custom:love-lock-card'
             tite: Gordijnen

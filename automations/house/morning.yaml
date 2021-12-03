@@ -10,12 +10,12 @@
     # Trigger is moment that current time is 10 minutes before alarm
     # Samsung app Alarm
     - platform: state
-      entity_id: binary_sensor.samsung_mobile_alarm
+      entity_id: binary_sensor.mobile_wakeup_alarm
       to: 'on'
     # Manual Alarm
     - platform: template
       value_template: >
-        {{ is_state('binary_sensor.manual_time_match_wakeup', 'on') and
+        {{ is_state('binary_sensor.manual_wakeup_alarm', 'on') and
         states('sensor.klaas_samsung_s20_plus_volgende_alarm') in ('none', 'unavailable', 'unknown') }}
   condition:
     condition: and

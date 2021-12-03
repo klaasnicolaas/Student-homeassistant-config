@@ -6,7 +6,7 @@ airco_off:
   alias: 'Airco uitzetten'
   sequence:
     - condition: state
-      entity_id: binary_sensor.airco_status
+      entity_id: binary_sensor.airco
       state: 'on'
     - service: switch.turn_off
       target:
@@ -19,7 +19,7 @@ airco_on:
   alias: 'Airco aanzetten'
   sequence:
     - condition: state
-      entity_id: binary_sensor.airco_status
+      entity_id: binary_sensor.airco
       state: 'off'
     - service: switch.turn_on
       target:

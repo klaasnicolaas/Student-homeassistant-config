@@ -1,0 +1,18 @@
+---
+#
+# Github template sensors
+# Through these sensors I read how many stars my github config has and what the last commit message was
+#
+- sensor:
+  - name: "Github stars"
+    unique_id: github_config_stars
+    unit_of_measurement: Stars
+    icon: mdi:star
+    state: >-
+      {{ state_attr('sensor.student_homeassistant_config','stargazers') }}
+
+
+  - name: "Github commit message"
+    unique_id: github_commit_message
+    state: >-
+      {{ state_attr('sensor.student_homeassistant_config','latest_commit_message') }}

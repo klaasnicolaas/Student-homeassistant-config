@@ -58,7 +58,7 @@
 
   trigger:
     - platform: state
-      entity_id: binary_sensor.shower_status
+      entity_id: binary_sensor.shower
       to: 'on'
       for:
         minutes: 5
@@ -93,7 +93,7 @@
 
   trigger:
     - platform: state
-      entity_id: binary_sensor.shower_status
+      entity_id: binary_sensor.shower
       to: 'on'
       for:
         minutes: 10

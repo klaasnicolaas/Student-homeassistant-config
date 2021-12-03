@@ -46,7 +46,7 @@ wake_up:
         # IF alarm was setup with Samsung App on mobile
         - conditions:
             - condition: template
-              value_template: "{{ (entity_id == 'binary_sensor.samsung_mobile_alarm') }}"
+              value_template: "{{ (entity_id == 'binary_sensor.mobile_wakeup_alarm') }}"
           sequence:
             - delay:
                 seconds: 30

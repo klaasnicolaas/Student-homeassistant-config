@@ -1,12 +1,11 @@
 ---
+# Uptime sensor template
 #
-#
-- platform: template
-  sensors:
-    ha_uptime:
-      friendly_name: 'HA Uptime'
-      value_template: >-
-        {% if states('sensor.time_online') == '0.0' %}
+- sensor:
+  - name: "HA Uptime"
+    unique_id: ha_uptime
+    state: >-
+      {% if states('sensor.time_online') == '0.0' %}
           Just restarted...
         {% else %}
           {% macro phrase(value, name) %}

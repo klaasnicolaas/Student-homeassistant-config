@@ -11,7 +11,7 @@
 - sensor.home_temperature
 - sensor.home_pressure
 - sensor.home_humidity
-- binary_sensor.airco_status
+- binary_sensor.airco
 - sensor.temperature_difference_in_out
 - sensor.kitchen_light_sensor
 - sensor.livingroom_light_sensor
