@@ -260,8 +260,8 @@ cards:
                 group_config:
                   secondary_info: last-changed
                 entities:
-                  - light.blitzwolf_bw_lt11_led_strip_links
-                  - light.blitzwolf_bw_lt11_led_strip_rechts
+                  - light.desk_light_left_led_strip
+                  - light.desk_light_right_led_strip
           # Specific colors for Shelving unit
           - type: custom:rgb-light-card
             entity: light.stellingkast

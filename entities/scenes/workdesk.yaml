@@ -11,7 +11,7 @@
     light.stellingkast:
       state: 'on'
       brightness: 128
-      rgb_color: [255, 255, 255]
+      rgb_color: [0, 191, 255]
 - name: Bureau - work
   icon: mdi:briefcase
   entities:

@@ -5,12 +5,12 @@
 - platform: group
   name: Stellingkast
   entities:
-    - light.blitzwolf_bw_lt11_led_strip_links
-    - light.blitzwolf_bw_lt11_led_strip_rechts
+    - light.desk_light_right_led_strip
+    - light.desk_light_left_led_strip
 
 - platform: group
   name: Bureau
   entities:
-    - light.blitzwolf_bw_lt11_led_strip_links
-    - light.blitzwolf_bw_lt11_led_strip_rechts
+    - light.desk_light_right_led_strip
+    - light.desk_light_left_led_strip
     - light.wled_workdesk

@@ -36,8 +36,8 @@
                 scene_id: workdesk_before
                 snapshot_entities:
                   - light.wled_workdesk
-                  - light.blitzwolf_bw_lt11_led_strip_links
-                  - light.blitzwolf_bw_lt11_led_strip_rechts
+                  - light.desk_light_left_led_strip
+                  - light.desk_light_right_led_strip
             - service: scene.turn_on
               target:
                 entity_id: scene.bureau_work

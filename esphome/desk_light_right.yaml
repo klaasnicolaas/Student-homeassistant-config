@@ -1,7 +1,14 @@
 ---
+# Blitzwolf BW-LT11
+#
+substitutions:
+  device_name: desk-light-right
+  friendly_name: Desk Light (Right)
+  device_description: "Blitzwolf LT11 LED Strip - Right side"
+
 esphome:
-  name: blitzwolf_lt11_bureau_links
-  comment: "Blitzwolf LT11 left side"
+  name: '${device_name}'
+  comment: '${device_description}'
   project:
     name: "klaasnicolaas.blitzwolf_lt11"
     version: "1.0.0"
@@ -14,7 +21,7 @@ wifi:
 
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
-    ssid: "Blitzwolf LT11 Links"
+    ssid: "${device_name}"
 
 captive_portal:
 
@@ -39,17 +46,17 @@ web_server:
 
 binary_sensor:
   - platform: gpio
+    name: "${friendly_name} - Button"
     pin:
       number: GPIO0
       mode: INPUT_PULLUP
       inverted: true
-    name: "Blitzwolf LED Strip Button"
     on_press:
       - light.toggle: led_light
 
 sensor:
   - platform: wifi_signal
-    name: "WiFi Signal Blitzwolf BW-LT11 - Links"
+    name: "${friendly_name} - WiFi Signal"
     update_interval: 60s
 
 output:
@@ -72,7 +79,7 @@ output:
 
 light:
   - platform: rgbw
-    name: "Blitzwolf BW-LT11 LED Strip - Links"
+    name: "${friendly_name} - LED Strip"
     color_interlock: true
     red: pwm_r
     green: pwm_g
@@ -83,4 +90,11 @@ light:
 text_sensor:
   - platform: version
     hide_timestamp: true
-    name: "Blitzwolf BW-LT11 Version - Links"
+    name: "${friendly_name} - ESPHome Version"
+  - platform: wifi_info
+    ip_address:
+      name: "${friendly_name} - IP Address"
+      icon: mdi:wifi
+    ssid:
+      name: "${friendly_name} - Connected SSID"
+      icon: mdi:wifi-strength-2
