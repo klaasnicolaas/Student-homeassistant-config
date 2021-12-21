@@ -12,5 +12,6 @@
   "codeowners": [
     "@ludeeus"
   ],
-  "version": "21.4.0"
+  "iot_class": "cloud_polling",
+  "version": "21.12.0"
 }
