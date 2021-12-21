@@ -25,7 +25,7 @@ home_status_message:
           {% set months = ["januari","februari", "maart", "april", "mei", "juni", "juli", "augustus", "september", "oktober", "november", "december"] %}
 
           Het is vandaag {{ now().strftime('%d') }} {{ months[mo - 1] }} en de tijd is {{ now().strftime('%H:%M') }}.
-          De huidige temperatuur in huis is {{ states('sensor.home_temperature' | round) }} graden.
+          De huidige temperatuur is {{ states('sensor.home_temperature') | round(precision=1, default="een onbekend aantal") }} graden.
     - delay:
         seconds: 20
 
