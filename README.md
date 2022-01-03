@@ -12,10 +12,12 @@ During student life there is often that one phase where you will live on your ow
 
 You can follow my entire adventure via **[student-techlife.com][techlife]**
 
-Also, this is not my first [Home Assistant][home-assistant] configuration that you can find on Github.
-Feel free to take a look at this [configuration/repository][smarthome].
-
 Use the code from this repo for your own Home Assistant environment, keep in mind to not always copy everything line-by-line. If you have any questions, feel free to ask them via email or socials!
+
+---
+**NOTE**: This is not my first [Home Assistant][home-assistant] configuration that you can find on Github. Take also a look at these [Home Assistant configuration repositories][smarthomes].
+
+---
 
 ## Status Information
 
@@ -41,22 +43,22 @@ Below is a list of all hardware in-house
 
 **And I use the following hardware in my house:**
 
-- [Ikea tradfri][tradfri] lights - All types of fittings
-- [Tint A60 806lm E27 RGBCCT Bulb][tint_E27]
-- [Google Home][google_home]
+- [Ikea tradfri][tradfri] lights - All types of fittings (Zigbee)
+- [Tint A60 806lm E27 RGBCCT Bulb][tint_E27] (Zigbee)
+- [Google Home][google_home] (WiFi)
 - [Logitech Harmony Hub companion][harmony]
-- Xiaomi Aqara [Temperature & Humidity Sensors][xiaomi_temp]
-- Xiaomi Aqara [Window Door Sensors][xiaomi_door]
-- Xiaomi Aqara [Motion Sensors][xiaomi_motion]
-- Xiaomi Curtains with [track][xiaomi_curtains_track] and [motor][xiaomi_curtains_motor]
-- Xiaomi Aqara [Smart switch][xiaomi_switch]
-- Xiaomi Mijia [Smart Light Sensors][xiaomi_light_sensor]
-- Xiaomi Aqara [D1 - 1 way switch][xiaomi_d1_1way_switch]
-- Xiaomi Aqara [Opple 6 way switch][opple_switch]
-- Blitzwolf [BW-LT11][bw-lt11] led strips (ESPHome flashed)
-- Blitzwolf [BW-SHP13][bw-shp13] smart plugs
+- Xiaomi Aqara [Temperature & Humidity Sensors][xiaomi_temp-shop] (Zigbee)
+- Xiaomi Aqara [Window Door Sensors][xiaomi_door-shop] (Zigbee)
+- Xiaomi Aqara [Motion Sensors][xiaomi_motion-shop] (Zigbee)
+- Xiaomi Curtains with [track][xiaomi_curtains_track-shop] and [motor][xiaomi_curtains_motor-shop] (Zigbee)
+- Xiaomi Aqara [Smart switch][xiaomi_switch-shop] (Zigbee)
+- Xiaomi Mijia [Smart Light Sensors][xiaomi_light_sensor-shop] (Zigbee)
+- Xiaomi Aqara [D1 - 1 way switch][xiaomi_d1_1way_switch-shop] (Zigbee)
+- Xiaomi Aqara [Opple 6 way switch][opple_switch-shop] (Zigbee)
+- Blitzwolf [BW-LT11][bw_lt11-shop] led strips (ESPHome flashed)
+- Blitzwolf [BW-SHP13][bw_shp13-shop] smart plugs (Zigbee)
 - [Home Assistant Glow][glow]
-- More coming soon :)
+- [IKEA VINDRIKTNING][vindriktning] (D1 Mini - ESPHome)
 
 ---
 
@@ -76,18 +78,18 @@ If you have a specific question about my configuration send me a Private message
 
 ## Links
 
-- [Home Assistant Homepage](<https://home-assistant.io/>)
-- [Home Assistant Forums](<https://community.home-assistant.io/>)
-- [Home Assistant Discord Chat](<https://discord.gg/c5DvZ4e>)
-- [Other Featured Home Assistant Configurations](<https://home-assistant.io/cookbook/>)
-- [Home Assistant GitHub Source Repository](<https://github.com/home-assistant/home-assistant>)
-- [Official Home Assistant Demo](<https://home-assistant.io/demo/>)
+- [Home Assistant Homepage](https://home-assistant.io/)
+- [Home Assistant Forums](https://community.home-assistant.io/)
+- [Home Assistant Discord Chat](https://discord.gg/c5DvZ4e)
+- [Other Featured Home Assistant Configurations](https://home-assistant.io/cookbook/)
+- [Home Assistant GitHub Source Repository](https://github.com/home-assistant/home-assistant)
+- [Official Home Assistant Demo](https://home-assistant.io/demo/)
 
 ## License
 
 MIT License
 
-Copyright (c) 2019-2021 Klaas Schoute
+Copyright (c) 2022 Klaas Schoute
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -107,16 +109,17 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-<!-- Repository -->
+<!-- Shield -->
 [commits-shield]: https://img.shields.io/github/commit-activity/y/klaasnicolaas/student-homeassistant-config.svg
 [last-commit-shield]: https://img.shields.io/github/last-commit/klaasnicolaas/Student-homeassistant-config.svg?color=blue&style=plasticr
 [stars-shield]: https://img.shields.io/github/stars/klaasnicolaas/Student-homeassistant-config.svg
-[ha-version-shield]: https://img.shields.io/badge/Home%20Assistant-2021.11-blue.svg
-[maintenance-shield]: https://img.shields.io/maintenance/yes/2021.svg
+[ha-version-shield]: https://img.shields.io/badge/Home%20Assistant-2021.12-blue.svg
+[maintenance-shield]: https://img.shields.io/maintenance/yes/2022.svg
 [homeassistantci-shield]: https://github.com/klaasnicolaas/Student-homeassistant-config/actions/workflows/home_assistant.yml/badge.svg
 [paypal-shield]: https://img.shields.io/badge/BuyMeAFanta-Paypal-orange.svg
 [issues-shield]: https://img.shields.io/github/issues/klaasnicolaas/Student-homeassistant-config.svg
 
+<!-- Repository links -->
 [commits]: https://github.com/klaasnicolaas/Student-homeassistant-config/commits/master
 [stars]: https://github.com/klaasnicolaas/Student-homeassistant-config/stargazers
 [home-assistant]: https://home-assistant.io
@@ -129,25 +132,27 @@ SOFTWARE.
 [intelnuc]: https://www.intel.com/content/www/us/en/products/boards-kits/nuc/kits/nuc6cayh.html
 [conbee]: https://www.phoscon.de/en/conbee2
 [ubuntu-server]: https://www.ubuntu.com/download/server
-[tradfri]: https://www.ikea.com/nl/nl/catalog/products/80365270/
 [proxmox]: https://www.proxmox.com/en/
+[smarthomes]: https://github.com/klaasnicolaas?tab=repositories&q=home-assistant-config
 
 <!-- Products -->
-[xiaomi_temp]: https://www.banggood.com/Original-Xiaomi-Aqara-Atmos-Version-Temperature-Humidity-Sensor-Smart-Home-Thermometer-Hygrometer-p-1148666.html?rmmds=myorder&cur_warehouse=GWTR
-[xiaomi_door]: https://www.banggood.com/Original-Xiaomi-Aqara-Zig_Bee-Version-Window-Door-Sensor-Smart-Home-Kit-Remote-Alarm-p-1149705.html?rmmds=myorder&cur_warehouse=GWTR
+[tradfri]: https://www.ikea.com/nl/nl/search/products/?q=tradfri
+[xiaomi_temp-shop]: https://www.banggood.com/bang/?tt=16956_12_417111_&r=%2FAqara-Smart-Home-Zigbee-Temperature-and-Humidity-Sensor-Thermometer-Hygrometer-Digital-Sensor-From-Eco-System-p-1148666.html
+[xiaomi_door-shop]: https://www.banggood.com/bang/?tt=16956_12_417111_&r=%2FAqara-Zigbee-1_2-Version-Window-Door-Sensor-Smart-Home-Kit-Remote-Alarm-Eco-System-p-1149705.html
 [harmony]: https://www.logitech.com/nl-nl/product/harmony-companion
 [google_home]: https://store.google.com/nl/product/google_home
-[xiaomi_curtains_track]: https://nl.aliexpress.com/item/3-5-M-Xiaomi-Super-Stille-Elektrische-Gordijn-Track-voor-Mijia-Aqara-Motor-Automatische-Gordijn-Rails/32922713008.html?spm=a2g0s.9042311.0.0.1cf94c4d06j07R
-[xiaomi_curtains_motor]: https://nl.aliexpress.com/item/Xiaomi-Aqara-Smart-Gordijn-Motor-Intelligente-Zigbee-Wifi-Voor-xiaomi-Smart-Home-Apparaat-Draadloze-Afstandsbediening-Via/32872671734.html?spm=a2g0s.9042311.0.0.1cf94c4d06j07R
-[xiaomi_motion]: https://www.banggood.com/Original-Aqara-Zig_Bee-Wireless-Human-Body-PIR-Sensor-Smart-Home-Kit-From-Xiaomi-Eco-System-p-1177007.html
-[xiaomi_switch]: https://www.banggood.com/Original-Xiaomi-Aqara-Smart-Wireless-Switch-Smart-Home-Kit-Remote-Control-Touch-Switch-p-1224921.html
-[opple_switch]: https://www.banggood.com/Aqara-x-OPPLE-ZigBee-3_0-HomeKit-Version-Wireless-Smart-Switch-Work-With-HomeKit-From-Eco-system-p-1590410.html
-[bw-lt11]: https://www.banggood.com/BlitzWolf-BW-LT11-2M5M-Smart-APP-Control-RGBW-LED-Light-Strip-Kit-Work-With-Amazon-Alexa-Google-Assistant-p-1390470.html?rmmds=search
-[bw-shp13]: https://www.banggood.com/BlitzWolf-BW-SHP13-Zigbee-3_0-Smart-WIFI-Socket-16A-EU-Plug-Electricity-Metering-APP-Remote-Controller-Timer-Work-with-Amazon-Alexa-Google-Home-p-1679992.html
-[xiaomi_light_sensor]: https://nl.aliexpress.com/item/4000476379615.html?spm=a2g0s.9042311.0.0.5cdf4c4dK3J0n2
-[xiaomi_d1_1way_switch]: https://www.banggood.com/Aqara-D1-1-Gang-or-2-Gang-ZigBee-Smart-Wireless-Switch-APP-Remote-Control-Timer-Work-with-APP-HomeKit-p-1644321.html?rmmds=search&ID=6265280&cur_warehouse=CN
+[xiaomi_curtains_track-shop]: https://tc.tradetracker.net/?c=15640&m=12&a=417111&r=&u=%2Fitem%2F4000170933022.html
+[xiaomi_curtains_motor-shop]: https://tc.tradetracker.net/?c=15640&m=12&a=417111&r=&u=%2Fitem%2F4000987946364.html
+[xiaomi_motion-shop]: https://www.banggood.com/bang/?tt=16956_12_417111_&r=%2FAqara-Zgbee-Wireless-Human-Body-PIR-Sensor-Smart-Home-Kit-Work-with-Gateway-APP-p-1177007.html
+[xiaomi_switch-shop]: https://www.banggood.com/bang/?tt=16956_12_417111_&r=%2FAqara-Smart-Wireless-Switch-Smart-Home-Kit-Remote-Control-Work-with-Multifunctional-Gateway-From-Eco-System-p-1224921.html
+[opple_switch-shop]: https://www.banggood.com/bang/?tt=16956_12_417111_&r=%2FAqara-x-OPPLE-Zigbee-3_0-Smart-Switch-HomeKit-Version-Wireless-Remote-Control-Wall-Light-Switch-Works-With-HomeKit-From-Eco-system-p-1590410.html
+[bw_lt11-shop]: https://www.banggood.com/bang/?tt=16956_12_417111_&r=%2FBlitzWolf-BW-LT11-2M-or-5M-Smart-APP-Control-RGBW-LED-Light-Strip-Kit-Work-With-Amazon-Alexa-Google-Assistant-Christmas-Decorations-Clearance-Christmas-Lights-p-1390470.html
+[bw_shp13-shop]: https://www.banggood.com/bang/?tt=16956_12_417111_&r=%2FBlitzWolf-BW-SHP13-ZgBee-3_0-Smart-WIFI-Socket-16A-EU-Plug-Electricity-Metering-APP-Remote-Controller-Timer-Work-with-Amazon-Alexa-Google-Home-p-1679992.html
+[xiaomi_light_sensor-shop]: https://tc.tradetracker.net/?c=15640&m=12&a=417111&r=&u=%2Fitem%2F1005001803218057.html
+[xiaomi_d1_1way_switch-shop]: https://www.banggood.com/bang/?tt=16956_12_417111_&r=%2FAqara-D1-1-Gang-or-2-Gang-Zigee-Smart-Wireless-Switch-APP-Remote-Control-Timer-Work-with-APP-HomeKit-p-1644321.html
 [tint_E27]: https://zigbee.blakadder.com/Muller_Licht_404000.html
 [glow]: https://github.com/klaasnicolaas/home-assistant-glow
+[vindriktning]: https://www.ikea.com/nl/nl/p/vindriktning-luchtkwaliteitsensor-70498242/
 
 <!-- Blogs -->
 [sleep]: https://student-techlife.com/2019/05/16/hey-google-time-to-sleep/
