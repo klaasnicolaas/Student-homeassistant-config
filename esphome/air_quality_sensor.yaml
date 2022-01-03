@@ -1,0 +1,68 @@
+---
+# IKEA Vindktning
+#
+#
+substitutions:
+  device_name: ikea-vindriktning
+  friendly_name: Vindriktning
+  device_description: "Measure the air quality in your room."
+
+esphome:
+  name: '${device_name}'
+  comment: '${device_description}'
+  platform: ESP8266
+  board: d1_mini
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: '${device_name}'
+    password: !secret fallback_password
+
+captive_portal:
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  password: !secret esphome_api_password
+
+ota:
+  safe_mode: true
+  reboot_timeout: 10min
+  num_attempts: 5
+
+# Ikea Vindriktning PM2.5 sensor
+uart:
+  rx_pin: D2
+  baud_rate: 9600
+
+button:
+  - platform: restart
+    name: "${friendly_name} - Restart"
+
+# Sensors for ESP version and WIFI information
+text_sensor:
+  - platform: version
+    hide_timestamp: true
+    name: "${friendly_name} - ESPHome Version"
+  - platform: wifi_info
+    ip_address:
+      name: "${friendly_name} - IP Address"
+      icon: mdi:wifi
+    ssid:
+      name: "${friendly_name} - Connected SSID"
+      icon: mdi:wifi-strength-2
+
+sensor:
+  platform: pm1006
+  pm_2_5:
+    name: "${friendly_name} - PM25"
+    filters:
+      sliding_window_moving_average:
+        window_size: 10
+        send_every: 10
