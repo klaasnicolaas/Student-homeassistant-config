@@ -47,7 +47,7 @@ jobs:
         run: |
           touch ./home-assistant.log
       - name: 🚀 Run Home Assistant Configuration Check
-        uses: frenck/action-home-assistant@v1.1.1
+        uses: frenck/action-home-assistant@v1.2
         with:
           secrets: ./.stubs/fake_secrets.yaml
           version: "${{ matrix.version }}"
