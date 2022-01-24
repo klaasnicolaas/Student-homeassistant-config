@@ -1,0 +1,41 @@
+---
+#
+#
+- alias: '[Light] - Set light when 3D printing'
+  description: >-
+    Change the light above the 3D printer for a better view.
+
+  id: 9131496f-ff88-469a-a819-ae405676bdf0
+  mode: restart
+
+  trigger:
+    - platform: state
+      entity_id:
+        - sensor.octoprint_current_state
+  action:
+    - choose:
+        # When start printing
+        - conditions:
+            - condition: state
+              entity_id: sensor.octoprint_current_state
+              state: "Printing"
+          sequence:
+            - service: scene.create
+              data:
+                scene_id: printing_light_before
+                snapshot_entities:
+                  - light.desk_light_left_led_strip
+            - service: scene.turn_on
+              target:
+                entity_id: scene.3d_printing
+              data:
+                transition: 1
+        # When 3D printer is ready
+        - conditions:
+            - condition: state
+              entity_id: sensor.octoprint_current_state
+              state: "Operational"
+          sequence:
+            - service: scene.turn_on
+              target:
+                entity_id: scene.printing_light_before
