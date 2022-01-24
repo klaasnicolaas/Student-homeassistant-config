@@ -14,8 +14,8 @@
   condition:
     - condition: time
       weekday:
+        - wed
         - sun
-        - thu
   action:
     - service: hassio.backup_full
       data_template:
