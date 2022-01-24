@@ -89,7 +89,7 @@ If you have a specific question about my configuration send me a Private message
 
 MIT License
 
-Copyright (c) 2022 Klaas Schoute
+Copyright (c) 2019-2022 Klaas Schoute
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
