@@ -11,8 +11,11 @@ import tempfile
 from typing import TYPE_CHECKING, Any, List, Optional
 import zipfile
 
-from aiogithubapi import AIOGitHubAPIException, AIOGitHubAPINotModifiedException, GitHub
-from aiogithubapi.const import ACCEPT_HEADERS
+from aiogithubapi import (
+    AIOGitHubAPIException,
+    AIOGitHubAPINotModifiedException,
+    GitHubReleaseModel,
+)
 from aiogithubapi.objects.repository import AIOGitHubAPIRepository
 import attr
 from homeassistant.helpers.json import JSONEncoder
@@ -39,6 +42,7 @@ from ..utils.version import (
     version_left_higher_then_right,
     version_to_download,
 )
+from ..utils.workarounds import DOMAIN_OVERRIDES
 
 if TYPE_CHECKING:
     from ..base import HacsBase
@@ -258,7 +262,7 @@ class RepositoryReleases:
     last_release_object = None
     last_release_object_downloads = None
     published_tags = []
-    objects = []
+    objects: list[GitHubReleaseModel] = []
     releases = False
     downloads = None
 
@@ -417,11 +421,13 @@ class HacsRepository:
                         return True
                     return False
             if self.display_version_or_commit == "version":
-                if version_left_higher_then_right(
-                    self.display_available_version,
-                    self.display_installed_version,
-                ):
-                    return True
+                if (
+                    result := version_left_higher_then_right(
+                        self.display_available_version,
+                        self.display_installed_version,
+                    )
+                ) is not None:
+                    return result
             if self.display_installed_version != self.display_available_version:
                 return True
 
@@ -518,16 +524,21 @@ class HacsRepository:
             self.data.full_name = self.hacs.common.renamed_repositories[self.data.full_name]
             await self.common_update_data(ignore_issues=ignore_issues, force=force)
 
+        except HacsException:
+            if not ignore_issues and not force:
+                return False
+
         if not self.data.installed and (current_etag == self.data.etag_repository) and not force:
             self.logger.debug("Did not update %s, content was not modified", self.data.full_name)
             return False
 
         # Update last updated
-        self.data.last_updated = self.repository_object.attributes.get("pushed_at", 0)
+        if self.repository_object:
+            self.data.last_updated = self.repository_object.attributes.get("pushed_at", 0)
 
-        # Update last available commit
-        await self.repository_object.set_last_commit()
-        self.data.last_commit = self.repository_object.last_commit
+            # Update last available commit
+            await self.repository_object.set_last_commit()
+            self.data.last_commit = self.repository_object.last_commit
 
         # Get the content of hacs.json
         if RepositoryFile.HACS_JSON in [x.filename for x in self.tree]:
@@ -571,7 +582,7 @@ class HacsRepository:
     async def async_download_zip_file(self, content, validate) -> None:
         """Download ZIP archive from repository release."""
         try:
-            filecontent = await self.hacs.async_download_file(content.download_url)
+            filecontent = await self.hacs.async_download_file(content.browser_download_url)
 
             if filecontent is None:
                 validate.errors.append(f"[{content.name}] was not downloaded")
@@ -678,7 +689,7 @@ class HacsRepository:
 
     async def uninstall(self) -> None:
         """Run uninstall tasks."""
-        self.logger.info("%s Uninstalling", self)
+        self.logger.info("%s Removing", self)
         if not await self.remove_local_directory():
             raise HacsException("Could not uninstall")
         self.data.installed = False
@@ -719,8 +730,12 @@ class HacsRepository:
                 local_path = self.content.path.local
             elif self.data.category == "integration":
                 if not self.data.domain:
-                    self.logger.error("%s Missing domain", self)
-                    return False
+                    if domain := DOMAIN_OVERRIDES.get(self.data.full_name):
+                        self.data.domain = domain
+                        self.content.path.local = self.localpath
+                    else:
+                        self.logger.error("%s Missing domain", self)
+                        return False
                 local_path = self.content.path.local
             else:
                 local_path = self.content.path.local
@@ -878,16 +893,8 @@ class HacsRepository:
     ) -> tuple[AIOGitHubAPIRepository, Any | None]:
         """Return a repository object."""
         try:
-            github = GitHub(
-                self.hacs.configuration.token,
-                self.hacs.session,
-                headers={
-                    "User-Agent": f"HACS/{self.hacs.version}",
-                    "Accept": ACCEPT_HEADERS["preview"],
-                },
-            )
-            repository = await github.get_repo(self.data.full_name, etag)
-            return repository, github.client.last_response.etag
+            repository = await self.hacs.github.get_repo(self.data.full_name, etag)
+            return repository, self.hacs.github.client.last_response.etag
         except AIOGitHubAPINotModifiedException as exception:
             raise HacsNotModifiedException(exception) from exception
         except (ValueError, AIOGitHubAPIException, Exception) as exception:
@@ -898,19 +905,28 @@ class HacsRepository:
 
     async def get_tree(self, ref: str):
         """Return the repository tree."""
+        if self.repository_object is None:
+            raise HacsException("No repository_object")
         try:
             tree = await self.repository_object.get_tree(ref)
             return tree
         except (ValueError, AIOGitHubAPIException) as exception:
             raise HacsException(exception) from exception
 
-    async def get_releases(self, prerelease=False, returnlimit=5):
+    async def get_releases(self, prerelease=False, returnlimit=5) -> list[GitHubReleaseModel]:
         """Return the repository releases."""
-        try:
-            releases = await self.repository_object.get_releases(prerelease, returnlimit)
-            return releases
-        except (ValueError, AIOGitHubAPIException) as exception:
-            raise HacsException(exception) from exception
+        response = await self.hacs.async_github_api_method(
+            method=self.hacs.githubapi.repos.releases.list,
+            repository=self.data.full_name,
+        )
+        releases = []
+        for release in response.data or []:
+            if len(releases) == returnlimit:
+                break
+            if release.draft or (release.prerelease and not prerelease):
+                continue
+            releases.append(release)
+        return releases
 
     async def common_update_data(self, ignore_issues: bool = False, force: bool = False) -> None:
         """Common update data."""
@@ -943,12 +959,14 @@ class HacsRepository:
             self.validate.errors.append("Repository is archived.")
             if self.data.full_name not in self.hacs.common.archived_repositories:
                 self.hacs.common.archived_repositories.append(self.data.full_name)
-            raise HacsRepositoryArchivedException("Repository is archived.")
+            raise HacsRepositoryArchivedException(f"{self} Repository is archived.")
 
         # Make sure the repository is not in the blacklist.
-        if self.hacs.repositories.is_removed(self.data.full_name) and not ignore_issues:
-            self.validate.errors.append("Repository is in the blacklist.")
-            raise HacsException("Repository is in the blacklist.")
+        if self.hacs.repositories.is_removed(self.data.full_name):
+            removed = self.hacs.repositories.removed_repository(self.data.full_name)
+            if removed.removal_type != "remove" and not ignore_issues:
+                self.validate.errors.append("Repository has been requested to be removed.")
+                raise HacsException(f"{self} Repository has been requested to be removed.")
 
         # Get releases.
         try:
@@ -958,11 +976,11 @@ class HacsRepository:
             )
             if releases:
                 self.data.releases = True
-                self.releases.objects = [x for x in releases if not x.draft]
+                self.releases.objects = releases
                 self.data.published_tags = [x.tag_name for x in self.releases.objects]
                 self.data.last_version = next(iter(self.data.published_tags))
 
-        except (AIOGitHubAPIException, HacsException):
+        except HacsException:
             self.data.releases = False
 
         if not self.force_branch:
@@ -970,9 +988,8 @@ class HacsRepository:
         if self.data.releases:
             for release in self.releases.objects or []:
                 if release.tag_name == self.ref:
-                    assets = release.assets
-                    if assets:
-                        downloads = next(iter(assets)).attributes.get("download_count")
+                    if assets := release.assets:
+                        downloads = next(iter(assets)).download_count
                         self.data.downloads = downloads
 
         self.hacs.log.debug("%s Running checks against %s", self, self.ref.replace("tags/", ""))
@@ -985,7 +1002,7 @@ class HacsRepository:
             for treefile in self.tree:
                 self.treefiles.append(treefile.full_path)
         except (AIOGitHubAPIException, HacsException) as exception:
-            if not self.hacs.status.startup:
+            if not self.hacs.status.startup and not ignore_issues:
                 self.logger.error("%s %s", self, exception)
             if not ignore_issues:
                 raise HacsException(exception) from None
@@ -1003,7 +1020,9 @@ class HacsRepository:
             for release in releaseobjects or []:
                 if ref == release.tag_name:
                     for asset in release.assets or []:
-                        files.append(asset)
+                        files.append(
+                            FileInformation(asset.browser_download_url, asset.name, asset.name)
+                        )
             if files:
                 return files
 
