@@ -111,11 +111,6 @@ sensor:
     scan_interval: 86400
   ##### External IP
   - platform: dnsip
-  ##### Github
-  - platform: github
-    access_token: !secret github_access_token
-    repositories:
-      - path: 'klaasnicolaas/Student-homeassistant-config'
   ##### MariaDB Size
   - platform: sql
     db_url: !secret mariadb_addon

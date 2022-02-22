@@ -809,8 +809,8 @@ cards:
             entities:
               - type: divider
               # Github
-              - sensor.github_config_stars
-              - sensor.github_commit_message
+              - sensor.klaasnicolaas_home_assistant_glow_stars
+              - sensor.klaasnicolaas_student_homeassistant_config_stars
               - type: weblink
                 name: Github - Home Assistant config
                 url: https://github.com/klaasnicolaas/Student-homeassistant-config
