@@ -808,9 +808,6 @@ cards:
             show_header_toggle: false
             entities:
               - type: divider
-              # Gitlab CI
-              - sensor.gitlab_ci_status
-              - type: divider
               # Github
               - sensor.github_config_stars
               - sensor.github_commit_message
