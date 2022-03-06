@@ -95,22 +95,11 @@ sensor:
         arg: /
       - type: last_boot
       - type: swap_use_percent
-  - platform: command_line
-    name: CPU Temperature
-    command: "/bin/cat /sys/class/thermal/thermal_zone2/temp"
-    unit_of_measurement: "°C"
-    value_template: '{{ value | multiply(0.001) | round(1) }}'
-  ##### Latest HA installed version
-  - platform: version
-    name: HA Installed Version
-    scan_interval: 86400
   ##### Latest installed python3 version
   - platform: command_line
     name: Python Version
     command: python3 --version
     scan_interval: 86400
-  ##### External IP
-  - platform: dnsip
   ##### MariaDB Size
   - platform: sql
     db_url: !secret mariadb_addon

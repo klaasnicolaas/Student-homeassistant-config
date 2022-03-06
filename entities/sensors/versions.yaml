@@ -6,12 +6,6 @@
 #
 
 ########## BETA ##########
-# Fetch beta version of HA
-- platform: version
-  name: Home Assistant Beta versie
-  beta: true
-  source: pypi
-
 # HassOS version beta
 - platform: rest
   resource: https://version.home-assistant.io/beta.json
@@ -27,12 +21,6 @@
   scan_interval: 3600
 
 ########## STABLE ##########
-# Fetch stable version of HA
-- platform: version
-  name: Home Assistant Stable versie
-  beta: false
-  source: pypi
-
 # HassOS version stable
 - platform: rest
   resource: https://version.home-assistant.io/stable.json
@@ -48,13 +36,6 @@
   scan_interval: 3600
 
 ########## DEV ##########
-# Home Assistant version dev
-- platform: rest
-  resource: https://version.home-assistant.io/dev.json
-  name: Home Assistant Dev versie
-  value_template: "{{ value_json.homeassistant.default }}"
-  scan_interval: 3600
-
 # HassOS version dev
 - platform: rest
   resource: https://version.home-assistant.io/dev.json
