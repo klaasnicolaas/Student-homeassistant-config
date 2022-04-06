@@ -111,10 +111,6 @@ sensor:
   ##### UpTime
   - platform: uptime
     name: Time Online
-  ##### FileSize
-  - platform: filesize
-    file_paths:
-      - !secret filesize_homeassistant_log
   ##### Restart time
   - platform: command_line
     name: HA Restart Time
