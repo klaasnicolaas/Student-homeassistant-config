@@ -5,7 +5,7 @@ icon: mdi:printer-3d
 path: 3d_printer
 cards:
   - type: custom:threedy-card
-    base_entity: sensor.ender_3_v2
+    base_entity: sensor.octoprint
     name: "Ender 3 V2"
     printer_type: I3
     round_temperature: true
@@ -14,16 +14,9 @@ cards:
       - Status
       - Hotend
       - Bed
-      - Elapsed
-      - ETA
   - type: picture-entity
-    title: Camera
     entity: camera.octoprint
     camera_view: live
-  - type: picture-glance
-    title: STL Preview
-    entities: []
-    camera_image: camera.ender_3_v2_stl_preview
   - type: 'custom:mini-graph-card'
     hours_to_show: 4
     name: Printbed
@@ -31,10 +24,10 @@ cards:
     unit: °C
     lower_bound: 0
     entities:
-      - entity: sensor.ender_3_v2_actual_bed_temp
+      - entity: sensor.octoprint_actual_bed_temp
         index: 0
         name: Bed temperature
-      - entity: sensor.ender_3_v2_target_bed_temp
+      - entity: sensor.octoprint_target_bed_temp
         index: 1
         name: Target temperature
         show_points: false
@@ -46,10 +39,10 @@ cards:
     unit: °C
     lower_bound: 0
     entities:
-      - entity: sensor.ender_3_v2_actual_tool0_temp
+      - entity: sensor.octoprint_actual_tool0_temp
         index: 0
         name: Nozzle temperature
-      - entity: sensor.ender_3_v2_target_tool0_temp
+      - entity: sensor.octoprint_target_tool0_temp
         index: 1
         name: Target temperature
         show_points: false
