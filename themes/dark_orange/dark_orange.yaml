@@ -42,3 +42,15 @@ dark_orange:
   table-row-alternative-background-color: "var(--sidebar-text_-_background)"
   table-row-background-color: "var(--paper-card-background-color)"
   text-primary-color: "#ffffff"
+  input-idle-line-color: 'var(--dark-primary-color)'
+  input-hover-line-color: 'var(--primary-text-color)'
+  input-disabled-line-color: 'var(--disabled-text-color)'
+  input-outlined-idle-border-color: 'var(--disabled-text-color)'
+  input-outlined-hover-border-color: 'var(--disabled-text-color)'
+  input-outlined-disabled-border-color: 'var(--disabled-text-color)'
+  input-fill-color: 'var(--card-background-color)'
+  input-disabled-fill-color: 'var(--card-background-color)'
+  input-ink-color: 'var(--primary-text-color)'
+  input-label-ink-color: 'var(--secondary-text-color)'
+  input-disabled-ink-color: 'var(--disabled-text-color)'
+  input-dropdown-icon-color: 'var(--primary-text-color)'
