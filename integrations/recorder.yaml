@@ -11,7 +11,7 @@ recorder:
   exclude:
     entities:
       - sensor.time
-      - sensor.ha_uptime
+      - sensor.time_online
 
     domains:
       - updater

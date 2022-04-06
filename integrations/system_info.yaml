@@ -42,9 +42,9 @@ homeassistant:
       <<: *customize
       friendly_name: Gebruikte opslag
 
-    sensor.ha_installed_version:
+    sensor.current_version:
       <<: *customize
-      friendly_name: Home Assistant geinstalleerde versie
+      friendly_name: HA geinstalleerde versie
 
     sensor.python_version:
       <<: *customize
