@@ -6,9 +6,3 @@
   still_image_url: "http://octopi.local/plugin/UltimakerFormatPackage/thumbnail/{{ states('sensor.ender_3_v2_current_filename') |regex_replace(find='gcode', replace='png', ignorecase=True)}}"
   scan_interval: 5
   content_type: image/png
-
-# octopi
-- platform: mjpeg
-  name: OctoPrint
-  still_image_url: http://octopi.local/?action=snapshot
-  mjpeg_url: http://octopi.local/webcam/?action=stream
