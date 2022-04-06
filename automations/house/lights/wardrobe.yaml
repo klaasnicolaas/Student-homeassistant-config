@@ -9,14 +9,14 @@
 
   trigger:
     - platform: state
-      entity_id: group.wardrobe_sensors
+      entity_id: binary_sensor.wardrobe
   action:
     - alias: "Turn lights OFF if group off else turn light ON"
       choose:
         - alias: "Doors are closed"
           conditions:
             - condition: state
-              entity_id: group.wardrobe_sensors
+              entity_id: binary_sensor.wardrobe
               state: 'off'
           sequence:
             - service: scene.turn_on
