@@ -142,7 +142,7 @@ SOFTWARE.
 [harmony]: https://www.logitech.com/products/harmony/harmony-companion.915-000240.html
 [google_home]: https://store.google.com/magazine/compare_nest_speakers_displays
 [xiaomi_curtains_track-shop]: https://tc.tradetracker.net/?c=15640&m=12&a=417111&r=&u=%2Fitem%2F4000170933022.html
-[xiaomi_curtains_motor-shop]: https://tc.tradetracker.net/?c=15640&m=12&a=417111&r=&u=%2Fitem%2F4000987946364.html
+[xiaomi_curtains_motor-shop]: https://tc.tradetracker.net/?c=15640&m=12&a=417111&r=&u=%2Fitem%2F10000142608978.html
 [xiaomi_motion-shop]: https://www.banggood.com/bang/?tt=16956_12_417111_&r=%2FAqara-Zgbee-Wireless-Human-Body-PIR-Sensor-Smart-Home-Kit-Work-with-Gateway-APP-p-1177007.html
 [xiaomi_switch-shop]: https://www.banggood.com/bang/?tt=16956_12_417111_&r=%2FAqara-Smart-Wireless-Switch-Smart-Home-Kit-Remote-Control-Work-with-Multifunctional-Gateway-From-Eco-System-p-1224921.html
 [opple_switch-shop]: https://www.banggood.com/bang/?tt=16956_12_417111_&r=%2FAqara-x-OPPLE-Zigbee-3_0-Smart-Switch-HomeKit-Version-Wireless-Remote-Control-Wall-Light-Switch-Works-With-HomeKit-From-Eco-system-p-1590410.html
