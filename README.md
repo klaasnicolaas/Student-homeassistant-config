@@ -140,7 +140,7 @@ SOFTWARE.
 [xiaomi_temp-shop]: https://www.banggood.com/bang/?tt=16956_12_417111_&r=%2FAqara-Smart-Home-Zigbee-Temperature-and-Humidity-Sensor-Thermometer-Hygrometer-Digital-Sensor-From-Eco-System-p-1148666.html
 [xiaomi_door-shop]: https://www.banggood.com/bang/?tt=16956_12_417111_&r=%2FAqara-Zigbee-1_2-Version-Window-Door-Sensor-Smart-Home-Kit-Remote-Alarm-Eco-System-p-1149705.html
 [harmony]: https://www.logitech.com/nl-nl/product/harmony-companion
-[google_home]: https://store.google.com/nl/product/google_home
+[google_home]: https://store.google.com/magazine/compare_nest_speakers_displays
 [xiaomi_curtains_track-shop]: https://tc.tradetracker.net/?c=15640&m=12&a=417111&r=&u=%2Fitem%2F4000170933022.html
 [xiaomi_curtains_motor-shop]: https://tc.tradetracker.net/?c=15640&m=12&a=417111&r=&u=%2Fitem%2F4000987946364.html
 [xiaomi_motion-shop]: https://www.banggood.com/bang/?tt=16956_12_417111_&r=%2FAqara-Zgbee-Wireless-Human-Body-PIR-Sensor-Smart-Home-Kit-Work-with-Gateway-APP-p-1177007.html
