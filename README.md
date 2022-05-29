@@ -148,7 +148,7 @@ SOFTWARE.
 [opple_switch-shop]: https://www.banggood.com/bang/?tt=16956_12_417111_&r=%2FAqara-x-OPPLE-Zigbee-3_0-Smart-Switch-HomeKit-Version-Wireless-Remote-Control-Wall-Light-Switch-Works-With-HomeKit-From-Eco-system-p-1590410.html
 [bw_lt11-shop]: https://www.banggood.com/bang/?tt=16956_12_417111_&r=%2FBlitzWolf-BW-LT11-2M-or-5M-Smart-APP-Control-RGBW-LED-Light-Strip-Kit-Work-With-Amazon-Alexa-Google-Assistant-Christmas-Decorations-Clearance-Christmas-Lights-p-1390470.html
 [bw_shp13-shop]: https://www.banggood.com/bang/?tt=16956_12_417111_&r=%2FBlitzWolf-BW-SHP13-ZgBee-3_0-Smart-WIFI-Socket-16A-EU-Plug-Electricity-Metering-APP-Remote-Controller-Timer-Work-with-Amazon-Alexa-Google-Home-p-1679992.html
-[xiaomi_light_sensor-shop]: https://tc.tradetracker.net/?c=15640&m=12&a=417111&r=&u=%2Fitem%2F1005001803218057.html
+[xiaomi_light_sensor-shop]: https://tc.tradetracker.net/?c=15640&m=12&a=417111&r=&u=%2Fitem%2F1005002866301114.html
 [xiaomi_d1_1way_switch-shop]: https://www.banggood.com/bang/?tt=16956_12_417111_&r=%2FAqara-D1-1-Gang-or-2-Gang-Zigee-Smart-Wireless-Switch-APP-Remote-Control-Timer-Work-with-APP-HomeKit-p-1644321.html
 [tint_E27]: https://zigbee.blakadder.com/Muller_Licht_404000.html
 [glow]: https://github.com/klaasnicolaas/home-assistant-glow
