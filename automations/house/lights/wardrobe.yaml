@@ -17,11 +17,13 @@
           conditions:
             - condition: state
               entity_id: binary_sensor.wardrobe
-              state: 'off'
+              state: "off"
           sequence:
             - service: scene.turn_on
               target:
                 entity_id: scene.wardrobe_before
+              data:
+                transition: 0.5
       default:
         - service: scene.create
           data:
@@ -32,4 +34,5 @@
           target:
             entity_id: light.hal
           data:
-            brightness: 128
+            brightness: 170
+            transition: 0.5
