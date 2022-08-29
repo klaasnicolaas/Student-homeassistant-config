@@ -3,12 +3,13 @@ import asyncio
 from datetime import datetime
 
 from homeassistant.core import callback
+from homeassistant.exceptions import HomeAssistantError
 from homeassistant.util import json as json_util
 
 from ..base import HacsBase
-from ..enums import HacsDispatchEvent, HacsGitHubRepo
+from ..enums import HacsDisabledReason, HacsDispatchEvent, HacsGitHubRepo
 from ..repositories.base import TOPIC_FILTER, HacsManifest, HacsRepository
-from .logger import get_hacs_logger
+from .logger import LOGGER
 from .path import is_safe
 from .store import async_load_from_store, async_save_to_store
 
@@ -54,7 +55,7 @@ class HacsData:
 
     def __init__(self, hacs: HacsBase):
         """Initialize."""
-        self.logger = get_hacs_logger()
+        self.logger = LOGGER
         self.hacs = hacs
         self.content = {}
 
@@ -116,8 +117,21 @@ class HacsData:
     async def restore(self):
         """Restore saved data."""
         self.hacs.status.new = False
-        hacs = await async_load_from_store(self.hacs.hass, "hacs") or {}
-        repositories = await async_load_from_store(self.hacs.hass, "repositories") or {}
+        try:
+            hacs = await async_load_from_store(self.hacs.hass, "hacs") or {}
+        except HomeAssistantError:
+            hacs = {}
+
+        try:
+            repositories = await async_load_from_store(self.hacs.hass, "repositories") or {}
+        except HomeAssistantError as exception:
+            self.hacs.log.error(
+                "Could not read %s, restore the file from a backup - %s",
+                self.hacs.hass.config.path(".storage/hacs.repositories"),
+                exception,
+            )
+            self.hacs.disable_hacs(HacsDisabledReason.RESTORE)
+            return False
 
         if not hacs and not repositories:
             # Assume new install
@@ -210,7 +224,6 @@ class HacsData:
         ) or repository_data.get("stars", 0)
         repository.releases.last_release = repository_data.get("last_release_tag")
         repository.data.releases = repository_data.get("releases", False)
-        repository.data.hide = repository_data.get("hide", False)
         repository.data.installed = repository_data.get("installed", False)
         repository.data.new = repository_data.get("new", False)
         repository.data.selected_tag = repository_data.get("selected_tag")

@@ -23,11 +23,10 @@ from homeassistant.helpers.start import async_at_start
 from homeassistant.loader import async_get_integration
 import voluptuous as vol
 
-from custom_components.hacs.frontend import async_register_frontend
-
 from .base import HacsBase
 from .const import DOMAIN, MINIMUM_HA_VERSION, STARTUP
 from .enums import ConfigurationType, HacsDisabledReason, HacsStage, LovelaceMode
+from .frontend import async_register_frontend
 from .utils.configuration_schema import hacs_config_combined
 from .utils.data import HacsData
 from .utils.queue_manager import QueueManager
@@ -169,14 +168,12 @@ async def async_initialize_integration(
             hacs.log.info("Update entities are only supported when using UI configuration")
 
         else:
-            if hacs.configuration.experimental:
-                hass.config_entries.async_setup_platforms(
-                    hacs.configuration.config_entry, [Platform.SENSOR, Platform.UPDATE]
-                )
-            else:
-                hass.config_entries.async_setup_platforms(
-                    hacs.configuration.config_entry, [Platform.SENSOR]
-                )
+            hass.config_entries.async_setup_platforms(
+                config_entry,
+                [Platform.SENSOR, Platform.UPDATE]
+                if hacs.configuration.experimental
+                else [Platform.SENSOR],
+            )
 
         hacs.set_stage(HacsStage.SETUP)
         if hacs.system.disabled:
