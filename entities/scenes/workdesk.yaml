@@ -40,5 +40,5 @@
   entities:
     light.desk_light_left_led_strip:
       state: 'on'
-      brightness: 153 # 60%
+      brightness: 153  # 60%
       color_mode: white
