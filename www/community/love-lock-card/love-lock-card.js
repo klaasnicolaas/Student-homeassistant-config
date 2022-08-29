@@ -35,7 +35,7 @@ class LoveLockCard extends HTMLElement {
     root.appendChild(wrapper);
 
     // Password
-    var password = '"' + config.password + '"';
+    var password = '"' + btoa(config.password) + '"';
 
     // Cover styles
     const coverShow =
@@ -46,7 +46,7 @@ class LoveLockCard extends HTMLElement {
     var passwordScript = `
             var element = this;
             var pass = prompt("Please enter your password");
-            if (pass !== ${password}) {
+            if (btoa(pass) !== ${password}) {
                 alert("Invalid Password");
             } else {
                 element.setAttribute("style", ${coverHide});
@@ -111,7 +111,8 @@ class LoveLockCard extends HTMLElement {
       title.className = "header";
       title.style =
         "font-family: var(--paper-font-headline_-_font-family); -webkit-font-smoothing: var(--paper-font-headline_-_-webkit-font-smoothing); font-size: var(--paper-font-headline_-_font-size); font-weight: var(--paper-font-headline_-_font-weight); letter-spacing: var(--paper-font-headline_-_letter-spacing); line-height: var(--paper-font-headline_-_line-height);text-rendering: var(--paper-font-common-expensive-kerning_-_text-rendering);opacity: var(--dark-primary-opacity);padding: 24px 16px 0px 16px";
-      title.innerHTML = '<div class="name">' + config.title + "</div>";
+      const title_text = document.createTextNode(config.title);
+      title.appendChild(title_text);
       wrapper.appendChild(title);
     }
 
