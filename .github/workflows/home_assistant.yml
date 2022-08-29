@@ -16,7 +16,7 @@ jobs:
       - name: ⤵️ Check out configuration from GitHub
         uses: actions/checkout@v3
       - name: 🚀 Run yamllint
-        uses: frenck/action-yamllint@v1.1
+        uses: frenck/action-yamllint@v1.2
 
   #Remark Lint
   remarklint:
@@ -60,7 +60,7 @@ jobs:
       - name: ⤵️ Check out configuration from GitHub
         uses: actions/checkout@v3
       - name: Set up Python 3.8
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
           python-version: 3.8
       - name: Install dependencies
