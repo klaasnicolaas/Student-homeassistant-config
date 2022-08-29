@@ -35,3 +35,10 @@
       state: 'on'
       brightness: 255
       rgb_color: [255, 125, 0]
+- name: 3D Printing
+  icon: mdi:printer-3d-nozzle
+  entities:
+    light.desk_light_left_led_strip:
+      state: 'on'
+      brightness: 153 # 60%
+      color_mode: white
