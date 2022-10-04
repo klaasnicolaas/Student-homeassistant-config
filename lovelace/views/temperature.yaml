@@ -9,7 +9,7 @@ cards:
       - type: custom:mini-graph-card
         name: Temperatuur in Huis
         entities:
-          - entity: sensor.home_temperature
+          - entity: sensor.home_sensor_temperature
         hours_to_show: 72
         points_per_hour: 0.3
         show:
@@ -29,7 +29,7 @@ cards:
       - type: custom:mini-graph-card
         name: Vochtigheid in Huis
         entities:
-          - entity: sensor.home_humidity
+          - entity: sensor.home_sensor_humidity
         hours_to_show: 72
         points_per_hour: 0.3
         show:
@@ -43,7 +43,7 @@ cards:
       - type: custom:mini-graph-card
         name: Luchtdruk in Huis
         entities:
-          - entity: sensor.home_pressure
+          - entity: sensor.home_sensor_pressure
         hours_to_show: 72
         points_per_hour: 0.3
         show:
@@ -59,7 +59,7 @@ cards:
       - type: custom:mini-graph-card
         name: Temperatuur bij Raam
         entities:
-          - entity: sensor.window_temperature
+          - entity: sensor.window_sensor_temperature
         hours_to_show: 72
         points_per_hour: 0.3
         show:
@@ -79,7 +79,7 @@ cards:
       - type: custom:mini-graph-card
         name: Vochtigheid bij Raam
         entities:
-          - entity: sensor.window_humidity
+          - entity: sensor.window_sensor_humidity
         hours_to_show: 72
         points_per_hour: 0.3
         show:
@@ -93,7 +93,7 @@ cards:
       - type: custom:mini-graph-card
         name: Luchtdruk bij Raam
         entities:
-          - entity: sensor.window_pressure
+          - entity: sensor.window_sensor_pressure
         hours_to_show: 72
         points_per_hour: 0.3
         show:
@@ -109,7 +109,7 @@ cards:
       - type: custom:mini-graph-card
         name: Temperatuur in Badkamer
         entities:
-          - entity: sensor.bathroom_temperature
+          - entity: sensor.bathroom_sensor_temperature
         hours_to_show: 72
         points_per_hour: 0.3
         show:
@@ -129,7 +129,7 @@ cards:
       - type: custom:mini-graph-card
         name: Vochtigheid in Badkamer
         entities:
-          - entity: sensor.bathroom_humidity
+          - entity: sensor.bathroom_sensor_humidity
         hours_to_show: 72
         points_per_hour: 0.3
         show:
@@ -143,7 +143,7 @@ cards:
       - type: custom:mini-graph-card
         name: Luchtdruk in Badkamer
         entities:
-          - entity: sensor.bathroom_pressure
+          - entity: sensor.bathroom_sensor_pressure
         hours_to_show: 72
         points_per_hour: 0.3
         show:

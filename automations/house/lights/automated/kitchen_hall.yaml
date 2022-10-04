@@ -8,11 +8,11 @@
   trigger:
     - platform: numeric_state
       entity_id:
-        - sensor.kitchen_light_sensor
+        - sensor.kitchen_light_sensor_illuminance_lux
       below: input_number.lux_value_kitchen_low
     - platform: numeric_state
       entity_id:
-        - sensor.kitchen_light_sensor
+        - sensor.kitchen_light_sensor_illuminance_lux
       above: input_number.lux_value_kitchen_high
   condition:
     # Check if Automated lights mode is enabled
@@ -24,9 +24,9 @@
       entity_id: sensor.klaas_status
       state: 'Thuis'
     # Prevent trigger in the morning/night
-    - condition: state
-      entity_id: binary_sensor.afternoon
-      state: 'on'
+    # - condition: state
+    #   entity_id: binary_sensor.afternoon
+    #   state: 'on'
   action:
     - choose:
         # ON
@@ -35,22 +35,22 @@
               value_template: "{{ ((trigger.to_state.state)|float) <= (states('input_number.lux_value_kitchen_low')|float) }}"
             # Check if light are off
             - condition: state
-              entity_id: light.hal
+              entity_id: light.hall
               state: 'off'
             - condition: state
-              entity_id: light.keuken
+              entity_id: light.kitchen
               state: 'off'
           sequence:
             - service: logbook.log
               data:
                 name: Hal & Keuken
                 message: "- Lampen worden automatisch ingeschakeld"
-                entity_id: light.keuken
+                entity_id: light.kitchen
             - service: light.turn_on
               target:
                 entity_id:
-                  - light.hal
-                  - light.keuken
+                  - light.hall
+                  - light.kitchen
               data:
                 brightness_pct: "{{ states('input_number.brightness_dimmed') | round }}"
         # OFF
@@ -59,19 +59,19 @@
               value_template: "{{ ((trigger.to_state.state)|float) >= (states('input_number.lux_value_kitchen_high')|float) }}"
             # Check if light are on
             - condition: state
-              entity_id: light.hal
+              entity_id: light.hall
               state: 'on'
             - condition: state
-              entity_id: light.keuken
+              entity_id: light.kitchen
               state: 'on'
           sequence:
             - service: logbook.log
               data:
                 name: Hal & Keuken
                 message: "- Lampen worden automatisch uitgeschakeld"
-                entity_id: light.keuken
+                entity_id: light.kitchen
             - service: light.turn_off
               target:
                 entity_id:
-                  - light.hal
-                  - light.keuken
+                  - light.hall
+                  - light.kitchen

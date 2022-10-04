@@ -10,6 +10,6 @@
         {% if is_state('sensor.openweathermap_temperature', 'unknown') %}
           unkown
         {% else %}
-          {{ ( states('sensor.home_temperature') | float - states('sensor.openweathermap_temperature') | float ) | round(1) }}
+          {{ ( states('sensor.home_sensor_temperature') | float - states('sensor.openweathermap_temperature') | float ) | round(1) }}
         {% endif %}
       device_class: temperature

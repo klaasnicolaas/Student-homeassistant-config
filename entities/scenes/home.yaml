@@ -2,51 +2,51 @@
 ########## Home Scenes ##########
 - name: Avond
   entities:
-    light.keuken_lamp_1:
+    light.kitchen_fridge:
       state: "on"
       brightness: 51
-    light.keuken_lamp_2:
+    light.kitchen_cooker:
       state: "on"
       brightness: 51
-    light.keuken_lamp_3:
+    light.kitchen_floor:
       state: "on"
       brightness: 51
-    light.hal_lamp_1:
+    light.hall_wardrobe:
       state: "on"
       brightness: 51
-    light.hal_lamp_2:
+    light.hall_front_door:
       state: "on"
       brightness: 51
-    light.hal_lamp_3:
+    light.hall_floor:
       state: "on"
       brightness: 51
-    light.woonkamer_lamp_1:
+    light.livingroom_bed:
       state: "on"
       brightness: 64
-    light.woonkamer_lamp_2:
+    light.livingroom_radiator:
       state: "on"
       brightness: 64
-    light.woonkamer_lamp_3:
+    light.livingroom_floor:
       state: "on"
       brightness: 64
 
 - name: Lampen uit
   entities:
-    light.keuken_lamp_1:
+    light.kitchen_fridge:
       state: "off"
-    light.keuken_lamp_2:
+    light.kitchen_cooker:
       state: "off"
-    light.keuken_lamp_3:
+    light.kitchen_floor:
       state: "off"
-    light.hal_lamp_1:
+    light.hall_wardrobe:
       state: "off"
-    light.hal_lamp_2:
+    light.hall_front_door:
       state: "off"
-    light.hal_lamp_3:
+    light.hall_floor:
       state: "off"
-    light.woonkamer_lamp_1:
+    light.livingroom_bed:
       state: "off"
-    light.woonkamer_lamp_2:
+    light.livingroom_radiator:
       state: "off"
-    light.woonkamer_lamp_3:
+    light.livingroom_floor:
       state: "off"

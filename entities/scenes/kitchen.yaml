@@ -2,12 +2,12 @@
 ########## Kitchen Scenes ##########
 - name: Koken
   entities:
-    light.keuken_lamp_1:
+    light.kitchen_fridge:
       state: "on"
       brightness: 153
-    light.keuken_lamp_2:
+    light.kitchen_cooker:
       state: "on"
       brightness: 153
-    light.keuken_lamp_3:
+    light.kitchen_floor:
       state: "on"
       brightness: 153

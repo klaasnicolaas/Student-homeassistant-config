@@ -10,7 +10,7 @@
     - platform: numeric_state
       id: low
       entity_id:
-        - sensor.home_temperature
+        - sensor.home_sensor_temperature
       below: input_number.temp_value_climate_low
       for:
         minutes: 5
@@ -18,7 +18,7 @@
     - platform: numeric_state
       id: high
       entity_id:
-        - sensor.home_temperature
+        - sensor.home_sensor_temperature
       above: input_number.temp_value_climate_high
       for:
         minutes: 5

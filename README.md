@@ -39,7 +39,7 @@ Below is a list of all hardware in-house
 
 - [Intel Arches Canyon NUC6CAYH][intelnuc] -> Inside 8GB Ram, 120GB SSD
 - Running a [Proxmox][proxmox] server, with a [Home Assistant OS][ha-os] VM on it.
-- [Deconz - Conbee II][conbee] stick
+- [Conbee II][conbee] stick
 
 **And I use the following hardware in my house:**
 

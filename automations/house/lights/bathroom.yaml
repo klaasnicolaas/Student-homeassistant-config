@@ -12,13 +12,13 @@
 
   trigger:
     - platform: state
-      entity_id: binary_sensor.bathroom_door, binary_sensor.motion_badkamer
+      entity_id: binary_sensor.bathroom_door_contact, binary_sensor.bathroom_motion_occupancy
       to: 'on'
       from: 'off'
   action:
     - service: light.turn_on
       target:
-        entity_id: light.badkamer
+        entity_id: light.bathroom
       data_template:
         color_temp: 380
         brightness_pct: >
@@ -35,19 +35,19 @@
 
   trigger:
     - platform: state
-      entity_id: binary_sensor.motion_badkamer
+      entity_id: binary_sensor.bathroom_motion_occupancy
       to: 'off'
       for:
         minutes: 6
   condition:
     # Keep the light on when you take a shower
     - condition: numeric_state
-      entity_id: sensor.bathroom_humidity
+      entity_id: sensor.bathroom_sensor_humidity
       below: 75
   action:
     - service: light.turn_off
       target:
-        entity_id: light.badkamer
+        entity_id: light.bathroom
 
 - alias: '[Light] - Shower warning - 5 min'
   description: >-
@@ -65,17 +65,17 @@
   condition:
     # The bathroom light should be ON
     - condition: state
-      entity_id: light.badkamer
+      entity_id: light.bathroom
       state: 'on'
   action:
     - service: scene.create
       data:
         scene_id: bathroom_before
         snapshot_entities:
-          - light.badkamer
+          - light.bathroom
     - service: light.turn_on
       target:
-        entity_id: light.badkamer
+        entity_id: light.bathroom
       data:
         transition: 5
         rgb_color: [109, 255, 108]
@@ -100,17 +100,17 @@
   condition:
     # The bathroom light should be ON
     - condition: state
-      entity_id: light.badkamer
+      entity_id: light.bathroom
       state: 'on'
   action:
     - service: scene.create
       data:
         scene_id: bathroom_before
         snapshot_entities:
-          - light.badkamer
+          - light.bathroom
     - service: light.turn_on
       target:
-        entity_id: light.badkamer
+        entity_id: light.bathroom
       data:
         transition: 5
         rgb_color: [255, 75, 75]

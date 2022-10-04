@@ -9,9 +9,5 @@ emulated_hue:
   entities:
     group.personen_status:
       hidden: true
-    light.badkamer_groep:
-      hidden: true
-    light.werkhoek_groep:
-      hidden: true
     group.battery_alert:
       hidden: true

@@ -19,16 +19,16 @@ cloud:
         # Cover
         - cover.curtain_window
         # Lights
-        - light.hal_lamp_1
-        - light.hal_lamp_2
-        - light.hal_lamp_3
-        - light.keuken_lamp_1
-        - light.keuken_lamp_2
-        - light.keuken_lamp_3
-        - light.woonkamer_lamp_1
-        - light.woonkamer_lamp_2
-        - light.woonkamer_lamp_3
-        - light.badkamer
+        - light.hall_wardrobe
+        - light.hall_front_door
+        - light.hall_floor
+        - light.kitchen_fridge
+        - light.kitchen_cooker
+        - light.kitchen_floor
+        - light.livingroom_bed
+        - light.livingroom_radiator
+        - light.livingroom_floor
+        - light.bathroom
         - light.stellingkast
         - light.bureau
         # Scripts

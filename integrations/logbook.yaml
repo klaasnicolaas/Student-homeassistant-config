@@ -5,14 +5,14 @@ logbook:
   include:
     entities:
       - alarm_control_panel.alarmsysteem
-      - binary_sensor.front_door
-      - binary_sensor.window_left
-      - binary_sensor.window_right
-      - binary_sensor.bathroom_door
-      - light.hal
-      - light.woonkamer
-      - light.keuken
-      - light.badkamer
+      - binary_sensor.front_door_contact
+      - binary_sensor.window_left_contact
+      - binary_sensor.window_right_contact
+      - binary_sensor.bathroom_door_contact
+      - light.hall
+      - light.livingroom
+      - light.kitchen
+      - light.bathroom
       - sensor.klaas_status
       - script.start_sleep_with_alarm
       - script.start_sleep

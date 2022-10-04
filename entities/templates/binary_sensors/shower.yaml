@@ -6,4 +6,4 @@
       unique_id: shower_status
       icon: mdi:shower-head
       state: >-
-        {{ states('sensor.bathroom_humidity') | int > 75 }}
+        {{ states('sensor.bathroom_sensor_humidity') | int > 75 }}

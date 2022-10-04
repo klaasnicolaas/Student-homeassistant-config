@@ -195,41 +195,41 @@ cards:
           - type: custom:fold-entity-row
             head:
               type: custom:slider-entity-row
-              entity: light.hal
+              entity: light.hall
               toggle: true
               hide_when_off: true
             group_config:
               secondary_info: last-changed
             entities:
-              - light.hal_lamp_1
-              - light.hal_lamp_2
-              - light.hal_lamp_3
+              - light.hall_wardrobe
+              - light.hall_front_door
+              - light.hall_floor
           # Kitchen
           - type: custom:fold-entity-row
             head:
               type: custom:slider-entity-row
-              entity: light.keuken
+              entity: light.kitchen
               toggle: true
               hide_when_off: true
             group_config:
               secondary_info: last-changed
             entities:
-              - light.keuken_lamp_1
-              - light.keuken_lamp_2
-              - light.keuken_lamp_3
+              - light.kitchen_fridge
+              - light.kitchen_cooker
+              - light.kitchen_floor
           # Living room
           - type: custom:fold-entity-row
             head:
               type: custom:slider-entity-row
-              entity: light.woonkamer
+              entity: light.livingroom
               toggle: true
               hide_when_off: true
             group_config:
               secondary_info: last-changed
             entities:
-              - light.woonkamer_lamp_1
-              - light.woonkamer_lamp_2
-              - light.woonkamer_lamp_3
+              - light.livingroom_bed
+              - light.livingroom_radiator
+              - light.livingroom_floor
           - type: divider
           # Desk
           - type: custom:fold-entity-row
@@ -285,7 +285,7 @@ cards:
           - type: divider
           # Bathroom
           - type: custom:slider-entity-row
-            entity: light.badkamer
+            entity: light.bathroom
             toggle: true
             hide_when_off: true
       - type: horizontal-stack
@@ -366,28 +366,28 @@ cards:
           - type: glance
             columns: 3
             entities:
-              - entity: binary_sensor.front_door
+              - entity: binary_sensor.front_door_contact
               - entity: binary_sensor.meter_cupboard
-              - entity: binary_sensor.motion_huis
+              - entity: binary_sensor.home_motion_occupancy
                 name: Huis
-              - entity: binary_sensor.window_left
-              - entity: binary_sensor.window_right
+              - entity: binary_sensor.window_left_contact
+              - entity: binary_sensor.window_right_contact
               - entity: binary_sensor.airco
           - type: glance
             title: Kledingkast
             entities:
-              - entity: binary_sensor.wardrobe_left
+              - entity: binary_sensor.wardrobe_left_contact
                 name: Links
-              - entity: binary_sensor.wardrobe_middle
+              - entity: binary_sensor.wardrobe_middle_contact
                 name: Midden
-              - entity: binary_sensor.wardrobe_right
+              - entity: binary_sensor.wardrobe_right_contact
                 name: Rechts
           - type: glance
             title: Badkamer
             entities:
-              - entity: binary_sensor.bathroom_door
+              - entity: binary_sensor.bathroom_door_contact
                 name: Deur
-              - entity: binary_sensor.motion_badkamer
+              - entity: binary_sensor.bathroom_motion_occupancy
                 name: Badkamer
               - entity: binary_sensor.shower
           # Curtains
@@ -417,7 +417,7 @@ cards:
             lock:
               enabled: true
           - type: gauge
-            entity: sensor.house_power_consumption
+            entity: sensor.glow_house_power_consumption
             name: Power usage
             needle: true
             max: 300
@@ -430,7 +430,7 @@ cards:
           - type: custom:mini-graph-card
             name: Temperatuur
             entities:
-              - entity: sensor.home_temperature
+              - entity: sensor.home_sensor_temperature
                 name: Huis
             hours_to_show: 72
             points_per_hour: 0.3
@@ -445,7 +445,7 @@ cards:
           - type: custom:mini-graph-card
             name: Vochtigheid
             entities:
-              - entity: sensor.home_humidity
+              - entity: sensor.home_sensor_humidity
                 name: Huis
             hours_to_show: 72
             points_per_hour: 0.3
@@ -461,7 +461,7 @@ cards:
         cards:
           - type: custom:mini-graph-card
             entities:
-              - entity: sensor.livingroom_light_sensor
+              - entity: sensor.livingroom_light_sensor_illuminance_lux
                 name: Woonkamer
             show:
               fill: true
@@ -470,7 +470,7 @@ cards:
             hour24: true
           - type: custom:mini-graph-card
             entities:
-              - entity: sensor.kitchen_light_sensor
+              - entity: sensor.kitchen_light_sensor_illuminance_lux
                 name: Keuken
             show:
               fill: true

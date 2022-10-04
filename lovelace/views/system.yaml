@@ -128,7 +128,7 @@ cards:
             entities:
               - entity: sensor.swap_use_percent
                 name: SWAP
-              - entity: sensor.home_assistant_log
+              - entity: sensor.home_assistant_log_size
                 name: Log size
             style: |
               .card-content {

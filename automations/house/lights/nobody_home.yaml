@@ -17,16 +17,16 @@
     conditions:
       # If a light is still on
       - condition: state
-        entity_id: light.woonkamer
+        entity_id: light.livingroom
         state: 'on'
       - condition: state
-        entity_id: light.keuken
+        entity_id: light.kitchen
         state: 'on'
       - condition: state
-        entity_id: light.hal
+        entity_id: light.hall
         state: 'on'
       - condition: state
-        entity_id: light.badkamer
+        entity_id: light.bathroom
         state: 'on'
       - condition: state
         entity_id: light.bureau
@@ -53,10 +53,10 @@
   trigger:
     - platform: state
       entity_id:
-        - light.badkamer
-        - light.hal
-        - light.keuken
-        - light.woonkamer
+        - light.bathroom
+        - light.hall
+        - light.kitchen
+        - light.livingroom
       from: 'off'
       to: 'on'
   condition:

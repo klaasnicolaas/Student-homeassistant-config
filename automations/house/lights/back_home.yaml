@@ -6,7 +6,7 @@
   mode: single
   trigger:
     - platform: state
-      entity_id: binary_sensor.front_door
+      entity_id: binary_sensor.front_door_contact
       to: 'on'
   condition:
     # Just arrived
@@ -15,7 +15,7 @@
       state: 'Net Aangekomen'
     # Check light sensor value
     - condition: numeric_state
-      entity_id: sensor.kitchen_light_sensor
+      entity_id: sensor.kitchen_light_sensor_illuminance_lux
       below: 5
   action:
     - service: scene.turn_on

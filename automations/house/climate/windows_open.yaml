@@ -8,8 +8,8 @@
   trigger:
     - platform: state
       entity_id:
-        - binary_sensor.window_left
-        - binary_sensor.window_right
+        - binary_sensor.window_left_contact
+        - binary_sensor.window_right_contact
       from: 'off'
       to: 'on'
   condition:

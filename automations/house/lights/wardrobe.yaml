@@ -29,10 +29,10 @@
           data:
             scene_id: wardrobe_before
             snapshot_entities:
-              - light.hal
+              - light.hall
         - service: light.turn_on
           target:
-            entity_id: light.hal
+            entity_id: light.hall
           data:
             brightness: 170
             transition: 0.5

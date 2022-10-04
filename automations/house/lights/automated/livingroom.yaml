@@ -8,11 +8,11 @@
   trigger:
     - platform: numeric_state
       entity_id:
-        - sensor.livingroom_light_sensor
+        - sensor.livingroom_light_sensor_illuminance_lux
       below: input_number.lux_value_living_low
     - platform: numeric_state
       entity_id:
-        - sensor.livingroom_light_sensor
+        - sensor.livingroom_light_sensor_illuminance_lux
       above: input_number.lux_value_living_high
   condition:
     # Check if Automated lights mode is enabled
@@ -24,9 +24,9 @@
       entity_id: sensor.klaas_status
       state: 'Thuis'
     # Prevent trigger in the morning/night
-    - condition: state
-      entity_id: binary_sensor.afternoon
-      state: 'on'
+    # - condition: state
+    #   entity_id: binary_sensor.afternoon
+    #   state: 'on'
   action:
     - choose:
         # ON

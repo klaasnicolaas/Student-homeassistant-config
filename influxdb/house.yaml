@@ -5,16 +5,16 @@
 # I like to specify (whitelist) each entity to store,
 # since that keeps my InfluxDB clean and small.
 #
-- sensor.window_temperature
-- sensor.window_pressure
-- sensor.window_humidity
-- sensor.home_temperature
-- sensor.home_pressure
-- sensor.home_humidity
+- sensor.window_sensor_temperature
+- sensor.window_sensor_pressure
+- sensor.window_sensor_humidity
+- sensor.home_sensor_temperature
+- sensor.home_sensor_pressure
+- sensor.home_sensor_humidity
 - binary_sensor.airco
 - sensor.temperature_difference_in_out
-- sensor.kitchen_light_sensor
-- sensor.livingroom_light_sensor
+- sensor.kitchen_light_sensor_illuminance_lux
+- sensor.livingroom_light_sensor_illuminance_lux
 
 # Buienradar
 - sensor.br_temperature
@@ -25,3 +25,15 @@
 
 # Openweathermap
 - sensor.openweathermap_temperature
+
+# Energy
+- sensor.glow_house_power_consumption
+- sensor.glow_house_daily_energy
+- sensor.glow_house_total_energy
+
+- sensor.measure_airco_power
+- sensor.measure_airco_consumption
+- sensor.workdesk_power
+- sensor.workplace_energy
+- sensor.fridge_power
+- sensor.fridge_energy
