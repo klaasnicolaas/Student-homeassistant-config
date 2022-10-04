@@ -8,6 +8,6 @@
   use_blueprint:
     path: aqara_d1_1way_remote.yaml
     input:
-      remote: 1207f1a3c8f5f1392bc4686c1a133b93
+      remote: sensor.curtains_remote_action
       cover:
         entity_id: cover.curtain_window
