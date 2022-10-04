@@ -1,6 +1,6 @@
 ---
 blueprint:
-  name: deCONZ - Aqara Opple (6 way) remote for lights
+  name: Z2M - Aqara Opple (6 way) remote for lights
   description: |
     Control 3 lights with an Aqara Opple switch 3 bands (WXCJKG13LM).
 
@@ -16,10 +16,9 @@ blueprint:
       name: Remote
       description: Opple remote to use
       selector:
-        device:
-          integration: deconz
-          manufacturer: LUMI
-          model: lumi.remote.b686opcn01
+        entity:
+          integration: mqtt
+          domain: sensor
     light_1:
       name: Light(s)
       description: The first light(s group) to control
@@ -68,19 +67,17 @@ variables:
   force_brightness: !input force_brightness
 
 trigger:
-  - platform: event
-    event_type: deconz_event
-    event_data:
-      device_id: !input 'remote'
+  - platform: state
+    entity_id: !input remote
+    attribute: action
 
 action:
   - variables:
-      event: '{{ trigger.event.data.event }}'
+      command: '{{ trigger.to_state.state }}'
 
   - choose:
       # ---------------------------- TURN ON OR OFF ---------------------------- #
-      - conditions:
-          - '{{ event == 1002 }}'
+      - conditions: "{{ command == 'button_1_single' }}"
         sequence:
           - choose:
               - conditions: "{{ force_brightness }}"
@@ -94,14 +91,12 @@ action:
               - service: light.turn_on
                 target: !input 'light_1'
                 data: {}
-      - conditions:
-          - '{{ event == 2002 }}'
+      - conditions: "{{ command == 'button_2_single' }}"
         sequence:
           - service: light.turn_off
             data: {}
             target: !input 'light_1'
-      - conditions:
-          - '{{ event == 3002 }}'
+      - conditions: "{{ command == 'button_3_single' }}"
         sequence:
           - choose:
               - conditions: "{{ force_brightness }}"
@@ -115,14 +110,12 @@ action:
               - service: light.turn_on
                 target: !input 'light_2'
                 data: {}
-      - conditions:
-          - '{{ event == 4002 }}'
+      - conditions: "{{ command == 'button_4_single' }}"
         sequence:
           - service: light.turn_off
             data: {}
             target: !input 'light_2'
-      - conditions:
-          - '{{ event == 5002 }}'
+      - conditions: "{{ command == 'button_5_single' }}"
         sequence:
           - choose:
               - conditions: "{{ force_brightness }}"
@@ -136,113 +129,119 @@ action:
               - service: light.turn_on
                 target: !input 'light_3'
                 data: {}
-      - conditions:
-          - '{{ event == 6002 }}'
+      - conditions: "{{ command == 'button_6_single' }}"
         sequence:
           - service: light.turn_off
             data: {}
             target: !input 'light_3'
       # ---------------------------- INCREASE OR DECREASE BRIGHTNESS ---------------------------- #
-      - conditions:
-          - '{{ event == 1001 }}'
+      - conditions: "{{ command == 'button_1_hold' }}"
         sequence:
           - repeat:
               until:
-                - condition: template
-                  value_template: '{{ event == 1003 }}'
+                - condition: state
+                  entity_id: !input remote
+                  state: button_1_release
+                  attribute: action
               sequence:
                 - service: light.turn_on
                   data:
                     brightness_step_pct: 10
                     transition: 0.5
                   target: !input 'light_1'
-                - delay: '0.2'
-      - conditions:
-          - '{{ event == 2001 }}'
+                - delay: 0.2
+      - conditions: "{{ command == 'button_2_hold' }}"
         sequence:
           - repeat:
               until:
-                - condition: template
-                  value_template: '{{ event == 2003 }}'
+                - condition: state
+                  entity_id: !input remote
+                  state: button_2_release
+                  attribute: action
               sequence:
                 - service: light.turn_on
                   data:
                     brightness_step_pct: -10
                     transition: 0.5
                   target: !input 'light_1'
-                - delay: '1'
-      - conditions:
-          - '{{ event == 3001 }}'
+                - delay: 0.2
+      - conditions: "{{ command == 'button_3_hold' }}"
         sequence:
           - repeat:
               until:
-                - condition: template
-                  value_template: '{{ event == 3003 }}'
+                - condition: state
+                  entity_id: !input remote
+                  state: button_3_release
+                  attribute: action
               sequence:
                 - service: light.turn_on
                   data:
                     brightness_step_pct: 10
+                    transition: 0.5
                   target: !input 'light_2'
-                - delay: '0.2'
-      - conditions:
-          - '{{ event == 4001 }}'
+                - delay: 0.2
+      - conditions: "{{ command == 'button_4_hold' }}"
         sequence:
           - repeat:
               until:
-                - condition: template
-                  value_template: '{{ event == 4003 }}'
+                - condition: state
+                  entity_id: !input remote
+                  state: button_4_release
+                  attribute: action
               sequence:
                 - service: light.turn_on
                   data:
                     brightness_step_pct: -10
+                    transition: 0.5
                   target: !input 'light_2'
-                - delay: '1'
-      - conditions:
-          - '{{ event == 5001 }}'
+                - delay: 0.2
+      - conditions: "{{ command == 'button_5_hold' }}"
         sequence:
           - repeat:
               until:
-                - condition: template
-                  value_template: '{{ event == 5003 }}'
+                - condition: state
+                  entity_id: !input remote
+                  state: button_5_release
+                  attribute: action
               sequence:
                 - service: light.turn_on
                   data:
                     brightness_step_pct: 10
+                    transition: 0.5
                   target: !input 'light_3'
-                - delay: '0.2'
-      - conditions:
-          - '{{ event == 6001 }}'
+                - delay: 0.2
+      - conditions: "{{ command == 'button_6_hold' }}"
         sequence:
           - repeat:
               until:
-                - condition: template
-                  value_template: '{{ event == 6003 }}'
+                - condition: state
+                  entity_id: !input remote
+                  state: button_6_release
+                  attribute: action
               sequence:
                 - service: light.turn_on
                   data:
                     brightness_step_pct: -10
+                    transition: 0.5
                   target: !input 'light_3'
-                - delay: '1'
+                - delay: 0.2
       # ---------------------------- MAX OR MIN BRIGHTNESS ---------------------------- #
       # ---------- MAX ---------- #
-      - conditions:
-          - '{{ event == 1004 }}'
+      - conditions: "{{ command == 'button_1_double' }}"
         sequence:
           - service: light.turn_on
             data:
               brightness_pct: 100
               transition: 0.5
             target: !input 'light_1'
-      - conditions:
-          - '{{ event == 3004 }}'
+      - conditions: "{{ command == 'button_3_double' }}"
         sequence:
           - service: light.turn_on
             data:
               brightness_pct: 100
               transition: 0.5
             target: !input 'light_2'
-      - conditions:
-          - '{{ event == 5004 }}'
+      - conditions: "{{ command == 'button_5_double' }}"
         sequence:
           - service: light.turn_on
             data:
@@ -250,24 +249,21 @@ action:
               transition: 0.5
             target: !input 'light_3'
       # ---------- MIN ---------- #
-      - conditions:
-          - '{{ event == 2004 }}'
+      - conditions: "{{ command == 'button_2_double' }}"
         sequence:
           - service: light.turn_on
             data:
               brightness_pct: 10
               transition: 0.5
             target: !input 'light_1'
-      - conditions:
-          - '{{ event == 4004 }}'
+      - conditions: "{{ command == 'button_4_double' }}"
         sequence:
           - service: light.turn_on
             data:
               brightness_pct: 10
               transition: 0.5
             target: !input 'light_2'
-      - conditions:
-          - '{{ event == 6004 }}'
+      - conditions: "{{ command == 'button_6_double' }}"
         sequence:
           - service: light.turn_on
             data:

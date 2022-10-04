@@ -10,7 +10,7 @@
     path: opple_6way_remote_lights.yaml
     input:
       brightness: '50'
-      remote: 6658bdeac29140269a715442ac5b56f0
+      remote: sensor.home_remote_action
       light_1:
         entity_id: light.hall
       light_2:
