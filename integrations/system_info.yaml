@@ -100,17 +100,6 @@ sensor:
     name: Python Version
     command: python3 --version
     scan_interval: 86400
-  ##### MariaDB Size
-  - platform: sql
-    db_url: !secret mariadb_addon
-    queries:
-      - name: DB size
-        query: 'SELECT table_schema "database", Round(Sum(data_length + index_length) / 1024 / 1024) "value" FROM information_schema.tables WHERE table_schema="Recorder" GROUP BY table_schema;'
-        column: 'value'
-        unit_of_measurement: MB
-  ##### UpTime
-  - platform: uptime
-    name: Time Online
   ##### Restart time
   - platform: command_line
     name: HA Restart Time
