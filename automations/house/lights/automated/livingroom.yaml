@@ -31,17 +31,17 @@
               value_template: "{{ ((trigger.to_state.state)|float) <= (states('input_number.lux_value_living_low')|float) }}"
             # Check if light are off
             - condition: state
-              entity_id: light.woonkamer
+              entity_id: light.livingroom
               state: 'off'
           sequence:
             - service: logbook.log
               data:
                 name: Woonkamer
                 message: "- Lampen worden automatisch ingeschakeld"
-                entity_id: light.woonkamer
+                entity_id: light.livingroom
             - service: light.turn_on
               target:
-                entity_id: light.woonkamer
+                entity_id: light.livingroom
               data:
                 brightness_pct: "{{ states('input_number.brightness_dimmed') | round }}"
         # OFF
@@ -50,14 +50,14 @@
               value_template: "{{ ((trigger.to_state.state)|float) >= (states('input_number.lux_value_living_high')|float) }}"
             # Check if light are on
             - condition: state
-              entity_id: light.woonkamer
+              entity_id: light.livingroom
               state: 'on'
           sequence:
             - service: logbook.log
               data:
                 name: Woonkamer
                 message: "- Lampen worden automatisch uitgeschakeld"
-                entity_id: light.woonkamer
+                entity_id: light.livingroom
             - service: light.turn_off
               target:
-                entity_id: light.woonkamer
+                entity_id: light.livingroom
