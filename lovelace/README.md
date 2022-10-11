@@ -6,9 +6,9 @@ Curious how my lovelace looks visually? Below you will find some screenshots.
 
 ![header](/extras/img/lovelace/dashboard.png)
 
-## Media Player
+## Floor plan
 
-![header](/extras/img/lovelace/media_player.png)
+![header](/extras/img/lovelace/floor_plan.png)
 
 ## System overview
 

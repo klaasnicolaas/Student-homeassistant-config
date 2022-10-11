@@ -10,6 +10,7 @@
 #
 www/*
 !www/community
+!www/floorplan
 #
 
 # Ignore Folders

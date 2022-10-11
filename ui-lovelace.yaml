@@ -10,6 +10,7 @@
 title: Student Home
 views:
   - !include lovelace/views/dashboard.yaml
+  - !include lovelace/views/floorplan.yaml
   - !include lovelace/views/security.yaml
   - !include lovelace/views/3d_printer.yaml
   - !include lovelace/views/temperature.yaml

@@ -1,0 +1,154 @@
+title: Floorplan
+icon: mdi:floor-plan
+path: floorplan
+panel: true
+cards:
+  - type: picture-elements
+    image: /local/floorplan/edit_studio-night.png
+    style: |
+      ha-card {
+        background: rgba(42, 46, 48, 1);
+        width: 100%;
+        margin: 0 auto;
+      }
+      hui-image-element {
+        pointer-events: none;
+        transform: translate(0,0) !important;
+        mix-blend-mode: lighten;
+        left: 0;
+        top: 0;
+      }
+      hui-state-icon-element {
+        border-radius: 15px;
+        border: 3px solid;
+        background: rgba(255,255,255,0.8);
+      }
+    elements:
+      # DAY BASE FLOORPLAN OVERLAY #
+      - type: image
+        entity: sun.sun
+        state_image:
+          above_horizon: /local/floorplan/edit_studio-day.png
+      # Kitchen
+      - type: state-icon
+        entity: light.kitchen
+        style:
+          left: 56%
+          top: 61%
+        tap_action:
+          action: toggle
+      - type: conditional
+        conditions:
+          - entity: light.kitchen
+            state: "on"
+        elements:
+          - type: image
+            image: /local/floorplan/edit_studio-kitchen.png
+      # Livingroom #############
+      - type: state-label
+        entity: sensor.home_sensor_temperature
+        style:
+          left: 46.5%
+          bottom: 38%
+          font-size: 1.5em
+      - type: state-icon
+        entity: light.livingroom
+        style:
+          left: 36%
+          top: 50%
+        tap_action:
+          action: toggle
+      - type: conditional
+        conditions:
+          - entity: light.livingroom
+            state: "on"
+        elements:
+          - type: image
+            image: /local/floorplan/edit_studio-livingroom.png
+      # Workspace
+      - type: state-icon
+        entity: light.bureau
+        style:
+          left: 48%
+          top: 38%
+        tap_action:
+          action: toggle
+      - type: conditional
+        conditions:
+          - entity: light.bureau
+            state: "on"
+        elements:
+          - type: image
+            image: /local/floorplan/edit_studio-workspace.png
+      # Hall
+      - type: state-icon
+        entity: light.hall
+        style:
+          right: 20%
+          bottom: 37%
+        tap_action:
+          action: toggle
+      - type: conditional
+        conditions:
+          - entity: light.hall
+            state: "on"
+        elements:
+          - type: image
+            image: /local/floorplan/edit_studio-hall.png
+      # Bathroom
+      # Sensor
+      - type: state-label
+        entity: sensor.bathroom_sensor_temperature
+        style:
+          right: 25.5%
+          top: 32%
+          font-size: 1.5em
+      # Icon switch
+      - type: state-icon
+        entity: light.bathroom
+        style:
+          right: 28%
+          top: 25%
+        tap_action:
+          action: toggle
+      - type: conditional
+        conditions:
+          - entity: light.bathroom
+            state: "on"
+        elements:
+          - type: image
+            image: /local/floorplan/edit_studio-bathroom.png
+      # Curtains
+      - type: state-icon
+        entity: cover.curtain_window
+        icon: mdi:arrow-up-box
+        style:
+          left: 13%
+          top: 41%
+        tap_action:
+          action: call-service
+          service: cover.open_cover
+          target:
+            entity_id: cover.curtain_window
+      - type: state-icon
+        entity: cover.curtain_window
+        icon: mdi:stop-circle
+        style:
+          left: 13%
+          top: 50%
+        tap_action:
+          action: call-service
+          service: cover.stop_cover
+          target:
+            entity_id: cover.curtain_window
+      - type: state-icon
+        entity: cover.curtain_window
+        icon: mdi:arrow-down-box
+        style:
+          left: 13%
+          bottom: 35%
+        tap_action:
+          action: call-service
+          service: cover.close_cover
+          target:
+            entity_id: cover.curtain_window
