@@ -32,7 +32,7 @@ start_sleep_with_alarm:
     # Hal
     - service: light.turn_off
       target:
-        entity_id: light.hal
+        entity_id: light.hall
 
     - delay:
         seconds: 10
@@ -40,7 +40,7 @@ start_sleep_with_alarm:
     # Keuken
     - service: light.turn_off
       target:
-        entity_id: light.keuken
+        entity_id: light.kitchen
 
     - delay:
         seconds: 10
@@ -48,7 +48,7 @@ start_sleep_with_alarm:
     # Woonkamer
     - service: light.turn_off
       target:
-        entity_id: light.woonkamer
+        entity_id: light.livingroom
 
 start_sleep:
   alias: 'Slapen gaan ritueel - zonder alarm'
@@ -79,7 +79,7 @@ start_sleep:
     # Hal
     - service: light.turn_off
       target:
-        entity_id: light.hal
+        entity_id: light.hall
 
     - delay:
         seconds: 10
@@ -87,7 +87,7 @@ start_sleep:
     # Keuken
     - service: light.turn_off
       target:
-        entity_id: light.keuken
+        entity_id: light.kitchen
 
     - delay:
         seconds: 10
@@ -95,4 +95,4 @@ start_sleep:
     # Woonkamer
     - service: light.turn_off
       target:
-        entity_id: light.woonkamer
+        entity_id: light.livingroom

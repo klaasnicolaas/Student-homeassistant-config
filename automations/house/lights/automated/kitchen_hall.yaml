@@ -34,19 +34,19 @@
               entity_id: light.hall
               state: 'off'
             - condition: state
-              entity_id: light.kitchen
+              entity_id: light.z2m_kitchen
               state: 'off'
           sequence:
             - service: logbook.log
               data:
                 name: Hal & Keuken
                 message: "- Lampen worden automatisch ingeschakeld"
-                entity_id: light.kitchen
+                entity_id: light.z2m_kitchen
             - service: light.turn_on
               target:
                 entity_id:
                   - light.hall
-                  - light.kitchen
+                  - light.z2m_kitchen
               data:
                 brightness_pct: "{{ states('input_number.brightness_dimmed') | round }}"
         # OFF
@@ -58,16 +58,16 @@
               entity_id: light.hall
               state: 'on'
             - condition: state
-              entity_id: light.kitchen
+              entity_id: light.z2m_kitchen
               state: 'on'
           sequence:
             - service: logbook.log
               data:
                 name: Hal & Keuken
                 message: "- Lampen worden automatisch uitgeschakeld"
-                entity_id: light.kitchen
+                entity_id: light.z2m_kitchen
             - service: light.turn_off
               target:
                 entity_id:
                   - light.hall
-                  - light.kitchen
+                  - light.z2m_kitchen

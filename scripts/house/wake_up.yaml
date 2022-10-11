@@ -31,8 +31,8 @@ wake_up:
     - service: light.turn_on
       target:
         entity_id:
-          - light.hal
-          - light.keuken
+          - light.hall
+          - light.kitchen
       data:
         brightness: 128
 

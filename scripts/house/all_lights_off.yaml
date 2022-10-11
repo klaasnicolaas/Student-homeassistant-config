@@ -8,8 +8,8 @@ all_lights_off:
     - service: light.turn_off
       target:
         entity_id:
-          - light.woonkamer
-          - light.keuken
-          - light.hal
-          - light.badkamer
+          - light.livingroom
+          - light.kitchen
+          - light.hall
+          - light.bathroom
           - light.bureau
