@@ -27,6 +27,7 @@ from ..const import (
     DEFAULT_ENERGY_INTEGRATION_METHOD,
     UnitPrefix,
 )
+from ..errors import SensorConfigurationError
 from .abstract import (
     BaseEntity,
     generate_energy_sensor_entity_id,
@@ -51,7 +52,12 @@ async def create_energy_sensor(
     # User specified an existing energy sensor with "energy_sensor_id" option. Just return that one
     if CONF_ENERGY_SENSOR_ID in sensor_config:
         ent_reg = er.async_get(hass)
-        entity_entry = ent_reg.async_get(sensor_config[CONF_ENERGY_SENSOR_ID])
+        energy_sensor_id = sensor_config[CONF_ENERGY_SENSOR_ID]
+        entity_entry = ent_reg.async_get(energy_sensor_id)
+        if entity_entry is None:
+            raise SensorConfigurationError(
+                f"No energy sensor with id {energy_sensor_id} found in your HA instance. Double check `energy_sensor_id` setting"
+            )
         return RealEnergySensor(entity_entry)
 
     # User specified an existing power sensor with "power_sensor_id" option. Try to find a corresponding energy sensor
@@ -128,13 +134,11 @@ def find_related_real_energy_sensor(
     return RealEnergySensor(energy_sensors[0])
 
 
-class EnergySensor:
+class EnergySensor(BaseEntity):
     """Class which all energy sensors should extend from"""
 
-    pass
 
-
-class VirtualEnergySensor(IntegrationSensor, EnergySensor, BaseEntity):
+class VirtualEnergySensor(IntegrationSensor, EnergySensor):
     """Virtual energy sensor, totalling kWh"""
 
     def __init__(
@@ -187,7 +191,7 @@ class VirtualEnergySensor(IntegrationSensor, EnergySensor, BaseEntity):
         return ENERGY_ICON
 
     @callback
-    def async_reset_energy(self) -> None:
+    def async_reset(self) -> None:
         _LOGGER.debug(f"{self.entity_id}: Reset energy sensor")
         self._state = 0
         self._attr_last_reset = dt_util.utcnow()
@@ -206,7 +210,7 @@ class RealEnergySensor(EnergySensor):
         return self._entity_entry.entity_id
 
     @property
-    def name(self) -> str:
+    def name(self) -> str | None:
         """Return the name of the sensor."""
         return self._entity_entry.name or self._entity_entry.original_name
 

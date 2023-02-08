@@ -89,13 +89,13 @@ async def create_group_sensors(
     def _get_filtered_entity_ids_by_class(
         all_entities: list, default_filters: list[Callable], class_name
     ) -> list[str]:
-        filters = default_filters.copy()
-        filters.append(lambda elm: not isinstance(elm, GroupedSensor))
-        filters.append(lambda elm: isinstance(elm, class_name))
+        filter_list = default_filters.copy()
+        filter_list.append(lambda elm: not isinstance(elm, GroupedSensor))
+        filter_list.append(lambda elm: isinstance(elm, class_name))
         return [
             x.entity_id
             for x in filter(
-                lambda x: all(f(x) for f in filters),
+                lambda x: all(f(x) for f in filter_list),
                 all_entities,
             )
         ]
@@ -163,21 +163,17 @@ async def create_group_sensors_from_config_entry(
     return group_sensors
 
 
-async def remove_from_associated_group_entries(
+async def remove_power_sensor_from_associated_groups(
     hass: HomeAssistant, config_entry: ConfigEntry
 ) -> list[ConfigEntry]:
     """
     When the user remove a virtual power config entry we need to update all the groups which this sensor belongs to
     """
-    sensor_type = config_entry.data.get(CONF_SENSOR_TYPE)
-    if sensor_type != SensorType.VIRTUAL_POWER:
-        return []
-
     group_entries = [
         entry
         for entry in hass.config_entries.async_entries(DOMAIN)
         if entry.data.get(CONF_SENSOR_TYPE) == SensorType.GROUP
-        and config_entry.entry_id in entry.data.get(CONF_GROUP_MEMBER_SENSORS)
+        and config_entry.entry_id in (entry.data.get(CONF_GROUP_MEMBER_SENSORS) or [])
     ]
 
     for group_entry in group_entries:
@@ -190,6 +186,28 @@ async def remove_from_associated_group_entries(
         )
 
     return group_entries
+
+
+async def remove_group_from_power_sensor_entry(
+    hass: HomeAssistant, config_entry: ConfigEntry
+) -> list[ConfigEntry]:
+    """
+    When the user removes a group config entry we need to update all the virtual power sensors which reference this group
+    """
+    entries_to_update = [
+        entry
+        for entry in hass.config_entries.async_entries(DOMAIN)
+        if entry.data.get(CONF_SENSOR_TYPE) == SensorType.VIRTUAL_POWER
+        and entry.data.get(CONF_GROUP) == config_entry.entry_id
+    ]
+
+    for group_entry in entries_to_update:
+        hass.config_entries.async_update_entry(
+            group_entry,
+            data={**group_entry.data, CONF_GROUP: None},
+        )
+
+    return entries_to_update
 
 
 async def add_to_associated_group(
@@ -210,8 +228,8 @@ async def add_to_associated_group(
     group_entry = hass.config_entries.async_get_entry(group_entry_id)
 
     if not group_entry:
-        _LOGGER.error(
-            f"Cannot add/remove power sensor to group {group_entry_id}. It does not exist."
+        _LOGGER.warning(
+            f"ConfigEntry {config_entry.title}: Cannot add/remove to group {group_entry_id}. It does not exist."
         )
         return None
 
@@ -362,6 +380,7 @@ class GroupedSensor(BaseEntity, RestoreEntity, SensorEntity):
         self.unit_converter: BaseUnitConverter | None = None
         if hasattr(self, "get_unit_converter"):
             self.unit_converter = self.get_unit_converter()
+        self.last_states: dict[str, State] = {}
 
     async def async_added_to_hass(self) -> None:
         """Register state listeners."""
@@ -406,31 +425,37 @@ class GroupedSensor(BaseEntity, RestoreEntity, SensorEntity):
 
         all_states = [self.hass.states.get(entity_id) for entity_id in self._entities]
         states: list[State] = list(filter(None, all_states))
+        available_states = [
+            state
+            for state in states
+            if state and state.state not in [STATE_UNKNOWN, STATE_UNAVAILABLE]
+        ]
         unavailable_entities = [
             state.entity_id
             for state in states
             if state and state.state == STATE_UNAVAILABLE
         ]
         if unavailable_entities and isinstance(self, GroupedEnergySensor):
-            _LOGGER.warning(
-                "%s: One or more members of the group are unavailable, setting group to unavailable (%s)",
-                self.entity_id,
-                ",".join(unavailable_entities),
-            )
-            self._attr_available = False
-            self.async_schedule_update_ha_state(True)
-            return
+            for entity_id in unavailable_entities:
+                last_state = self.last_states.get(entity_id)
+                if last_state:
+                    available_states.append(last_state)
+                    unavailable_entities.remove(entity_id)
 
-        available_states = [
-            state
-            for state in states
-            if state and state.state not in [STATE_UNKNOWN, STATE_UNAVAILABLE]
-        ]
+            if unavailable_entities:
+                _LOGGER.warning(
+                    "%s: One or more members of the group are unavailable, setting group to unavailable (%s)",
+                    self.entity_id,
+                    ",".join(unavailable_entities),
+                )
+                self._attr_available = False
+                self.async_schedule_update_ha_state(True)
+                return
 
         apply_unit_conversions = AwesomeVersion(HA_VERSION) >= AwesomeVersion(
             "2022.10.0"
         )
-        if not apply_unit_conversions:
+        if not apply_unit_conversions:  # pragma: no cover
             self._remove_incompatible_unit_entities(available_states)
 
         if not available_states:
@@ -466,6 +491,8 @@ class GroupedSensor(BaseEntity, RestoreEntity, SensorEntity):
                     value, unit_of_measurement, self._attr_native_unit_of_measurement
                 )
             values.append(Decimal(value))
+
+            self.last_states[state.entity_id] = state
         return values
 
     def _remove_incompatible_unit_entities(
@@ -521,7 +548,7 @@ class GroupedEnergySensor(GroupedSensor, EnergySensor):
             self._attr_native_unit_of_measurement = ENERGY_MEGA_WATT_HOUR
 
     @callback
-    def async_reset_energy(self) -> None:
+    def async_reset(self) -> None:
         _LOGGER.debug(f"{self.entity_id}: Reset grouped energy sensor")
         for entity_id in self._entities:
             _LOGGER.debug(f"Resetting {entity_id}")

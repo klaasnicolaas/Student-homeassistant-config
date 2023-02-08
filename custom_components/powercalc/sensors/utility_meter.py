@@ -4,9 +4,10 @@ import inspect
 import logging
 from typing import cast
 
+import homeassistant.helpers.entity_registry as er
 from awesomeversion.awesomeversion import AwesomeVersion
 from homeassistant.components.select import DOMAIN as SELECT_DOMAIN
-from homeassistant.components.sensor import SensorEntity
+from homeassistant.components.sensor import DOMAIN as SENSOR_DOMAIN
 from homeassistant.components.utility_meter.const import (
     DATA_TARIFF_SENSORS,
     DATA_UTILITY,
@@ -25,19 +26,21 @@ from ..const import (
     CONF_UTILITY_METER_TARIFFS,
     CONF_UTILITY_METER_TYPES,
     DEFAULT_ENERGY_SENSOR_PRECISION,
+    DOMAIN,
 )
 from ..errors import SensorConfigurationError
 from .abstract import BaseEntity
+from .energy import EnergySensor, RealEnergySensor
 
 _LOGGER = logging.getLogger(__name__)
 
 
 async def create_utility_meters(
     hass: HomeAssistant,
-    energy_sensor: SensorEntity,
+    energy_sensor: EnergySensor,
     sensor_config: dict,
     net_consumption: bool = False,
-) -> list[UtilityMeterSensor]:
+) -> list[VirtualUtilityMeter]:
     """Create the utility meters"""
 
     if not sensor_config.get(CONF_CREATE_UTILITY_METERS):
@@ -58,6 +61,15 @@ async def create_utility_meters(
         unique_id = None
         if energy_sensor.unique_id:
             unique_id = f"{energy_sensor.unique_id}_{meter_type}"
+
+        # Prevent duplicate creation of utility meter. See #1322
+        if isinstance(energy_sensor, RealEnergySensor):
+            entity_registry = er.async_get(hass)
+            existing_entity_id = entity_registry.async_get_entity_id(
+                domain=SENSOR_DOMAIN, platform=DOMAIN, unique_id=unique_id
+            )
+            if existing_entity_id and hass.states.get(existing_entity_id):
+                continue
 
         if tariffs:
             tariff_select = await create_tariff_select(tariffs, hass, name, unique_id)
@@ -197,11 +209,6 @@ class VirtualUtilityMeter(UtilityMeterSensor, BaseEntity):
     def unique_id(self):
         """Return the unique id."""
         return self._attr_unique_id
-
-    @unique_id.setter
-    def unique_id(self, value):
-        """Set unique id."""
-        self._attr_unique_id = value
 
     @property
     def native_value(self):
