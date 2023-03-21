@@ -123,7 +123,7 @@ class LoveLockCard extends HTMLElement {
         element.setConfig(config);
       } catch (err) {
         console.error(tag, err);
-        return _createError(err.message, config);
+        // return _createError(err.message, config);
       }
       return element;
     };
