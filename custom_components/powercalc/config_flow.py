@@ -217,7 +217,7 @@ SCHEMA_GROUP = vol.Schema(
 class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """Handle a config flow for PowerCalc."""
 
-    VERSION = 1
+    VERSION = 2
 
     def __init__(self):
         """Initialize options flow."""
@@ -381,8 +381,6 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     async def async_step_fixed(self, user_input: dict[str, str] = None) -> FlowResult:
         errors = {}
         if user_input is not None:
-            if user_input.get(CONF_POWER_TEMPLATE):
-                user_input[CONF_POWER] = user_input.get(CONF_POWER_TEMPLATE)
             self.sensor_config.update({CONF_FIXED: user_input})
             errors = await self.validate_strategy_config()
             if not errors:
@@ -510,7 +508,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             data_schema=await _create_schema_model(
                 self.hass,
                 self.sensor_config.get(CONF_MANUFACTURER),
-                self.source_entity.domain,
+                self.source_entity,
             ),
             description_placeholders={
                 "supported_models_link": "https://github.com/bramstroker/homeassistant-powercalc/blob/master/docs/supported_models.md"
@@ -895,14 +893,14 @@ def _create_schema_manufacturer(hass: HomeAssistant, entity_domain: str) -> vol.
 
 
 async def _create_schema_model(
-    hass: HomeAssistant, manufacturer: str, entity_domain: str
+    hass: HomeAssistant, manufacturer: str, source_entity: SourceEntity
 ) -> vol.Schema:
     """Create model schema"""
     library = ProfileLibrary.factory(hass)
     models = [
         selector.SelectOptionDict(value=profile.model, label=profile.model)
         for profile in await library.get_profiles_by_manufacturer(manufacturer)
-        if profile.is_entity_domain_supported(entity_domain)
+        if profile.is_entity_domain_supported(source_entity)
     ]
     return vol.Schema(
         {
