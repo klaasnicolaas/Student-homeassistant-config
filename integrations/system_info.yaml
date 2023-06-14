@@ -95,17 +95,13 @@ sensor:
         arg: /
       - type: last_boot
       - type: swap_use_percent
-  ##### Latest installed python3 version
-  - platform: command_line
-    name: Python Version
-    command: python3 --version
-    scan_interval: 86400
-  ##### Restart time
-  - platform: command_line
-    name: HA Restart Time
-    command: "/bin/cat /config/home-assistant.log | /bin/grep 'Home Assistant initialized in' | /usr/bin/awk '{print $10}' | /bin/sed 's/[^0-9.]//g'"
-    scan_interval: 60
-    unit_of_measurement: "sec"
+
+##### Latest installed python3 version
+command_line:
+  - sensor:
+      name: Python Version
+      command: python3 --version
+      scan_interval: 86400
 
 ################################################
 ## Input boolean
@@ -121,25 +117,25 @@ input_boolean:
 ################################################
 
 alert:
-  cpu_high:
-    name: Gebruik CPU is hoog
-    entity_id: binary_sensor.cpu_high
-    state: 'on'
-    repeat: 5   # minutes
-    can_acknowledge: true
-    skip_first: false
-    notifiers:
-      - telegram_klaas
+  # cpu_high:
+  #   name: Gebruik CPU is hoog
+  #   entity_id: binary_sensor.cpu_high
+  #   state: 'on'
+  #   repeat: 5   # minutes
+  #   can_acknowledge: true
+  #   skip_first: false
+  #   notifiers:
+  #     - telegram_klaas
 
-  cpu_hot:
-    name: Temperatuur CPU is hoog
-    entity_id: binary_sensor.cpu_hot
-    state: 'on'
-    repeat: 120   # minutes
-    can_acknowledge: true
-    skip_first: false
-    notifiers:
-      - telegram_klaas
+  # cpu_hot:
+  #   name: Temperatuur CPU is hoog
+  #   entity_id: binary_sensor.cpu_hot
+  #   state: 'on'
+  #   repeat: 120   # minutes
+  #   can_acknowledge: true
+  #   skip_first: false
+  #   notifiers:
+  #     - telegram_klaas
 
   maintenance_mode_alert:
     name: Onderhouds Mode staat al aan voor een lange tijd
