@@ -4,7 +4,7 @@ from __future__ import annotations
 import asyncio
 from http import HTTPStatus
 import logging
-from typing import List, Literal, cast
+from typing import Literal, cast
 
 from aiohttp import ClientError, ClientSession
 from aiohttp.client_exceptions import ClientConnectorError, ContentTypeError
@@ -76,6 +76,17 @@ class GlocaltokensApiClient:
         if master_token is None or is_aas_et(master_token) is False:
             raise InvalidMasterToken
         return master_token
+
+    async def async_get_access_token(self) -> str:
+        """Get access token using master token"""
+
+        def _get_access_token() -> str | None:
+            return self._client.get_access_token()
+
+        access_token = await self.hass.async_add_executor_job(_get_access_token)
+        if access_token is None:
+            raise InvalidMasterToken
+        return access_token
 
     async def get_google_devices(self) -> list[GoogleHomeDevice]:
         """Get google device authentication tokens.
@@ -164,8 +175,8 @@ class GlocaltokensApiClient:
 
         if response is not None:
             if JSON_TIMER in response and JSON_ALARM in response:
-                device.set_timers(cast(List[TimerJsonDict], response[JSON_TIMER]))
-                device.set_alarms(cast(List[AlarmJsonDict], response[JSON_ALARM]))
+                device.set_timers(cast(list[TimerJsonDict], response[JSON_TIMER]))
+                device.set_alarms(cast(list[AlarmJsonDict], response[JSON_ALARM]))
                 _LOGGER.debug(
                     "Successfully retrieved alarms and timers from %s. Response: %s",
                     device.name,
@@ -307,7 +318,7 @@ class GlocaltokensApiClient:
         return device
 
     async def update_alarm_volume(
-        self, device: GoogleHomeDevice, volume: int | None = None
+        self, device: GoogleHomeDevice, volume: float | None = None
     ) -> GoogleHomeDevice:
         """Gets or sets the alarm volume setting on a Google Home device."""
 
