@@ -7,5 +7,5 @@ proximity:
   home:
     devices:
       # Android Companion app
-      - device_tracker.klaas_samsung_s20_plus
+      - device_tracker.klaas_samsung_s22_plus
     tolerance: 50
