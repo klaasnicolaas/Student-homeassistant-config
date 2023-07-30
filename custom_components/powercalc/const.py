@@ -32,6 +32,7 @@ DUMMY_ENTITY_ID = "sensor.dummy"
 
 CONF_AREA = "area"
 CONF_CALIBRATE = "calibrate"
+CONF_COMPOSITE = "composite"
 CONF_CREATE_GROUP = "create_group"
 CONF_CREATE_DOMAIN_GROUPS = "create_domain_groups"
 CONF_CREATE_ENERGY_SENSOR = "create_energy_sensor"
@@ -74,11 +75,14 @@ CONF_POWER_SENSOR_PRECISION = "power_sensor_precision"
 CONF_POWER = "power"
 CONF_POWER_SENSOR_ID = "power_sensor_id"
 CONF_POWER_TEMPLATE = "power_template"
+CONF_PLAYBOOK = "playbook"
+CONF_PLAYBOOKS = "playbooks"
 CONF_MIN_POWER = "min_power"
 CONF_MAX_POWER = "max_power"
 CONF_ON_TIME = "on_time"
 CONF_TEMPLATE = "template"
 CONF_SENSOR_TYPE = "sensor_type"
+CONF_SENSORS = "sensors"
 CONF_SUB_PROFILE = "sub_profile"
 CONF_SLEEP_POWER = "sleep_power"
 CONF_UNAVAILABLE_POWER = "unavailable_power"
@@ -90,6 +94,7 @@ CONF_WLED = "wled"
 CONF_STATES_POWER = "states_power"
 CONF_START_TIME = "start_time"
 CONF_STANDBY_POWER = "standby_power"
+CONF_STRATEGIES = "strategies"
 CONF_SUB_GROUPS = "sub_groups"
 CONF_CALCULATION_ENABLED_CONDITION = "calculation_enabled_condition"
 CONF_DISABLE_STANDBY_POWER = "disable_standby_power"
@@ -150,6 +155,8 @@ ATTR_IS_GROUP = "is_group"
 ATTR_SOURCE_ENTITY = "source_entity"
 ATTR_SOURCE_DOMAIN = "source_domain"
 
+SERVICE_ACTIVATE_PLAYBOOK = "activate_playbook"
+SERVICE_STOP_PLAYBOOK = "stop_playbook"
 SERVICE_RESET_ENERGY = "reset_energy"
 SERVICE_INCREASE_DAILY_ENERGY = "increase_daily_energy"
 SERVICE_CALIBRATE_UTILITY_METER = "calibrate_utility_meter"
@@ -157,20 +164,17 @@ SERVICE_CALIBRATE_ENERGY = "calibrate_energy"
 
 SIGNAL_POWER_SENSOR_STATE_CHANGE = "powercalc_power_sensor_state_change"
 
-MODE_LUT = "lut"
-MODE_LINEAR = "linear"
-MODE_FIXED = "fixed"
-MODE_WLED = "wled"
-
 OFF_STATES = (STATE_OFF, STATE_NOT_HOME, STATE_STANDBY, STATE_UNAVAILABLE)
 
 
 class CalculationStrategy(StrEnum):
     """Possible virtual power calculation strategies."""
 
+    COMPOSITE = "composite"
     LUT = "lut"
     LINEAR = "linear"
     FIXED = "fixed"
+    PLAYBOOK = "playbook"
     WLED = "wled"
 
 
@@ -186,3 +190,4 @@ class PowercalcDiscoveryType(StrEnum):
     DOMAIN_GROUP = "domain_group"
     STANDBY_GROUP = "standby_group"
     LIBRARY = "library"
+    USER_YAML = "user_yaml"

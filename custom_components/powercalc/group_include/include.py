@@ -3,9 +3,11 @@ from typing import cast
 
 from homeassistant.components.group import DOMAIN as GROUP_DOMAIN
 from homeassistant.components.light import DOMAIN as LIGHT_DOMAIN
-from homeassistant.const import ATTR_ENTITY_ID, CONF_DOMAIN
+from homeassistant.components.sensor import SensorDeviceClass
+from homeassistant.const import ATTR_ENTITY_ID, CONF_DOMAIN, CONF_ENTITY_ID
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers import area_registry, device_registry, entity_registry
+from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.entity_component import EntityComponent
 from homeassistant.helpers.entity_platform import split_entity_id
 from homeassistant.helpers.template import Template
@@ -15,16 +17,72 @@ from custom_components.powercalc.const import (
     CONF_FILTER,
     CONF_GROUP,
     CONF_TEMPLATE,
+    DATA_CONFIGURED_ENTITIES,
+    DOMAIN,
+    ENTRY_DATA_ENERGY_ENTITY,
+    ENTRY_DATA_POWER_ENTITY,
 )
 from custom_components.powercalc.errors import SensorConfigurationError
+from custom_components.powercalc.sensors.energy import RealEnergySensor
+from custom_components.powercalc.sensors.power import RealPowerSensor
 
 from .filter import create_filter
 
 _LOGGER = logging.getLogger(__name__)
 
 
+def resolve_include_entities(hass: HomeAssistant, include_config: dict) -> list[Entity]:
+    """ "
+    For a given include configuration fetch all power and energy sensors from the HA instance
+    """
+    resolved_entities: list[Entity] = []
+    source_entities = resolve_include_source_entities(hass, include_config)
+    if _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: no cover
+        _LOGGER.debug(
+            "Found possible include entities: %s",
+            [entity.entity_id for entity in source_entities],
+        )
+    for source_entity in source_entities:
+        resolved_entities.extend(
+            find_powercalc_entities_by_source_entity(hass, source_entity.entity_id),
+        )
+
+        # When we are dealing with a non powercalc sensor, and it's a power or energy sensor,
+        # we can include that in the group
+        if source_entity.domain is not DOMAIN:
+            device_class = (
+                source_entity.device_class or source_entity.original_device_class
+            )
+            if device_class == SensorDeviceClass.POWER:
+                resolved_entities.append(RealPowerSensor(source_entity.entity_id))
+            elif device_class == SensorDeviceClass.ENERGY:
+                resolved_entities.append(RealEnergySensor(source_entity.entity_id))
+
+    return resolved_entities
+
+
+def find_powercalc_entities_by_source_entity(
+    hass: HomeAssistant,
+    source_entity_id: str,
+) -> list[Entity]:
+    # Check if we have powercalc sensors setup with YAML
+    if source_entity_id in hass.data[DOMAIN][DATA_CONFIGURED_ENTITIES]:
+        return hass.data[DOMAIN][DATA_CONFIGURED_ENTITIES][source_entity_id]  # type: ignore
+
+    # Check if we have powercalc sensors setup with GUI
+    entities: list[Entity] = []
+    for entry in hass.config_entries.async_entries(DOMAIN):
+        if entry.data.get(CONF_ENTITY_ID) != source_entity_id:
+            continue
+        if entry.data.get(ENTRY_DATA_POWER_ENTITY):
+            entities.append(RealPowerSensor(entry.data.get(ENTRY_DATA_POWER_ENTITY)))
+        if entry.data.get(ENTRY_DATA_ENERGY_ENTITY):
+            entities.append(RealEnergySensor(entry.data.get(ENTRY_DATA_ENERGY_ENTITY)))
+    return entities
+
+
 @callback
-def resolve_include_entities(
+def resolve_include_source_entities(
     hass: HomeAssistant,
     include_config: dict,
 ) -> list[entity_registry.RegistryEntry]:
@@ -112,13 +170,13 @@ def resolve_light_group_entities(
     entity_reg = entity_registry.async_get(hass)
     light_component = cast(EntityComponent, hass.data.get(LIGHT_DOMAIN))
     light_group = next(
-        filter(lambda entity: entity.entity_id == group_id, light_component.entities),  # type: ignore
+        filter(lambda entity: entity.entity_id == group_id, light_component.entities),
         None,
     )
-    if light_group is None or light_group.platform.platform_name != GROUP_DOMAIN:  # type: ignore
+    if light_group is None or light_group.platform.platform_name != GROUP_DOMAIN:
         raise SensorConfigurationError(f"Light group {group_id} not found")
 
-    entity_ids = light_group.extra_state_attributes.get(ATTR_ENTITY_ID)  # type: ignore
+    entity_ids = light_group.extra_state_attributes.get(ATTR_ENTITY_ID)
     for entity_id in entity_ids:
         registry_entry = entity_reg.async_get(entity_id)
         if registry_entry is None:
