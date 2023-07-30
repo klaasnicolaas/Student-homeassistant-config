@@ -4,25 +4,25 @@
 #
 
 - platform: bayesian
-  prior: 0.65
+  prior: 0.7
   name: 'Klaas Thuis'
   probability_threshold: 0.9
   observations:
     # Wifi
-    - entity_id: device_tracker.6c_c7_ec_32_7c_75
-      prob_given_true: 0.7
-      prob_given_false: 0.3
-      platform: 'state'
-      to_state: 'home'
+    - entity_id: proximity.home
+      platform: numeric_state
+      prob_given_true: 0.8
+      prob_given_false: 0.2
+      below: 150
     # Android Companion app
-    - entity_id: device_tracker.klaas_samsung_s20_plus
+    - entity_id: device_tracker.klaas_samsung_s22_plus
+      platform: state
       prob_given_true: 0.9
       prob_given_false: 0.1
-      platform: 'state'
       to_state: 'home'
     # Phone wifi connection
-    - entity_id: sensor.klaas_samsung_s20_plus_wifi_verbinding
-      prob_given_true: 0.8
+    - entity_id: sensor.klaas_samsung_s22_plus_wifi_connection
+      platform: state
+      prob_given_true: 0.9
       prob_given_false: 0.1
-      platform: 'state'
       to_state: 'StudentLife'
