@@ -2,7 +2,8 @@ from __future__ import annotations
 
 import inspect
 import logging
-from typing import Any, cast
+from decimal import Decimal
+from typing import cast
 
 import homeassistant.helpers.entity_registry as er
 from homeassistant.components.select import DOMAIN as SELECT_DOMAIN
@@ -15,6 +16,7 @@ from homeassistant.components.utility_meter.select import TariffSelect
 from homeassistant.components.utility_meter.sensor import UtilityMeterSensor
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_component import EntityComponent
+from homeassistant.helpers.typing import StateType
 
 from custom_components.powercalc.const import (
     CONF_CREATE_UTILITY_METERS,
@@ -69,7 +71,7 @@ async def create_utility_meters(
                 unique_id=unique_id,
             )
             if existing_entity_id and hass.states.get(existing_entity_id):
-                continue
+                continue  # pragma: no cover
 
         # Create generic utility meter (no specific tariffs)
         if not tariffs or GENERAL_TARIFF in tariffs:
@@ -123,7 +125,7 @@ async def create_tariff_select(
     unique_id: str | None,
 ) -> TariffSelect:
     """Create tariff selection entity."""
-    _LOGGER.debug(f"Creating utility_meter tariff select: {name}")
+    _LOGGER.debug("Creating utility_meter tariff select: %s", name)
 
     select_component = cast(EntityComponent, hass.data[SELECT_DOMAIN])
     select_unique_id = None
@@ -160,7 +162,7 @@ async def create_utility_meter(
         if unique_id:
             unique_id = f"{unique_id}_{tariff}"
 
-    _LOGGER.debug(f"Creating utility_meter sensor: {name} (entity_id={entity_id})")
+    _LOGGER.debug("Creating utility_meter sensor: %s (entity_id=%s)", name, entity_id)
 
     params = {
         "source_entity": source_entity,
@@ -200,7 +202,7 @@ class VirtualUtilityMeter(UtilityMeterSensor, BaseEntity):  # type: ignore
         return self._attr_unique_id
 
     @property
-    def native_value(self) -> Any | None:
+    def native_value(self) -> Decimal | StateType:
         """Return the state of the sensor."""
         if self.rounding_digits and self._state is not None:
             return round(self._state, self.rounding_digits)

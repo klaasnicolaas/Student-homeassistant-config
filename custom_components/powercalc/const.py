@@ -3,7 +3,14 @@
 from datetime import timedelta
 from typing import Literal
 
-from homeassistant.backports.enum import StrEnum
+from awesomeversion.awesomeversion import AwesomeVersion
+from homeassistant.const import __version__ as HA_VERSION  # noqa
+
+if AwesomeVersion(HA_VERSION) >= AwesomeVersion("2023.8.0"):
+    from enum import StrEnum
+else:
+    from homeassistant.backports.enum import StrEnum  # pragma: no cover
+
 from homeassistant.components.utility_meter.const import DAILY, MONTHLY, WEEKLY
 from homeassistant.const import (
     STATE_NOT_HOME,
@@ -31,6 +38,7 @@ ENTRY_DATA_POWER_ENTITY = "_power_entity"
 DUMMY_ENTITY_ID = "sensor.dummy"
 
 CONF_AREA = "area"
+CONF_AUTOSTART = "autostart"
 CONF_CALIBRATE = "calibrate"
 CONF_COMPOSITE = "composite"
 CONF_CREATE_GROUP = "create_group"
@@ -81,6 +89,7 @@ CONF_MIN_POWER = "min_power"
 CONF_MAX_POWER = "max_power"
 CONF_ON_TIME = "on_time"
 CONF_TEMPLATE = "template"
+CONF_REPEAT = "repeat"
 CONF_SENSOR_TYPE = "sensor_type"
 CONF_SENSORS = "sensors"
 CONF_SUB_PROFILE = "sub_profile"
@@ -161,6 +170,8 @@ SERVICE_RESET_ENERGY = "reset_energy"
 SERVICE_INCREASE_DAILY_ENERGY = "increase_daily_energy"
 SERVICE_CALIBRATE_UTILITY_METER = "calibrate_utility_meter"
 SERVICE_CALIBRATE_ENERGY = "calibrate_energy"
+SERVICE_SWITCH_SUB_PROFILE = "switch_sub_profile"
+SERVICE_CHANGE_GUI_CONFIGURATION = "change_gui_config"
 
 SIGNAL_POWER_SENSOR_STATE_CHANGE = "powercalc_power_sensor_state_change"
 
@@ -184,6 +195,7 @@ class SensorType(StrEnum):
     DAILY_ENERGY = "daily_energy"
     VIRTUAL_POWER = "virtual_power"
     GROUP = "group"
+    REAL_POWER = "real_power"
 
 
 class PowercalcDiscoveryType(StrEnum):

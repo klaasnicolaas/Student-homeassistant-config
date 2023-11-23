@@ -174,20 +174,8 @@ async def create_group_sensors_from_config_entry(
     if CONF_UNIQUE_ID not in sensor_config:
         sensor_config[CONF_UNIQUE_ID] = entry.entry_id
 
-    area_entities: list[Entity] = []
-    if CONF_AREA in entry.data:
-        area_entities = resolve_include_entities(
-            hass,
-            {CONF_AREA: entry.data[CONF_AREA]},
-        )
-
     power_sensor_ids: set[str] = set(
-        resolve_entity_ids_recursively(hass, entry, SensorDeviceClass.POWER)
-        + [
-            entity.entity_id
-            for entity in area_entities
-            if isinstance(entity, PowerSensor)
-        ],
+        resolve_entity_ids_recursively(hass, entry, SensorDeviceClass.POWER),
     )
     if power_sensor_ids:
         power_sensor = create_grouped_power_sensor(
@@ -199,12 +187,7 @@ async def create_group_sensors_from_config_entry(
         group_sensors.append(power_sensor)
 
     energy_sensor_ids: set[str] = set(
-        resolve_entity_ids_recursively(hass, entry, SensorDeviceClass.ENERGY)
-        + [
-            entity.entity_id
-            for entity in area_entities
-            if isinstance(entity, EnergySensor)
-        ],
+        resolve_entity_ids_recursively(hass, entry, SensorDeviceClass.ENERGY),
     )
     if energy_sensor_ids:
         energy_sensor = create_grouped_energy_sensor(
@@ -309,7 +292,9 @@ async def add_to_associated_group(
 
     if not group_entry:
         _LOGGER.warning(
-            f"ConfigEntry {config_entry.title}: Cannot add/remove to group {group_entry_id}. It does not exist.",
+            "ConfigEntry %s: Cannot add/remove to group %s. It does not exist.",
+            config_entry.title,
+            group_entry_id,
         )
         return None
 
@@ -362,6 +347,23 @@ def resolve_entity_ids_recursively(
     )
     resolved_ids.extend(entry.data.get(conf_key) or [])
 
+    # Include entities from defined areas
+    if CONF_AREA in entry.data:
+        area_entities = [
+            entity.entity_id
+            for entity in resolve_include_entities(
+                hass,
+                {CONF_AREA: entry.data[CONF_AREA]},
+            )
+            if isinstance(
+                entity,
+                PowerSensor
+                if device_class == SensorDeviceClass.POWER
+                else EnergySensor,
+            )
+        ]
+        resolved_ids.extend(area_entities)
+
     # Include the entities from sub groups
     subgroups = entry.data.get(CONF_SUB_GROUPS)
     if not subgroups:
@@ -370,7 +372,7 @@ def resolve_entity_ids_recursively(
     for subgroup_entry_id in subgroups:
         subgroup_entry = hass.config_entries.async_get_entry(subgroup_entry_id)
         if subgroup_entry is None:
-            _LOGGER.error(f"Subgroup config entry not found: {subgroup_entry_id}")
+            _LOGGER.error("Subgroup config entry not found: %s", subgroup_entry_id)
             continue
         resolve_entity_ids_recursively(hass, subgroup_entry, device_class, resolved_ids)
 
@@ -453,6 +455,8 @@ class GroupedSensor(BaseEntity, RestoreSensor, SensorEntity):
         unique_id: str | None = None,
     ) -> None:
         self._attr_name = name
+        # Remove own entity from entities, when it happens to be there. To prevent recursion
+        entities.discard(entity_id)
         self._entities = entities
         if not sensor_config.get(CONF_DISABLE_EXTENDED_ATTRIBUTES):
             self._attr_extra_state_attributes = {
@@ -486,15 +490,20 @@ class GroupedSensor(BaseEntity, RestoreSensor, SensorEntity):
                         self._rounding_digits,
                     )
                 _LOGGER.debug(
-                    f"{self.entity_id}: Restoring state: {self._attr_native_value}",
+                    "%s: Restoring state: %s",
+                    self.entity_id,
+                    self._attr_native_value,
                 )
             except DecimalException as err:
-                _LOGGER.warning("Could not restore last state: %s", err)
-
-            # throttle group energy updates to only once each 30 seconds
-            state_listener = Throttle(timedelta(seconds=30))(state_listener)
+                _LOGGER.warning(
+                    "%s: Could not restore last state: %s", self.entity_id, err,
+                )
 
         self._prev_state_store = await PreviousStateStore.async_get_instance(self.hass)
+
+        # throttle group updates to only once each X seconds, to prevent overloading the state machine
+        throttle_secs = 30 if isinstance(self, GroupedEnergySensor) else 5
+        state_listener = Throttle(timedelta(seconds=throttle_secs))(state_listener)
 
         self.async_on_remove(
             async_track_state_change_event(
@@ -633,12 +642,12 @@ class GroupedEnergySensor(GroupedSensor, EnergySensor):
 
     async def async_reset(self) -> None:
         """Reset the group sensor and underlying member sensor when supported."""
-        _LOGGER.debug(f"{self.entity_id}: Reset grouped energy sensor")
+        _LOGGER.debug("%s: Reset grouped energy sensor", self.entity_id)
         self._attr_native_value = 0
         self.async_write_ha_state()
 
         for entity_id in self._entities:
-            _LOGGER.debug(f"Resetting {entity_id}")
+            _LOGGER.debug("Resetting %s", entity_id)
             await self.hass.services.async_call(
                 DOMAIN,
                 SERVICE_RESET_ENERGY,
@@ -653,7 +662,7 @@ class GroupedEnergySensor(GroupedSensor, EnergySensor):
                 )
 
     async def async_calibrate(self, value: str) -> None:
-        _LOGGER.debug(f"{self.entity_id}: Calibrate group energy sensor to: {value}")
+        _LOGGER.debug("%s: Calibrate group energy sensor to: %s", self.entity_id, value)
         self._attr_native_value = Decimal(value)
         self.async_write_ha_state()
 
@@ -666,11 +675,12 @@ class GroupedEnergySensor(GroupedSensor, EnergySensor):
         For each member sensor we calculate the delta by looking at the previous known state and compare it to the current.
         """
         group_sum = Decimal(self._attr_native_value) if self._attr_native_value else Decimal(0)  # type: ignore
-        _LOGGER.debug(f"{self.entity_id}: Recalculate, current value: {group_sum}")
+        _LOGGER.debug("%s: Recalculate, current value: %d", self.entity_id, group_sum)
         for entity_state in member_states:
             if entity_state.state in [STATE_UNKNOWN, STATE_UNAVAILABLE]:
                 _LOGGER.debug(
-                    f"skipping state for {entity_state.entity_id}, sensor unavailable or unknown",
+                    "skipping state for %s, sensor unavailable or unknown",
+                    entity_state.entity_id,
                 )
                 continue
             prev_state = self._prev_state_store.get_entity_state(
@@ -697,18 +707,25 @@ class GroupedEnergySensor(GroupedSensor, EnergySensor):
                 rounded_prev = round(prev_state_value, self._rounding_digits)
                 rounded_cur = round(cur_state_value, self._rounding_digits)
                 _LOGGER.debug(
-                    f"delta for entity {entity_state.entity_id}: {rounded_delta}, prev={rounded_prev}, cur={rounded_cur}",
+                    "delta for entity %s: %s, prev=%s, cur=%s",
+                    entity_state.entity_id,
+                    rounded_delta,
+                    rounded_prev,
+                    rounded_cur,
                 )
             if delta < 0:
                 _LOGGER.warning(
-                    f"skipping state for {entity_state.entity_id}, probably erroneous value or sensor was reset",
+                    "skipping state for %s, probably erroneous value or sensor was reset",
+                    entity_state.entity_id,
                 )
                 continue
 
             group_sum += delta
 
         _LOGGER.debug(
-            f"{self.entity_id}: New value: {round(group_sum, self._rounding_digits)}",
+            "%s: New value: %s",
+            self.entity_id,
+            round(group_sum, self._rounding_digits),
         )
         return group_sum
 

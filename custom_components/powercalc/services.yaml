@@ -74,3 +74,39 @@ stop_playbook:
       domain: sensor
       integration: powercalc
       device_class: power
+switch_sub_profile:
+  name: Switch to another sub profile
+  description: Some profiles in the library has different sub profiles. This service allows you to switch to another one.
+  target:
+    entity:
+      domain: sensor
+      integration: powercalc
+      device_class: power
+  fields:
+    profile:
+      name: Sub profile
+      description: Define one of the possible sub profiles
+      example: "nigh_vision"
+      required: true
+      selector:
+        text:
+change_gui_config:
+  name: Change GUI config
+  description: Batch change configuration of all Powercalc config entries
+  fields:
+    field:
+      name: Field
+      required: true
+      selector:
+        select:
+          mode: dropdown
+          options:
+            - "create_energy_sensor"
+            - "create_utility_meters"
+            - "ignore_unavailable_state"
+            - "energy_integration_method"
+    value:
+      name: Value
+      required: true
+      selector:
+        text:
