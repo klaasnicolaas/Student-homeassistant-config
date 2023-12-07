@@ -58,6 +58,7 @@ Below is a list of all hardware in-house
 - Blitzwolf [BW-SHP13][bw_shp13-shop] smart plugs (Zigbee)
 - [Home Assistant Glow][glow]
 - [IKEA VINDRIKTNING][vindriktning] (D1 Mini - ESPHome)
+- SONOFF [Thermostatic Radiator Valve][sonoff_valve-shop] (Zigbee)
 
 ---
 
@@ -112,7 +113,7 @@ SOFTWARE.
 [commits-shield]: https://img.shields.io/github/commit-activity/y/klaasnicolaas/student-homeassistant-config.svg
 [last-commit-shield]: https://img.shields.io/github/last-commit/klaasnicolaas/Student-homeassistant-config.svg?color=blue&style=plasticr
 [stars-shield]: https://img.shields.io/github/stars/klaasnicolaas/Student-homeassistant-config.svg
-[ha-version-shield]: https://img.shields.io/badge/Home%20Assistant-2023.2-blue.svg
+[ha-version-shield]: https://img.shields.io/badge/Home%20Assistant-2023.12-blue.svg
 [maintenance-shield]: https://img.shields.io/maintenance/yes/2023.svg
 [homeassistantci-shield]: https://github.com/klaasnicolaas/Student-homeassistant-config/actions/workflows/home_assistant.yml/badge.svg
 [paypal-shield]: https://img.shields.io/badge/BuyMeAFanta-Paypal-orange.svg
@@ -151,6 +152,7 @@ SOFTWARE.
 [tint_E27]: https://zigbee.blakadder.com/Muller_Licht_404000.html
 [glow]: https://github.com/klaasnicolaas/home-assistant-glow
 [vindriktning]: https://www.ikea.com/nl/nl/p/vindriktning-luchtkwaliteitsensor-70498242/
+[sonoff_valve-shop]: https://tc.tradetracker.net/?c=15640&m=12&a=417111&r=&u=https%3A%2F%2Faliexpress.com%2Fitem%2F1005006063706718.html
 
 <!-- Blogs -->
 [sleep]: https://student-techlife.com/2019/05/16/hey-google-time-to-sleep/
