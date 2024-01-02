@@ -1,7 +1,7 @@
 ---
 - alias: '[House] - Studio climate automated'
   description: >-
-    Make sure the climate is livable in my warm studio
+    Make sure the climate is livable in my studio
 
   id: ee8b0ad0-5888-44a9-8291-1305dc646cf7
   mode: single

@@ -10,7 +10,7 @@
     input:
       clickAction: https://my.home-assistant.io/redirect/supervisor/
       delay: 0
-      notify_device: 5e3a9bc1a6710fb13b08435ab16cd62b
+      notify_device: 6a16c24c60507cdb3712c249d13133c3
       notification_title: Tijd om te upgraden!
       group: Updates
       notification_message: 'Er is een nieuwe versie voor Home Assistant beschikbaar,

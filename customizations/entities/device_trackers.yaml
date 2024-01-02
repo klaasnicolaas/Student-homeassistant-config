@@ -1,5 +1,5 @@
 ---
 # Customize device tracker entities
 #
-device_tracker.klaas_samsung_s20_plus:
+device_tracker.klaas_samsung_s22_plus:
   entity_picture: /local/klaas.jpg

@@ -16,7 +16,7 @@
     - platform: template
       value_template: >
         {{ is_state('binary_sensor.manual_wakeup_alarm', 'on') and
-        states('sensor.klaas_samsung_s20_plus_volgende_alarm') in ('none', 'unavailable', 'unknown') }}
+        states('sensor.klaas_samsung_s22_plus_volgende_alarm') in ('none', 'unavailable', 'unknown') }}
   condition:
     condition: and
     conditions:

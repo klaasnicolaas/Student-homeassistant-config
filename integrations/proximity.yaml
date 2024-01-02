@@ -9,3 +9,4 @@ proximity:
       # Android Companion app
       - device_tracker.klaas_samsung_s22_plus
     tolerance: 50
+    unit_of_measurement: m
