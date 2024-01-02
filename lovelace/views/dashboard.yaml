@@ -141,8 +141,6 @@ cards:
           **Ik wil morgen vroeg op** -> wakker worden met wekker.
           **Ik spreek je morgen weer** -> slapen gaan zonder wekker.
           **Goedemorgen** -> zodat HA weet dat je wakker bent.
-          **Kanaal X graag** (IFTTT) -> om TV van kanaal te veranderen.
-          **Zet TV aan/uit** -> om de tv aan of uit te doen.
           **Ik pak me fiets en ga** -> om het huis af te sluiten.
 
   ########## Stack 2 ###########
@@ -155,11 +153,12 @@ cards:
         heading:
           - mdi:lightbulb-multiple-outline
           - Lights
-        style: |
-          ha-card .heading {
-            font-size: 1.1rem;
-            font-weight: 500;
-          }
+        card_mod:
+          style: |
+            ha-card .heading {
+              font-size: 1.1rem;
+              font-weight: 500;
+            }
       # Light slider groups
       - type: entities
         show_header_toggle: false
@@ -342,7 +341,7 @@ cards:
             entity: input_datetime.alarm_wakeup
           - type: entities
             entities:
-              - sensor.klaas_samsung_s20_plus_volgende_alarm
+              - sensor.klaas_samsung_s22_plus_volgende_alarm
 
   ########## Stack 3 ###########
   - type: vertical-stack
@@ -353,11 +352,12 @@ cards:
         heading:
           - mdi:home
           - House
-        style: |
-          ha-card .heading {
-            font-size: 1.1rem;
-            font-weight: 500;
-          }
+        card_mod:
+          style: |
+            ha-card .heading {
+              font-size: 1.1rem;
+              font-weight: 500;
+            }
       # Show door and window sensors
       - type: custom:stack-in-card
         mode: vertical
@@ -367,7 +367,8 @@ cards:
             columns: 3
             entities:
               - entity: binary_sensor.front_door_contact
-              - entity: binary_sensor.meter_cupboard
+              - entity: binary_sensor.athom_presence_sensor_f9a6fa_occupancy
+                name: Aanwezigheid
               - entity: binary_sensor.home_motion_occupancy
                 name: Huis
               - entity: binary_sensor.window_left_contact

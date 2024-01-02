@@ -13,11 +13,12 @@ cards:
         heading:
           - mdi:server
           - Home Assistant Server
-        style: |
-          ha-card .heading {
-            font-size: 1.1rem;
-            font-weight: 500;
-          }
+        card_mod:
+          style: |
+            ha-card .heading {
+              font-size: 1.1rem;
+              font-weight: 500;
+            }
       # Home Assistant host server info
       - type: custom:stack-in-card
         mode: vertical
@@ -28,11 +29,12 @@ cards:
                 cards:
                   - type: picture
                     image: /local/images/intel-nuc.jpg
-                    style: |
-                      ha-card {
-                        margin: 10px;
-                        box-shadow: none;
-                      }
+                    card_mod:
+                      style: |
+                        ha-card {
+                          margin: 10px;
+                          box-shadow: none;
+                        }
 
               - type: vertical-stack
                 cards:
@@ -40,47 +42,50 @@ cards:
                     entity: sensor.current_version
                     name: HA Versie
                     max: 1
-                    style: |
-                      .card-content {
-                        padding-left: 5px;
-                        padding-bottom: 0px;
-                      }
-                      bar-card-currentbar, bar-card-backgroundbar {
-                        border-radius: 5px;
-                      }
-                      ha-card {
-                        box-shadow: none;
-                      }
+                    card_mod:
+                      style: |
+                        .card-content {
+                          padding-left: 5px;
+                          padding-bottom: 0px;
+                        }
+                        bar-card-currentbar, bar-card-backgroundbar {
+                          border-radius: 5px;
+                        }
+                        ha-card {
+                          box-shadow: none;
+                        }
                   - type: custom:bar-card
                     entity: sensor.ha_restart_time
                     icon: mdi:timelapse
                     name: Restart
                     max: 1
-                    style: |
-                      .card-content {
-                        padding-left: 5px;
-                        padding-bottom: 0px;
-                      }
-                      bar-card-currentbar, bar-card-backgroundbar {
-                        border-radius: 5px;
-                      }
-                      ha-card {
-                        box-shadow: none;
-                      }
+                    card_mod:
+                      style: |
+                        .card-content {
+                          padding-left: 5px;
+                          padding-bottom: 0px;
+                        }
+                        bar-card-currentbar, bar-card-backgroundbar {
+                          border-radius: 5px;
+                        }
+                        ha-card {
+                          box-shadow: none;
+                        }
                   - type: custom:bar-card
                     entity: sensor.potential_breaking_changes
                     name: Breaking Changes
                     max: 20
-                    style: |
-                      .card-content {
-                        padding-left: 5px;
-                      }
-                      bar-card-currentbar, bar-card-backgroundbar {
-                        border-radius: 5px;
-                      }
-                      ha-card {
-                        box-shadow: none;
-                      }
+                    card_mod:
+                      style: |
+                        .card-content {
+                          padding-left: 5px;
+                        }
+                        bar-card-currentbar, bar-card-backgroundbar {
+                          border-radius: 5px;
+                        }
+                        ha-card {
+                          box-shadow: none;
+                        }
 
           - type: custom:bar-card
             positions:
@@ -91,15 +96,16 @@ cards:
                 name: Opslag
               - entity: sensor.memory_use_percent
                 name: RAM
-            style: |
-              .card-content {
-                padding: 5px;
-                margin-right: 10px;
-                margin-left: 10px;
-              }
-              bar-card-currentbar, bar-card-backgroundbar {
-                border-radius: 5px;
-              }
+            card_mod:
+              style: |
+                .card-content {
+                  padding: 5px;
+                  margin-right: 10px;
+                  margin-left: 10px;
+                }
+                bar-card-currentbar, bar-card-backgroundbar {
+                  border-radius: 5px;
+                }
 
           - type: custom:bar-card
             positions:
@@ -111,15 +117,16 @@ cards:
               - entity: sensor.db_size
                 name: DB size
                 max: 1000
-            style: |
-              .card-content {
-                padding: 5px;
-                margin-right: 10px;
-                margin-left: 10px;
-              }
-              bar-card-currentbar, bar-card-backgroundbar {
-                border-radius: 5px;
-              }
+            card_mod:
+              style: |
+                .card-content {
+                  padding: 5px;
+                  margin-right: 10px;
+                  margin-left: 10px;
+                }
+                bar-card-currentbar, bar-card-backgroundbar {
+                  border-radius: 5px;
+                }
 
           - type: custom:bar-card
             positions:
@@ -130,15 +137,16 @@ cards:
                 name: SWAP
               - entity: sensor.home_assistant_log_size
                 name: Log size
-            style: |
-              .card-content {
-                padding: 5px;
-                margin-right: 10px;
-                margin-left: 10px;
-              }
-              bar-card-currentbar, bar-card-backgroundbar {
-                border-radius: 5px;
-              }
+            card_mod:
+              style: |
+                .card-content {
+                  padding: 5px;
+                  margin-right: 10px;
+                  margin-left: 10px;
+                }
+                bar-card-currentbar, bar-card-backgroundbar {
+                  border-radius: 5px;
+                }
 
           - type: custom:bar-card
             entity: sensor.disk_free
@@ -147,16 +155,17 @@ cards:
               indicator: inside
             max: 500
             direction: right-reverse
-            style: |
-              .card-content {
-                padding: 5px;
-                margin-right: 10px;
-                margin-left: 10px;
-                margin-bottom: 10px;
-              }
-              bar-card-currentbar, bar-card-backgroundbar {
-                border-radius: 5px;
-              }
+            card_mod:
+              style: |
+                .card-content {
+                  padding: 5px;
+                  margin-right: 10px;
+                  margin-left: 10px;
+                  margin-bottom: 10px;
+                }
+                bar-card-currentbar, bar-card-backgroundbar {
+                  border-radius: 5px;
+                }
 
       - type: custom:banner-card
         background: 'var(--primary-color)'
@@ -164,11 +173,12 @@ cards:
         heading:
           - mdi:lan
           - Network
-        style: |
-          ha-card .heading {
-            font-size: 1.1rem;
-            font-weight: 500;
-          }
+        card_mod:
+          style: |
+            ha-card .heading {
+              font-size: 1.1rem;
+              font-weight: 500;
+            }
       # Show information about the internet connection
       - type: vertical-stack
         cards:
@@ -237,11 +247,12 @@ cards:
         heading:
           - mdi:nas
           - Synology NAS
-        style: |
-          ha-card .heading {
-            font-size: 1.1rem;
-            font-weight: 500;
-          }
+        card_mod:
+          style: |
+            ha-card .heading {
+              font-size: 1.1rem;
+              font-weight: 500;
+            }
       # Synology NAS information
       - type: custom:stack-in-card
         mode: vertical
@@ -253,12 +264,13 @@ cards:
                   # Picture
                   - type: picture
                     image: /local/images/synology-nas.png
-                    style: |
-                      ha-card {
-                        margin: 10px;
-                        width: 180px;
-                        box-shadow: none;
-                      }
+                    card_mod:
+                      style: |
+                        ha-card {
+                          margin: 10px;
+                          width: 180px;
+                          box-shadow: none;
+                        }
 
               - type: vertical-stack
                 cards:
@@ -266,49 +278,52 @@ cards:
                   - type: custom:bar-card
                     entity: sensor.smarty_volume_1_status
                     name: NAS Status
-                    style: |
-                      .card-content {
-                        padding-left: 5px;
-                        padding-bottom: 0px;
-                      }
-                      bar-card-currentbar, bar-card-backgroundbar {
-                        border-radius: 5px;
-                      }
-                      ha-card {
-                        box-shadow: none;
-                      }
+                    card_mod:
+                      style: |
+                        .card-content {
+                          padding-left: 5px;
+                          padding-bottom: 0px;
+                        }
+                        bar-card-currentbar, bar-card-backgroundbar {
+                          border-radius: 5px;
+                        }
+                        ha-card {
+                          box-shadow: none;
+                        }
 
                   # Volume storage useage
                   - type: custom:bar-card
                     entity: sensor.smarty_volume_1_volume_used
                     name: Opslag
-                    style: |
-                      .card-content {
-                        padding-left: 5px;
-                        padding-bottom: 0px;
-                      }
-                      bar-card-currentbar, bar-card-backgroundbar {
-                        border-radius: 5px;
-                      }
-                      ha-card {
-                        box-shadow: none;
-                      }
+                    card_mod:
+                      style: |
+                        .card-content {
+                          padding-left: 5px;
+                          padding-bottom: 0px;
+                        }
+                        bar-card-currentbar, bar-card-backgroundbar {
+                          border-radius: 5px;
+                        }
+                        ha-card {
+                          box-shadow: none;
+                        }
 
                   # RAM useage
                   - type: custom:bar-card
                     entity: sensor.smarty_memory_usage_real
                     name: RAM
-                    style: |
-                      .card-content {
-                        padding-left: 5px;
-                        padding-bottom: 0px;
-                      }
-                      bar-card-currentbar, bar-card-backgroundbar {
-                        border-radius: 5px;
-                      }
-                      ha-card {
-                        box-shadow: none;
-                      }
+                    card_mod:
+                      style: |
+                        .card-content {
+                          padding-left: 5px;
+                          padding-bottom: 0px;
+                        }
+                        bar-card-currentbar, bar-card-backgroundbar {
+                          border-radius: 5px;
+                        }
+                        ha-card {
+                          box-shadow: none;
+                        }
 
           # NAS Disk 1
           - type: custom:bar-card
@@ -321,20 +336,21 @@ cards:
                 name: Status
               - entity: sensor.smarty_drive_1_temperature
                 name: Temperatuur
-            style: |
-              .card-header {
-                font-size: initial;
-                padding-top: 0px;
-                padding-bottom: 5px;
-              }
-              .card-content {
-                padding: 5px;
-                margin-right: 10px;
-                margin-left: 10px;
-              }
-              bar-card-currentbar, bar-card-backgroundbar {
-                border-radius: 5px;
-              }
+            card_mod:
+              style: |
+                .card-header {
+                  font-size: initial;
+                  padding-top: 0px;
+                  padding-bottom: 5px;
+                }
+                .card-content {
+                  padding: 5px;
+                  margin-right: 10px;
+                  margin-left: 10px;
+                }
+                bar-card-currentbar, bar-card-backgroundbar {
+                  border-radius: 5px;
+                }
 
           # NAS Disk 2
           - type: custom:bar-card
@@ -347,21 +363,22 @@ cards:
                 name: Status
               - entity: sensor.smarty_drive_2_temperature
                 name: Temperatuur
-            style: |
-              .card-header {
-                font-size: initial;
-                padding-top: 0px;
-                padding-bottom: 5px;
-              }
-              .card-content {
-                padding: 5px;
-                margin-right: 10px;
-                margin-left: 10px;
-                margin-bottom: 10px;
-              }
-              bar-card-currentbar, bar-card-backgroundbar {
-                border-radius: 5px;
-              }
+            card_mod:
+              style: |
+                .card-header {
+                  font-size: initial;
+                  padding-top: 0px;
+                  padding-bottom: 5px;
+                }
+                .card-content {
+                  padding: 5px;
+                  margin-right: 10px;
+                  margin-left: 10px;
+                  margin-bottom: 10px;
+                }
+                bar-card-currentbar, bar-card-backgroundbar {
+                  border-radius: 5px;
+                }
 
   ########## Stack 3 ##########
   - type: vertical-stack
@@ -372,11 +389,12 @@ cards:
         heading:
           - mdi:information-outline
           - Home Assistant Info
-        style: |
-          ha-card .heading {
-            font-size: 1.1rem;
-            font-weight: 500;
-          }
+        card_mod:
+          style: |
+            ha-card .heading {
+              font-size: 1.1rem;
+              font-weight: 500;
+            }
       # Show information about Home Assistant
       - type: entities
         show_header_toggle: false
@@ -424,10 +442,11 @@ cards:
           - sensor.hacs
           - type: custom:stack-in-card
             mode: vertical
-            style: |
-              ha-card {
-                box-shadow: none;
-              }
+            card_mod:
+              style: |
+                ha-card {
+                  box-shadow: none;
+                }
             cards:
               - type: horizontal-stack
                 cards:
@@ -451,19 +470,20 @@ cards:
                       - color: '#bf9540'
                         from: 30
                         to: 40
-                    style: |
-                      .card-content {
-                        padding: 5px;
-                        margin-right: 5px;
-                      }
-                      bar-card-currentbar, bar-card-backgroundbar {
-                        border-radius: 5px;
-                      }
-                      bar-card-value {
-                        font-size: 15px;
-                        font-weight: bold;
-                        margin-right: 20px;
-                      }
+                    card_mod:
+                      style: |
+                        .card-content {
+                          padding: 5px;
+                          margin-right: 5px;
+                        }
+                        bar-card-currentbar, bar-card-backgroundbar {
+                          border-radius: 5px;
+                        }
+                        bar-card-value {
+                          font-size: 15px;
+                          font-weight: bold;
+                          margin-right: 20px;
+                        }
 
                   - type: custom:bar-card
                     name: Trackers
@@ -485,19 +505,20 @@ cards:
                       - color: '#bf9540'
                         from: 87
                         to: 100
-                    style: |
-                      .card-content {
-                        padding: 5px;
-                        margin-right: 5px;
-                      }
-                      bar-card-currentbar, bar-card-backgroundbar {
-                        border-radius: 5px;
-                      }
-                      bar-card-value {
-                        font-size: 15px;
-                        font-weight: bold;
-                        margin-right: 20px;
-                      }
+                    card_mod:
+                      style: |
+                        .card-content {
+                          padding: 5px;
+                          margin-right: 5px;
+                        }
+                        bar-card-currentbar, bar-card-backgroundbar {
+                          border-radius: 5px;
+                        }
+                        bar-card-value {
+                          font-size: 15px;
+                          font-weight: bold;
+                          margin-right: 20px;
+                        }
 
                   - type: custom:bar-card
                     name: Input DateTime
@@ -518,19 +539,20 @@ cards:
                       - color: '#bf9540'
                         from: 50
                         to: 100
-                    style: |
-                      .card-content {
-                        padding: 5px;
-                        margin-right: 5px;
-                      }
-                      bar-card-currentbar, bar-card-backgroundbar {
-                        border-radius: 5px;
-                      }
-                      bar-card-value {
-                        font-size: 15px;
-                        font-weight: bold;
-                        margin-right: 20px;
-                      }
+                    card_mod:
+                      style: |
+                        .card-content {
+                          padding: 5px;
+                          margin-right: 5px;
+                        }
+                        bar-card-currentbar, bar-card-backgroundbar {
+                          border-radius: 5px;
+                        }
+                        bar-card-value {
+                          font-size: 15px;
+                          font-weight: bold;
+                          margin-right: 20px;
+                        }
 
               - type: horizontal-stack
                 cards:
@@ -554,19 +576,20 @@ cards:
                       - color: '#bf9540'
                         from: 300
                         to: 400
-                    style: |
-                      .card-content {
-                        padding: 5px;
-                        margin-right: 5px;
-                      }
-                      bar-card-currentbar, bar-card-backgroundbar {
-                        border-radius: 5px;
-                      }
-                      bar-card-value {
-                        font-size: 15px;
-                        font-weight: bold;
-                        margin-right: 20px;
-                      }
+                    card_mod:
+                      style: |
+                        .card-content {
+                          padding: 5px;
+                          margin-right: 5px;
+                        }
+                        bar-card-currentbar, bar-card-backgroundbar {
+                          border-radius: 5px;
+                        }
+                        bar-card-value {
+                          font-size: 15px;
+                          font-weight: bold;
+                          margin-right: 20px;
+                        }
 
                   - type: custom:bar-card
                     name: Entities
@@ -594,19 +617,20 @@ cards:
                       - color: '#bf9540'
                         from: 400
                         to: 600
-                    style: |
-                      .card-content {
-                        padding: 5px;
-                        margin-right: 5px;
-                      }
-                      bar-card-currentbar, bar-card-backgroundbar {
-                        border-radius: 5px;
-                      }
-                      bar-card-value {
-                        font-size: 15px;
-                        font-weight: bold;
-                        margin-right: 20px;
-                      }
+                    card_mod:
+                      style: |
+                        .card-content {
+                          padding: 5px;
+                          margin-right: 5px;
+                        }
+                        bar-card-currentbar, bar-card-backgroundbar {
+                          border-radius: 5px;
+                        }
+                        bar-card-value {
+                          font-size: 15px;
+                          font-weight: bold;
+                          margin-right: 20px;
+                        }
 
                   - type: custom:bar-card
                     name: Binary Sensors
@@ -628,19 +652,20 @@ cards:
                       - color: '#bf9540'
                         from: 150
                         to: 200
-                    style: |
-                      .card-content {
-                        padding: 5px;
-                        margin-right: 5px;
-                      }
-                      bar-card-currentbar, bar-card-backgroundbar {
-                        border-radius: 5px;
-                      }
-                      bar-card-value {
-                        font-size: 15px;
-                        font-weight: bold;
-                        margin-right: 20px;
-                      }
+                    card_mod:
+                      style: |
+                        .card-content {
+                          padding: 5px;
+                          margin-right: 5px;
+                        }
+                        bar-card-currentbar, bar-card-backgroundbar {
+                          border-radius: 5px;
+                        }
+                        bar-card-value {
+                          font-size: 15px;
+                          font-weight: bold;
+                          margin-right: 20px;
+                        }
 
               - type: horizontal-stack
                 cards:
@@ -664,19 +689,20 @@ cards:
                       - color: '#bf9540'
                         from: 16
                         to: 30
-                    style: |
-                      .card-content {
-                        padding: 5px;
-                        margin-right: 5px;
-                      }
-                      bar-card-currentbar, bar-card-backgroundbar {
-                        border-radius: 5px;
-                      }
-                      bar-card-value {
-                        font-size: 15px;
-                        font-weight: bold;
-                        margin-right: 20px;
-                      }
+                    card_mod:
+                      style: |
+                        .card-content {
+                          padding: 5px;
+                          margin-right: 5px;
+                        }
+                        bar-card-currentbar, bar-card-backgroundbar {
+                          border-radius: 5px;
+                        }
+                        bar-card-value {
+                          font-size: 15px;
+                          font-weight: bold;
+                          margin-right: 20px;
+                        }
 
                   - type: custom:bar-card
                     name: Scripts
@@ -698,19 +724,20 @@ cards:
                       - color: '#bf9540'
                         from: 34
                         to: 50
-                    style: |
-                      .card-content {
-                        padding: 5px;
-                        margin-right: 5px;
-                      }
-                      bar-card-currentbar, bar-card-backgroundbar {
-                        border-radius: 5px;
-                      }
-                      bar-card-value {
-                        font-size: 15px;
-                        font-weight: bold;
-                        margin-right: 20px;
-                      }
+                    card_mod:
+                      style: |
+                        .card-content {
+                          padding: 5px;
+                          margin-right: 5px;
+                        }
+                        bar-card-currentbar, bar-card-backgroundbar {
+                          border-radius: 5px;
+                        }
+                        bar-card-value {
+                          font-size: 15px;
+                          font-weight: bold;
+                          margin-right: 20px;
+                        }
 
               - type: horizontal-stack
                 cards:
@@ -734,19 +761,20 @@ cards:
                       - color: '#bf9540'
                         from: 700
                         to: 800
-                    style: |
-                      .card-content {
-                        padding: 5px;
-                        margin-right: 5px;
-                      }
-                      bar-card-currentbar, bar-card-backgroundbar {
-                        border-radius: 5px;
-                      }
-                      bar-card-value {
-                        font-size: 15px;
-                        font-weight: bold;
-                        margin-right: 20px;
-                      }
+                    card_mod:
+                      style: |
+                        .card-content {
+                          padding: 5px;
+                          margin-right: 5px;
+                        }
+                        bar-card-currentbar, bar-card-backgroundbar {
+                          border-radius: 5px;
+                        }
+                        bar-card-value {
+                          font-size: 15px;
+                          font-weight: bold;
+                          margin-right: 20px;
+                        }
 
                   - type: custom:bar-card
                     name: Switches
@@ -769,19 +797,20 @@ cards:
                       - color: '#bf9540'
                         from: 65
                         to: 70
-                    style: |
-                      .card-content {
-                        padding: 5px;
-                        margin-right: 5px;
-                      }
-                      bar-card-currentbar, bar-card-backgroundbar {
-                        border-radius: 5px;
-                      }
-                      bar-card-value {
-                        font-size: 15px;
-                        font-weight: bold;
-                        margin-right: 20px;
-                      }
+                    card_mod:
+                      style: |
+                        .card-content {
+                          padding: 5px;
+                          margin-right: 5px;
+                        }
+                        bar-card-currentbar, bar-card-backgroundbar {
+                          border-radius: 5px;
+                        }
+                        bar-card-value {
+                          font-size: 15px;
+                          font-weight: bold;
+                          margin-right: 20px;
+                        }
 
   ########## Stack 4 ##########
   # Show maintenance dashboard
@@ -793,11 +822,12 @@ cards:
         heading:
           - mdi:hammer-screwdriver
           - Onderhoud
-        style: |
-          ha-card .heading {
-            font-size: 1.1rem;
-            font-weight: 500;
-          }
+        card_mod:
+          style: |
+            ha-card .heading {
+              font-size: 1.1rem;
+              font-weight: 500;
+            }
       - type: custom:stack-in-card
         mode: vertical
         cards:
@@ -821,11 +851,12 @@ cards:
         heading:
           - mdi:battery-high
           - Batterij Status - Top 10
-        style: |
-          ha-card .heading {
-            font-size: 1.1rem;
-            font-weight: 500;
-          }
+        card_mod:
+          style: |
+            ha-card .heading {
+              font-size: 1.1rem;
+              font-weight: 500;
+            }
         # Battery devices information
       - type: custom:stack-in-card
         mode: vertical
@@ -850,20 +881,21 @@ cards:
               saturation: 50%
               columns: 1
               height: 30px
-              style: |
-                bar-card-currentbar, bar-card-backgroundbar {
-                  border-radius: 5px;
-                }
-                bar-card-value {
-                  font-size: 15px;
-                  font-weight: bold;
-                  margin-right: 50px;
-                }
-                bar-card-name {
-                  font-size: 14px;
-                  #font-weight: bold;
-                  margin-left: 20px;
-                }
+              card_mod:
+                style: |
+                  bar-card-currentbar, bar-card-backgroundbar {
+                    border-radius: 5px;
+                  }
+                  bar-card-value {
+                    font-size: 15px;
+                    font-weight: bold;
+                    margin-right: 50px;
+                  }
+                  bar-card-name {
+                    font-size: 14px;
+                    #font-weight: bold;
+                    margin-left: 20px;
+                  }
             filter:
               include:
                 - entity_id: "*_battery_level"
@@ -920,19 +952,20 @@ cards:
       indicator: inside
     height: 200px
     stack: horizontal
-    style: |
-      bar-card-currentbar, bar-card-backgroundbar {
-        border-radius: 5px;
-      }
-      bar-card-value {
-        font-size: 15px;
-        font-weight: bold;
-      }
-      bar-card-name {
-        font-size: 17px;
-        font-weight: bold;
-        padding-top: 5px;
-      }
+    card_mod:
+      style: |
+        bar-card-currentbar, bar-card-backgroundbar {
+          border-radius: 5px;
+        }
+        bar-card-value {
+          font-size: 15px;
+          font-weight: bold;
+        }
+        bar-card-name {
+          font-size: 17px;
+          font-weight: bold;
+          padding-top: 5px;
+        }
 
   # - type: custom:uptime-card
   #   entity: binary_sensor.p06_pathe_hmh

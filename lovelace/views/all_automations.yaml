@@ -13,11 +13,12 @@ cards:
         heading:
           - mdi:home-assistant
           - System
-        style: |
-          ha-card .heading {
-            font-size: 1.1rem;
-            font-weight: 500;
-          }
+        card_mod:
+          style: |
+            ha-card .heading {
+              font-size: 1.1rem;
+              font-weight: 500;
+            }
       - type: custom:auto-entities
         card:
           type: entities
@@ -41,11 +42,12 @@ cards:
         heading:
           - mdi:account-multiple
           - People
-        style: |
-          ha-card .heading {
-            font-size: 1.1rem;
-            font-weight: 500;
-          }
+        card_mod:
+          style: |
+            ha-card .heading {
+              font-size: 1.1rem;
+              font-weight: 500;
+            }
       - type: custom:auto-entities
         card:
           type: entities
@@ -67,11 +69,12 @@ cards:
         heading:
           - mdi:home
           - House
-        style: |
-          ha-card .heading {
-            font-size: 1.1rem;
-            font-weight: 500;
-          }
+        card_mod:
+          style: |
+            ha-card .heading {
+              font-size: 1.1rem;
+              font-weight: 500;
+            }
       - type: custom:auto-entities
         card:
           type: entities
@@ -93,11 +96,12 @@ cards:
         heading:
           - mdi:lightbulb-multiple-outline
           - Lights
-        style: |
-          ha-card .heading {
-            font-size: 1.1rem;
-            font-weight: 500;
-          }
+        card_mod:
+          style: |
+            ha-card .heading {
+              font-size: 1.1rem;
+              font-weight: 500;
+            }
       - type: custom:auto-entities
         card:
           type: entities
@@ -119,11 +123,12 @@ cards:
         heading:
           - mdi:movie-open-play-outline
           - Media
-        style: |
-          ha-card .heading {
-            font-size: 1.1rem;
-            font-weight: 500;
-          }
+        card_mod:
+          style: |
+            ha-card .heading {
+              font-size: 1.1rem;
+              font-weight: 500;
+            }
       - type: custom:auto-entities
         card:
           type: entities

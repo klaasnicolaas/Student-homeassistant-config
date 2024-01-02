@@ -6,31 +6,32 @@ panel: true
 cards:
   - type: picture-elements
     image: /local/floorplan/edit_studio-night.png
-    style: |
-      ha-card {
-        background: rgba(42, 46, 48, 1);
-        width: 100%;
-        margin: 0 auto;
-      }
-      hui-image-element {
-        pointer-events: none;
-        transform: translate(0,0) !important;
-        mix-blend-mode: lighten;
-        left: 0;
-        top: 0;
-      }
-      hui-state-icon-element {
-        border-radius: 15px;
-        border: 3px solid;
-        background: rgba(255,255,255,0.8);
-      }
+    card_mod:
+      style: |
+        ha-card {
+          background: rgba(42, 46, 48, 1);
+          width: 100%;
+          margin: 0 auto;
+        }
+        hui-image-element {
+          pointer-events: none;
+          transform: translate(0,0) !important;
+          mix-blend-mode: lighten;
+          left: 0;
+          top: 0;
+        }
+        hui-state-icon-element {
+          border-radius: 15px;
+          border: 3px solid;
+          background: rgba(255,255,255,0.8);
+        }
     elements:
       # DAY BASE FLOORPLAN OVERLAY #
       - type: image
         entity: sun.sun
         state_image:
           above_horizon: /local/floorplan/edit_studio-day.png
-      # Kitchen
+      ##### Kitchen #####
       - type: state-icon
         entity: light.kitchen
         style:
@@ -45,13 +46,16 @@ cards:
         elements:
           - type: image
             image: /local/floorplan/edit_studio-kitchen.png
-      # Livingroom #############
+      # ##### Livingroom #####
+      # Sensor
       - type: state-label
         entity: sensor.home_sensor_temperature
         style:
+          color: white
           left: 46.5%
           bottom: 38%
           font-size: 1.5em
+      # State icon
       - type: state-icon
         entity: light.livingroom
         style:
@@ -101,6 +105,7 @@ cards:
       - type: state-label
         entity: sensor.bathroom_sensor_temperature
         style:
+          color: white
           right: 25.5%
           top: 32%
           font-size: 1.5em
@@ -119,7 +124,8 @@ cards:
         elements:
           - type: image
             image: /local/floorplan/edit_studio-bathroom.png
-      # Curtains
+      ##### Curtains #####
+      # Open cover
       - type: state-icon
         entity: cover.curtain_window
         icon: mdi:arrow-up-box
@@ -131,6 +137,7 @@ cards:
           service: cover.open_cover
           target:
             entity_id: cover.curtain_window
+      # Stop cover
       - type: state-icon
         entity: cover.curtain_window
         icon: mdi:stop-circle
@@ -142,6 +149,7 @@ cards:
           service: cover.stop_cover
           target:
             entity_id: cover.curtain_window
+      # Close cover
       - type: state-icon
         entity: cover.curtain_window
         icon: mdi:arrow-down-box
