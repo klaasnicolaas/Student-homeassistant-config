@@ -89,7 +89,7 @@ If you have a specific question about my configuration send me a Private message
 
 MIT License
 
-Copyright (c) 2019-2023 Klaas Schoute
+Copyright (c) 2019-2024 Klaas Schoute
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -114,7 +114,7 @@ SOFTWARE.
 [last-commit-shield]: https://img.shields.io/github/last-commit/klaasnicolaas/Student-homeassistant-config.svg?color=blue&style=plasticr
 [stars-shield]: https://img.shields.io/github/stars/klaasnicolaas/Student-homeassistant-config.svg
 [ha-version-shield]: https://img.shields.io/badge/Home%20Assistant-2023.12-blue.svg
-[maintenance-shield]: https://img.shields.io/maintenance/yes/2023.svg
+[maintenance-shield]: https://img.shields.io/maintenance/yes/2024.svg
 [homeassistantci-shield]: https://github.com/klaasnicolaas/Student-homeassistant-config/actions/workflows/home_assistant.yml/badge.svg
 [paypal-shield]: https://img.shields.io/badge/BuyMeAFanta-Paypal-orange.svg
 [issues-shield]: https://img.shields.io/github/issues/klaasnicolaas/Student-homeassistant-config.svg
