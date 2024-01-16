@@ -1,5 +1,5 @@
 {
-	"measure_description": "Manually measured. Copy from Shelly Plug S",
+	"measure_description": "Manually measured. Transcribed from https://github.com/bramstroker/homeassistant-powercalc/discussions/207#discussioncomment-1484985",
 	"measure_method": "manual",
 	"measure_device": "Zhurui PR10-D",
 	"name": "Shelly Plug S",
