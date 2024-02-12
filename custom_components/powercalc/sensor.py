@@ -46,6 +46,7 @@ from .common import (
     validate_name_pattern,
 )
 from .const import (
+    CONF_ALL,
     CONF_AND,
     CONF_AREA,
     CONF_CALCULATION_ENABLED_CONDITION,
@@ -154,6 +155,7 @@ MAX_GROUP_NESTING_LEVEL = 5
 
 FILTER_CONFIG = vol.Schema(
     {
+        vol.Optional(CONF_ALL): None,
         vol.Optional(CONF_AREA): cv.string,
         vol.Optional(CONF_GROUP): cv.entity_id,
         vol.Optional(CONF_TEMPLATE): cv.template,
@@ -481,25 +483,25 @@ def register_entity_services() -> None:
 
     platform.async_register_entity_service(
         SERVICE_CALIBRATE_UTILITY_METER,
-        {vol.Required(CONF_VALUE): validate_is_number},  # type: ignore
+        {vol.Required(CONF_VALUE): validate_is_number},
         "async_calibrate",
     )
 
     platform.async_register_entity_service(
         SERVICE_CALIBRATE_ENERGY,
-        {vol.Required(CONF_VALUE): validate_is_number},  # type: ignore
+        {vol.Required(CONF_VALUE): validate_is_number},
         "async_calibrate",
     )
 
     platform.async_register_entity_service(
         SERVICE_INCREASE_DAILY_ENERGY,
-        {vol.Required(CONF_VALUE): validate_is_number},  # type: ignore
+        {vol.Required(CONF_VALUE): validate_is_number},
         "async_increase",
     )
 
     platform.async_register_entity_service(
         SERVICE_ACTIVATE_PLAYBOOK,
-        {vol.Required("playbook_id"): cv.string},  # type: ignore
+        {vol.Required("playbook_id"): cv.string},
         "async_activate_playbook",
     )
 
@@ -511,7 +513,7 @@ def register_entity_services() -> None:
 
     platform.async_register_entity_service(
         SERVICE_SWITCH_SUB_PROFILE,
-        {vol.Required("profile"): cv.string},  # type: ignore
+        {vol.Required("profile"): cv.string},
         "async_switch_sub_profile",
     )
 
@@ -677,10 +679,11 @@ async def create_sensors(  # noqa: C901
             _LOGGER.error(error)
 
     if not entities_to_add.has_entities():
-        exception_message = "Could not resolve any entities"
+        log_message = "Could not resolve any entities"
         if CONF_CREATE_GROUP in config:
-            exception_message += f" in group '{config.get(CONF_CREATE_GROUP)}'"
-        raise SensorConfigurationError(exception_message)
+            log_message += f" in group '{config.get(CONF_CREATE_GROUP)}'"
+        _LOGGER.warning(log_message)
+        return entities_to_add
 
     # Create group sensors (power, energy, utility)
     if CONF_CREATE_GROUP in config:
@@ -862,7 +865,7 @@ class EntitiesBucket:
         self.new.extend(bucket.new)
         self.existing.extend(bucket.existing)
 
-    def all(self) -> list[Entity]:  # noqa: A003
+    def all(self) -> list[Entity]:
         """Return all entities both new and existing"""
         return self.new + self.existing
 
