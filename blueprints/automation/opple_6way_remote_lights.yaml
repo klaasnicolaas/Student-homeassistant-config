@@ -70,6 +70,8 @@ trigger:
   - platform: state
     entity_id: !input remote
     attribute: action
+    # Prefent double automation triggers in restart mode
+    not_to: ""
 
 action:
   - variables:
