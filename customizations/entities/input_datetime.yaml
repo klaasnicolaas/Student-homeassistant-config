@@ -1,7 +1,0 @@
----
-# Customize input datetime entities
-#
-input_datetime.vacation_arrival:
-  icon: mdi:airplane-landing
-input_datetime.vacation_departure:
-  icon: mdi:airplane-takeoff

@@ -12,10 +12,6 @@ input_boolean:
     name: Wakker worden met wekker
     icon: mdi:alarm-note-off
 
-  task_notify:
-    name: Huishoudelijke notificatie
-    icon: mdi:checkbox-multiple-marked-outline
-
   wakeup_wait:
     name: Wacht op alarm signaal
 
