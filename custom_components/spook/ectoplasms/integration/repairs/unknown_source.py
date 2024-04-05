@@ -1,4 +1,5 @@
 """Spook - Not your homie."""
+
 from __future__ import annotations
 
 from homeassistant.components import sensor
@@ -20,6 +21,7 @@ class SpookRepair(AbstractSpookRepair):
         EVENT_COMPONENT_LOADED,
         er.EVENT_ENTITY_REGISTRY_UPDATED,
     }
+    inspect_config_entry_changed = True
     inspect_on_reload = "integration"
 
     automatically_clean_up_issues = True

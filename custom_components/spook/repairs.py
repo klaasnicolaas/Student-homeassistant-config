@@ -1,11 +1,12 @@
 """Spook - Not your homie."""
+
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 import importlib
 from pathlib import Path
-from typing import TYPE_CHECKING, final
+from typing import TYPE_CHECKING, Any, final
 
 from homeassistant.components.homeassistant import SERVICE_HOMEASSISTANT_RESTART
 from homeassistant.components.repairs import ConfirmRepairFlow, RepairsFlow
@@ -23,7 +24,7 @@ from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from .const import DOMAIN, LOGGER
 
 if TYPE_CHECKING:
-    from collections.abc import Callable
+    from collections.abc import Callable, Mapping
 
     from homeassistant.data_entry_flow import FlowResult
 
@@ -149,7 +150,10 @@ class AbstractSpookRepair(AbstractSpookRepairBase):
             await self.async_inspect()
 
             if self.automatically_clean_up_issues:
-                # Remove issues that are no longer valid
+                # Remove issues that are not longer created after inspection.
+                for issue_id in self.possible_issue_ids - self.issue_ids:
+                    self.async_delete_issue(issue_id)
+                # Remove issues that are no longer valid.
                 for issue_id in self.issue_ids - self.possible_issue_ids:
                     self.async_delete_issue(issue_id)
 
@@ -181,9 +185,11 @@ class AbstractSpookRepair(AbstractSpookRepairBase):
         if self.inspect_on_reload:
 
             @callback
-            def _filter_event(event: Event) -> bool:
+            def _filter_event(event_data: Mapping[str, Any] | Event) -> bool:
                 """Filter for reload events."""
-                service = event.data.get("service")
+                if type(event_data) is Event:  # pylint: disable=unidiomatic-typecheck
+                    event_data = event_data.data
+                service = event_data.get("service")
                 if service is None:
                     return False
                 if service == "reload_all":
@@ -192,7 +198,7 @@ class AbstractSpookRepair(AbstractSpookRepairBase):
                     return False
                 if self.inspect_on_reload is True:
                     return True
-                if self.inspect_on_reload == event.data.get("domain"):
+                if self.inspect_on_reload == event_data.get("domain"):
                     return True
                 return False
 

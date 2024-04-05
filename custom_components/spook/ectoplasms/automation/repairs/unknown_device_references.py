@@ -1,4 +1,5 @@
 """Spook - Not your homie."""
+
 from __future__ import annotations
 
 from homeassistant.components import automation
@@ -7,7 +8,7 @@ from homeassistant.helpers.entity_component import DATA_INSTANCES, EntityCompone
 
 from ....const import LOGGER
 from ....repairs import AbstractSpookRepair
-from ....util import async_filter_known_device_ids
+from ....util import async_filter_known_device_ids, async_get_all_device_ids
 
 
 class SpookRepair(AbstractSpookRepair):
@@ -19,6 +20,9 @@ class SpookRepair(AbstractSpookRepair):
         automation.EVENT_AUTOMATION_RELOADED,
         dr.EVENT_DEVICE_REGISTRY_UPDATED,
     }
+    inspect_config_entry_changed = True
+    inspect_on_reload = True
+
     automatically_clean_up_issues = True
 
     async def async_inspect(self) -> None:
@@ -31,11 +35,16 @@ class SpookRepair(AbstractSpookRepair):
         ][self.domain]
 
         LOGGER.debug("Spook is inspecting: %s", self.repair)
+
+        known_device_ids = async_get_all_device_ids(self.hass)
+
         for entity in entity_component.entities:
             self.possible_issue_ids.add(entity.entity_id)
             if not isinstance(entity, automation.UnavailableAutomationEntity) and (
                 unknown_devices := async_filter_known_device_ids(
-                    self.hass, device_ids=entity.referenced_devices
+                    self.hass,
+                    device_ids=entity.referenced_devices,
+                    known_device_ids=known_device_ids,
                 )
             ):
                 self.async_create_issue(

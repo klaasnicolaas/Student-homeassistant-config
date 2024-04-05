@@ -1,4 +1,5 @@
 """Spook - Not your homie."""
+
 from __future__ import annotations
 
 import importlib
@@ -175,7 +176,7 @@ def async_filter_known_device_ids(
     return {
         device_id
         for device_id in device_ids - known_device_ids
-        if isinstance(device_id, str)
+        if device_id and isinstance(device_id, str)
     }
 
 

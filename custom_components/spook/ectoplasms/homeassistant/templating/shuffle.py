@@ -1,4 +1,5 @@
 """Spook - Not your homie."""
+
 from __future__ import annotations
 
 from random import Random, shuffle
@@ -24,7 +25,7 @@ class SpookTemplateFunction(AbstractSpookTemplateFunction):
         """Shuffle a list, either with a seed or without."""
         items = list(items)
         if seed:
-            r = Random(seed)
+            r = Random(seed)  # noqa: S311
             r.shuffle(items)
         else:
             shuffle(items)
