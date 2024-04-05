@@ -62,7 +62,8 @@
                     "hide_members": "Mitglieder ausblenden",
                     "name": "Name",
                     "sub_groups": "Untergruppen",
-                    "unique_id": "Unique-Id"
+                    "unique_id": "Unique-Id",
+                    "include_non_powercalc_sensors": "Include non powercalc sensors"
                 },
                 "data_description": {
                     "area": "Fügt alle Powercalc-Sensoren aus dem angegebenen Bereich hinzu",
@@ -70,7 +71,8 @@
                     "group_energy_entities": "Weitere Energiesensoren (kWh) aus Ihrer HA-Installation zum Einbeziehen",
                     "group_member_sensors": "Powercalc-Sensoren zur Aufnahme in die Gruppe",
                     "group_power_entities": "Weitere Leistungssensoren (W) von Ihrer HA-Installation zum Einbeziehen",
-                    "sub_groups": "Alle Sensoren aus den ausgewählten Untergruppen werden ebenfalls zu dieser Gruppe hinzugefügt"
+                    "sub_groups": "Alle Sensoren aus den ausgewählten Untergruppen werden ebenfalls zu dieser Gruppe hinzugefügt",
+                    "include_non_powercalc_sensors": "Control whether to include non powercalc sensors when using the area option"
                 },
                 "title": "Einen Gruppensensor erstellen"
             },
@@ -86,7 +88,7 @@
             },
             "linear": {
                 "data": {
-                    "attribute": "Attribute",
+                    "attribute": "Attribut",
                     "calibrate": "Kalibrierungswert",
                     "gamma_curve": "Gammakurve",
                     "max_power": "Maximale Leistung",
@@ -115,7 +117,7 @@
             "playbook": {
                 "data": {
                     "autostart": "Autostart",
-                    "playbooks": "Playbooks",
+                    "playbooks": "Playbook",
                     "repeat": "Wiederholen"
                 },
                 "data_description": {
@@ -132,14 +134,16 @@
                     "ignore_unavailable_state": "Status 'nicht verfügbar' ignorieren",
                     "multiply_factor": "Multiplikationsfaktor",
                     "multiply_factor_standby": "Multiplikationsfaktor Standby",
-                    "unavailable_power": "Leistung im Status 'nicht verfügbar'"
+                    "unavailable_power": "Leistung im Status 'nicht verfügbar'",
+                    "utility_meter_tariffs": "Utility meter tariffs"
                 },
                 "data_description": {
                     "calculation_enabled_condition": "Die konfigurierte Leistungsberechnungsstrategie wird nur ausgeführt, wenn diese Vorlage den Wert true oder 1 ergibt, andernfalls zeigt der Leistungsmesser 0 an",
                     "ignore_unavailable_state": "Schalten Sie diese Einstellung um, wenn Sie möchten, dass der Leistungssensor auch dann verfügbar bleibt, wenn die Quell-Entität nicht verfügbar ist",
                     "multiply_factor": "Multipliziert die berechnete Leistung mit diesem Faktor. Kann für Licht-Gruppen nützlich sein",
                     "multiply_factor_standby": "ob der Multiplikationsfaktor auch auf die Standby-Leistung angewendet werden soll",
-                    "unavailable_power": "Leistung in W zur Aufzeichnung, wenn die Quell-Entität nicht verfügbar ist"
+                    "unavailable_power": "Leistung in W zur Aufzeichnung, wenn die Quell-Entität nicht verfügbar ist",
+                    "utility_meter_tariffs": "A list of supported tariffs, leave empty if only a single tariff is needed."
                 },
                 "description": "Die folgenden Optionen sind für die erweiterte Powercalc-Konfiguration gedacht. Die meisten Benutzer werden diese Optionen nicht verwenden, so dass Sie diese überspringen können",
                 "title": "Erweiterte Optionen"
@@ -148,11 +152,13 @@
                 "data": {
                     "create_utility_meters": "Utilitymeter erstellen",
                     "entity_id": "Quell-Entität",
-                    "name": "Name"
+                    "name": "Name",
+                    "device": "Device"
                 },
                 "data_description": {
                     "create_utility_meters": "Powercalc soll Utility-Meter erstellen, die täglich, stündlich usw. zyklisch sind",
-                    "name": "Basisname für den Energie- und Versorgungszähler. Der vollständige Name der Entität wird entsprechend der Einstellung energy_sensor_naming festgelegt"
+                    "name": "Basisname für den Energie- und Versorgungszähler. Der vollständige Name der Entität wird entsprechend der Einstellung energy_sensor_naming festgelegt",
+                    "device": "Add the created energy sensor to an specific device"
                 },
                 "description": "Derzeit können bestimmte Einstellungen nur global konfiguriert werden",
                 "title": "Erstellen eines Energiesensors für einen vorhandenen Leistungssensor"
@@ -176,6 +182,18 @@
                     "virtual_power": "Virtuelle Leistung (manuell)"
                 },
                 "title": "Wählen Sie Ihren Sensortyp"
+            },
+            "utility_meter_options": {
+                "title": "Utility meter options",
+                "description": "Define the settings for utility meter creation here",
+                "data": {
+                    "utility_meter_types": "Cycles",
+                    "utility_meter_tariffs": "Tariffs"
+                },
+                "data_description": {
+                    "utility_meter_types": "Create utility meters for specified cycles",
+                    "utility_meter_tariffs": "A list of supported tariffs, leave empty if only a single tariff is needed."
+                }
             },
             "virtual_power": {
                 "data": {
@@ -228,7 +246,7 @@
             "init": {
                 "data": {
                     "area": "Bereich",
-                    "attribute": "Attribute",
+                    "attribute": "Attribut",
                     "autostart": "Autostart",
                     "calculation_enabled_condition": "Bedingung zur Aktivierung der Berechnung",
                     "calibrate": "Kalibrierungswerte",
@@ -242,6 +260,7 @@
                     "group_power_entities": "Leistungs-Entitäten der Gruppe",
                     "hide_members": "Mitglieder ausblenden",
                     "ignore_unavailable_state": "Status 'nicht verfügbar' ignorieren",
+                    "include_non_powercalc_sensors": "Include non powercalc sensors",
                     "max_power": "Maximale Leistung",
                     "min_power": "Minimale Leistung",
                     "multiply_factor": "Multiplikationsfaktor",
@@ -258,6 +277,7 @@
                     "unavailable_power": "Leistung im Status 'nicht verfügbar'",
                     "unit_of_measurement": "Maßeinheit",
                     "update_frequency": "Aktualisierungsfrequenz",
+                    "utility_meter_tariffs": "Utility meter tariffs",
                     "value": "Wert",
                     "value_template": "Wert-Template"
                 },
@@ -272,6 +292,7 @@
                     "group_member_sensors": "Powercalc-Sensoren zur Aufnahme in die Gruppe",
                     "group_power_entities": "Weitere Leistungssensoren (W) von Ihrer HA-Installation zum Einbeziehen",
                     "ignore_unavailable_state": "Schalten Sie diese Einstellung um, wenn Sie möchten, dass der Leistungssensor auch dann verfügbar bleibt, wenn die Quell-Entität nicht verfügbar ist",
+                    "include_non_powercalc_sensors": "Control whether to include non powercalc sensors when using the area option",
                     "multiply_factor": "Multipliziert die berechnete Leistung mit diesem Faktor. Kann für Licht-Gruppen nützlich sein",
                     "multiply_factor_standby": "ob der Multiplikationsfaktor auch auf die Standby-Leistung angewendet werden soll",
                     "playbooks": "Geben Sie in jeder Zeile ein Playbook ein. Beispiel\n\nprogram1: washing_machine/program1.csv",
@@ -279,7 +300,8 @@
                     "repeat": "Umschalten, wenn Sie das Playbook nach Abschluss wiederholen möchten",
                     "states_power": "Ein 'state: power' Paar in jeder Zeile, siehe Beispiel oben",
                     "sub_groups": "Alle Sensoren aus den ausgewählten Untergruppen werden ebenfalls zu dieser Gruppe hinzugefügt",
-                    "unavailable_power": "Leistung in W zur Aufzeichnung, wenn die Quell-Entität nicht verfügbar ist"
+                    "unavailable_power": "Leistung in W zur Aufzeichnung, wenn die Quell-Entität nicht verfügbar ist",
+                    "utility_meter_tariffs": "A list of supported tariffs, leave empty if only a single tariff is needed."
                 }
             }
         }
@@ -327,7 +349,7 @@
                     "name": "Wert"
                 }
             },
-            "name": "Calibrate utility meter"
+            "name": "GUI-Konfiguration ändern"
         },
         "increase_daily_energy": {
             "description": "Erhöht den Sensor um einen bestimmten Wert.",

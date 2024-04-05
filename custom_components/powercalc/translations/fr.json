@@ -62,7 +62,8 @@
                     "hide_members": "Masquer les membres",
                     "name": "Nom",
                     "sub_groups": "Sous-groupes",
-                    "unique_id": "Identifiant unique"
+                    "unique_id": "Identifiant unique",
+                    "include_non_powercalc_sensors": "Include non powercalc sensors"
                 },
                 "data_description": {
                     "area": "Ajoute tous les capteurs powercalc de la zone spécifiée",
@@ -70,7 +71,8 @@
                     "group_energy_entities": "Capteurs d'énergie supplémentaires (kWh) de votre installation HA à inclure",
                     "group_member_sensors": "Capteurs Powercalc à inclure dans le groupe",
                     "group_power_entities": "Capteurs de puissance supplémentaires (W) de votre installation HA à inclure",
-                    "sub_groups": "Tous les capteurs contenant des sous-groupes sélectionnés seront également ajoutés à ce groupe"
+                    "sub_groups": "Tous les capteurs contenant des sous-groupes sélectionnés seront également ajoutés à ce groupe",
+                    "include_non_powercalc_sensors": "Control whether to include non powercalc sensors when using the area option"
                 },
                 "title": "Créer un capteur de groupe"
             },
@@ -132,14 +134,16 @@
                     "ignore_unavailable_state": "Ignorer l'état indisponible",
                     "multiply_factor": "Facteur de multiplication",
                     "multiply_factor_standby": "Multiply factor standby",
-                    "unavailable_power": "Alimentation indisponible"
+                    "unavailable_power": "Alimentation indisponible",
+                    "utility_meter_tariffs": "Utility meter tariffs"
                 },
                 "data_description": {
                     "calculation_enabled_condition": "La stratégie de calcul de puissance configurée ne sera exécutée que lorsque ce modèle sera évalué à vrai ou 1, sinon le capteur de puissance affichera 0",
                     "ignore_unavailable_state": "Activez ce paramètre lorsque vous souhaitez que le capteur de puissance reste disponible même si l'entité source n'est pas disponible",
                     "multiply_factor": "Multiplie la puissance calculée par ce rapport. Peut être utile pour les groupes légers",
                     "multiply_factor_standby": "Whether to also apply multiplication factor to standby power",
-                    "unavailable_power": "Puissance en W pour enregistrer lorsque l'entité source a un état indisponible"
+                    "unavailable_power": "Puissance en W pour enregistrer lorsque l'entité source a un état indisponible",
+                    "utility_meter_tariffs": "A list of supported tariffs, leave empty if only a single tariff is needed."
                 },
                 "description": "Les options ci-dessous concernent la configuration avancée de powercalc. La plupart des utilisateurs ne l'utiliseront pas, vous pouvez donc les ignorer",
                 "title": "Options avancées"
@@ -148,11 +152,13 @@
                 "data": {
                     "create_utility_meters": "Créer des compteurs d'électricité",
                     "entity_id": "ID du capteur de puissance",
-                    "name": "Nom"
+                    "name": "Nom",
+                    "device": "Device"
                 },
                 "data_description": {
                     "create_utility_meters": "Laissez powercalc créer des compteurs de services publics, qui effectuent un cycle quotidien, horaire, etc.",
-                    "name": "Nom de base pour le compteur d'énergie et de services publics. Le nom complet de l'entité sera défini en fonction de energy_sensor_naming"
+                    "name": "Nom de base pour le compteur d'énergie et de services publics. Le nom complet de l'entité sera défini en fonction de energy_sensor_naming",
+                    "device": "Add the created energy sensor to an specific device"
                 },
                 "description": "Actuellement, les paramètres spécifiques ne peuvent être configurés que globalement",
                 "title": "Créer un capteur d'énergie pour un capteur de puissance existant"
@@ -176,6 +182,18 @@
                     "virtual_power": "Alimentation virtuelle (manuel)"
                 },
                 "title": "Choisissez votre type de capteur"
+            },
+            "utility_meter_options": {
+                "title": "Utility meter options",
+                "description": "Define the settings for utility meter creation here",
+                "data": {
+                    "utility_meter_types": "Cycles",
+                    "utility_meter_tariffs": "Tariffs"
+                },
+                "data_description": {
+                    "utility_meter_types": "Create utility meters for specified cycles",
+                    "utility_meter_tariffs": "A list of supported tariffs, leave empty if only a single tariff is needed."
+                }
             },
             "virtual_power": {
                 "data": {
@@ -242,6 +260,7 @@
                     "group_power_entities": "Entités de puissances supplémentaires",
                     "hide_members": "Cacher membres",
                     "ignore_unavailable_state": "Ignorer l'état indisponible",
+                    "include_non_powercalc_sensors": "Include non powercalc sensors",
                     "max_power": "Puissance Max",
                     "min_power": "Puissance Min",
                     "multiply_factor": "Facteur de multiplication",
@@ -258,6 +277,7 @@
                     "unavailable_power": "Alimentation indisponible",
                     "unit_of_measurement": "Unité de mesure",
                     "update_frequency": "Fréquence de mise à jour",
+                    "utility_meter_tariffs": "Utility meter tariffs",
                     "value": "Valeur",
                     "value_template": "Modèle de valeur"
                 },
@@ -272,6 +292,7 @@
                     "group_member_sensors": "Capteurs Powercalc à inclure dans le groupe",
                     "group_power_entities": "Capteurs de puissance supplémentaires (W) de votre installation HA à inclure",
                     "ignore_unavailable_state": "Activez ce paramètre lorsque vous souhaitez que le capteur de puissance reste disponible même si l'entité source n'est pas disponible",
+                    "include_non_powercalc_sensors": "Control whether to include non powercalc sensors when using the area option",
                     "multiply_factor": "Multiplie la puissance calculée par ce rapport. Peut être utile pour les groupes légers",
                     "multiply_factor_standby": "Whether to also apply multiplication factor to standby power",
                     "playbooks": "Entrez un playbook sur chaque ligne. Exemple\n\nprogramme1 : lave-linge/programme1.csv",
@@ -279,7 +300,8 @@
                     "repeat": "Basculer lorsque vous souhaitez continuer à répéter le playbook une fois qu'il est terminé",
                     "states_power": "Une paire 'état : alimentation' sur chaque ligne, voir l'exemple ci-dessus",
                     "sub_groups": "Tous les capteurs contenant des sous-groupes sélectionnés seront également ajoutés à ce groupe",
-                    "unavailable_power": "Puissance en W pour enregistrer lorsque l'entité source a un état indisponible"
+                    "unavailable_power": "Puissance en W pour enregistrer lorsque l'entité source a un état indisponible",
+                    "utility_meter_tariffs": "A list of supported tariffs, leave empty if only a single tariff is needed."
                 }
             }
         }
