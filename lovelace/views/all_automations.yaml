@@ -30,8 +30,6 @@ cards:
                 type: custom:multiple-entity-row
                 toggle: true
                 secondary_info: last-triggered
-          exclude:
-            - entity_id: automation.system_ifttt_handling
 
   # People
   - type: vertical-stack

@@ -1,5 +1,0 @@
----
-# Start using If This Then That
-#
-ifttt:
-  key: !secret ifttt_key
