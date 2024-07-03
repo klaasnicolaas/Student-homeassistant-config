@@ -16,7 +16,7 @@ jobs:
       - name: ⤵️ Check out configuration from GitHub
         uses: actions/checkout@v4
       - name: 🚀 Run yamllint
-        uses: frenck/action-yamllint@v1.4
+        uses: frenck/action-yamllint@v1.5
 
   #Remark Lint
   remarklint:
