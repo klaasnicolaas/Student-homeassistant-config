@@ -1,9 +1,10 @@
-"""Spook - Not your homie."""
+"""Spook - Your homie."""
 
 from __future__ import annotations
 
+from collections.abc import Iterable
 import fnmatch
-from typing import TYPE_CHECKING, Any, Iterable
+from typing import TYPE_CHECKING, Any
 
 from ....templating import AbstractSpookTemplateFunction
 

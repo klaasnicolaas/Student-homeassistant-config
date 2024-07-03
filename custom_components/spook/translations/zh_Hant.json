@@ -223,7 +223,7 @@
     "issues": {
         "lovelace_unknown_entity_references": {
             "title": "用于:{仪表板}的不明实体",
-            "description": "Spook has found a ghost in your dashboards 👻\n\nWhile floating around, Spook crossed path with the following dashboard:\n\n[{dashboard}]({edit})\n\nThis dashboard references the following entities, which are unknown to Home Assistant:\n\n{entities}\n\n\n\nTo fix this error, [edit the dashboard]({edit}) and remove the use of these non-existing entities.\n\nSpook 👻 Not your homie."
+            "description": "Spook has found a ghost in your dashboards 👻\n\nWhile floating around, Spook crossed path with the following dashboard:\n\n[{dashboard}]({edit})\n\nThis dashboard references the following entities, which are unknown to Home Assistant:\n\n{entities}\n\n\n\nTo fix this error, [edit the dashboard]({edit}) and remove the use of these non-existing entities.\n\nSpook 👻 Your homie."
         },
         "integration_unknown_source": {
             "description": "Spook在你的Riemann和综合助手中发现了一个幽灵。\n\nSpook在环绕行时,用以下助手越过了道路:\n\n{求助者} (`签字-id}')\n\n该助手拥有一个家庭助理不了解的来源实体:\n\n“来源” ......\n\n\n\n为了纠正这一错误,将求助人ed住并调整来源实体(或删除助手)和重新启用家庭助理。\n\n页: 1.",

@@ -1,4 +1,4 @@
-"""Spook - Not your homie."""
+"""Spook - Your homie."""
 
 from __future__ import annotations
 
@@ -18,7 +18,7 @@ if TYPE_CHECKING:
     from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 
-@dataclass(kw_only=True)
+@dataclass(frozen=True, kw_only=True)
 class RepairsSpookButtonEntityDescription(
     SpookEntityDescription,
     ButtonEntityDescription,
@@ -58,7 +58,7 @@ async def async_setup_entry(
 
 
 class RepairsSpookButtonEntity(RepairsSpookEntity, ButtonEntity):
-    """Spook button providig Repairs actions."""
+    """Spook button providing Repairs actions."""
 
     entity_description: RepairsSpookButtonEntityDescription
 

@@ -31,6 +31,13 @@ homeassistant_create_area:
       required: true
       selector:
         text:
+    icon:
+      name: Icon
+      description: Icon to use for the area.
+      required: false
+      selector:
+        icon:
+          placeholder: mdi:texture-box
     aliases:
       name: Aliases
       description: >-
@@ -295,6 +302,356 @@ homeassistant_unhide_entity:
       selector:
         entity:
           multiple: true
+
+homeassistant_create_floor:
+  name: Create a floor 👻
+  description: >-
+    Creates a new floor on the fly.
+  fields:
+    name:
+      name: Name
+      description: The name of the floor to create.
+      required: true
+      selector:
+        text:
+    icon:
+      name: Icon
+      description: Icon to use for the floor.
+      required: false
+      selector:
+        icon:
+          placeholder: mdi:texture-box
+    level:
+      name: Level
+      description: The level the floor is on in your home.
+      required: false
+      selector:
+        number:
+    aliases:
+      name: Aliases
+      description: >-
+        A list of aliases for the floor. This is useful if you want to use the
+        floor in a different language or different nickname.
+      selector:
+        object:
+
+homeassistant_add_alias_to_floor:
+  name: Add an alias to a floor 👻
+  description: >-
+    Adds an alias to a floor.
+  fields:
+    floor_id:
+      name: Floor ID
+      description: The ID of the floor to add the alias to.
+      required: true
+      selector:
+        floor:
+    alias:
+      name: Alias
+      description: The alias (or list of aliasses) to add to the floor.
+      required: true
+      selector:
+        object:
+
+homeassistant_remove_alias_from_floor:
+  name: Remove an alias from a floor 👻
+  description: >-
+    Removes an alias from a floor.
+  fields:
+    floor_id:
+      name: Floor ID
+      description: The ID of the floor to remove the alias from.
+      required: true
+      selector:
+        floor:
+    alias:
+      name: Alias
+      description: The alias (or list of aliasses) to remove from the floor.
+      required: true
+      selector:
+        object:
+
+homeassistant_set_floor_aliases:
+  name: Sets aliases for a floor 👻
+  description: >-
+    Sets aliases for a floor. Overwrite and removed any existing aliases,
+    fully replacing them with the new ones.
+  fields:
+    floor_id:
+      name: Floor ID
+      description: The ID of the floor to set the aliases for.
+      required: true
+      selector:
+        floor:
+    aliases:
+      name: Aliases
+      description: The aliases to set for the floor.
+      required: true
+      selector:
+        object:
+
+homeassistant_add_area_to_floor:
+  name: Add an area to a floor 👻
+  description: >-
+    Adds an area to a floor. Please note, if the area is already on a floor,
+    it will be removed from the previous floor.
+  fields:
+    floor_id:
+      name: Floor ID
+      description: The ID of the floor to add the area on.
+      required: true
+      selector:
+        floor:
+    area_id:
+      name: Area ID
+      description: The ID of the area(s) to add to the floor.
+      required: true
+      selector:
+        area:
+          multiple: true
+
+homeassistant_remove_area_from_floor:
+  name: Remove an area from a floor 👻
+  description: >-
+    Removes an area from a floor. As an area can only be on one floor, this
+    call doesn't need to specify the floor.
+  fields:
+    area_id:
+      name: Area ID
+      description: The ID of the area to remove the floor from.
+      required: true
+      selector:
+        area:
+          multiple: true
+
+homeassistant_delete_floor:
+  name: Delete a floor 👻
+  description: >-
+    Deletes a floor on the fly.
+  fields:
+    floor_id:
+      name: Floor ID
+      description: The ID of the floor to delete.
+      required: true
+      selector:
+        floor:
+
+homeassistant_create_label:
+  name: Create a label 👻
+  description: >-
+    Creates a new label on the fly.
+  fields:
+    name:
+      name: Name
+      description: The name of the label to create.
+      required: true
+      selector:
+        text:
+    description:
+      name: Description
+      description: Description for the label.
+      required: true
+      selector:
+        text:
+    icon:
+      name: Icon
+      description: Icon to use for the label.
+      required: false
+      selector:
+        icon:
+          placeholder: mdi:tag
+    color:
+      name: Color
+      description: >-
+        Color to use for the label. Can be a color name from the list, or a
+        hex color code (like #FF0000).
+      selector:
+        select:
+          options:
+            - label: Primary theme color
+              value: primary
+            - label: Accent theme color
+              value: accent
+            - label: Disabled theme color
+              value: disabled
+            - label: Red
+              value: red
+            - label: Pink
+              value: pink
+            - label: Purple
+              value: purple
+            - label: Deep purple
+              value: deep_purple
+            - label: Indigo
+              value: indigo
+            - label: Blue
+              value: blue
+            - label: Light blue
+              value: light_blue
+            - label: Cyan
+              value: cyan
+            - label: Teal
+              value: teal
+            - label: Green
+              value: green
+            - label: Light green
+              value: light_green
+            - label: Lime
+              value: lime
+            - label: Yellow
+              value: yellow
+            - label: Orange
+              value: orange
+            - label: Deep orange
+              value: deep_orange
+            - label: Brown
+              value: brown
+            - label: Grey
+              value: grey
+            - label: Blue grey
+              value: blue_grey
+            - label: Black
+              value: black
+            - label: White
+              value: white
+
+homeassistant_add_label_to_area:
+  name: Add a label to an area 👻
+  description: >-
+    Adds a label to an area. If multiple labels or multiple areas are
+    provided, all combinations will be added.
+  fields:
+    label_id:
+      name: Label ID
+      description: The ID(s) of the label(s) to add the area(s).
+      required: true
+      selector:
+        label:
+          multiple: true
+    area_id:
+      name: Area ID
+      description: The ID(s) of the area(s) to add the label(s) to.
+      required: true
+      selector:
+        area:
+          multiple: true
+
+homeassistant_add_label_to_device:
+  name: Add a label to a device 👻
+  description: >-
+    Adds a label to a device. If multiple labels or multiple devices are
+    provided, all combinations will be added.
+  fields:
+    label_id:
+      name: Label ID
+      description: The ID(s) of the label(s) to add the device(s).
+      required: true
+      selector:
+        label:
+          multiple: true
+    device_id:
+      name: Device ID
+      description: The ID(s) of the device(s) to add the label(s) to.
+      required: true
+      selector:
+        device:
+          multiple: true
+
+homeassistant_add_label_to_entity:
+  name: Add a label to an entity 👻
+  description: >-
+    Adds a label to an entity. If multiple labels or multiple entities are
+    provided, all combinations will be added.
+  fields:
+    label_id:
+      name: Label ID
+      description: The ID(s) of the label(s) to add the entity/entities.
+      required: true
+      selector:
+        label:
+          multiple: true
+    entity_id:
+      name: Entity ID
+      description: The ID(s) of the entity/entities to add the label(s) to.
+      required: true
+      selector:
+        entity:
+          multiple: true
+
+homeassistant_remove_label_from_area:
+  name: Remove a label from an area 👻
+  description: >-
+    Removes a label to an area. If multiple labels or multiple areas are
+    provided, all combinations will be removed.
+  fields:
+    label_id:
+      name: Label ID
+      description: The ID(s) of the label(s) to remove from the area(s).
+      required: true
+      selector:
+        label:
+          multiple: true
+    area_id:
+      name: Area ID
+      description: The ID(s) of the area(s) to remove the label(s) from.
+      required: true
+      selector:
+        area:
+          multiple: true
+
+homeassistant_remove_label_from_device:
+  name: Remove a label from a device 👻
+  description: >-
+    Removes a label from a device. If multiple labels or multiple devices are
+    provided, all combinations will be removed.
+  fields:
+    label_id:
+      name: Label ID
+      description: The ID(s) of the label(s) to remove from the device(s).
+      required: true
+      selector:
+        label:
+          multiple: true
+    device_id:
+      name: Device ID
+      description: The ID(s) of the device(s) to remove the label(s) from.
+      required: true
+      selector:
+        device:
+          multiple: true
+
+homeassistant_remove_label_from_entity:
+  name: Remove a label from an entity 👻
+  description: >-
+    Removes a label from an entity. If multiple labels or multiple entities are
+    provided, all combinations will be removed.
+  fields:
+    label_id:
+      name: Label ID
+      description: The ID(s) of the label(s) to remove from the entity/entities.
+      required: true
+      selector:
+        label:
+          multiple: true
+    entity_id:
+      name: Entity ID
+      description: The ID(s) of the entity/entities to remove the label(s) from.
+      required: true
+      selector:
+        entity:
+          multiple: true
+
+homeassistant_delete_label:
+  name: Delete a label 👻
+  description: >-
+    Deletes a label on the fly.
+  fields:
+    label_id:
+      name: Label ID
+      description: The ID of the label to delete.
+      required: true
+      selector:
+        label:
 
 homeassistant_ignore_all_discovered:
   name: Ignore all currently discovered devices 👻

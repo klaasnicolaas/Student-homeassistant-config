@@ -1,14 +1,16 @@
-"""Spook - Not your homie. Custom integration for Home Assistant."""
+"""Spook - Your homie. Custom integration for Home Assistant."""
 
 from __future__ import annotations
 
 import asyncio
 from typing import TYPE_CHECKING
 
-from homeassistant.const import RESTART_EXIT_CODE
-from homeassistant.core import (
+from homeassistant.const import (
     EVENT_HOMEASSISTANT_START,
     EVENT_HOMEASSISTANT_STARTED,
+    RESTART_EXIT_CODE,
+)
+from homeassistant.core import (
     CoreState,
     callback,
 )

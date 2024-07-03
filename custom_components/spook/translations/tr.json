@@ -285,15 +285,15 @@
         },
         "trend_unknown_source": {
             "title": "Bilinmeyen kaynak: {helper}",
-            "description": "Spook, trend yardımcılarınızda bir hayalet buldu 👻\n\nSpook'un ortalıkta dolaşırken yolu şu yardımcıyla kesişti:\n\n{helper} (`{entity_id}`)\n\nBu yardımcının Home Assistant tarafından bilinmeyen bir kaynak varlığı var:\n\n\"{kaynak}\"\n\n\n\nBu hatayı düzeltmek için yardımcıyı düzenleyin ve kaynak varlığı ayarlayın (veya yardımcıyı kaldırın) ve Home Assistant'ı yeniden başlatın.\n\nSpook 👻 Not your homie."
+            "description": "Spook, trend yardımcılarınızda bir hayalet buldu 👻\n\nSpook'un ortalıkta dolaşırken yolu şu yardımcıyla kesişti:\n\n{helper} (`{entity_id}`)\n\nBu yardımcının Home Assistant tarafından bilinmeyen bir kaynak varlığı var:\n\n\"{kaynak}\"\n\n\n\nBu hatayı düzeltmek için yardımcıyı düzenleyin ve kaynak varlığı ayarlayın (veya yardımcıyı kaldırın) ve Home Assistant'ı yeniden başlatın.\n\nSpook 👻 Your homie."
         },
         "utility_meter_unknown_source": {
             "title": "Bilinmeyen kaynak: {helper}",
-            "description": "Spook, sayaç yardımcılarınızda bir hayalet buldu 👻\n\nSpook'un ortalıkta dolaşırken yolu şu yardımcıyla kesişti:\n\n{helper} (`{entity_id}`)\n\nBu yardımcının Home Assistant tarafından bilinmeyen bir kaynak varlığı var:\n\n\"{kaynak}\"\n\n\n\nBu hatayı düzeltmek için yardımcıyı düzenleyin ve kaynak varlığı ayarlayın (veya yardımcıyı kaldırın) ve Home Assistant'ı yeniden başlatın.\n\nSpook 👻 Not your homie."
+            "description": "Spook, sayaç yardımcılarınızda bir hayalet buldu 👻\n\nSpook'un ortalıkta dolaşırken yolu şu yardımcıyla kesişti:\n\n{helper} (`{entity_id}`)\n\nBu yardımcının Home Assistant tarafından bilinmeyen bir kaynak varlığı var:\n\n\"{kaynak}\"\n\n\n\nBu hatayı düzeltmek için yardımcıyı düzenleyin ve kaynak varlığı ayarlayın (veya yardımcıyı kaldırın) ve Home Assistant'ı yeniden başlatın.\n\nSpook 👻 Your homie."
         },
         "scene_unknown_entity_references": {
             "title": "Bilinmeyen varlıklar şu sahnede kullanıldı: {scene}",
-            "description": "Spook sahnelerinizde bir hayalet buldu 👻\n\nOrtalıkta dolaşırken Spook'un yolu şu sahneyle kesişti:\n\n[{sahne}]({düzenle})\n\nBu sahne, Ev Asistanı tarafından bilinmeyen aşağıdaki varlıklara gönderme yapmaktadır:\n\n{varlıklar}\n\n\n\nBu hatayı düzeltmek için [sahneyi düzenleyin]({düzenle}) ve mevcut olmayan bu varlıkların kullanımını kaldırın.\n\nSpook 👻 Not your homie."
+            "description": "Spook sahnelerinizde bir hayalet buldu 👻\n\nOrtalıkta dolaşırken Spook'un yolu şu sahneyle kesişti:\n\n[{sahne}]({düzenle})\n\nBu sahne, Ev Asistanı tarafından bilinmeyen aşağıdaki varlıklara gönderme yapmaktadır:\n\n{varlıklar}\n\n\n\nBu hatayı düzeltmek için [sahneyi düzenleyin]({düzenle}) ve mevcut olmayan bu varlıkların kullanımını kaldırın.\n\nSpook 👻 Your homie."
         }
     }
 }

@@ -223,14 +223,14 @@
     "issues": {
         "lovelace_unknown_entity_references": {
             "title": "Entidades usadas descoñecidas: {dashboard}",
-            "description": "Spook atopou unha pantasma nos teus dashboards 👻\n\nMentras andaba flotando, Spook atopouse co seguinte dashboard:\n\n[{dashboard}]({edit})\n\nEste dashboard referencia ás seguintes entidades, as cales son descoñecidas para Home Assistant:\n\n{entities}\n\n\n\nPara arranxar este erro, [edita o dashboard]({edit}) e quita o uso das entidades que non existan.\n\nSpook 👻 Not your homie."
+            "description": "Spook atopou unha pantasma nos teus dashboards 👻\n\nMentras andaba flotando, Spook atopouse co seguinte dashboard:\n\n[{dashboard}]({edit})\n\nEste dashboard referencia ás seguintes entidades, as cales son descoñecidas para Home Assistant:\n\n{entities}\n\n\n\nPara arranxar este erro, [edita o dashboard]({edit}) e quita o uso das entidades que non existan.\n\nSpook 👻 Your homie."
         },
         "integration_unknown_source": {
-            "description": "Spook atopouse cunha pantasma nos axudantes de integrais de suma Riemann 👻\n\nMentras andaba flotando, Spook atopouse co seguinte axudante:\n\n{helper} (`{entity_id}`)\n\nEste axudante ten unha entidade orixe que Home Assistant non coñece:\n\n`{source}`\n\n\nPara arranxar este erro, edita o axudante, axusta a entidade orixe (ou borra o axudante) e reinicia Home Assistant.\n\nSpook 👻 Not your homie.",
+            "description": "Spook atopouse cunha pantasma nos axudantes de integrais de suma Riemann 👻\n\nMentras andaba flotando, Spook atopouse co seguinte axudante:\n\n{helper} (`{entity_id}`)\n\nEste axudante ten unha entidade orixe que Home Assistant non coñece:\n\n`{source}`\n\n\nPara arranxar este erro, edita o axudante, axusta a entidade orixe (ou borra o axudante) e reinicia Home Assistant.\n\nSpook 👻 Your homie.",
             "title": "Orixe descoñecida: {helper}"
         },
         "automation_unknown_device_references": {
-            "description": "Spook atopou unha pantasma nas túas automatizacións 👻\n\nNamentras andaba flotando, Spook  atopouse coa seguinte automatización:\n\n[{automation}]({edit}) (`{entity_id}`)\n\nEsta automatización referencia os dispositivos seguintes, que son descoñecidos para Home Assistant:\n\n{devices}\n\n\n\nPara arranxar este erro, [edita a automatización]({edit}) e quita o uso dos dispositivos que non existen.\n\nSpook 👻 Not your homie.",
+            "description": "Spook atopou unha pantasma nas túas automatizacións 👻\n\nNamentras andaba flotando, Spook  atopouse coa seguinte automatización:\n\n[{automation}]({edit}) (`{entity_id}`)\n\nEsta automatización referencia os dispositivos seguintes, que son descoñecidos para Home Assistant:\n\n{devices}\n\n\n\nPara arranxar este erro, [edita a automatización]({edit}) e quita o uso dos dispositivos que non existen.\n\nSpook 👻 Your homie.",
             "title": "Dispositivos descoñecidos usados en: {automation}"
         },
         "user_issue": {
@@ -245,24 +245,24 @@
             "title": "{title}"
         },
         "scene_unknown_entity_references": {
-            "description": "Spook atopou unha pantasma nas túas escenas👻\n\nMentras andaba flotando, Spook atopouse coa seguinte escena:\n\n[{scene}]({edit})\n\nEsta escena fai referencia ás seguintes entidades, que Home Assistant non coñece:\n\n{entities}\n\n\nPara arranxar este erro, [edita a escena]({edit}) e quita o uso das entidades que non existan.\n\n\nSpook 👻 Not your homie.",
+            "description": "Spook atopou unha pantasma nas túas escenas👻\n\nMentras andaba flotando, Spook atopouse coa seguinte escena:\n\n[{scene}]({edit})\n\nEsta escena fai referencia ás seguintes entidades, que Home Assistant non coñece:\n\n{entities}\n\n\nPara arranxar este erro, [edita a escena]({edit}) e quita o uso das entidades que non existan.\n\n\nSpook 👻 Your homie.",
             "title": "Entidades descoñecidas usadas en: {scene}"
         },
         "switch_as_x_unknown_source": {
             "title": "Orixe descoñecida: {helper}",
-            "description": "Spook atopouse cunha pantasma nos teus axudantes de interruptores como X 👻\n\nMentras andaba de paseo, Spook deu co seguinte axudante:\n\n{helper} (`{entity_id}`)\n\nEste axudante ten como orixe unha entidade que Home Assistant non coñece:\n\n`{source}`\n\n\n\nPara arranxar o erro, edita o axudante e axusta a entidade orixe (ou borra o axudante) e reinicia Home Assistant.\n\nSpook 👻 Not your homie."
+            "description": "Spook atopouse cunha pantasma nos teus axudantes de interruptores como X 👻\n\nMentras andaba de paseo, Spook deu co seguinte axudante:\n\n{helper} (`{entity_id}`)\n\nEste axudante ten como orixe unha entidade que Home Assistant non coñece:\n\n`{source}`\n\n\n\nPara arranxar o erro, edita o axudante e axusta a entidade orixe (ou borra o axudante) e reinicia Home Assistant.\n\nSpook 👻 Your homie."
         },
         "script_unknown_device_references": {
             "title": "Dispositivos descoñecidos usados en: {script}",
-            "description": "Spook atopouse  cunha pantasma nos teus scripts 👻\n\nMentras andaba flotando, Spook atopouse co seguinte script:\n\n[{script}]({edit}) (`{entity_id}`)\n\n\nQue referencia ós seguintes dispositivos, os cales son Home Assistant non coñece:\n\n{devices}\n\n\n\nPara arranxar este erro, [edita o script]({edit}) e quita o uso dos dispositivos que non existan.\n\nSpook 👻 Not your homie."
+            "description": "Spook atopouse  cunha pantasma nos teus scripts 👻\n\nMentras andaba flotando, Spook atopouse co seguinte script:\n\n[{script}]({edit}) (`{entity_id}`)\n\n\nQue referencia ós seguintes dispositivos, os cales son Home Assistant non coñece:\n\n{devices}\n\n\n\nPara arranxar este erro, [edita o script]({edit}) e quita o uso dos dispositivos que non existan.\n\nSpook 👻 Your homie."
         },
         "script_unknown_area_references": {
-            "description": "Spook atopouse  cunha pantasma nos teus scripts 👻\n\nMentras andaba flotando, Spook atopouse co seguinte script:\n\n[{script}]({edit}) (`{entity_id}`)\n\nQue referencia ás seguintes áreas, as cales son descoñecidas para Home Assistant:\n\n{areas}\n\n\n\nPara arranxar este erro, [edita o script]({edit}) e quita o uso das áreas que non existan.\n\nSpook 👻 Not your homie.",
+            "description": "Spook atopouse  cunha pantasma nos teus scripts 👻\n\nMentras andaba flotando, Spook atopouse co seguinte script:\n\n[{script}]({edit}) (`{entity_id}`)\n\nQue referencia ás seguintes áreas, as cales son descoñecidas para Home Assistant:\n\n{areas}\n\n\n\nPara arranxar este erro, [edita o script]({edit}) e quita o uso das áreas que non existan.\n\nSpook 👻 Your homie.",
             "title": "Areas descoñecidas usadas en: {script}"
         },
         "automation_unknown_area_references": {
             "title": "Áreas descoñecidas usadas en: {automation}",
-            "description": "Spook atopou unha pantasma nas túas automatizacións 👻\n\nMentras andaba flotando, Spook atopouse coa seguinte automatización:\n\n[{automation}]({edit}) (`{entity_id}`)\n\nEsta automatización referencia ás seguintes áreas, as cales son descoñecidas para Home Assistant:\n\n{areas}\n\n\n\nPara arranxar este erro, [edita a automatización]({edit}) e quita o uso das áreas que non existan.\n\nSpook 👻 Not your homie."
+            "description": "Spook atopou unha pantasma nas túas automatizacións 👻\n\nMentras andaba flotando, Spook atopouse coa seguinte automatización:\n\n[{automation}]({edit}) (`{entity_id}`)\n\nEsta automatización referencia ás seguintes áreas, as cales son descoñecidas para Home Assistant:\n\n{areas}\n\n\n\nPara arranxar este erro, [edita a automatización]({edit}) e quita o uso das áreas que non existan.\n\nSpook 👻 Your homie."
         },
         "restart_required": {
             "fix_flow": {
@@ -277,15 +277,15 @@
         },
         "script_unknown_entity_references": {
             "title": "Entidades descoñecidas usadas en: {script}",
-            "description": "Spook atopouse  cunha pantasma nos teus scripts 👻\n\nMentras andaba flotando, Spook atopouse co seguinte script:\n\n[{script}]({edit}) (`{entity_id}`)\n\nQue referencia ás seguintes entidades, as cales son descoñecidas para Home Assistant:\n\n{entities}\n\n\n\nPara arranxar este erro, [edita o script]({edit}) e quita o uso das entidades que non existan.\n\nSpook 👻 Not your homie."
+            "description": "Spook atopouse  cunha pantasma nos teus scripts 👻\n\nMentras andaba flotando, Spook atopouse co seguinte script:\n\n[{script}]({edit}) (`{entity_id}`)\n\nQue referencia ás seguintes entidades, as cales son descoñecidas para Home Assistant:\n\n{entities}\n\n\n\nPara arranxar este erro, [edita o script]({edit}) e quita o uso das entidades que non existan.\n\nSpook 👻 Your homie."
         },
         "automation_unknown_entity_references": {
             "title": "Entidades descoñecidas usadas en: {automation}",
-            "description": "Spook viu unha pantasma nas túas automatizacións 👻\n\nNamentras andaba flotando por aquí e por acolá,  Spook atopouse coa seguinte automatización:\n\n[{automation}]({edit}) (`{entity_id}`)\n\nEsta fai referencia ás seguintes entidades, que son descoñecidas para Home Assistant:\n\n{entities}\n\n\n\nPara arranxar o erro, [edita a automatización]({edit}) e quita o uso das entidades que non existen.\n\nSpook 👻 Not your homie."
+            "description": "Spook viu unha pantasma nas túas automatizacións 👻\n\nNamentras andaba flotando por aquí e por acolá,  Spook atopouse coa seguinte automatización:\n\n[{automation}]({edit}) (`{entity_id}`)\n\nEsta fai referencia ás seguintes entidades, que son descoñecidas para Home Assistant:\n\n{entities}\n\n\n\nPara arranxar o erro, [edita a automatización]({edit}) e quita o uso das entidades que non existen.\n\nSpook 👻 Your homie."
         },
         "group_unknown_members": {
             "title": "Membros de grupo descoñecidos en:  {group}",
-            "description": "Spook atopou unha pantasma nas teus grupos👻\n\nMentras andaba flotando, Spook atopouse co seguinte grupo:\n\n{group} (`{entity_id}`)\n\nEste grupo ten membros que non coñece Home Assistant:\n\n{entities}\n\n\n\nPara arranxar este erro, edita o grupo e quita o uso das entidades que non existan.\n\nSpook 👻 Not your homie."
+            "description": "Spook atopou unha pantasma nas teus grupos👻\n\nMentras andaba flotando, Spook atopouse co seguinte grupo:\n\n{group} (`{entity_id}`)\n\nEste grupo ten membros que non coñece Home Assistant:\n\n{entities}\n\n\n\nPara arranxar este erro, edita o grupo e quita o uso das entidades que non existan.\n\nSpook 👻 Your homie."
         },
         "proximity_unknown_ignored_zones": {
             "description": "Spook atopou unha pantasma na túa configuración de proximidade 👻\n\nMentras flotaba por ahí, Spook cruzouse coa seguinte configuración de proximidade:\n\n{name}\n\nEsta configuración está ignorando zonas descoñecidas para Home Assistant:\n\n{zones}\n\nPara solucionar este erro, edita a configuración e elimina esta(s) zonas.\n\nSpook 👻 Non é teu amigo.",

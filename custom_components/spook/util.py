@@ -1,7 +1,8 @@
-"""Spook - Not your homie."""
+"""Spook - Your homie."""
 
 from __future__ import annotations
 
+import asyncio
 import importlib
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
@@ -25,13 +26,16 @@ from homeassistant.helpers import (
     config_validation as cv,
     device_registry as dr,
     entity_registry as er,
+    floor_registry as fr,
+    label_registry as lr,
 )
 from homeassistant.helpers.template import Template
 
 from .const import DOMAIN, LOGGER
 
 if TYPE_CHECKING:
-    from collections.abc import Sequence
+    from collections.abc import Iterable, Sequence
+    from types import ModuleType
 
     from homeassistant.config_entries import ConfigEntry
     from homeassistant.const import Platform
@@ -46,16 +50,25 @@ async def async_forward_setup_entry(
     """Set up Spook ectoplasms."""
     LOGGER.debug("Setting up Spook ectoplasms")
 
-    for module_file in Path(__file__).parent.rglob("ectoplasms/*/__init__.py"):
-        module_path = str(module_file.relative_to(Path(__file__).parent))[:-3].replace(
-            "/",
-            ".",
-        )
-        LOGGER.debug("Loading Spook ectoplasm: %s", module_path)
-        module = importlib.import_module(f".{module_path}", __package__)
-        if hasattr(module, "async_setup_entry"):
-            LOGGER.debug("Setting up Spook ectoplasm: %s", module_path)
-            await module.async_setup_entry(hass, entry)
+    modules: list[ModuleType] = []
+
+    def _load_all_ectoplasm_modules() -> None:
+        """Load all Spook ectoplasm modules."""
+        for module_file in Path(__file__).parent.rglob("ectoplasms/*/__init__.py"):
+            module_path = str(module_file.relative_to(Path(__file__).parent))[
+                :-3
+            ].replace(
+                "/",
+                ".",
+            )
+            LOGGER.debug("Loading Spook ectoplasm: %s", module_path)
+            module = importlib.import_module(f".{module_path}", __package__)
+            if hasattr(module, "async_setup_entry"):
+                modules.append(module)
+                LOGGER.debug("Setting up Spook ectoplasm: %s", module_path)
+
+    await hass.async_add_import_executor_job(_load_all_ectoplasm_modules)
+    await asyncio.gather(*(module.async_setup_entry(hass, entry) for module in modules))
 
 
 async def async_forward_platform_entry_setups_to_ectoplasm(
@@ -67,15 +80,28 @@ async def async_forward_platform_entry_setups_to_ectoplasm(
     """Set up Spook ectoplasm platform."""
     LOGGER.debug("Setting up Spook ectoplasm platform: %s", platform)
 
-    for module_file in Path(__file__).parent.rglob(f"ectoplasms/*/{platform}.py"):
-        module_path = str(module_file.relative_to(Path(__file__).parent))[:-3].replace(
-            "/",
-            ".",
+    modules: list[ModuleType] = []
+
+    def _load_all_ectoplasm_platform_modules() -> None:
+        """Load all Spook ectoplasm platform modules."""
+        for module_file in Path(__file__).parent.rglob(f"ectoplasms/*/{platform}.py"):
+            module_path = str(module_file.relative_to(Path(__file__).parent))[
+                :-3
+            ].replace(
+                "/",
+                ".",
+            )
+            LOGGER.debug("Loading Spook %s from ectoplasm: %s", platform, module_path)
+            modules.append(importlib.import_module(f".{module_path}", __package__))
+            LOGGER.debug("Setting up Spook ectoplasm %s: %s", platform, module_path)
+
+    await hass.async_add_import_executor_job(_load_all_ectoplasm_platform_modules)
+    await asyncio.gather(
+        *(
+            module.async_setup_entry(hass, entry, async_add_entities)
+            for module in modules
         )
-        LOGGER.debug("Loading Spook %s from ectoplasm: %s", platform, module_path)
-        module = importlib.import_module(f".{module_path}", __package__)
-        LOGGER.debug("Setting up Spook ectoplasm %s: %s", platform, module_path)
-        await module.async_setup_entry(hass, entry, async_add_entities)
+    )
 
 
 def link_sub_integrations(hass: HomeAssistant) -> bool:
@@ -99,7 +125,7 @@ def link_sub_integrations(hass: HomeAssistant) -> bool:
     return changes
 
 
-def unlink_sub_integrations(hass: HomeAssistant) -> bool:
+def unlink_sub_integrations(hass: HomeAssistant) -> None:
     """Unlink Spook sub integrations."""
     LOGGER.debug("Unlinking Spook sub integrations")
     for manifest in Path(__file__).parent.rglob("integrations/*/manifest.json"):
@@ -199,7 +225,9 @@ def async_get_all_entity_ids(
 
 @callback
 def async_filter_known_entity_ids(
-    hass: HomeAssistant, entity_ids: set[str], known_entity_ids: set[str] | None = None
+    hass: HomeAssistant,
+    entity_ids: Iterable[str],
+    known_entity_ids: set[str] | None = None,
 ) -> set[str]:
     """Filter out known entity IDs."""
     if known_entity_ids is None:
@@ -221,6 +249,54 @@ def async_filter_known_entity_ids(
             and entity_id not in known_entity_ids
             and valid_entity_id(entity_id)
         )
+    }
+
+
+@callback
+def async_get_all_floor_ids(hass: HomeAssistant) -> set[str]:
+    """Return all floor IDs, known to Home Assistant."""
+    floor_registry = fr.async_get(hass)
+    return {floor.floor_id for floor in floor_registry.floors.values()}
+
+
+@callback
+def async_filter_known_floor_ids(
+    hass: HomeAssistant,
+    *,
+    floor_ids: set[str],
+    known_floor_ids: set[str] | None = None,
+) -> set[str]:
+    """Filter out known floor IDs."""
+    if known_floor_ids is None:
+        known_floor_ids = async_get_all_label_ids(hass)
+    return {
+        floor_id
+        for floor_id in floor_ids - known_floor_ids
+        if floor_id and isinstance(floor_id, str)
+    }
+
+
+@callback
+def async_get_all_label_ids(hass: HomeAssistant) -> set[str]:
+    """Return all label IDs, known to Home Assistant."""
+    label_registry = lr.async_get(hass)
+    return {label.label_id for label in label_registry.labels.values()}
+
+
+@callback
+def async_filter_known_label_ids(
+    hass: HomeAssistant,
+    *,
+    label_ids: set[str],
+    known_label_ids: set[str] | None = None,
+) -> set[str]:
+    """Filter out known label IDs."""
+    if known_label_ids is None:
+        known_label_ids = async_get_all_label_ids(hass)
+    return {
+        label_id
+        for label_id in label_ids - known_label_ids
+        if label_id and isinstance(label_id, str)
     }
 
 

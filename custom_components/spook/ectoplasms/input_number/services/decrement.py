@@ -1,4 +1,4 @@
-"""Spook - Not your homie."""
+"""Spook - Your homie."""
 
 from __future__ import annotations
 
@@ -14,7 +14,9 @@ if TYPE_CHECKING:
     from homeassistant.core import ServiceCall
 
 
-class SpookService(AbstractSpookEntityComponentService, ReplaceExistingService):
+class SpookService(
+    AbstractSpookEntityComponentService[InputNumber], ReplaceExistingService
+):
     """Input number entity service, decrease value by a single step.
 
     It override the built-in increment service to allow for a custom amount.

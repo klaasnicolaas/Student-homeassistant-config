@@ -1,4 +1,4 @@
-"""Spook - Not your homie."""
+"""Spook - Your homie."""
 
 from __future__ import annotations
 
@@ -6,8 +6,9 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 import importlib
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, final
+from typing import TYPE_CHECKING, Any, Generic, cast, final
 
+from typing_extensions import TypeVar
 import voluptuous as vol
 
 from homeassistant.core import (
@@ -18,6 +19,7 @@ from homeassistant.core import (
     SupportsResponse,
     callback,
 )
+from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.entity_component import DATA_INSTANCES, EntityComponent
 from homeassistant.helpers.entity_platform import DATA_ENTITY_PLATFORM
 from homeassistant.helpers.service import (
@@ -31,7 +33,10 @@ from homeassistant.loader import async_get_integration
 from .const import DOMAIN, LOGGER
 
 if TYPE_CHECKING:
-    from homeassistant.helpers.entity import Entity
+    from types import ModuleType
+
+
+_EntityT = TypeVar("_EntityT", bound=Entity, default=Entity)
 
 
 class AbstractSpookServiceBase(ABC):
@@ -145,7 +150,7 @@ class AbstractSpookAdminService(AbstractSpookServiceBase):
         raise NotImplementedError
 
 
-class AbstractSpookEntityService(AbstractSpookServiceBase):
+class AbstractSpookEntityService(AbstractSpookServiceBase, Generic[_EntityT]):
     """Abstract class to hold a Spook entity service."""
 
     platform: str
@@ -188,14 +193,14 @@ class AbstractSpookEntityService(AbstractSpookServiceBase):
     @abstractmethod
     async def async_handle_service(
         self,
-        entity: Entity,
+        entity: _EntityT,
         call: ServiceCall,
     ) -> ServiceResponse:
         """Handle the service call."""
         raise NotImplementedError
 
 
-class AbstractSpookEntityComponentService(AbstractSpookServiceBase):
+class AbstractSpookEntityComponentService(AbstractSpookServiceBase, Generic[_EntityT]):
     """Abstract class to hold a Spook entity component service."""
 
     required_features: list[int] | None = None
@@ -231,7 +236,7 @@ class AbstractSpookEntityComponentService(AbstractSpookServiceBase):
     @abstractmethod
     async def async_handle_service(
         self,
-        entity: Entity,
+        entity: _EntityT,
         call: ServiceCall,
     ) -> ServiceResponse:
         """Handle the service call."""
@@ -255,23 +260,35 @@ class SpookServiceManager:
         """Set up the Spook services."""
         LOGGER.debug("Setting up Spook services")
 
+        # Load service schemas
         integration = await async_get_integration(self.hass, DOMAIN)
-        self._service_schemas = await self.hass.async_add_executor_job(
-            _load_services_file,
-            self.hass,
-            integration,
+        self._service_schemas = cast(
+            dict[str, Any],
+            await self.hass.async_add_executor_job(
+                _load_services_file,
+                self.hass,
+                integration,
+            ),
         )
 
-        # Load all services
-        for module_file in Path(__file__).parent.rglob("ectoplasms/*/services/*.py"):
-            if module_file.name == "__init__.py":
-                continue
-            module_path = str(module_file.relative_to(Path(__file__).parent))[
-                :-3
-            ].replace("/", ".")
-            module = importlib.import_module(f".{module_path}", __package__)
-            service = module.SpookService(self.hass)
+        modules: list[ModuleType] = []
 
+        def _load_all_service_modules() -> None:
+            """Load all service modules."""
+            for module_file in Path(__file__).parent.rglob(
+                "ectoplasms/*/services/*.py"
+            ):
+                if module_file.name == "__init__.py":
+                    continue
+                module_path = str(module_file.relative_to(Path(__file__).parent))[
+                    :-3
+                ].replace("/", ".")
+                modules.append(importlib.import_module(f".{module_path}", __package__))
+
+        await self.hass.async_add_import_executor_job(_load_all_service_modules)
+
+        for module in modules:
+            service = module.SpookService(self.hass)
             if isinstance(
                 service,
                 ReplaceExistingService,

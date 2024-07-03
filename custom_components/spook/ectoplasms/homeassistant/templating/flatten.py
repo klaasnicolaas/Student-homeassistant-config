@@ -1,8 +1,9 @@
-"""Spook - Not your homie."""
+"""Spook - Your homie."""
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Iterable
+from collections.abc import Iterable
+from typing import TYPE_CHECKING, Any
 
 from ....templating import AbstractSpookTemplateFunction
 
@@ -22,9 +23,9 @@ class SpookTemplateFunction(AbstractSpookTemplateFunction):
         self,
         value: Iterable[Any],
         levels: int | None = None,
-    ) -> bool:
+    ) -> list[Any]:
         """Flattens a list of lists."""
-        flattend = []
+        flattend: list[Any] = []
         for item in value:
             if isinstance(item, Iterable) and not isinstance(item, str):
                 if levels is None:
