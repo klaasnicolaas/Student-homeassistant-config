@@ -34,10 +34,8 @@ api:
     key: !secret esphome_encryption_key
 
 ota:
-  password: !secret esphome_ota_password
-  safe_mode: true
-  reboot_timeout: 10min
-  num_attempts: 5
+  - platform: esphome
+    password: !secret esphome_ota_password
 
 web_server:
   port: 80
