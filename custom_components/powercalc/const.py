@@ -1,15 +1,8 @@
 """The Powercalc constants."""
 
 from datetime import timedelta
+from enum import StrEnum
 from typing import Literal
-
-from awesomeversion.awesomeversion import AwesomeVersion
-from homeassistant.const import __version__ as HA_VERSION  # noqa
-
-if AwesomeVersion(HA_VERSION) >= AwesomeVersion("2023.8.0"):
-    from enum import StrEnum
-else:
-    from homeassistant.backports.enum import StrEnum  # pragma: no cover
 
 from homeassistant.components.utility_meter.const import DAILY, MONTHLY, WEEKLY
 from homeassistant.const import (
@@ -18,8 +11,9 @@ from homeassistant.const import (
     STATE_STANDBY,
     STATE_UNAVAILABLE,
 )
+from homeassistant.const import __version__ as HA_VERSION  # noqa
 
-MIN_HA_VERSION = "2023.1"
+MIN_HA_VERSION = "2024.3"
 
 DOMAIN = "powercalc"
 DOMAIN_CONFIG = "config"
@@ -50,6 +44,7 @@ CONF_CREATE_ENERGY_SENSORS = "create_energy_sensors"
 CONF_CREATE_UTILITY_METERS = "create_utility_meters"
 CONF_DAILY_FIXED_ENERGY = "daily_fixed_energy"
 CONF_DELAY = "delay"
+CONF_DISABLE_LIBRARY_DOWNLOAD = "disable_library_download"
 CONF_DISABLE_EXTENDED_ATTRIBUTES = "disable_extended_attributes"
 CONF_ENABLE_AUTODISCOVERY = "enable_autodiscovery"
 CONF_ENERGY_INTEGRATION_METHOD = "energy_integration_method"
@@ -63,7 +58,7 @@ CONF_FILTER = "filter"
 CONF_FIXED = "fixed"
 CONF_FORCE_UPDATE_FREQUENCY = "force_update_frequency"
 CONF_FORCE_ENERGY_SENSOR_CREATION = "force_energy_sensor_creation"
-CONF_FORCE_CALCULATE_GROUP_ENERGY = "force_calculate_energy"
+CONF_FORCE_CALCULATE_GROUP_ENERGY = "force_calculate_group_energy"
 CONF_GROUP = "group"
 CONF_GROUP_POWER_ENTITIES = "group_power_entities"
 CONF_GROUP_ENERGY_ENTITIES = "group_energy_entities"

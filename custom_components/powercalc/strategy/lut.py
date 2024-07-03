@@ -1,14 +1,16 @@
 from __future__ import annotations
 
 import gzip
+import io
 import logging
 import os
 from collections import defaultdict
+from collections.abc import Mapping
 from csv import reader
 from dataclasses import dataclass
 from decimal import Decimal
 from functools import partial
-from gzip import GzipFile
+from typing import Any
 
 import numpy as np
 from homeassistant.components import light
@@ -19,14 +21,13 @@ from homeassistant.components.light import (
     ATTR_HS_COLOR,
     COLOR_MODES_COLOR,
     ColorMode,
-    filter_supported_color_modes,
 )
-from homeassistant.core import State
+from homeassistant.core import HomeAssistant, State
+from homeassistant.util.color import color_temperature_to_hs
 
 from custom_components.powercalc.common import SourceEntity
 from custom_components.powercalc.errors import (
     LutFileNotFoundError,
-    ModelNotSupportedError,
     StrategyConfigurationError,
 )
 from custom_components.powercalc.power_profile.power_profile import PowerProfile
@@ -44,8 +45,10 @@ LookupDictType = BrightnessLutType | ColorTempLutType | HsLutType
 
 
 class LutRegistry:
-    def __init__(self) -> None:
+    def __init__(self, hass: HomeAssistant) -> None:
+        self._hass = hass
         self._lookup_dictionaries: dict[str, dict] = {}
+        self._supported_color_modes: dict[str, set[ColorMode]] = {}
 
     async def get_lookup_dictionary(
         self,
@@ -58,8 +61,9 @@ class LutRegistry:
             defaultdict_of_dict = partial(defaultdict, dict)  # type: ignore[var-annotated]
             lookup_dict = defaultdict(defaultdict_of_dict)
 
-            with self.get_lut_file(power_profile, color_mode) as csv_file:
-                csv_reader = reader(csv_file)  # type: ignore
+            csv_file = await self._hass.async_add_executor_job(partial(self.get_lut_file, power_profile, color_mode))
+            with csv_file:
+                csv_reader = reader(csv_file)
                 next(csv_reader)  # skip header row
 
                 line_count = 0
@@ -82,7 +86,7 @@ class LutRegistry:
         return lookup_dict
 
     @staticmethod
-    def get_lut_file(power_profile: PowerProfile, color_mode: ColorMode) -> GzipFile:
+    def get_lut_file(power_profile: PowerProfile, color_mode: ColorMode) -> io.TextIOWrapper:
         path = os.path.join(power_profile.get_model_directory(), f"{color_mode}.csv")
 
         gzip_path = f"{path}.gz"
@@ -91,6 +95,20 @@ class LutRegistry:
             return gzip.open(gzip_path, "rt")  # type: ignore
 
         raise LutFileNotFoundError("Data file not found: %s")
+
+    async def get_supported_color_modes(self, power_profile: PowerProfile) -> set[ColorMode]:
+        """Return the color modes supported by the Profile."""
+        cache_key = f"{power_profile.manufacturer}_{power_profile.model}_supported_color_modes"
+        supported_color_modes = self._supported_color_modes.get(cache_key)
+        if supported_color_modes is None:
+            supported_color_modes = set()
+            for file in await self._hass.async_add_executor_job(os.listdir, power_profile.get_model_directory()):
+                if file.endswith(".csv.gz"):
+                    color_mode = ColorMode(file.removesuffix(".csv.gz"))
+                    if color_mode in LUT_COLOR_MODES:
+                        supported_color_modes.add(color_mode)
+            self._supported_color_modes[cache_key] = supported_color_modes
+        return supported_color_modes
 
 
 class LutStrategy(PowerCalculationStrategyInterface):
@@ -103,13 +121,13 @@ class LutStrategy(PowerCalculationStrategyInterface):
         self._source_entity = source_entity
         self._lut_registry = lut_registry
         self._profile = profile
+        self._strategy_color_modes: set[ColorMode] | None = None
 
     async def calculate(self, entity_state: State) -> Decimal | None:
         """Calculate the power consumption based on brightness, mired, hsl values."""
         attrs = entity_state.attributes
-        color_mode = attrs.get(ATTR_COLOR_MODE)
-        if color_mode in COLOR_MODES_COLOR:
-            color_mode = ColorMode.HS
+        original_color_mode = attrs.get(ATTR_COLOR_MODE)
+        color_mode = await self.get_selected_color_mode(attrs)
 
         brightness = attrs.get(ATTR_BRIGHTNESS)
         if brightness is None:
@@ -134,8 +152,8 @@ class LutStrategy(PowerCalculationStrategyInterface):
                 color_mode,
             )
         except LutFileNotFoundError:
-            _LOGGER.warning(
-                "%s: Lookup table not found (model: %s, color_mode: %s)",
+            _LOGGER.error(
+                "%s: Lookup table not found for color mode (model: %s, color_mode: %s)",
                 entity_state.entity_id,
                 self._profile.model,
                 color_mode,
@@ -144,7 +162,7 @@ class LutStrategy(PowerCalculationStrategyInterface):
 
         light_setting = LightSetting(color_mode=color_mode, brightness=brightness)
         if color_mode == ColorMode.HS:
-            hs = attrs[ATTR_HS_COLOR]
+            hs = color_temperature_to_hs(attrs[ATTR_COLOR_TEMP]) if original_color_mode == ColorMode.COLOR_TEMP else attrs[ATTR_HS_COLOR]
             light_setting.hue = int(hs[0] / 360 * 65535)
             light_setting.saturation = int(hs[1] / 100 * 255)
             _LOGGER.debug(
@@ -172,6 +190,17 @@ class LutStrategy(PowerCalculationStrategyInterface):
         power = Decimal(self.lookup_power(lookup_table, light_setting))
         _LOGGER.debug("%s: Calculated power:%s", entity_state.entity_id, power)
         return power
+
+    async def get_selected_color_mode(self, attrs: Mapping[str, Any]) -> ColorMode:
+        """Get the selected color mode for the entity."""
+        color_mode = ColorMode(str(attrs.get(ATTR_COLOR_MODE)))
+        if color_mode in COLOR_MODES_COLOR:
+            color_mode = ColorMode.HS
+        profile_color_modes = await self._lut_registry.get_supported_color_modes(self._profile)
+        if color_mode not in profile_color_modes and color_mode == ColorMode.COLOR_TEMP:
+            _LOGGER.debug("Color mode not natively supported, falling back to HS")
+            color_mode = ColorMode.HS
+        return color_mode
 
     def lookup_power(
         self,
@@ -227,12 +256,7 @@ class LutStrategy(PowerCalculationStrategyInterface):
         lookup_dict: LookupDictType,
         search_key: int,
     ) -> float | LookupDictType:
-        return (
-            lookup_dict.get(search_key)
-            or lookup_dict[
-                min(lookup_dict.keys(), key=lambda key: abs(key - search_key))
-            ]
-        )
+        return lookup_dict.get(search_key) or lookup_dict[min(lookup_dict.keys(), key=lambda key: abs(key - search_key))]
 
     @staticmethod
     def get_nearest_lower_brightness(
@@ -267,24 +291,6 @@ class LutStrategy(PowerCalculationStrategyInterface):
                 "Only light entities can use the LUT mode",
                 "lut_unsupported_color_mode",
             )
-
-        color_modes = self._source_entity.supported_color_modes
-        if not color_modes:
-            return
-        for color_mode in filter_supported_color_modes(color_modes):
-            if color_mode in COLOR_MODES_COLOR:
-                color_mode = ColorMode.HS
-            if color_mode in LUT_COLOR_MODES:
-                try:
-                    await self._lut_registry.get_lookup_dictionary(
-                        self._profile,
-                        color_mode,
-                    )
-                except LutFileNotFoundError:
-                    raise ModelNotSupportedError(  # noqa: B904
-                        f"No lookup file found for mode: {color_mode}",
-                        "lut_unsupported_color_mode",
-                    )
 
 
 @dataclass

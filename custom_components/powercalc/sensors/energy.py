@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import inspect
 import logging
 from decimal import Decimal
 
@@ -64,8 +65,7 @@ async def create_energy_sensor(
         entity_entry = ent_reg.async_get(energy_sensor_id)
         if entity_entry is None:
             raise SensorConfigurationError(
-                f"No energy sensor with id {energy_sensor_id} found in your HA instance. "
-                "Double check `energy_sensor_id` setting",
+                f"No energy sensor with id {energy_sensor_id} found in your HA instance. Double check `energy_sensor_id` setting",
             )
         return RealEnergySensor(
             entity_entry.entity_id,
@@ -80,10 +80,7 @@ async def create_energy_sensor(
     ):
         # User can force the energy sensor creation with "force_energy_sensor_creation" option.
         # If they did, don't look for an energy sensor
-        if (
-            CONF_FORCE_ENERGY_SENSOR_CREATION not in sensor_config
-            or not sensor_config.get(CONF_FORCE_ENERGY_SENSOR_CREATION)
-        ):
+        if CONF_FORCE_ENERGY_SENSOR_CREATION not in sensor_config or not sensor_config.get(CONF_FORCE_ENERGY_SENSOR_CREATION):
             real_energy_sensor = find_related_real_energy_sensor(hass, power_sensor)
             if real_energy_sensor:
                 _LOGGER.debug(
@@ -91,7 +88,7 @@ async def create_energy_sensor(
                     real_energy_sensor.entity_id,
                     power_sensor.entity_id,
                 )
-                return real_energy_sensor
+                return real_energy_sensor  # type: ignore
             _LOGGER.debug(
                 "No existing energy sensor found for the power sensor '%s'",
                 power_sensor.entity_id,
@@ -122,7 +119,13 @@ async def create_energy_sensor(
 
     unit_prefix = get_unit_prefix(hass, sensor_config, power_sensor)
 
-    _LOGGER.debug("Creating energy sensor: %s", name)
+    _LOGGER.debug(
+        "Creating energy sensor (entity_id=%s, source_entity=%s, unit_prefix=%s)",
+        entity_id,
+        power_sensor.entity_id,
+        unit_prefix,
+    )
+
     return VirtualEnergySensor(
         source_entity=power_sensor.entity_id,
         unique_id=unique_id,
@@ -147,7 +150,7 @@ def get_unit_prefix(
     power_unit = power_sensor.unit_of_measurement
     power_state = hass.states.get(power_sensor.entity_id)
     if power_unit is None and power_state:
-        power_unit = power_state.attributes.get(ATTR_UNIT_OF_MEASUREMENT)
+        power_unit = power_state.attributes.get(ATTR_UNIT_OF_MEASUREMENT)  # pragma: no cover
 
     # When the power sensor is in kW, we don't want to add an extra k prefix.
     # As this would result in an energy sensor having kkWh unit, which is obviously invalid
@@ -175,8 +178,7 @@ def find_related_real_energy_sensor(
             ent_reg,
             device_id=power_sensor.device_id,
         )
-        if entry.device_class == SensorDeviceClass.ENERGY
-        or entry.unit_of_measurement == UnitOfEnergy.KILO_WATT_HOUR
+        if entry.device_class == SensorDeviceClass.ENERGY or entry.unit_of_measurement == UnitOfEnergy.KILO_WATT_HOUR
     ]
     if not energy_sensors:
         return None
@@ -197,6 +199,7 @@ class VirtualEnergySensor(IntegrationSensor, EnergySensor):
     """Virtual energy sensor, totalling kWh."""
 
     _attr_state_class = SensorStateClass.TOTAL_INCREASING
+    _unrecorded_attributes = frozenset({ATTR_SOURCE_DOMAIN, ATTR_SOURCE_ENTITY})
 
     def __init__(
         self,
@@ -211,20 +214,25 @@ class VirtualEnergySensor(IntegrationSensor, EnergySensor):
         unit_prefix: str | None = None,
         device_info: DeviceInfo | None = None,
     ) -> None:
-
         round_digits: int = sensor_config.get(CONF_ENERGY_SENSOR_PRECISION, 2)
         integration_method: str = sensor_config.get(CONF_ENERGY_INTEGRATION_METHOD, DEFAULT_ENERGY_INTEGRATION_METHOD)
 
-        super().__init__(
-            source_entity=source_entity,
-            name=name,
-            round_digits=round_digits,
-            unit_prefix=unit_prefix,
-            unit_time=UnitOfTime.HOURS,
-            integration_method=integration_method,
-            unique_id=unique_id,
-            device_info=device_info,
-        )
+        params = {
+            "source_entity": source_entity,
+            "name": name,
+            "round_digits": round_digits,
+            "unit_prefix": unit_prefix,
+            "unit_time": UnitOfTime.HOURS,
+            "integration_method": integration_method,
+            "unique_id": unique_id,
+            "device_info": device_info,
+        }
+
+        signature = inspect.signature(IntegrationSensor.__init__)
+        if "max_sub_interval" in signature.parameters:
+            params["max_sub_interval"] = None  # pragma: no cover
+
+        super().__init__(**params)  # type: ignore[arg-type]
 
         self._powercalc_source_entity = powercalc_source_entity
         self._powercalc_source_domain = powercalc_source_domain
