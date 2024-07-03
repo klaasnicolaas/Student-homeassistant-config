@@ -1,4 +1,5 @@
 """Various types used in type hints."""
+
 from __future__ import annotations
 
 from collections.abc import Mapping
@@ -72,15 +73,6 @@ class TimersAttributes(TypedDict):
 
     next_timer_status: str
     timers: list[GoogleHomeTimerDict]
-
-
-class DeviceInfo(TypedDict):
-    """Typed dict for device_info"""
-
-    identifiers: set[tuple[str, str]]
-    name: str
-    manufacturer: str
-    model: str
 
 
 class ConfigFlowDict(TypedDict):

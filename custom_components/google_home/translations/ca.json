@@ -28,5 +28,51 @@
         }
       }
     }
+  },
+  "services": {
+    "delete_alarm": {
+      "description": "Elimina una alarma d'un dispositiu Google Home.",
+      "fields": {
+        "alarm_id": {
+          "description": "ID de l'alarma (alarm/xxx).",
+          "name": "ID de l'alarma"
+        },
+        "skip_refresh": {
+          "description": "Omet l'actualització dels dispositius de Google Home després d'haver suprimit una alarma.",
+          "name": "Omet l'actualització"
+        },
+        "entity_id": {
+          "description": "Representa un dispositiu Google Home (sensor.xxxx_alarms).",
+          "name": "Entitat"
+        }
+      },
+      "name": "Elimina alarma"
+    },
+    "delete_timer": {
+      "description": "Elimina un temporitzador d'un dispositiu Google Home.",
+      "fields": {
+        "timer_id": {
+          "description": "ID del temporitzador (timer/xxx).",
+          "name": "ID del temporitzador"
+        },
+        "skip_refresh": {
+          "description": "Omet l'actualització dels dispositius de Google Home després d'haver suprimit un temporitzador.",
+          "name": "Omet l'actualització"
+        },
+        "entity_id": {
+          "description": "Representa un dispositiu Google Home (sensor.xxxx_alarms).",
+          "name": "Entitat"
+        }
+      },
+      "name": "Elimina temporitzador"
+    },
+    "reboot_device": {
+      "description": "Reinicia un dispositiu Google Home.",
+      "name": "Reinicia dispositiu"
+    },
+    "refresh_devices": {
+      "description": "Actualitza l'estat de tots els dispositius Google Home.",
+      "name": "Actualitzar dispositius"
+    }
   }
 }

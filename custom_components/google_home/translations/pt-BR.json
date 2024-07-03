@@ -28,5 +28,51 @@
         }
       }
     }
+  },
+  "services": {
+    "delete_alarm": {
+      "description": "Excluir um alarme de um dispositivo Google Home.",
+      "fields": {
+        "alarm_id": {
+          "description": "ID do alarme (alarm/xxx).",
+          "name": "ID do alarme"
+        },
+        "skip_refresh": {
+          "description": "Ignorar a atualização dos dispositivos Google Home após a exclusão de um alarme.",
+          "name": "Ignorar atualização"
+        },
+        "entity_id": {
+          "description": "Representa um dispositivo Google Home (sensor.xxxx_alarms).",
+          "name": "Entidade"
+        }
+      },
+      "name": "Excluir alarme"
+    },
+    "delete_timer": {
+      "description": "Excluir um temporizador de um dispositivo Google Home.",
+      "fields": {
+        "timer_id": {
+          "description": "ID do temporizador (timer/xxx).",
+          "name": "ID do temporizador"
+        },
+        "skip_refresh": {
+          "description": "Ignorar a atualização dos dispositivos Google Home após a exclusão de um cronômetro.",
+          "name": "Ignorar atualização"
+        },
+        "entity_id": {
+          "description": "Representa um dispositivo Google Home (sensor.xxxx_alarms).",
+          "name": "Entidade"
+        }
+      },
+      "name": "Excluir temporizador"
+    },
+    "reboot_device": {
+      "description": "Reiniciar um dispositivo Google Home.",
+      "name": "Reiniciar dispositivo"
+    },
+    "refresh_devices": {
+      "description": "Atualizar o status de todos os dispositivos Google Home.",
+      "name": "Atualizar dispositivos"
+    }
   }
 }

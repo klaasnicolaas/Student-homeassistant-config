@@ -1,4 +1,5 @@
 """Adds config flow for Google Home"""
+
 from __future__ import annotations
 
 from datetime import timedelta
@@ -42,7 +43,7 @@ class GoogleHomeFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
         self._errors: dict[str, str] = {}
 
     async def async_step_user(
-        self, user_input: ConfigFlowDict | None = None
+        self, user_input: ConfigFlowDict | None = None  # type: ignore[override]
     ) -> FlowResult:
         """Handle a flow initialized by the user."""
         self._errors = {}

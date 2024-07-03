@@ -27,5 +27,51 @@
         }
       }
     }
+  },
+  "services": {
+    "delete_alarm": {
+      "description": "Elimina una sveglia da un dispositivo Google Home.",
+      "fields": {
+        "alarm_id": {
+          "description": "ID di una sveglia (alarm/xxx).",
+          "name": "ID Sveglia"
+        },
+        "skip_refresh": {
+          "description": "Salta l'aggiornamento dei dispositivi Google Home dopo aver eliminato una sveglia.",
+          "name": "Salta aggiornamento"
+        },
+        "entity_id": {
+          "description": "Rappresenta un dispositivo Google Home (sensor.xxxx_alarms).",
+          "name": "Entità"
+        }
+      },
+      "name": "Elimina sveglia"
+    },
+    "delete_timer": {
+      "description": "Elimina un timer da un dispositivo Google Home.",
+      "fields": {
+        "timer_id": {
+          "description": "ID di un timer (timer/xxx).",
+          "name": "ID Timer"
+        },
+        "skip_refresh": {
+          "description": "Salta l'aggiornamento dei dispositivi Google Home dopo aver eliminato un timer.",
+          "name": "Salta aggiornamento"
+        },
+        "entity_id": {
+          "description": "Rappresenta un dispositivo Google Home (sensor.xxxx_alarms).",
+          "name": "Entità"
+        }
+      },
+      "name": "Elimina timer"
+    },
+    "reboot_device": {
+      "description": "Riavvia un dispositivo Google Home.",
+      "name": "Riavvia dispositivo"
+    },
+    "refresh_devices": {
+      "description": "Aggiorna lo stato di tutti i dispositivi Google Home.",
+      "name": "Aggiorna i dispositivi"
+    }
   }
 }
