@@ -62,9 +62,7 @@ api:
             id: button_reset_total
 
 ota:
-  safe_mode: true
-  reboot_timeout: 10min
-  num_attempts: 5
+  - platform: esphome
 
 web_server:
   port: 80
