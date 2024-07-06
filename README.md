@@ -37,7 +37,7 @@ Below is a list of all hardware in-house
 
 **My host system:**
 
-- [Intel Arches Canyon NUC6CAYH][intelnuc] -> Inside 8GB Ram, 120GB SSD
+- [HP elitedesk 800 G4 mini][hp_elitedesk] -> Inside 32GB Ram, 1TB SSD
 - Running a [Proxmox][proxmox] server, with a [Home Assistant OS][ha-os] VM on it.
 - [Conbee II][conbee] stick
 
@@ -54,7 +54,7 @@ Below is a list of all hardware in-house
 - Xiaomi Mijia [Smart Light Sensors][xiaomi_light_sensor-shop] (Zigbee)
 - Xiaomi Aqara [D1 - 1 way switch][xiaomi_d1_1way_switch-shop] (Zigbee)
 - Xiaomi Aqara [Opple 6 way switch][opple_switch-shop] (Zigbee)
-- Blitzwolf [BW-LT11][bw_lt11-shop] led strips (ESPHome flashed)
+- Blitzwolf BW-LT11 led strips (ESPHome flashed)
 - Blitzwolf [BW-SHP13][bw_shp13-shop] smart plugs (Zigbee)
 - [Home Assistant Glow][glow]
 - [IKEA VINDRIKTNING][vindriktning] (D1 Mini - ESPHome)
@@ -129,7 +129,7 @@ SOFTWARE.
 [smarthome]: https://github.com/klaasnicolaas/Smarthome-homeassistant-config
 [techlife]: https://student-techlife.com/
 [ha-os]: https://github.com/whiskerz007/proxmox_hassos_install
-[intelnuc]: https://www.intel.com/content/www/us/en/products/boards-kits/nuc/kits/nuc6cayh.html
+[hp_elitedesk]: https://support.hp.com/nl-nl/product/details/hp-elitedesk-800-65w-g4-desktop-mini-pc/21353734
 [conbee]: https://www.phoscon.de/en/conbee2
 [ubuntu-server]: https://www.ubuntu.com/download/server
 [proxmox]: https://www.proxmox.com/en/
@@ -137,22 +137,21 @@ SOFTWARE.
 
 <!-- Products -->
 [tradfri]: https://www.ikea.com/nl/nl/search/products/?q=tradfri
-[xiaomi_temp-shop]: https://www.banggood.com/bang/?tt=16956_12_417111_&r=%2FAqara-Smart-Home-Zigbee-Temperature-and-Humidity-Sensor-Thermometer-Hygrometer-Digital-Sensor-From-Eco-System-p-1148666.html
-[xiaomi_door-shop]: https://www.banggood.com/bang/?tt=16956_12_417111_&r=%2FAqara-Zigbee-1_2-Version-Window-Door-Sensor-Smart-Home-Kit-Remote-Alarm-Eco-System-p-1149705.html
+[xiaomi_temp-shop]: https://s.click.aliexpress.com/e/_DmkJvXl
+[xiaomi_door-shop]: https://s.click.aliexpress.com/e/_DdiNN5D
 [google_home]: https://store.google.com/magazine/compare_nest_speakers_displays
 [xiaomi_curtains_track-shop]: https://tc.tradetracker.net/?c=15640&m=12&a=417111&r=&u=%2Fitem%2F4000170933022.html
 [xiaomi_curtains_motor-shop]: https://tc.tradetracker.net/?c=15640&m=12&a=417111&r=&u=%2Fitem%2F10000142608978.html
-[xiaomi_motion-shop]: https://www.banggood.com/bang/?tt=16956_12_417111_&r=%2FAqara-Zgbee-Wireless-Human-Body-PIR-Sensor-Smart-Home-Kit-Work-with-Gateway-APP-p-1177007.html
-[xiaomi_switch-shop]: https://www.banggood.com/bang/?tt=16956_12_417111_&r=%2FAqara-Smart-Wireless-Switch-Smart-Home-Kit-Remote-Control-Work-with-Multifunctional-Gateway-From-Eco-System-p-1224921.html
-[opple_switch-shop]: https://www.banggood.com/bang/?tt=16956_12_417111_&r=%2FAqara-x-OPPLE-Zigbee-3_0-Smart-Switch-HomeKit-Version-Wireless-Remote-Control-Wall-Light-Switch-Works-With-HomeKit-From-Eco-system-p-1590410.html
-[bw_lt11-shop]: https://www.banggood.com/bang/?tt=16956_12_417111_&r=%2FBlitzWolf-BW-LT11-2M-or-5M-Smart-APP-Control-RGBW-LED-Light-Strip-Kit-Work-With-Amazon-Alexa-Google-Assistant-Christmas-Decorations-Clearance-Christmas-Lights-p-1390470.html
-[bw_shp13-shop]: https://www.banggood.com/bang/?tt=16956_12_417111_&r=%2FBlitzWolf-BW-SHP13-ZgBee-3_0-Smart-WIFI-Socket-16A-EU-Plug-Electricity-Metering-APP-Remote-Controller-Timer-Work-with-Amazon-Alexa-Google-Home-p-1679992.html
-[xiaomi_light_sensor-shop]: https://tc.tradetracker.net/?c=15640&m=12&a=417111&r=&u=%2Fitem%2F1005002866301114.html
-[xiaomi_d1_1way_switch-shop]: https://www.banggood.com/bang/?tt=16956_12_417111_&r=%2FAqara-D1-1-Gang-or-2-Gang-Zigee-Smart-Wireless-Switch-APP-Remote-Control-Timer-Work-with-APP-HomeKit-p-1644321.html
+[xiaomi_motion-shop]: https://s.click.aliexpress.com/e/_DFxAAdz
+[xiaomi_switch-shop]: https://s.click.aliexpress.com/e/_DdLVoen
+[opple_switch-shop]: https://s.click.aliexpress.com/e/_DcuTYQP
+[bw_shp13-shop]: https://s.click.aliexpress.com/e/_DEKN4zN
+[xiaomi_light_sensor-shop]: https://s.click.aliexpress.com/e/_DewZaKP
+[xiaomi_d1_1way_switch-shop]: https://s.click.aliexpress.com/e/_DmDsEcL
 [tint_E27]: https://zigbee.blakadder.com/Muller_Licht_404000.html
-[glow]: https://github.com/klaasnicolaas/home-assistant-glow
+[glow]: https://glow-energy.io
 [vindriktning]: https://www.ikea.com/nl/nl/p/vindriktning-luchtkwaliteitsensor-70498242/
-[sonoff_valve-shop]: https://tc.tradetracker.net/?c=15640&m=12&a=417111&r=&u=https%3A%2F%2Faliexpress.com%2Fitem%2F1005006063706718.html
+[sonoff_valve-shop]: https://s.click.aliexpress.com/e/_DCV0hH1
 
 <!-- Blogs -->
 [sleep]: https://student-techlife.com/2019/05/16/hey-google-time-to-sleep/
