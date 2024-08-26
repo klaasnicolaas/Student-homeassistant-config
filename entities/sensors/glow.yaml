@@ -1,6 +1,0 @@
----
-# Latest version
-- platform: rest
-  resource: https://api.github.com/repos/klaasnicolaas/home-assistant-glow/releases/latest
-  name: glow_latest_version
-  value_template: '{{ value_json.tag_name }}'
