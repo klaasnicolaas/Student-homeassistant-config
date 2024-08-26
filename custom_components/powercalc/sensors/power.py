@@ -72,6 +72,7 @@ from custom_components.powercalc.const import (
     CONF_UNAVAILABLE_POWER,
     CONF_WLED,
     DATA_CALCULATOR_FACTORY,
+    DATA_DISCOVERY_MANAGER,
     DATA_STANDBY_POWER_SENSORS,
     DOMAIN,
     DUMMY_ENTITY_ID,
@@ -79,7 +80,7 @@ from custom_components.powercalc.const import (
     SIGNAL_POWER_SENSOR_STATE_CHANGE,
     CalculationStrategy,
 )
-from custom_components.powercalc.discovery import autodiscover_model
+from custom_components.powercalc.discovery import DiscoveryManager
 from custom_components.powercalc.errors import (
     ModelNotSupportedError,
     StrategyConfigurationError,
@@ -133,11 +134,12 @@ async def create_virtual_power_sensor(
     config_entry: ConfigEntry | None,
 ) -> VirtualPowerSensor:
     """Create the power sensor entity."""
+    discovery_manager: DiscoveryManager = hass.data[DOMAIN][DATA_DISCOVERY_MANAGER]
     power_profile = None
     try:
         if not is_manually_configured(sensor_config):
             try:
-                model_info = await autodiscover_model(hass, source_entity.entity_entry)
+                model_info = await discovery_manager.autodiscover_model(source_entity.entity_entry)
                 power_profile = await get_power_profile(
                     hass,
                     sensor_config,
@@ -515,15 +517,16 @@ class VirtualPowerSensor(SensorEntity, PowerSensor):
         if self.source_entity == DUMMY_ENTITY_ID:
             return True
 
-        if not self._ignore_unavailable_state and state.state in [STATE_UNAVAILABLE, STATE_UNKNOWN]:
-            return False
-
-        return True
+        return self._ignore_unavailable_state or state.state not in [STATE_UNAVAILABLE, STATE_UNKNOWN]
 
     async def calculate_power(self, state: State) -> Decimal | None:
         """Calculate power consumption using configured strategy."""
         entity_state = state
-        if state.entity_id != self._source_entity.entity_id and (entity_state := self.hass.states.get(self._source_entity.entity_id)) is None:
+        if (
+            self._calculation_strategy != CalculationStrategy.MULTI_SWITCH
+            and state.entity_id != self._source_entity.entity_id
+            and (entity_state := self.hass.states.get(self._source_entity.entity_id)) is None
+        ):
             return None
 
         unavailable_power = self._sensor_config.get(CONF_UNAVAILABLE_POWER)
@@ -668,12 +671,12 @@ class VirtualPowerSensor(SensorEntity, PowerSensor):
 
     async def async_switch_sub_profile(self, profile: str) -> None:
         """Switches to a new sub profile"""
-        if not self._power_profile or not self._power_profile.has_sub_profiles or self._power_profile.sub_profile_select:
+        if not self._power_profile or not await self._power_profile.has_sub_profiles or self._power_profile.sub_profile_select:
             raise HomeAssistantError(
                 "This is only supported for sensors having sub profiles, and no automatic profile selection",
             )
 
-        if profile not in self._power_profile.get_sub_profiles():
+        if profile not in await self._power_profile.get_sub_profiles():
             raise HomeAssistantError(f"{profile} is not a possible sub profile")
 
         await self._select_new_sub_profile(profile)

@@ -3,9 +3,11 @@ import datetime
 import json
 import logging
 import os
+import shutil
 import time
 from collections.abc import Callable, Coroutine
 from functools import partial
+from json import JSONDecodeError
 from typing import Any, cast
 
 import aiohttp
@@ -13,14 +15,13 @@ from aiohttp import ClientError
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.storage import STORAGE_DIR
 
-from custom_components.powercalc.helpers import get_library_json_path
 from custom_components.powercalc.power_profile.error import LibraryLoadingError, ProfileDownloadError
 from custom_components.powercalc.power_profile.loader.protocol import Loader
 from custom_components.powercalc.power_profile.power_profile import DeviceType
 
 _LOGGER = logging.getLogger(__name__)
 
-DOWNLOAD_PROXY = "https://powercalc.lauwbier.nl/api"
+DOWNLOAD_PROXY = "https://api.powercalc.nl"
 ENDPOINT_LIBRARY = f"{DOWNLOAD_PROXY}/library"
 ENDPOINT_DOWNLOAD = f"{DOWNLOAD_PROXY}/download"
 
@@ -33,6 +34,7 @@ class RemoteLoader(Loader):
         self.library_contents: dict = {}
         self.model_infos: dict[str, dict] = {}
         self.manufacturer_models: dict[str, list[dict]] = {}
+        self.manufacturer_aliases: dict[str, str] = {}
         self.last_update_time: float | None = None
 
     async def initialize(self) -> None:
@@ -43,29 +45,51 @@ class RemoteLoader(Loader):
         manufacturers: list[dict] = self.library_contents.get("manufacturers", [])
         for manufacturer in manufacturers:
             models: list[dict] = manufacturer.get("models", [])
+            manufacturer_name = str(manufacturer.get("name"))
             for model in models:
-                manufacturer_name = str(manufacturer.get("name"))
                 model_id = str(model.get("id"))
                 self.model_infos[f"{manufacturer_name}/{model_id}"] = model
                 if manufacturer_name not in self.manufacturer_models:
                     self.manufacturer_models[manufacturer_name] = []
                 self.manufacturer_models[manufacturer_name].append(model)
 
+            self.manufacturer_aliases[manufacturer_name.lower()] = manufacturer_name
+            for alias in manufacturer.get("aliases", []):
+                self.manufacturer_aliases[alias.lower()] = manufacturer_name
+
     async def load_library_json(self) -> dict[str, Any]:
         """Load library.json file"""
 
+        local_path = self.hass.config.path(STORAGE_DIR, "powercalc_profiles", "library.json")
+
         def _load_local_library_json() -> dict[str, Any]:
             """Load library.json file from local storage"""
-            with open(get_library_json_path()) as f:
+            if not os.path.exists(local_path):
+                raise ProfileDownloadError("Local library.json file not found")
+            with open(local_path) as f:
                 return cast(dict[str, Any], json.load(f))
 
         async def _download_remote_library_json() -> dict[str, Any] | None:
-            """Download library.json from github"""
+            """
+            Download library.json from Github.
+            If download is successful, save it to local storage to use as fallback in case of internet connection issues.
+            """
             _LOGGER.debug("Loading library.json from github")
             async with aiohttp.ClientSession() as session, session.get(ENDPOINT_LIBRARY) as resp:
                 if resp.status != 200:
                     raise ProfileDownloadError("Failed to download library.json, unexpected status code")
-                return cast(dict[str, Any], await resp.json())
+
+                def _save_to_local_storage(data: bytes) -> None:
+                    """Save library.json to local storage"""
+                    os.makedirs(os.path.dirname(local_path), exist_ok=True)
+                    with open(local_path, "wb") as f:
+                        f.write(data)
+
+                json_data = cast(dict[str, Any], await resp.json())
+
+                await self.hass.async_add_executor_job(_save_to_local_storage, await resp.read())
+
+                return json_data
 
         try:
             return cast(dict[str, Any], await self.download_with_retry(_download_remote_library_json))
@@ -82,6 +106,11 @@ class RemoteLoader(Loader):
             if not device_type or device_type in manufacturer.get("device_types", [])
         }
 
+    async def find_manufacturer(self, search: str) -> str | None:
+        """Find the manufacturer in the library."""
+
+        return self.manufacturer_aliases.get(search, None)
+
     async def get_model_listing(self, manufacturer: str, device_type: DeviceType | None) -> set[str]:
         """Get listing of available models for a given manufacturer."""
 
@@ -91,7 +120,13 @@ class RemoteLoader(Loader):
             if not device_type or device_type in model.get("device_type", DeviceType.LIGHT)
         }
 
-    async def load_model(self, manufacturer: str, model: str, force_update: bool = False) -> tuple[dict, str] | None:
+    async def load_model(
+        self,
+        manufacturer: str,
+        model: str,
+        force_update: bool = False,
+        retry_count: int = 0,
+    ) -> tuple[dict, str] | None:
         model_info = self.model_infos.get(f"{manufacturer}/{model}")
         if not model_info:
             raise LibraryLoadingError("Model not found in library: %s/%s", manufacturer, model)
@@ -117,6 +152,7 @@ class RemoteLoader(Loader):
                 await self.set_last_update_time(time.time())
             except ProfileDownloadError as e:
                 if not path_exists:
+                    await self.hass.async_add_executor_job(shutil.rmtree, storage_path)
                     raise e
                 _LOGGER.debug("Failed to download profile, falling back to local profile")
 
@@ -125,7 +161,15 @@ class RemoteLoader(Loader):
             with open(model_path) as f:
                 return cast(dict[str, Any], json.load(f))
 
-        json_data = await self.hass.async_add_executor_job(_load_json)  # type: ignore
+        try:
+            json_data = await self.hass.async_add_executor_job(_load_json)  # type: ignore
+        except JSONDecodeError as e:
+            _LOGGER.error("model.json file is not valid JSON")
+            if retry_count < 2:
+                _LOGGER.debug("Retrying to load model.json file")
+                return await self.load_model(manufacturer, model, True, retry_count + 1)
+            raise LibraryLoadingError("Failed to load model.json file") from e
+
         return json_data, storage_path
 
     def get_storage_path(self, manufacturer: str, model: str) -> str:
@@ -156,9 +200,6 @@ class RemoteLoader(Loader):
         """Find the model in the library."""
 
         models = self.manufacturer_models.get(manufacturer, [])
-        if not models:
-            return None
-
         return next(
             (model.get("id") for model in models for string in search if string == model.get("id") or string in model.get("aliases", [])),
             None,
@@ -180,13 +221,13 @@ class RemoteLoader(Loader):
             try:
                 return await callback()
             except (ClientError, ProfileDownloadError) as e:
-                _LOGGER.error(e, exc_info=e)
+                _LOGGER.debug(e)
                 retry_count += 1
                 if retry_count == max_retries:
                     raise ProfileDownloadError(f"Failed to download even after {max_retries} retries, falling back to local copy") from e
 
                 await asyncio.sleep(self.retry_timeout)
-                _LOGGER.warning("Failed to download, retrying... (Attempt %d of %d)", retry_count, max_retries)
+                _LOGGER.warning("Failed to download, retrying... (Attempt %d of %d)", retry_count + 1, max_retries)
         return None  # pragma: no cover
 
     async def download_profile(self, manufacturer: str, model: str, storage_path: str) -> None:
