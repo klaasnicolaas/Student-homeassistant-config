@@ -32,15 +32,6 @@ cloud:
         - light.stellingkast
         - light.bureau
         # Scripts
-        - script.channel_1
-        - script.channel_2
-        - script.channel_3
-        - script.channel_4
-        - script.channel_5
-        - script.channel_6
-        - script.channel_7
-        - script.channel_8
-        - script.channel_9
         - script.play_radio
         - script.go_away
         - script.goodmorning
