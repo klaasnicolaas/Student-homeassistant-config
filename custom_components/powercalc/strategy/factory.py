@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections.abc import Callable
 from decimal import Decimal
 
 from homeassistant.const import CONF_CONDITION, CONF_ENTITIES
@@ -53,26 +54,20 @@ class PowerCalculatorStrategyFactory:
         source_entity: SourceEntity,
     ) -> PowerCalculationStrategyInterface:
         """Create instance of calculation strategy based on configuration."""
-        if strategy == CalculationStrategy.LINEAR:
-            return self._create_linear(source_entity, config, power_profile)
-
-        if strategy == CalculationStrategy.FIXED:
-            return self._create_fixed(source_entity, config, power_profile)
-
-        if strategy == CalculationStrategy.LUT:
-            return self._create_lut(source_entity, power_profile)
-
-        if strategy == CalculationStrategy.MULTI_SWITCH:
-            return self._create_multi_switch(config, power_profile)
-
-        if strategy == CalculationStrategy.PLAYBOOK:
-            return self._create_playbook(config)
-
-        if strategy == CalculationStrategy.WLED:
-            return self._create_wled(source_entity, config)
+        strategy_mapping: dict[str, Callable[[], PowerCalculationStrategyInterface]] = {
+            CalculationStrategy.LINEAR: lambda: self._create_linear(source_entity, config, power_profile),
+            CalculationStrategy.FIXED: lambda: self._create_fixed(source_entity, config, power_profile),
+            CalculationStrategy.LUT: lambda: self._create_lut(source_entity, power_profile),
+            CalculationStrategy.MULTI_SWITCH: lambda: self._create_multi_switch(config, power_profile),
+            CalculationStrategy.PLAYBOOK: lambda: self._create_playbook(config),
+            CalculationStrategy.WLED: lambda: self._create_wled(source_entity, config),
+        }
 
         if strategy == CalculationStrategy.COMPOSITE:
             return await self._create_composite(config, power_profile, source_entity)
+
+        if strategy in strategy_mapping:
+            return strategy_mapping[strategy]()
 
         raise UnsupportedStrategyError("Invalid calculation mode", strategy)
 
@@ -105,7 +100,7 @@ class PowerCalculatorStrategyFactory:
         power_profile: PowerProfile | None,
     ) -> FixedStrategy:
         """Create the fixed strategy."""
-        fixed_config = config.get(CONF_FIXED)
+        fixed_config: dict | None = config.get(CONF_FIXED)
         if fixed_config is None:
             if power_profile and power_profile.fixed_mode_config:
                 fixed_config = power_profile.fixed_mode_config
@@ -118,7 +113,7 @@ class PowerCalculatorStrategyFactory:
         if isinstance(power, Template):
             power.hass = self._hass
 
-        states_power: dict = fixed_config.get(CONF_STATES_POWER)  # type: ignore
+        states_power = fixed_config.get(CONF_STATES_POWER)
         if states_power:
             for p in states_power.values():
                 if isinstance(p, Template):
@@ -145,7 +140,7 @@ class PowerCalculatorStrategyFactory:
             raise StrategyConfigurationError("No WLED configuration supplied")
 
         return WledStrategy(
-            config=config.get(CONF_WLED),  # type: ignore
+            config=config.get(CONF_WLED),
             light_entity=source_entity,
             hass=self._hass,
             standby_power=config.get(CONF_STANDBY_POWER),
@@ -155,8 +150,8 @@ class PowerCalculatorStrategyFactory:
         if CONF_PLAYBOOK not in config:
             raise StrategyConfigurationError("No Playbook configuration supplied")
 
-        playbook_config = config.get(CONF_PLAYBOOK)
-        return PlaybookStrategy(self._hass, playbook_config)  # type: ignore
+        playbook_config: dict = config.get(CONF_PLAYBOOK)
+        return PlaybookStrategy(self._hass, playbook_config)
 
     async def _create_composite(
         self,
@@ -164,7 +159,7 @@ class PowerCalculatorStrategyFactory:
         power_profile: PowerProfile | None,
         source_entity: SourceEntity,
     ) -> CompositeStrategy:
-        sub_strategies = list(config.get(CONF_COMPOSITE))  # type: ignore
+        sub_strategies = list(config.get(CONF_COMPOSITE))
 
         async def _create_sub_strategy(strategy_config: ConfigType) -> SubStrategy:
             condition_instance = None

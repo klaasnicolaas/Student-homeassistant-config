@@ -1,19 +1,23 @@
 """The Powercalc constants."""
 
+from __future__ import annotations
+
 from datetime import timedelta
 from enum import StrEnum
 from typing import Literal
 
 from homeassistant.components.utility_meter.const import DAILY, MONTHLY, WEEKLY
 from homeassistant.const import (
+    STATE_CLOSED,
     STATE_NOT_HOME,
     STATE_OFF,
+    STATE_OPEN,
     STATE_STANDBY,
     STATE_UNAVAILABLE,
 )
 from homeassistant.const import __version__ as HA_VERSION  # noqa
 
-MIN_HA_VERSION = "2024.3"
+MIN_HA_VERSION = "2024.4"
 
 DOMAIN = "powercalc"
 DOMAIN_CONFIG = "config"
@@ -28,6 +32,7 @@ DATA_STANDBY_POWER_SENSORS = "standby_power_sensors"
 
 ENTRY_DATA_ENERGY_ENTITY = "_energy_entity"
 ENTRY_DATA_POWER_ENTITY = "_power_entity"
+ENTRY_GLOBAL_CONFIG_UNIQUE_ID = "powercalc_global_configuration"
 
 DUMMY_ENTITY_ID = "sensor.dummy"
 
@@ -97,7 +102,8 @@ CONF_SENSORS = "sensors"
 CONF_SELF_USAGE_INCLUDED = "self_usage_included"
 CONF_SUB_PROFILE = "sub_profile"
 CONF_SUBTRACT_ENTITIES = "subtract_entities"
-CONF_STATE_TRIGGER = "states_trigger"
+CONF_STATE_TRIGGER = "state_trigger"
+CONF_STATES_TRIGGER = "states_trigger"
 CONF_SLEEP_POWER = "sleep_power"
 CONF_UNAVAILABLE_POWER = "unavailable_power"
 CONF_UPDATE_FREQUENCY = "update_frequency"
@@ -115,6 +121,7 @@ CONF_CALCULATION_ENABLED_CONDITION = "calculation_enabled_condition"
 CONF_DISABLE_STANDBY_POWER = "disable_standby_power"
 CONF_CUSTOM_MODEL_DIRECTORY = "custom_model_directory"
 CONF_UTILITY_METER_OFFSET = "utility_meter_offset"
+CONF_UTILITY_METER_NET_CONSUMPTION = "utility_meter_net_consumption"
 CONF_UTILITY_METER_TYPES = "utility_meter_types"
 CONF_UTILITY_METER_TARIFFS = "utility_meter_tariffs"
 CONF_OR = "or"
@@ -138,6 +145,8 @@ class UnitPrefix(StrEnum):
     NONE = "none"
     KILO = "k"
     MEGA = "M"
+    GIGA = "G"
+    TERA = "T"
 
 
 ENTITY_CATEGORY_CONFIG = "config"
@@ -157,6 +166,7 @@ DEFAULT_POWER_SENSOR_PRECISION = 2
 DEFAULT_ENERGY_INTEGRATION_METHOD = ENERGY_INTEGRATION_METHOD_LEFT
 DEFAULT_ENERGY_NAME_PATTERN = "{} energy"
 DEFAULT_ENERGY_SENSOR_PRECISION = 4
+DEFAULT_ENERGY_UNIT_PREFIX = UnitPrefix.KILO
 DEFAULT_ENTITY_CATEGORY: str | None = ENTITY_CATEGORY_NONE
 DEFAULT_UTILITY_METER_TYPES = [DAILY, WEEKLY, MONTHLY]
 
@@ -184,7 +194,7 @@ SERVICE_CHANGE_GUI_CONFIGURATION = "change_gui_config"
 
 SIGNAL_POWER_SENSOR_STATE_CHANGE = "powercalc_power_sensor_state_change"
 
-OFF_STATES = (STATE_OFF, STATE_NOT_HOME, STATE_STANDBY, STATE_UNAVAILABLE)
+OFF_STATES = (STATE_OFF, STATE_NOT_HOME, STATE_STANDBY, STATE_UNAVAILABLE, STATE_OPEN, STATE_CLOSED)
 
 
 class CalculationStrategy(StrEnum):
@@ -197,6 +207,9 @@ class CalculationStrategy(StrEnum):
     FIXED = "fixed"
     PLAYBOOK = "playbook"
     WLED = "wled"
+
+
+CALCULATION_STRATEGY_CONF_KEYS: list[str] = [strategy.value for strategy in CalculationStrategy]
 
 
 class SensorType(StrEnum):
