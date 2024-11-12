@@ -1,0 +1,93 @@
+blueprint:
+  name: TRV Calibrator
+  description: Calibrate your TRV using an external sensor
+  domain: automation
+  input:
+    trv:
+      name: Smart TRV
+      selector:
+        entity:
+          domain:
+          - climate
+          multiple: false
+    temperature_sensor:
+      name: Temperature Sensor
+      description: Sensor used to calibrate your TRV
+      selector:
+        entity:
+          domain:
+          - sensor
+          device_class:
+          - temperature
+          multiple: false
+    trv_calibration_number:
+      name: TRV Calibration Entity
+      description: If you can't find it it's possible that your TRV don't support
+        calibration. Consider using the Better Thermostat custom integration instead.
+      selector:
+        entity:
+          domain:
+          - number
+          device_class:
+          - temperature
+          multiple: false
+  source_url: https://github.com/rotilho/home-assistant-blueprints/blob/main/trv_calibrator.yaml
+mode: restart
+variables:
+  trv: !input trv
+  trv_calibration_number: !input trv_calibration_number
+  temperature_sensor: !input temperature_sensor
+trigger:
+- platform: state
+  entity_id: !input trv
+  for:
+    hours: 0
+    minutes: 0
+    seconds: 0
+- platform: state
+  entity_id: !input trv_calibration_number
+  for:
+    hours: 0
+    minutes: 0
+    seconds: 0
+- platform: state
+  entity_id: !input temperature_sensor
+  for:
+    hours: 0
+    minutes: 0
+    seconds: 0
+condition:
+- condition: template
+  value_template: '{{ state_attr(trv, "current_temperature") != None }}'
+- condition: template
+  value_template: '{{ states(trv_calibration_number) != "unavailable" and states(trv_calibration_number)
+    != "unknown" }}'
+- condition: template
+  value_template: '{{ states(temperature_sensor) != "unavailable" and states(temperature_sensor)
+    != "unknown" }}'
+action:
+- delay:
+    hours: 0
+    minutes: 1
+    seconds: 0
+    milliseconds: 0
+- service: number.set_value
+  target:
+    entity_id: !input trv_calibration_number
+  data:
+    value: "{% set room_temperature = states(temperature_sensor) | float %} {% set
+      trv_temperature = state_attr(trv, \"current_temperature\") | float(0) %}\n{%
+      set trv_calibration = states(trv_calibration_number) | float %} {% set trv_calibration_min
+      = state_attr(trv_calibration_number, \"min\") | float(-5) %} {% set trv_calibration_max
+      = state_attr(trv_calibration_number, \"max\") | float(5) %} {% set trv_calibration_step
+      = state_attr(trv_calibration_number, \"step\") | float(1) %}\n{% set step =
+      trv_calibration_step | string %}\n{% if step.split(\".\") | length > 1 -%}\n
+      \ {% set trv_calibration_step_decimals = step.split(\".\")[1] | length %}\n{%-
+      else -%}\n  {% set trv_calibration_step_decimals = 0 %}\n{%- endif %}\n\n{%
+      set new_trv_calibration = room_temperature - trv_temperature + trv_calibration
+      %} {% set new_trv_calibration_bounded = [ [ (new_trv_calibration - new_trv_calibration
+      % trv_calibration_step) | round(trv_calibration_step_decimals), trv_calibration_min
+      ] | max, trv_calibration_max ] | min %}\n{% if new_trv_calibration_bounded <
+      trv_calibration - trv_calibration_step or trv_calibration + trv_calibration_step
+      < new_trv_calibration_bounded -%}\n  {{ new_trv_calibration_bounded }}\n{%-
+      else -%}\n  {{ states(trv_calibration_number) }}\n{%- endif %}"
