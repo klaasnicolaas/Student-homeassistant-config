@@ -1,15 +1,12 @@
-"""Switch platform for Google Home"""
+"""Switch platform for Google Home."""
 
 from __future__ import annotations
 
 import logging
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from homeassistant.components.switch import SwitchEntity
-from homeassistant.config_entries import ConfigEntry
-from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import EntityCategory
-from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .const import (
     DATA_CLIENT,
@@ -20,30 +17,35 @@ from .const import (
 )
 from .entity import GoogleHomeBaseEntity
 
+if TYPE_CHECKING:
+    from homeassistant.core import HomeAssistant
+    from homeassistant.helpers.entity_platform import AddEntitiesCallback
+
+    from .types import GoogleHomeConfigEntry
+
 _LOGGER: logging.Logger = logging.getLogger(__package__)
 
 
 async def async_setup_entry(
     hass: HomeAssistant,
-    entry: ConfigEntry,
+    entry: GoogleHomeConfigEntry,
     async_add_devices: AddEntitiesCallback,
 ) -> bool:
-    """Setup switch platform."""
+    """Set up switch platform."""
     client = hass.data[DOMAIN][entry.entry_id][DATA_CLIENT]
     coordinator = hass.data[DOMAIN][entry.entry_id][DATA_COORDINATOR]
 
-    switches: list[SwitchEntity] = []
-    for device in coordinator.data:
-        if device.auth_token and device.available:
-            switches.append(
-                DoNotDisturbSwitch(
-                    coordinator,
-                    client,
-                    device.device_id,
-                    device.name,
-                    device.hardware,
-                )
-            )
+    switches = [
+        DoNotDisturbSwitch(
+            coordinator,
+            client,
+            device.device_id,
+            device.name,
+            device.hardware,
+        )
+        for device in coordinator.data
+        if device.auth_token and device.available
+    ]
 
     if switches:
         async_add_devices(switches)
@@ -63,19 +65,17 @@ class DoNotDisturbSwitch(GoogleHomeBaseEntity, SwitchEntity):
         return LABEL_DO_NOT_DISTURB
 
     @property
-    def is_on(self) -> bool:
+    def is_on(self) -> bool:  # type: ignore[override]
         """Return true if Do Not Disturb Mode is on."""
         device = self.get_device()
 
         if device is None:
             return False
 
-        is_enabled = device.get_do_not_disturb()
-
-        return is_enabled
+        return device.get_do_not_disturb()
 
     async def set_do_not_disturb(self, enable: bool) -> None:
-        """Sets Do Not Disturb mode."""
+        """Set Do Not Disturb mode."""
         device = self.get_device()
         if device is None:
             _LOGGER.error("Device %s is not found.", self.device_name)

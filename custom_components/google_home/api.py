@@ -6,15 +6,12 @@ import asyncio
 from http import HTTPStatus
 import ipaddress
 import logging
-from typing import Literal, cast
+from typing import TYPE_CHECKING, Literal, cast
 
-from aiohttp import ClientError, ClientSession
+from aiohttp import ClientError, ClientSession, ClientTimeout
 from aiohttp.client_exceptions import ClientConnectorError, ContentTypeError
 from glocaltokens.client import Device, GLocalAuthenticationTokens
 from glocaltokens.utils.token import is_aas_et
-from zeroconf import Zeroconf
-
-from homeassistant.core import HomeAssistant
 
 from .const import (
     API_ENDPOINT_ALARM_DELETE,
@@ -35,11 +32,16 @@ from .exceptions import InvalidMasterToken
 from .models import GoogleHomeDevice
 from .types import AlarmJsonDict, JsonDict, TimerJsonDict
 
+if TYPE_CHECKING:
+    from zeroconf import Zeroconf
+
+    from homeassistant.core import HomeAssistant
+
 _LOGGER: logging.Logger = logging.getLogger(__package__)
 
 
 class GlocaltokensApiClient:
-    """API client"""
+    """API client."""
 
     def __init__(
         self,
@@ -69,30 +71,32 @@ class GlocaltokensApiClient:
         self.zeroconf_instance = zeroconf_instance
 
     async def async_get_master_token(self) -> str:
-        """Get master API token"""
+        """Get master API token."""
 
         def _get_master_token() -> str | None:
             return self._client.get_master_token()
 
-        master_token = await self.hass.async_add_executor_job(_get_master_token)
+        master_token = await self.hass.async_add_executor_job(_get_master_token)  # type: ignore[arg-type]
         if master_token is None or is_aas_et(master_token) is False:
             raise InvalidMasterToken
         return master_token
 
     async def async_get_access_token(self) -> str:
-        """Get access token using master token"""
+        """Get access token using master token."""
 
         def _get_access_token() -> str | None:
             return self._client.get_access_token()
 
-        access_token = await self.hass.async_add_executor_job(_get_access_token)
+        access_token = await self.hass.async_add_executor_job(_get_access_token)  # type: ignore[arg-type]
         if access_token is None:
             raise InvalidMasterToken
         return access_token
 
     async def get_google_devices(self) -> list[GoogleHomeDevice]:
         """Get google device authentication tokens.
-        Note this method will fetch necessary access tokens if missing"""
+
+        Note this method will fetch necessary access tokens if missing.
+        """
 
         if not self.google_devices:
 
@@ -102,7 +106,7 @@ class GlocaltokensApiClient:
                     force_homegraph_reload=True,
                 )
 
-            google_devices = await self.hass.async_add_executor_job(_get_google_devices)
+            google_devices = await self.hass.async_add_executor_job(_get_google_devices)  # type: ignore[arg-type]
             self.google_devices = [
                 GoogleHomeDevice(
                     device_id=device.device_id,
@@ -116,24 +120,25 @@ class GlocaltokensApiClient:
         return self.google_devices
 
     async def get_android_id(self) -> str:
-        """Generate random android_id"""
+        """Generate random android_id."""
 
         def _get_android_id() -> str:
             return self._client.get_android_id()
 
-        return await self.hass.async_add_executor_job(_get_android_id)
+        return await self.hass.async_add_executor_job(_get_android_id)  # type: ignore[arg-type]
 
     @staticmethod
     def create_url(ip_address: str, port: int, api_endpoint: str) -> str:
-        """Creates url to endpoint.
-        Note: port argument is unused because all request must be done to 8443"""
+        """Create url to endpoint.
+
+        Note: port argument is unused because all request must be done to 8443.
+        """
         if isinstance(ipaddress.ip_address(ip_address), ipaddress.IPv6Address):
             ip_address = f"[{ip_address}]"
         return f"https://{ip_address}:{port}/{api_endpoint}"
 
     async def update_google_devices_information(self) -> list[GoogleHomeDevice]:
-        """Retrieves devices from glocaltokens and
-        fetches alarm/timer data from each of the device"""
+        """Retrieve devices from glocaltokens and fetches alarm/timer data from each of the device."""
 
         devices = await self.get_google_devices()
 
@@ -151,14 +156,13 @@ class GlocaltokensApiClient:
                     device.name,
                 )
 
-        coordinator_data = await asyncio.gather(
+        return await asyncio.gather(
             *[
                 self.collect_data_from_endpoints(device)
                 for device in devices
                 if device.ip_address and device.auth_token
             ]
         )
-        return coordinator_data
 
     async def collect_data_from_endpoints(
         self, device: GoogleHomeDevice
@@ -166,13 +170,12 @@ class GlocaltokensApiClient:
         """Collect data from different endpoints."""
         device = await self.update_alarms_and_timers(device)
         device = await self.update_alarm_volume(device)
-        device = await self.update_do_not_disturb(device)
-        return device
+        return await self.update_do_not_disturb(device)
 
     async def update_alarms_and_timers(
         self, device: GoogleHomeDevice
     ) -> GoogleHomeDevice:
-        """Fetches timers and alarms from google device"""
+        """Fetch timers and alarms from google device."""
         response = await self.request(
             method="GET", endpoint=API_ENDPOINT_ALARMS, device=device, polling=True
         )
@@ -201,8 +204,10 @@ class GlocaltokensApiClient:
     async def delete_alarm_or_timer(
         self, device: GoogleHomeDevice, item_to_delete: str
     ) -> None:
-        """Deletes a timer or alarm.
-        Can also delete multiple if a list is provided (Not implemented yet)."""
+        """Delete a timer or alarm.
+
+        Can also delete multiple if a list is provided (Not implemented yet).
+        """
 
         data = {"ids": [item_to_delete]}
 
@@ -247,7 +252,7 @@ class GlocaltokensApiClient:
                 )
 
     async def reboot_google_device(self, device: GoogleHomeDevice) -> None:
-        """Reboots a Google Home device if it supports this."""
+        """Reboot a Google Home device if it supports this."""
 
         # "now" means reboot and "fdr" means factory reset (Not implemented).
         data = {"params": "now"}
@@ -271,7 +276,7 @@ class GlocaltokensApiClient:
     async def update_do_not_disturb(
         self, device: GoogleHomeDevice, enable: bool | None = None
     ) -> GoogleHomeDevice:
-        """Gets or sets the do not disturb setting on a Google Home device."""
+        """Get or set the do not disturb setting on a Google Home device."""
 
         data = None
         polling = False
@@ -324,7 +329,7 @@ class GlocaltokensApiClient:
     async def update_alarm_volume(
         self, device: GoogleHomeDevice, volume: int | None = None
     ) -> GoogleHomeDevice:
-        """Gets or sets the alarm volume setting on a Google Home device."""
+        """Get or set the alarm volume setting on a Google Home device."""
 
         data: JsonDict | None = None
         polling = False
@@ -394,7 +399,7 @@ class GlocaltokensApiClient:
         data: JsonDict | None = None,
         polling: bool = False,
     ) -> JsonDict | None:
-        """Shared request method"""
+        """Shared request method."""
 
         if device.ip_address is None:
             _LOGGER.warning("Device %s doesn't have an IP address!", device.name)
@@ -421,8 +426,9 @@ class GlocaltokensApiClient:
         resp = None
 
         try:
+            timeout = ClientTimeout(total=TIMEOUT)
             async with self._session.request(
-                method, url, json=data, headers=headers, timeout=TIMEOUT
+                method, url, json=data, headers=headers, timeout=timeout
             ) as response:
                 if response.status == HTTPStatus.OK:
                     try:
@@ -478,15 +484,14 @@ class GlocaltokensApiClient:
                 device.name,
             )
             device.available = False
-        except ClientError as ex:
+        except ClientError:
             # Make sure that we log the exception from the client if one occurred.
-            _LOGGER.error(
-                "Request from %s device error: %s",
+            _LOGGER.exception(
+                "Request from %s device error",
                 device.name,
-                ex,
             )
             device.available = False
-        except asyncio.TimeoutError:
+        except TimeoutError:
             _LOGGER.debug(
                 "%s device timed out while performing a request to it - Raw data: %s",
                 device.name,
