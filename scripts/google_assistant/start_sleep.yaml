@@ -15,7 +15,7 @@ start_sleep_with_alarm:
     - service: input_boolean.turn_on
       target:
         entity_id:
-          - input_boolean.go_to_sleep
+          - input_boolean.sleeping
           - input_boolean.wakeup_with_alarm
     - service: input_boolean.turn_off
       target:
@@ -63,7 +63,7 @@ start_sleep:
     # Switch boolean
     - service: input_boolean.turn_on
       target:
-        entity_id: input_boolean.go_to_sleep
+        entity_id: input_boolean.sleeping
     - service: input_boolean.turn_off
       target:
         entity_id: input_boolean.lights_automated

@@ -6,7 +6,7 @@ goodmorning:
   sequence:
     - service: input_boolean.turn_off
       target:
-        entity_id: input_boolean.go_to_sleep
+        entity_id: input_boolean.sleeping
     # Turn on Automated Lights cycle
     - service: input_boolean.turn_on
       target:

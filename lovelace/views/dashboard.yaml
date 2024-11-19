@@ -125,7 +125,7 @@ cards:
               # Go to sleep
               - type: picture-entity
                 name: Slapen
-                entity: input_boolean.go_to_sleep
+                entity: input_boolean.sleeping
                 state_image:
                   "on": /local/images/sleeping_on.png
                   "off": /local/images/sleeping_off.png

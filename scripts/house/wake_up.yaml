@@ -16,7 +16,7 @@ wake_up:
     - service: input_boolean.turn_off
       target:
         entity_id:
-          - input_boolean.go_to_sleep
+          - input_boolean.sleeping
           - input_boolean.wakeup_with_alarm
           - input_boolean.wakeup_wait
 

@@ -4,8 +4,8 @@
 
 # Input boolean for if I go to bed
 input_boolean:
-  go_to_sleep:
-    name: Ik ga naar bed/slapen
+  sleeping:
+    name: Sleeping
     icon: mdi:sleep
 
   wakeup_with_alarm:

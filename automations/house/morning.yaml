@@ -22,7 +22,7 @@
     conditions:
       # Condition is that I went to bed
       - condition: state
-        entity_id: input_boolean.go_to_sleep
+        entity_id: input_boolean.sleeping
         state: 'on'
       # And I also have to be home :)
       - condition: state
