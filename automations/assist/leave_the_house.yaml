@@ -1,0 +1,41 @@
+- alias: "[Voice] - Leave the house"
+  description: When I want the house to be in a status of departure
+
+  id: 0b3b6121-27d7-43df-a207-d3056fb17494
+  mode: single
+
+  triggers:
+    - trigger: conversation
+      command:
+        - Sluit jij het huis af
+        - Ik pak me tas en ga
+        - Ik pak me fiets en ga
+  conditions: []
+  actions:
+    # Turn off automated lights
+    - action: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.lights_automated
+
+    # Turn all the lights off
+    - action: light.turn_off
+      data:
+        transition: 3
+      target:
+        entity_id:
+          - light.livingroom
+          - light.kitchen
+          - light.hall
+          - light.bathroom
+          - light.bureau
+
+    # Close cover
+    - action: cover.close_cover
+      target:
+        entity_id: cover.curtain_window
+
+    # Stop music
+    - action: media_player.media_stop
+      target:
+        entity_id: media_player.google_home
+    - set_conversation_response: Begrepen. Ik zal het huis voor je afsluiten, kom je snel weer thuis?
