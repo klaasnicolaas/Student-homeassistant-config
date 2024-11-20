@@ -134,14 +134,14 @@ cards:
 
       # Extra explanation
       - type: markdown
-        title: Google Assistant
+        title: Voice Assistant
         content: |
-          **Ik wil koken** -> voor als je gaat koken.
-          **Het is avond** -> voor gedimde lampen in de avond.
+          **Ik wil gaan koken** -> Extra licht in de keuken.
+          **Het is avond** -> Start avond licht scene.
+          **Ik ben wakker** -> zodat HA weet dat je wakker bent.
+          **Sluit jij het huis af?** -> om het huis af te sluiten.
           **Ik wil morgen vroeg op** -> wakker worden met wekker.
-          **Ik spreek je morgen weer** -> slapen gaan zonder wekker.
-          **Goedemorgen** -> zodat HA weet dat je wakker bent.
-          **Ik pak me fiets en ga** -> om het huis af te sluiten.
+          **Ik ga slapen zonder wekker** -> slapen zonder wekker.
 
   ########## Stack 2 ###########
   # Show the lights in house
