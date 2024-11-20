@@ -15,14 +15,6 @@ input_boolean:
   wakeup_wait:
     name: Wacht op alarm signaal
 
-  tv_mute:
-    name: Tv Mute
-    icon: mdi:volume-mute
-
-  tv_power:
-    name: Tv
-    icon: mdi:television-classic
-
   emergency:
     name: Noodgeval
 

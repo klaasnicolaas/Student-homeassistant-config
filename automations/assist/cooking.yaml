@@ -9,6 +9,7 @@
       command:
         - Laten we gaan koken
         - Ik wil gaan koken
+  conditions: []
   actions:
     - action: scene.turn_on
       target:

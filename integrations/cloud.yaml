@@ -33,19 +33,9 @@ cloud:
         - light.bureau
         # Scripts
         - script.play_radio
-        - script.go_away
-        - script.goodmorning
-        - script.select_hdmi
-        - script.select_kabel
-        - script.start_cooking
-        - script.start_relax
-        - script.start_sleep
-        - script.start_sleep_with_alarm
         - script.call_emergency
         - script.false_alarm_emergency
         - script.airco_on
         - script.airco_off
         # Input boolean
-        - input_boolean.tv_power
-        - input_boolean.tv_mute
         - input_boolean.beamer_power

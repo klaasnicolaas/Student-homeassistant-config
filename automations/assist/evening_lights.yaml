@@ -9,6 +9,7 @@
       command:
         - Het is avond
         - Mag het licht aan
+  conditions: []
   actions:
     - action: scene.turn_on
       target:

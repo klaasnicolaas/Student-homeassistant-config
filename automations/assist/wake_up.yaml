@@ -8,6 +8,7 @@
   triggers:
     - trigger: conversation
       command: Ik ben wakker
+  conditions: []
   actions:
     - action: input_boolean.turn_off
       target:
