@@ -1,0 +1,18 @@
+---
+- alias: "[Assist] - Wake up"
+  description: Let Home Assistant know that I wake up
+
+  id: afedd031-cefd-4997-830d-2376293ae956
+  mode: single
+
+  triggers:
+    - trigger: conversation
+      command: Ik ben wakker
+  actions:
+    - action: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.sleeping
+    - action: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.lights_automated
+    - set_conversation_response: Goedemorgen, lekker geslapen?
