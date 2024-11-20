@@ -1,2 +1,6 @@
 ---
+# This file is used by the automations editor
+# in the Home Assistant frontend.
+#
+# This file must exist for the frontend Automation editor to work.
 []
