@@ -6,7 +6,8 @@
   mode: single
 
   triggers:
-    - trigger: conversation
+    - alias: Trigger sentence
+      trigger: conversation
       command:
         - Het is avond
         - Mag het licht aan

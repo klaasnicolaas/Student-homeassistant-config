@@ -6,8 +6,10 @@
   mode: single
 
   triggers:
-    - trigger: conversation
-      command: Ik ben wakker
+    - alias: Trigger sentence
+      trigger: conversation
+      command:
+        - Goede[ ]morgen [nabu]
   conditions: []
   actions:
     - action: input_boolean.turn_off

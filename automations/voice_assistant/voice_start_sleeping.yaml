@@ -7,13 +7,12 @@
 
   triggers:
     - trigger: conversation
-      command:
-        - Ik wil morgen vroeg op
-        - Ik wil vroeg op morgen
       id: with_alarm
+      command:
+        - Ik wil (morgen vroeg op|vroeg op morgen)
     - trigger: conversation
-      command: Ik ga slapen zonder wekker
       id: without_alarm
+      command: Ik ga slapen zonder wekker
   conditions: []
   actions:
     - action: input_boolean.turn_on

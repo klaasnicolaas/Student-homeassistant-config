@@ -6,11 +6,11 @@
   mode: single
 
   triggers:
-    - trigger: conversation
+    - alias: Trigger sentence
+      trigger: conversation
       command:
         - Sluit jij het huis af
-        - Ik pak me tas en ga
-        - Ik pak me fiets en ga
+        - Ik pak me (tas|fiets) en ga
   conditions: []
   actions:
     # Turn off automated lights

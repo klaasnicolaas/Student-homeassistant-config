@@ -6,10 +6,10 @@
   mode: single
 
   triggers:
-    - trigger: conversation
+    - alias: Trigger sentence
+      trigger: conversation
       command:
-        - Laten we gaan koken
-        - Ik wil gaan koken
+        - (Ik wil|Laten we) gaan koken
   conditions: []
   actions:
     - action: scene.turn_on
