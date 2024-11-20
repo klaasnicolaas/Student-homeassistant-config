@@ -7,7 +7,9 @@
 
   triggers:
     - trigger: conversation
-      command: Ik wil morgen vroeg op
+      command:
+        - Ik wil morgen vroeg op
+        - Ik wil vroeg op morgen
       id: with_alarm
     - trigger: conversation
       command: Ik ga slapen zonder wekker
