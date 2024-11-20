@@ -85,3 +85,4 @@ midnight:
   md-slider-label-container-color: "var(--accent-color)"
   md-slider-pressed-state-layer-color: "var(--accent-color)"
   md-slider-inactive-track-color: "var(--secondary-background-color)"
+  clear-background-color: "var(--secondary-background-color)"
