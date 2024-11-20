@@ -1,6 +1,6 @@
 ---
 ########## Home Scenes ##########
-- name: Avond
+- name: Evening
   entities:
     light.kitchen_fridge:
       state: "on"

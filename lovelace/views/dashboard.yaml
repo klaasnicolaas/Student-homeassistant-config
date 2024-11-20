@@ -115,13 +115,13 @@ cards:
                     entity_id: scene.cooking
               # Evening
               - type: picture-entity
-                entity: scene.avond
+                entity: scene.evening
                 image: /local/images/evening.png
                 tap_action:
                   action: call-service
                   service: scene.turn_on
                   service_data:
-                    entity_id: scene.avond
+                    entity_id: scene.evening
               # Go to sleep
               - type: picture-entity
                 name: Slapen
@@ -388,7 +388,7 @@ cards:
             entities:
               - entity: binary_sensor.bathroom_door_contact
                 name: Deur
-              - entity: binary_sensor.bathroom_motion_occupancy
+              - entity: binary_sensor.badkamer_presence_occupancy
                 name: Badkamer
               - entity: binary_sensor.shower
           # Curtains

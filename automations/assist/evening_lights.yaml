@@ -1,0 +1,16 @@
+- alias: "[Voice] - Evening lights"
+  description: Activating the evening lights scene
+
+  id: 5cb83534-4136-4c54-a767-43c37fe069f5
+  mode: single
+
+  triggers:
+    - trigger: conversation
+      command:
+        - Het is avond
+        - Mag het licht aan
+  actions:
+    - action: scene.turn_on
+      target:
+        entity_id: scene.evening
+    - set_conversation_response: Kijk nu heb je beter zicht!

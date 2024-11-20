@@ -20,4 +20,4 @@
   action:
     - service: scene.turn_on
       target:
-        entity_id: scene.avond
+        entity_id: scene.evening
