@@ -106,13 +106,13 @@ cards:
             cards:
               # Cooking
               - type: picture-entity
-                entity: scene.koken
+                entity: scene.cooking
                 image: /local/images/cooking.png
                 tap_action:
                   action: call-service
                   service: scene.turn_on
                   service_data:
-                    entity_id: scene.koken
+                    entity_id: scene.cooking
               # Evening
               - type: picture-entity
                 entity: scene.avond

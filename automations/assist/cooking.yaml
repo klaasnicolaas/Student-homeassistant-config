@@ -1,0 +1,16 @@
+- alias: "[Voice] - Let's start cooking"
+  description: Get more light while cooking via voice assistant.
+
+  id: 58e218c9-27c7-45b0-b181-933b52dc3bc7
+  mode: single
+
+  triggers:
+    - trigger: conversation
+      command:
+        - Laten we gaan koken
+        - Ik wil gaan koken
+  actions:
+    - action: scene.turn_on
+      target:
+        entity_id: scene.cooking
+    - set_conversation_response: Succes, ik zal de lampen wat feller maken

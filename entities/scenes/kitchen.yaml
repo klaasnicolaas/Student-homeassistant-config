@@ -1,6 +1,7 @@
 ---
 ########## Kitchen Scenes ##########
-- name: Koken
+- name: Cooking
+  icon: mdi:chef-hat
   entities:
     light.kitchen_fridge:
       state: "on"
