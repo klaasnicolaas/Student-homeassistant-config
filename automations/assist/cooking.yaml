@@ -13,6 +13,8 @@
   conditions: []
   actions:
     - action: scene.turn_on
+      data:
+        transition: 2
       target:
         entity_id: scene.cooking
     - set_conversation_response: Succes, ik zal de lampen wat feller maken

@@ -21,7 +21,7 @@
     # Turn all the lights off
     - action: light.turn_off
       data:
-        transition: 3
+        transition: 2
       target:
         entity_id:
           - light.livingroom

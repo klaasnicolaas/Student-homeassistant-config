@@ -13,6 +13,8 @@
   conditions: []
   actions:
     - action: scene.turn_on
+      data:
+        transition: 2
       target:
         entity_id: scene.evening
-    - set_conversation_response: Kijk nu heb je beter zicht!
+    - set_conversation_response: Begrepen, ik zal de lampen als sfeerverlichting aanzetten.
