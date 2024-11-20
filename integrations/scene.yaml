@@ -6,4 +6,5 @@
 # https://www.home-assistant.io/integrations/scene/
 #
 
-scene: !include_dir_merge_list ../entities/scenes
+scene: !include ../scenes.yaml
+scene split: !include_dir_merge_list ../entities/scenes
