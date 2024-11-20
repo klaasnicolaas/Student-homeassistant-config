@@ -1,0 +1,40 @@
+- alias: "[Voice] - Start sleeping"
+  description: For when I want to go to sleep
+
+  id: 070636cc-bb71-415e-aa75-35ca17d4080a
+  mode: single
+
+  triggers:
+    - trigger: conversation
+      command: Ik wil morgen vroeg op
+      id: with_alarm
+    - trigger: conversation
+      command: Ik ga slapen zonder wekker
+      id: without_alarm
+  conditions: []
+  actions:
+    - action: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.sleeping
+    - action: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.lights_automated
+    - action: script.turn_on
+      target:
+        entity_id: script.lights_fading_off
+    - choose:
+        - conditions:
+            - condition: trigger
+              id:
+                - with_alarm
+          sequence:
+            - action: input_boolean.turn_on
+              target:
+                entity_id: input_boolean.wakeup_with_alarm
+            - set_conversation_response: Slaap lekker, vergeet niet een tijd in te stellen als wekker
+        - conditions:
+            - condition: trigger
+              id:
+                - without_alarm
+          sequence:
+            - set_conversation_response: Slaap lekker, ik zal je morgen niet wakker maken.

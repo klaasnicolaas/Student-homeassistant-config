@@ -1,0 +1,34 @@
+---
+# This script will fade my lights when I go to sleep.
+#
+lights_fading_off:
+  alias: "Fading lights off in programmed sequence"
+  sequence:
+    # Stellingkast
+    - service: light.turn_off
+      target:
+        entity_id: light.bureau
+
+    - delay:
+        seconds: 7
+
+    # Hal
+    - service: light.turn_off
+      target:
+        entity_id: light.hall
+
+    - delay:
+        seconds: 7
+
+    # Keuken
+    - service: light.turn_off
+      target:
+        entity_id: light.kitchen
+
+    - delay:
+        seconds: 7
+
+    # Woonkamer
+    - service: light.turn_off
+      target:
+        entity_id: light.livingroom
