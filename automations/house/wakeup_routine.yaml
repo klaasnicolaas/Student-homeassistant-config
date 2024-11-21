@@ -1,0 +1,98 @@
+---
+- alias: '[House] - Wake up ritual'
+  description: >-
+    Start wakeup automation
+
+  id: 6db6c97d-fe7d-4217-a8f1-0dd3c01804b0
+  mode: single
+
+  trigger:
+    # Trigger is moment that current time is 10 minutes before alarm
+    - platform: state
+      entity_id: binary_sensor.manual_wakeup_alarm
+      from: "off"
+      to: "on"
+  condition:
+    condition: and
+    conditions:
+      # Condition is that I went to bed
+      - condition: state
+        entity_id: input_boolean.sleeping
+        state: "on"
+      # And I also have to be home :)
+      - condition: state
+        entity_id: sensor.klaas_status
+        state: "Thuis"
+      # check if I have setup an alarm
+      - condition: state
+        entity_id: input_boolean.wakeup_with_alarm
+        state: "on"
+  action:
+    - action: input_boolean.turn_off
+      target:
+        entity_id:
+          - input_boolean.sleeping
+          - input_boolean.wakeup_with_alarm
+          - input_boolean.wakeup_wait
+
+    - alias: "Open the curtain to 30%"
+      action: cover.set_cover_position
+      data:
+        position: 30
+      target:
+        entity_id: cover.curtain_window
+
+    - alias: "Turn on wake up lights to 50%"
+      action: light.turn_on
+      data:
+        transition: 2
+        brightness_pct: 50
+      target:
+        entity_id:
+          - light.hall
+          - light.kitchen
+
+    # FROM HERE IT'S STILL 10 MINUTSE BEFORE ALARM
+    - delay:
+        minutes: 10
+
+    # ALARM TURNS ON
+    # An alarm clock sound goes through Google Home
+    - sequence:
+        - action: media_player.volume_set
+          data:
+            volume_level: 0.5
+          target:
+            entity_id: media_player.google_home
+        - action: media_player.play_media
+          data:
+            media_content_type: music
+            media_content_id: !secret wakeup_alarm
+          target:
+            entity_id: media_player.google_home
+        - delay:
+            seconds: 30
+
+    # Start morning briefing
+    - action: script.turn_on
+      target:
+        entity_id: script.home_status_message
+
+    # Wait until morning briefing is done
+    - wait_template: "{{ is_state('input_boolean.wakeup_wait', 'on') }}"
+      continue_on_timeout: true
+
+    # Put the radio ON
+    - action: script.turn_on
+      target:
+        entity_id: script.play_radio
+
+    # Turn on Automated Lights cycle
+    - action: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.lights_automated
+
+    - alias: "Open the curtain to 100%"
+      action: cover.open_cover
+      target:
+        entity_id: cover.curtain_window

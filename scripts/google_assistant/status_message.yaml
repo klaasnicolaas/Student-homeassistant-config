@@ -7,7 +7,7 @@ home_status_message:
     - service: media_player.volume_set
       data:
         entity_id: media_player.google_home
-        volume_level: '0.50'
+        volume_level: 0.50
 
     - service: tts.cloud_say
       entity_id: media_player.google_home
