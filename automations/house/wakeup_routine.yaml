@@ -70,8 +70,8 @@
             media_content_id: !secret wakeup_alarm
           target:
             entity_id: media_player.google_home
-        - delay:
-            seconds: 30
+    - delay:
+        seconds: 30
 
     # Start morning briefing
     - action: script.turn_on
