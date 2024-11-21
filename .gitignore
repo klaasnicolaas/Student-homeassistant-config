@@ -53,4 +53,4 @@ emergency_telegram.yaml
 spook_inverse
 
 # Ignore vendored stuff
-custom_components/hacs
+custom_components
