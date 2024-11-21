@@ -5,14 +5,14 @@
 #
 - alias: '[Light] - Turn ON bathroom light'
   description: >-
-    Turn the light on when I open a door or if there is motion
+    Turn the light on when I open a door or if there is occupancy
 
   id: 2498664e-7b8d-4de5-9613-25435b183274
   mode: single
 
   trigger:
     - platform: state
-      entity_id: binary_sensor.bathroom_door_contact, binary_sensor.bathroom_motion_occupancy
+      entity_id: binary_sensor.bathroom_door_contact, binary_sensor.badkamer_presence_occupancy
       to: 'on'
       from: 'off'
   action:
@@ -35,10 +35,8 @@
 
   trigger:
     - platform: state
-      entity_id: binary_sensor.bathroom_motion_occupancy
+      entity_id: binary_sensor.badkamer_presence_occupancy
       to: 'off'
-      for:
-        minutes: 6
   condition:
     # Keep the light on when you take a shower
     - condition: numeric_state
