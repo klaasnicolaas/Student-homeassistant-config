@@ -5,15 +5,15 @@
 
 - platform: bayesian
   prior: 0.7
-  name: 'Klaas Thuis'
+  name: Klaas at home
   probability_threshold: 0.9
   observations:
     # Wifi
-    - entity_id: proximity.home
+    - entity_id: sensor.home_klaas_samsung_s22_plus_distance
       platform: numeric_state
       prob_given_true: 0.8
       prob_given_false: 0.2
-      below: 150
+      below: 250
     # Android Companion app
     - entity_id: device_tracker.klaas_samsung_s22_plus
       platform: state
