@@ -18,7 +18,7 @@
       state: 'on'
   action:
     # HA Android notification
-    - service: notify.mobile_app_klaas_samsung_s22_plus
+    - service: notify.mobile_app_klaas_samsung_s24_plus
       data:
         title: 'Airco vergeten!'
         message: >

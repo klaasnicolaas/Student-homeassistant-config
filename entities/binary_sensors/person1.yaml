@@ -9,19 +9,19 @@
   probability_threshold: 0.9
   observations:
     # Wifi
-    - entity_id: sensor.home_klaas_samsung_s22_plus_distance
+    - entity_id: sensor.home_klaas_samsung_s24_plus_distance
       platform: numeric_state
       prob_given_true: 0.8
       prob_given_false: 0.2
       below: 250
     # Android Companion app
-    - entity_id: device_tracker.klaas_samsung_s22_plus
+    - entity_id: device_tracker.klaas_samsung_s24_plus
       platform: state
       prob_given_true: 0.9
       prob_given_false: 0.1
       to_state: 'home'
     # Phone wifi connection
-    - entity_id: sensor.klaas_samsung_s22_plus_wifi_connection
+    - entity_id: sensor.klaas_samsung_s24_plus_wifi_connection
       platform: state
       prob_given_true: 0.9
       prob_given_false: 0.1

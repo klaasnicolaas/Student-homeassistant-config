@@ -33,7 +33,7 @@
         state: 'on'
   action:
     # HA Android notification
-    - service: notify.mobile_app_klaas_samsung_s22_plus
+    - service: notify.mobile_app_klaas_samsung_s24_plus
       data:
         title: 'Lampen vergeten!'
         message: >
@@ -61,10 +61,10 @@
       to: 'on'
   condition:
     - condition: state
-      entity_id: device_tracker.klaas_samsung_s22_plus
+      entity_id: device_tracker.klaas_samsung_s24_plus
       state: 'not_home'
   action:
-    - service: notify.mobile_app_klaas_samsung_s22_plus
+    - service: notify.mobile_app_klaas_samsung_s24_plus
       data:
         title: 'Lamp is aan gegaan!'
         message: >

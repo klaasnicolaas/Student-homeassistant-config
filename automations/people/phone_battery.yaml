@@ -9,7 +9,7 @@
 
   trigger:
     - platform: numeric_state
-      entity_id: sensor.klaas_samsung_s22_plus_battery_level
+      entity_id: sensor.klaas_samsung_s24_plus_battery_level
       above: 99
       for: '00:03:00'
   condition:

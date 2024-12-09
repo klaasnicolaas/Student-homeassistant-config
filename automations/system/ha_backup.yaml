@@ -20,7 +20,7 @@
     - service: hassio.backup_full
       data_template:
         name: Backup {{ now().strftime('%Y-%m-%d') }} running HA version {{ states('sensor.current_version') }}
-    - service: notify.mobile_app_klaas_samsung_s22_plus
+    - service: notify.mobile_app_klaas_samsung_s24_plus
       data_template:
         title: '*Home Assistant Backup!*'
         message: >-
