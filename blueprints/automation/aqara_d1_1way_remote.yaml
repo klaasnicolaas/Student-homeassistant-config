@@ -10,12 +10,13 @@ blueprint:
   domain: automation
   input:
     remote:
-      name: Remote
-      description: Aqara D1 remote to use
+      name: Aqara D1 remote action
+      description: >
+        This must be an "action" event entity provided by zigbee2mqtt. For example "event.living_dimmer_action"
       selector:
         entity:
           integration: mqtt
-          domain: sensor
+          domain: event
     cover:
       name: Cover
       description: The cover to control
@@ -30,29 +31,27 @@ max_exceeded: silent
 trigger:
   - platform: state
     entity_id: !input remote
-    attribute: action
-    # Prefent double automation triggers in restart mode
-    not_to: ""
+    to: ~
 
 action:
   - variables:
-      command: '{{ trigger.to_state.state }}'
+      event: "{{ trigger.to_state.attributes.event_type | default('unknown', true) }}"
 
   - choose:
       # Curtain closing
-      - conditions: "{{ command == 'double' }}"
+      - conditions: "{{ event == 'double' }}"
         sequence:
           - service: cover.open_cover
             target: !input 'cover'
             data: {}
       # Curtain open
-      - conditions: "{{ command == 'single' }}"
+      - conditions: "{{ event == 'single' }}"
         sequence:
           - service: cover.close_cover
             target: !input 'cover'
             data: {}
       # Stop curtain
-      - conditions: "{{ command == 'hold' }}"
+      - conditions: "{{ event == 'hold' }}"
         sequence:
           - service: cover.stop_cover
             target: !input 'cover'

@@ -1,10 +1,11 @@
 ---
 # Are the curtains open or closed?
 #
-# {{ is_state('cover.curtain_window', 'open') }}
 - binary_sensor:
-    - name: "curtain"
-      unique_id: curtain_status
-      device_class: window
-      state: >-
-        {{ state_attr('cover.curtain_window', 'current_position') | int > 1 }}
+  - name: "curtain"
+    unique_id: curtain_status
+    device_class: window
+    state: >-
+      {{ state_attr('cover.curtain_window', 'current_position') > 1 }}
+    availability: >-
+      {{ state_attr('cover.curtain_window', 'current_position') | is_number }}

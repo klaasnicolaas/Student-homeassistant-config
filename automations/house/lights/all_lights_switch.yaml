@@ -9,8 +9,8 @@
   use_blueprint:
     path: opple_6way_remote_lights.yaml
     input:
-      brightness: '50'
-      remote: sensor.home_remote_action
+      brightness: 50
+      remote: event.home_remote_action
       light_1:
         entity_id: light.hall
       light_2:
