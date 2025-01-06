@@ -15,7 +15,7 @@
       state: 'Net Aangekomen'
     # Check light sensor value
     - condition: numeric_state
-      entity_id: sensor.kitchen_light_sensor_illuminance_lux
+      entity_id: sensor.kitchen_light_sensor_illuminance
       below: 5
   action:
     - service: scene.turn_on

@@ -8,11 +8,11 @@
   trigger:
     - platform: numeric_state
       entity_id:
-        - sensor.livingroom_light_sensor_illuminance_lux
+        - sensor.livingroom_light_sensor_illuminance
       below: input_number.lux_value_living_low
     - platform: numeric_state
       entity_id:
-        - sensor.livingroom_light_sensor_illuminance_lux
+        - sensor.livingroom_light_sensor_illuminance
       above: input_number.lux_value_living_high
   condition:
     # Check if Automated lights mode is enabled
@@ -34,11 +34,6 @@
               entity_id: light.livingroom
               state: 'off'
           sequence:
-            - service: logbook.log
-              data:
-                name: Woonkamer
-                message: "- Lampen worden automatisch ingeschakeld"
-                entity_id: light.livingroom
             - service: light.turn_on
               target:
                 entity_id: light.livingroom
@@ -53,11 +48,6 @@
               entity_id: light.livingroom
               state: 'on'
           sequence:
-            - service: logbook.log
-              data:
-                name: Woonkamer
-                message: "- Lampen worden automatisch uitgeschakeld"
-                entity_id: light.livingroom
             - service: light.turn_off
               target:
                 entity_id: light.livingroom

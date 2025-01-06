@@ -8,11 +8,11 @@
   trigger:
     - platform: numeric_state
       entity_id:
-        - sensor.kitchen_light_sensor_illuminance_lux
+        - sensor.kitchen_light_sensor_illuminance
       below: input_number.lux_value_kitchen_low
     - platform: numeric_state
       entity_id:
-        - sensor.kitchen_light_sensor_illuminance_lux
+        - sensor.kitchen_light_sensor_illuminance
       above: input_number.lux_value_kitchen_high
   condition:
     # Check if Automated lights mode is enabled
