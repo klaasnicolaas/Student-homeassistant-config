@@ -70,7 +70,9 @@ variables:
 trigger:
   - platform: state
     entity_id: !input remote
-    to: ~
+    not_from:
+      - unavailable
+      - unknown
 
 action:
   - variables:
