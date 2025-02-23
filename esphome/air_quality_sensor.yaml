@@ -1,7 +1,6 @@
 ---
 # IKEA Vindktning
 #
-#
 substitutions:
   device_name: ikea-vindriktning
   friendly_name: Vindriktning
@@ -10,7 +9,11 @@ substitutions:
 esphome:
   name: '${device_name}'
   comment: '${device_description}'
-  platform: ESP8266
+  project:
+    name: "klaasnicolaas.ikea_vindriktning"
+    version: "1.0.0"
+
+esp8266:
   board: d1_mini
 
 wifi:
@@ -20,7 +23,6 @@ wifi:
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
     ssid: '${device_name}'
-    password: !secret fallback_password
 
 captive_portal:
 
