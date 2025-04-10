@@ -34,6 +34,7 @@ cards:
                         ha-card {
                           margin: 10px;
                           box-shadow: none;
+                          border-style: none;
                         }
 
               - type: vertical-stack
@@ -53,6 +54,7 @@ cards:
                         }
                         ha-card {
                           box-shadow: none;
+                          border-style: none;
                         }
                   - type: custom:bar-card
                     entity: sensor.ha_restart_time
@@ -70,6 +72,7 @@ cards:
                         }
                         ha-card {
                           box-shadow: none;
+                          border-style: none;
                         }
                   - type: custom:bar-card
                     entity: sensor.potential_breaking_changes
@@ -85,6 +88,7 @@ cards:
                         }
                         ha-card {
                           box-shadow: none;
+                          border-style: none;
                         }
 
           - type: custom:bar-card
@@ -270,6 +274,7 @@ cards:
                           margin: 10px;
                           width: 180px;
                           box-shadow: none;
+                          border-style: none;
                         }
 
               - type: vertical-stack
@@ -289,6 +294,7 @@ cards:
                         }
                         ha-card {
                           box-shadow: none;
+                          border-style: none;
                         }
 
                   # Volume storage useage
@@ -306,6 +312,7 @@ cards:
                         }
                         ha-card {
                           box-shadow: none;
+                          border-style: none;
                         }
 
                   # RAM useage
@@ -323,6 +330,7 @@ cards:
                         }
                         ha-card {
                           box-shadow: none;
+                          border-style: none;
                         }
 
           # NAS Disk 1
@@ -930,42 +938,42 @@ cards:
     columns: 4
 
   # Show ink cardridges
-  - type: 'custom:bar-card'
-    title: Canon MB2000
-    entities:
-      - entity: sensor.canon_mb2000_series_black_pgbk
-        name: Black
-        color: black
-      - entity: sensor.canon_mb2000_series_cyan
-        name: Cyan
-        color: cyan
-      - entity: sensor.canon_mb2000_series_magenta
-        name: Magenta
-        color: magenta
-      - entity: sensor.canon_mb2000_series_yellow
-        name: Yellow
-        color: yellow
-    direction: up
-    positions:
-      value: outside
-      icon: 'off'
-      indicator: inside
-    height: 200px
-    stack: horizontal
-    card_mod:
-      style: |
-        bar-card-currentbar, bar-card-backgroundbar {
-          border-radius: 5px;
-        }
-        bar-card-value {
-          font-size: 15px;
-          font-weight: bold;
-        }
-        bar-card-name {
-          font-size: 17px;
-          font-weight: bold;
-          padding-top: 5px;
-        }
+  # - type: 'custom:bar-card'
+  #   title: Canon MB2000
+  #   entities:
+  #     - entity: sensor.canon_mb2000_series_black_pgbk
+  #       name: Black
+  #       color: black
+  #     - entity: sensor.canon_mb2000_series_cyan
+  #       name: Cyan
+  #       color: cyan
+  #     - entity: sensor.canon_mb2000_series_magenta
+  #       name: Magenta
+  #       color: magenta
+  #     - entity: sensor.canon_mb2000_series_yellow
+  #       name: Yellow
+  #       color: yellow
+  #   direction: up
+  #   positions:
+  #     value: outside
+  #     icon: 'off'
+  #     indicator: inside
+  #   height: 200px
+  #   stack: horizontal
+  #   card_mod:
+  #     style: |
+  #       bar-card-currentbar, bar-card-backgroundbar {
+  #         border-radius: 5px;
+  #       }
+  #       bar-card-value {
+  #         font-size: 15px;
+  #         font-weight: bold;
+  #       }
+  #       bar-card-name {
+  #         font-size: 17px;
+  #         font-weight: bold;
+  #         padding-top: 5px;
+  #       }
 
   # - type: custom:uptime-card
   #   entity: binary_sensor.p06_pathe_hmh
