@@ -63,13 +63,13 @@
           data:
             volume_level: 0.5
           target:
-            entity_id: media_player.google_home
-        - action: media_player.play_media
+            entity_id: media_player.ma_home_assistant_voice_pe
+        - action: music_assistant.play_media
           data:
-            media_content_type: music
-            media_content_id: !secret wakeup_alarm
+            media_id: Happy Harmony
+            media_type: track
           target:
-            entity_id: media_player.google_home
+            entity_id: media_player.ma_home_assistant_voice_pe
     - delay:
         seconds: 30
 
@@ -83,9 +83,17 @@
       continue_on_timeout: true
 
     # Put the radio ON
-    - action: script.turn_on
+    - action: media_player.volume_set
+      data:
+        volume_level: 0.25
       target:
-        entity_id: script.play_radio
+        entity_id: media_player.ma_google_home
+    - action: music_assistant.play_media
+      target:
+        entity_id: media_player.ma_google_home
+      data:
+        media_id: Radio 538
+        media_type: radio
 
     # Turn on Automated Lights cycle
     - action: input_boolean.turn_on

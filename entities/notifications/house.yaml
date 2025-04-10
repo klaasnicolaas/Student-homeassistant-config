@@ -2,6 +2,6 @@
 # https://www.home-assistant.io/integrations/notify.tts/
 #
 - platform: tts
-  name: Woonkamer
+  name: livingroom
   tts_service: tts.cloud_say
-  media_player: media_player.google_home
+  media_player: media_player.ma_home_assistant_voice_pe

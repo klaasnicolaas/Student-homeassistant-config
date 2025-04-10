@@ -21,6 +21,6 @@
       entity_id: binary_sensor.night
       state: 'off'
   action:
-    - service: notify.woonkamer
+    - service: notify.livingroom
       data:
         message: 'Je telefoon is 100% opgeladen'

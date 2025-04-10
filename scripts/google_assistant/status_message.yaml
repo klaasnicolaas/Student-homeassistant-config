@@ -6,11 +6,11 @@ home_status_message:
   sequence:
     - service: media_player.volume_set
       data:
-        entity_id: media_player.google_home
-        volume_level: 0.50
+        entity_id: media_player.ma_home_assistant_voice_pe
+        volume_level: 0.40
 
     - service: tts.cloud_say
-      entity_id: media_player.google_home
+      entity_id: media_player.ma_home_assistant_voice_pe
       data_template:
         message: >
           {% if now().strftime("%H") | int < 12 %}
