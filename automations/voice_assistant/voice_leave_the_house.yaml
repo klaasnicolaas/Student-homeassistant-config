@@ -28,7 +28,6 @@
           - light.kitchen
           - light.hall
           - light.bathroom
-          - light.bureau
 
     # Close cover
     - action: cover.close_cover

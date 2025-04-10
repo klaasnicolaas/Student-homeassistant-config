@@ -29,10 +29,7 @@ cloud:
         - light.livingroom_radiator
         - light.livingroom_floor
         - light.bathroom
-        - light.stellingkast
-        - light.bureau
         # Scripts
-        - script.play_radio
         - script.call_emergency
         - script.false_alarm_emergency
         - script.airco_on

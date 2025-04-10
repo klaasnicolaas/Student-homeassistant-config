@@ -28,9 +28,6 @@
       - condition: state
         entity_id: light.bathroom
         state: 'on'
-      - condition: state
-        entity_id: light.bureau
-        state: 'on'
   action:
     # HA Android notification
     - service: notify.mobile_app_klaas_samsung_s24_plus

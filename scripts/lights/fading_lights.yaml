@@ -4,14 +4,6 @@
 lights_fading_off:
   alias: "Fading lights off in programmed sequence"
   sequence:
-    # Stellingkast
-    - service: light.turn_off
-      target:
-        entity_id: light.bureau
-
-    - delay:
-        seconds: 7
-
     # Hal
     - service: light.turn_off
       target:

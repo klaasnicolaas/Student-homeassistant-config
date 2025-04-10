@@ -12,4 +12,3 @@ all_lights_off:
           - light.kitchen
           - light.hall
           - light.bathroom
-          - light.bureau
